@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pitchside — live match intelligence for football clubs</title>
+<style>
+@font-face{font-family:BC;src:url(assets/fonts/barlow-condensed-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:BC;src:url(assets/fonts/barlow-condensed-latin-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:BC;src:url(assets/fonts/barlow-condensed-latin-600-italic.woff2) format("woff2");font-weight:600;font-style:italic}
+@font-face{font-family:Bar;src:url(assets/fonts/barlow-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Bar;src:url(assets/fonts/barlow-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Bar;src:url(assets/fonts/barlow-latin-600-normal.woff2) format("woff2");font-weight:600}
+:root{--bg:#0b0e0d;--panel:#121716;--panel2:#171d1b;--line:#232b28;--ink:#eef3ef;--mute:#86918c;--lime:#c6ff3d;--home:#eef3ef;--away:#ff6b4a;--blue:#6fb6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Bar,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:inherit;text-decoration:none}
+em{font-family:BC;font-style:italic;font-weight:600;color:var(--lime)}
+.num{font-family:BC;font-weight:600;font-variant-numeric:tabular-nums}
+.nav{position:fixed;inset:0 0 auto;z-index:40;display:flex;align-items:center;gap:32px;padding:16px 40px;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:10px;align-items:center;font-family:BC;font-weight:700;font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.brand img{width:30px}
+.nav .links{display:flex;gap:24px;font-size:14px;color:var(--mute)}
+.nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:10px;font-weight:600;font-size:14px}
+.btn.l{background:var(--lime);color:#0b0e0d}
+.btn.g{border:1px solid var(--line)}
+.hero{position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1.1fr;align-items:center;gap:30px;padding:110px 40px 40px;max-width:1320px;margin:0 auto}
+.kick{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:6px 14px 6px 8px}
+.kick b{background:#ff3b3b;color:#fff;border-radius:99px;padding:2px 8px;font-size:11px;letter-spacing:.08em}
+h1{font-family:BC;font-weight:700;font-size:clamp(64px,8.4vw,142px);line-height:.86;letter-spacing:-.01em;text-transform:uppercase;margin-top:22px}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}h1 .ln>span{display:inline-block}
+.hero p{margin-top:22px;color:var(--mute);font-size:18px;line-height:1.6;max-width:470px}
+.hero .ctas{display:flex;gap:12px;margin-top:30px}
+.hero .clubs{margin-top:46px;display:flex;gap:26px;color:var(--mute);font-size:13px;align-items:center;flex-wrap:wrap}
+.hero .clubs b{font-family:BC;font-weight:600;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:#cdd5d0}
+#heroC{width:100%;aspect-ratio:1.45/1;border-radius:22px;border:1px solid var(--line);background:#0f1412}
+.tour{position:relative;height:640vh}
+.pin{position:sticky;top:0;height:100vh;display:grid;place-items:center;padding-top:62px;overflow:hidden}
+.console{width:1240px;height:760px;border-radius:18px;background:var(--panel);border:1px solid var(--line);box-shadow:0 40px 100px #000a;display:grid;grid-template-columns:60px 1fr;overflow:hidden;position:relative;transform-origin:50% 50%}
+.side{background:#0f1312;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0}
+.side img{width:30px;margin-bottom:12px}
+.side i{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--mute)}
+.side i.on{background:var(--panel2);color:var(--lime)}
+.side svg{width:19px;height:19px}
+.main{display:grid;grid-template-rows:64px 1fr 150px;min-width:0}
+.mh{display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid var(--line)}
+.crest{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:BC;font-weight:700;font-size:14px}
+.mh .team{font-family:BC;font-weight:600;font-size:22px;letter-spacing:.02em;text-transform:uppercase}
+.score{font-family:BC;font-weight:700;font-size:38px;letter-spacing:.04em;padding:0 10px;font-variant-numeric:tabular-nums}
+.clock{font-family:BC;font-weight:600;font-size:18px;color:var(--lime);display:flex;align-items:center;gap:8px}
+.clock i{width:8px;height:8px;border-radius:50%;background:#ff3b3b}
+.mh .sp{flex:1}
+.mh .tabs{display:flex;gap:4px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:3px;font-size:12.5px}
+.mh .tabs span{padding:6px 12px;border-radius:8px;color:var(--mute)}.mh .tabs span.on{background:#222a27;color:var(--ink)}
+.mid{display:grid;grid-template-columns:1fr 300px;min-height:0}
+.pw{position:relative;overflow:hidden;border-right:1px solid var(--line)}
+.pw canvas{position:absolute;inset:0;width:100%;height:100%}
+.ov{position:absolute;left:12px;top:12px;display:flex;gap:6px}
+.ov span{font-size:11.5px;padding:6px 10px;border-radius:8px;background:#0b0e0dcc;border:1px solid var(--line);color:var(--mute)}
+.ov span.on{color:var(--lime);border-color:#c6ff3d55}
+.toast{position:absolute;left:50%;top:16px;transform:translateX(-50%);padding:12px 18px;border-radius:14px;background:var(--lime);color:#0b0e0d;font-family:BC;font-weight:700;font-size:22px;letter-spacing:.04em;text-transform:uppercase;display:flex;gap:12px;align-items:center;opacity:0;box-shadow:0 20px 40px #0008}
+.toast small{font-family:Bar;font-weight:600;font-size:12px;letter-spacing:0;text-transform:none;opacity:.7}
+.right{display:flex;flex-direction:column;min-height:0}
+.rh{padding:14px 16px 8px;display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.rh b{color:var(--ink);font-size:13px}
+.pc{margin:0 12px;padding:14px;border-radius:14px;background:var(--panel2);border:1px solid var(--line)}
+.pc .top{display:flex;gap:12px;align-items:center}
+.pc .jersey{width:44px;height:44px;border-radius:12px;background:var(--home);color:#0b0e0d;display:grid;place-items:center;font-family:BC;font-weight:700;font-size:22px}
+.pc b{font-size:15px;display:block}.pc span{font-size:12px;color:var(--mute)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.stats div{background:#0f1312;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.stats small{font-size:10.5px;color:var(--mute);display:block}.stats b{font-family:BC;font-weight:600;font-size:22px;font-variant-numeric:tabular-nums}
+#spdC{width:100%;height:46px;display:block;margin-top:10px}
+.feed{flex:1;overflow:hidden;padding:8px 12px 0}
+.ev{display:flex;gap:10px;align-items:center;padding:8px 6px;border-bottom:1px solid var(--line);font-size:12.5px}
+.ev .m{font-family:BC;font-weight:600;color:var(--mute);width:30px}
+.ev .d{width:8px;height:8px;border-radius:50%}
+.ev b{font-weight:600}.ev span{color:var(--mute)}
+.ev.new{background:#c6ff3d14;border-radius:10px}
+.bot{display:grid;grid-template-columns:1fr 300px;border-top:1px solid var(--line)}
+.xg{position:relative;padding:10px 16px}
+.xg .lab{display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.xg .lab b{font-family:BC;font-weight:600;font-size:16px;color:var(--ink)}
+#xgC{width:100%;height:84px;display:block;margin-top:4px}
+.scrub{position:absolute;left:16px;right:16px;bottom:8px;height:6px;border-radius:9px;background:var(--line)}
+.scrub i{position:absolute;left:0;top:0;bottom:0;border-radius:9px;background:var(--lime)}
+.scrub b{position:absolute;top:-5px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px #c6ff3d33}
+.poss{border-left:1px solid var(--line);padding:12px 16px;font-size:12px;color:var(--mute)}
+.poss .bar{display:flex;height:10px;border-radius:9px;overflow:hidden;margin:8px 0 12px}
+.poss .bar i{display:block}
+.poss .row{display:flex;justify-content:space-between;padding:4px 0}.poss .row b{font-family:BC;font-weight:600;font-size:15px;color:var(--ink)}
+/* mobile companion */
+.mob{display:none;position:relative;width:100%;height:100%;background:var(--bg)}
+.mob .mh2{position:absolute;left:0;right:0;top:0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:#0b0e0de6;border-bottom:1px solid var(--line);z-index:3}
+.mob .mh2 .score{font-size:34px}
+.mob canvas{position:absolute;left:0;right:0;top:66px;width:100%;height:calc(100% - 66px - 210px)}
+.mob .mfeed{position:absolute;left:0;right:0;bottom:0;height:210px;background:var(--panel);border-top:1px solid var(--line);padding:12px 14px}
+.mob .mtoast{position:absolute;left:14px;right:14px;top:80px;z-index:4;padding:12px 14px;border-radius:14px;background:var(--lime);color:#0b0e0d;font-family:BC;font-weight:700;font-size:20px;text-transform:uppercase;opacity:0}
+/* sections */
+.sec{max-width:1240px;margin:0 auto;padding:130px 40px 30px}
+.sec .k{font-family:BC;font-weight:600;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+.sec h2{font-family:BC;font-weight:700;font-size:clamp(44px,5.6vw,88px);line-height:.9;text-transform:uppercase;margin-top:12px;max-width:900px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px}
+.card{border-radius:18px;background:var(--panel);border:1px solid var(--line);padding:22px}
+.card canvas{width:100%;height:150px;display:block;border-radius:12px;background:#0f1412}
+.card h4{font-family:BC;font-weight:600;font-size:24px;text-transform:uppercase;margin-top:16px}
+.card p{color:var(--mute);font-size:14.5px;line-height:1.6;margin-top:6px}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);margin-top:60px;border-top:1px solid var(--line)}
+.nums div{padding:22px 0}.nums b{font-family:BC;font-weight:700;font-size:64px;display:block;line-height:1}.nums span{color:var(--mute);font-size:14px}
+.cta{margin:110px auto 0;max-width:1240px;padding:0 40px}
+.ctab{border-radius:26px;background:var(--lime);color:#0b0e0d;padding:60px 56px}
+.ctab h2{font-family:BC;font-weight:700;font-size:clamp(44px,6vw,92px);line-height:.88;text-transform:uppercase}
+.ctab em{color:#0b0e0d}
+.ctab .btn{background:#0b0e0d;color:var(--lime);margin-top:24px}
+footer{max-width:1240px;margin:0 auto;padding:40px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--bg);display:grid;place-items:center}#pre img{width:56px}
+@media (max-width:760px){
+  .nav{padding:12px 16px}.nav .links,.nav .btn.g{display:none}.nav .btn{height:36px;font-size:12px;padding:0 12px}
+  .hero{grid-template-columns:1fr;padding:90px 18px 30px;min-height:auto}
+  .tour .pin{padding-top:0;place-items:stretch}.console{display:none}.mob{display:block}
+  .sec{padding:80px 18px 20px}.cards{grid-template-columns:1fr}.nums{grid-template-columns:1fr 1fr}
+  .cta{padding:0 18px}.ctab{padding:36px 24px}
+  footer{flex-direction:column;gap:8px;padding:30px 18px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">Pitchside</span><div class="links"><a>Live</a><a>Replay</a><a>Scouting</a><a>Clubs</a><a>Pricing</a></div><div class="sp"></div><a class="btn g">Log in</a><a class="btn l" href="#cta">Book a demo</a></nav>
+
+<header class="hero">
+  <div>
+    <span class="kick rv"><b>LIVE</b>25 fps optical tracking · 0.3 s latency</span>
+    <h1><span class="ln"><span>Every touch.</span></span><span class="ln"><span><em>Measured.</em></span></span></h1>
+    <p class="rv">Pitchside turns live tracking data into decisions for the bench: who's tiring, where the space is, and what that move was really worth, while the match is still on.</p>
+    <div class="ctas rv"><a class="btn l" href="#cta">Book a demo</a><a class="btn g" href="#tour">Watch a goal break down ↓</a></div>
+    <div class="clubs rv">Used by analysts at <b>Harbour City</b><b>Ashford Rovers</b><b>Kestrel Town</b><b>Vale United</b></div>
+  </div>
+  <canvas id="heroC"></canvas>
+</header>
+
+<section class="tour" id="tour"><div class="pin">
+  <div class="console" id="console">
+    <aside class="side"><img src="src/img/logo.svg" alt="">
+      <i class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M12 5v14M3 9h3v6H3M21 9h-3v6h3"/><circle cx="12" cy="12" r="2.5"/></svg></i>
+      <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></i>
+      <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></i>
+      <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9z"/></svg></i>
+    </aside>
+    <div class="main">
+      <div class="mh"><span class="crest" style="background:#eef3ef;color:#0b0e0d">HC</span><span class="team">Harbour City</span><span class="score" id="score">1 – 1</span><span class="team">Ashford Rovers</span><span class="crest" style="background:#ff6b4a;color:#0b0e0d">AR</span><span class="clock" id="clock"><i></i>67:12</span><span class="sp"></span><div class="tabs"><span class="on">Live</span><span>Replay</span><span>Shape</span><span>Physical</span></div></div>
+      <div class="mid">
+        <div class="pw"><canvas id="pitch"></canvas>
+          <div class="ov" id="ov"><span>Passes</span><span>Runs</span><span>Shot map</span><span>Def. line</span></div>
+          <div class="toast" id="toast">⚽ Goal · K. Osei 68' <small>xG 0.41 · 5-pass move · 11.3 s</small></div>
+        </div>
+        <div class="right">
+          <div class="rh"><b>Player focus</b><span id="pcLive">live tracking</span></div>
+          <div class="pc"><div class="top"><span class="jersey" id="pcNum">11</span><div><b id="pcName">Jonah Reyes</b><span id="pcPos">Left wing · Harbour City</span></div></div>
+            <div class="stats"><div><small>Speed now</small><b id="pcSpd">0.0</b></div><div><small>Top speed</small><b id="pcTop">33.1</b></div><div><small>Distance</small><b id="pcDist">8.42 km</b></div><div><small>Sprints</small><b id="pcSpr">24</b></div></div>
+            <canvas id="spdC"></canvas></div>
+          <div class="rh" style="margin-top:6px"><b>Match events</b><span>Analyst view</span></div>
+          <div class="feed" id="feed">
+            <div class="ev new" id="evGoal" style="opacity:0"><span class="m">68'</span><span class="d" style="background:var(--lime)"></span><div><b>Goal · K. Osei</b> <span>assist J. Reyes · xG 0.41</span></div></div>
+            <div class="ev"><span class="m">64'</span><span class="d" style="background:var(--away)"></span><div><b>Sub · Rovers</b> <span>Mendes ↔ Clarke</span></div></div>
+            <div class="ev"><span class="m">58'</span><span class="d" style="background:#ffcf3d"></span><div><b>Yellow · D. Hale</b> <span>tactical foul</span></div></div>
+            <div class="ev"><span class="m">51'</span><span class="d" style="background:var(--away)"></span><div><b>Goal · Rovers</b> <span>header · xG 0.22</span></div></div>
+            <div class="ev"><span class="m">23'</span><span class="d" style="background:var(--home)"></span><div><b>Goal · T. Abara</b> <span>penalty · xG 0.78</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bot">
+        <div class="xg"><div class="lab"><span>Expected goals · cumulative</span><span>HC <b id="xgH">1.62</b> · AR <b id="xgA">0.94</b></span></div><canvas id="xgC"></canvas><div class="scrub" id="scrub"><i></i><b></b></div></div>
+        <div class="poss"><div class="row"><span>Possession</span><b id="possV">58% · 42%</b></div><div class="bar"><i style="background:var(--home);width:58%" id="possH"></i><i style="background:var(--away);flex:1"></i></div>
+          <div class="row"><span>Pressing intensity</span><b id="ppda">PPDA 8.4</b></div><div class="row"><span>Field tilt</span><b id="tilt">64%</b></div><div class="row"><span>High turnovers</span><b>7 · 3</b></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <div class="mh2"><span class="crest" style="background:#eef3ef;color:#0b0e0d">HC</span><span class="score" id="mScore">1 – 1</span><span class="crest" style="background:#ff6b4a;color:#0b0e0d">AR</span><span class="clock" id="mClock"><i></i>67:12</span></div>
+    <div class="mtoast" id="mToast">⚽ Goal · K. Osei 68' · xG 0.41</div>
+    <canvas id="mPitch"></canvas>
+    <div class="mfeed"><div class="rh" style="padding:0 0 8px"><b>Live · Harbour City v Ashford Rovers</b><span id="mLive">tracking</span></div>
+      <div class="stats" style="margin-top:0"><div><small>Reyes · speed</small><b id="mSpd">0.0</b></div><div><small>Possession</small><b id="mPoss">58%</b></div><div><small>xG HC</small><b id="mXgH">1.62</b></div><div><small>xG AR</small><b>0.94</b></div></div></div>
+  </div>
+</div></section>
+
+<section class="sec">
+  <div class="k rv">Built for the bench</div>
+  <h2 class="rv">From tracking data to a <em>decision</em> in under a second.</h2>
+  <div class="cards">
+    <div class="card rv"><canvas id="cv1"></canvas><h4>Live physical load</h4><p>Distance, sprints and high-intensity efforts for every player, with fatigue flags before the drop-off shows.</p></div>
+    <div class="card rv"><canvas id="cv2"></canvas><h4>Instant replays, annotated</h4><p>Every attack is broken down automatically: passes, runs, defensive line and shot quality, ready by the time the ball's back on the spot.</p></div>
+    <div class="card rv"><canvas id="cv3"></canvas><h4>Shape that you can see</h4><p>Team shape, line height and compactness tracked live, so you can see the gaps opening and fix them.</p></div>
+  </div>
+  <div class="nums"><div class="rv"><b class="count" data-to="25">0</b><span>tracking frames per second</span></div><div class="rv"><b>0.3 s</b><span>pitch-to-bench latency</span></div><div class="rv"><b class="count" data-to="140">0</b><span>live metrics per player</span></div><div class="rv"><b class="count" data-to="38">0</b><span>clubs across 6 leagues</span></div></div>
+</section>
+<div class="cta" id="cta"><div class="ctab rv"><h2>Win the game <em>between</em> the games.</h2><p style="margin-top:14px;max-width:480px;line-height:1.6;opacity:.8">Bring your tracking provider. We'll have your last five matches broken down before the demo ends.</p><a class="btn">Book a demo →</a></div></div>
+<footer><span>© Pitchside Analytics Ltd · Manchester</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,sm=t=>t*t*(3-2*t),back=t=>{const c=1.5;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const pre=$('#pre');if(sessionStorage.getItem('pitchside-seen'))pre.remove();else{sessionStorage.setItem('pitchside-seen','1');setTimeout(()=>{pre.style.transition='opacity .6s';pre.style.opacity=0;setTimeout(()=>pre.remove(),700)},1000)}
+function fit(c){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio,2);const w=Math.round(r.width*d),h=Math.round(r.height*d);if(w&&h&&(c.width!==w||c.height!==h)){c.width=w;c.height=h}const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return[x,r.width,r.height]}
+
+/* ==================== MATCH SIMULATION (deterministic, precomputed) ==================== */
+// Pitch 105 x 68 m. Harbour City (home) attack +x. A scripted goal move simulated with real ball physics.
+const L=105,Wd=68,DT=1/60,T=16;
+const HOME=[[4,34,1,'GK'],[28,12,2,'RB'],[24,27,4,'CB'],[24,41,5,'CB'],[28,56,3,'LB'],[38,34,6,'DM'],[50,22,8,'CM'],[50,46,10,'CM'],[66,10,11,'LW'],[70,34,9,'ST'],[66,58,7,'RW']];
+const AWAY=[[101,34,1,'GK'],[86,12,2,'RB'],[88,28,5,'CB'],[88,40,4,'CB'],[86,56,3,'LB'],[74,14,7,'RM'],[76,28,8,'CM'],[76,40,6,'CM'],[74,54,11,'LM'],[62,30,9,'ST'],[62,40,10,'ST']];
+const NAMES={'h11':'Jonah Reyes','h9':'Kofi Osei','h8':'Luca Brandt','h6':'Sam Okafor','h4':'Dan Price'};
+const P=[];HOME.forEach(([x,y,n,pos])=>P.push({team:0,n,pos,ax:x,ay:y,x,y:Wd-y,vx:0,vy:0}));AWAY.forEach(([x,y,n,pos])=>P.push({team:1,n,pos,ax:x,ay:y,x,y,vx:0,vy:0}));
+const idx=(team,n)=>P.findIndex(p=>p.team===team&&p.n===n);
+const H=n=>idx(0,n);
+// script: who has the ball, where they run, and each kick (time, receiver, landing point, ground speed, loft)
+const KICKS=[
+ {t:.6,from:H(4),to:H(6),tx:40,ty:30,v:15,vz:0},
+ {t:2.5,from:H(6),to:H(8),tx:53,ty:21,v:17,vz:0},
+ {t:6.3,from:H(8),to:H(11),tx:75,ty:7,v:19,vz:1.2},
+ {t:9.7,from:H(11),to:H(9),tx:95.5,ty:35.5,v:21,vz:8.2},
+ {t:11.25,from:H(9),to:-1,tx:105.5,ty:31.2,v:29,vz:2.2},
+];
+const CARRY=[{who:H(8),t0:3.6,t1:6.2,tx:62,ty:18,sp:6.2},{who:H(11),t0:7.4,t1:9.6,tx:85,ty:9.5,sp:9.3}];
+const RUNS=[{who:H(9),t0:6.5,t1:11.2,tx:95,ty:36,sp:8.6},{who:H(7),t0:7,t1:11.5,tx:93,ty:46,sp:7.8},{who:H(10),t0:6,t1:11,tx:84,ty:30,sp:7},{who:H(11),t0:5.2,t1:7.4,tx:75,ty:7,sp:8.5}];
+const CELEB=[{who:H(9),tx:101,ty:64,sp:7.5},{who:H(11),tx:99,ty:62,sp:6.8},{who:H(7),tx:100,ty:60,sp:6},{who:H(10),tx:97,ty:61,sp:5.5}];
+function simulate(){
+  const ball={x:28,y:Wd-27,z:0,vx:0,vy:0,vz:0,owner:H(4),inNet:false};
+  P.forEach(p=>{p.x=p.ax;p.y=p.team?p.ay:Wd-p.ay;p.vx=p.vy=0;p.dist=0;p.top=0});
+  const F=[];let k=0,goal=-1,pending=null;const passes=[];
+  for(let f=0;f<=T/DT;f++){const t=f*DT;
+    // kicks
+    while(k<KICKS.length&&t>=KICKS[k].t){const K=KICKS[k];const dx=K.tx-ball.x,dy=K.ty-ball.y,d=Math.hypot(dx,dy);
+      ball.vx=dx/d*K.v;ball.vy=dy/d*K.v;ball.vz=K.vz;ball.owner=-1;pending=K;passes.push({t,x0:ball.x,y0:ball.y,x1:K.tx,y1:K.ty,shot:K.to<0,lofted:K.vz>3});k++}
+    // ball physics: rolling friction on the ground, gravity + drag in the air, damped bounces
+    if(ball.owner<0&&!ball.inNet){ball.z+=ball.vz*DT;
+      if(ball.z>0){ball.vz-=9.81*DT;ball.vx*=Math.exp(-.06*DT);ball.vy*=Math.exp(-.06*DT)}
+      else{ball.z=0;if(ball.vz<-1){ball.vz=-ball.vz*.45;ball.vx*=.82;ball.vy*=.82}else{ball.vz=0;const s=Math.exp(-.42*DT);ball.vx*=s;ball.vy*=s}}
+      ball.x+=ball.vx*DT;ball.y+=ball.vy*DT;
+      if(pending&&pending.to>=0){const r=P[pending.to];if(t>pending.t+.25&&Math.hypot(r.x-ball.x,r.y-ball.y)<1.3&&ball.z<1.6){ball.owner=pending.to;pending=null}}
+      if(ball.x>L&&ball.y>30.3&&ball.y<37.7){ball.inNet=true;goal=t;ball.vx*=.25;ball.vy*=.25}}
+    else if(ball.inNet){ball.x+=ball.vx*DT;ball.y+=ball.vy*DT;ball.vx*=.9;ball.vy*=.9;ball.z=Math.max(0,ball.z-2*DT);ball.x=Math.min(ball.x,L+1.6)}
+    // players: steering toward a target with max speed and limited acceleration (no teleporting, no instant turns)
+    const bx=ball.x,by=ball.y;
+    P.forEach((p,i)=>{let tx,ty,sp=5.2;
+      const base=p.team?[p.ax,p.ay]:[p.ax,Wd-p.ay];
+      // team block shifts with the ball
+      tx=base[0]+(bx-55)*(p.pos==='GK'?.05:.45);ty=base[1]+(by-34)*(p.pos==='GK'?.12:.35);
+      if(p.team===1&&p.pos!=='GK'){tx=Math.min(tx,99)}
+      const car=CARRY.find(c=>c.who===i&&t>=c.t0&&t<c.t1);const run=RUNS.find(r=>r.who===i&&t>=r.t0&&t<r.t1);
+      if(run){tx=run.tx;ty=run.ty;sp=run.sp}
+      if(car&&ball.owner===i){tx=car.tx;ty=car.ty;sp=car.sp}
+      if(pending&&pending.to===i){tx=pending.tx;ty=pending.ty;sp=8}
+      if(ball.owner===i&&!car){tx=p.x;ty=p.y;sp=1}
+      // nearest defender presses the ball
+      if(p.team===1&&p.pos!=='GK'){const d=Math.hypot(p.x-bx,p.y-by);if(d<11){tx=bx-3;ty=by+(p.y>by?1.5:-1.5);sp=7.2}}
+      if(p.team===1&&p.pos==='GK'){tx=L-1.2-(goal>0?0:0);ty=clamp(lerp(34,by,.5),30,38);sp=goal<0&&k>=5?6:3.5}
+      if(goal>0&&t>goal+.4){const c=CELEB.find(c=>c.who===i);if(c){tx=c.tx;ty=c.ty;sp=c.sp}else if(p.team===1){sp=2}}
+      let dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy);const want=Math.min(sp,d*1.4);const dvx=(d>0?dx/d*want:0)-p.vx,dvy=(d>0?dy/d*want:0)-p.vy;const dv=Math.hypot(dvx,dvy),acc=4.2*DT;
+      if(dv>acc){p.vx+=dvx/dv*acc;p.vy+=dvy/dv*acc}else{p.vx+=dvx;p.vy+=dvy}
+      p.x+=p.vx*DT;p.y+=p.vy*DT;const s=Math.hypot(p.vx,p.vy);p.dist+=s*DT;p.top=Math.max(p.top,s)});
+    // dribbling: the ball is touched ahead of the carrier with each stride
+    if(ball.owner>=0){const p=P[ball.owner];const s=Math.hypot(p.vx,p.vy);const hx=s>.3?p.vx/s:1,hy=s>.3?p.vy/s:0;const touch=.55+.65*Math.abs(Math.sin(t*(4+s*.55)));ball.x=p.x+hx*touch;ball.y=p.y+hy*touch;ball.z=0;ball.vx=p.vx;ball.vy=p.vy}
+    F.push({b:[ball.x,ball.y,ball.z],p:P.map(p=>[p.x,p.y,p.vx,p.vy])});
+  }
+  return{F,goal,passes}}
+const SIM=simulate();
+const frameAt=t=>SIM.F[Math.max(0,Math.min(SIM.F.length-1,Math.round(t/DT)))];
+
+/* ==================== PITCH RENDER ==================== */
+function drawPitch(x,W,Hh,cam,o){ // cam:{cx,cy,s,rot}; o:{t,trails,shot,dline,sel,mobile}
+  const fr=frameAt(o.t);
+  x.save();x.fillStyle='#0f1412';x.fillRect(0,0,W,Hh);
+  x.translate(W/2,Hh/2);if(cam.rot)x.rotate(cam.rot);x.scale(cam.s,cam.s);x.translate(-cam.cx,-cam.cy);
+  const px=v=>v/cam.s;
+  // turf: mown stripes + subtle grain
+  for(let i=0;i<14;i++){x.fillStyle=i%2?'#1d4d2e':'#205533';x.fillRect(-4+i*(L+8)/14,-4,(L+8)/14+.05,Wd+8)}
+  const vg=x.createRadialGradient(L/2,Wd/2,10,L/2,Wd/2,70);vg.addColorStop(0,'rgba(255,255,255,.05)');vg.addColorStop(1,'rgba(0,0,0,.25)');x.fillStyle=vg;x.fillRect(-4,-4,L+8,Wd+8);
+  x.strokeStyle='rgba(255,255,255,.82)';x.lineWidth=.14;
+  x.strokeRect(0,0,L,Wd);x.beginPath();x.moveTo(L/2,0);x.lineTo(L/2,Wd);x.stroke();x.beginPath();x.arc(L/2,Wd/2,9.15,0,6.28);x.stroke();
+  [[0,1],[L,-1]].forEach(([gx,s])=>{x.strokeRect(Math.min(gx,gx+s*16.5),Wd/2-20.16,16.5,40.32);x.strokeRect(Math.min(gx,gx+s*5.5),Wd/2-9.16,5.5,18.32);
+    x.beginPath();x.arc(gx+s*11,Wd/2,9.15,s>0?-.93:Math.PI-.93,s>0?.93:Math.PI+.93);x.stroke();x.fillStyle='#fff';x.beginPath();x.arc(gx+s*11,Wd/2,.25,0,6.28);x.fill();
+    // goal frame + net
+    x.strokeStyle='rgba(255,255,255,.95)';x.lineWidth=.22;x.strokeRect(Math.min(gx,gx+s*2),Wd/2-3.66,2,7.32);x.strokeStyle='rgba(255,255,255,.25)';x.lineWidth=.05;for(let i=0;i<=8;i++){x.beginPath();x.moveTo(gx,Wd/2-3.66+i*.915);x.lineTo(gx+s*2,Wd/2-3.66+i*.915);x.stroke()}for(let i=0;i<=4;i++){x.beginPath();x.moveTo(gx+s*i*.5,Wd/2-3.66);x.lineTo(gx+s*i*.5,Wd/2+3.66);x.stroke()}x.strokeStyle='rgba(255,255,255,.82)';x.lineWidth=.14});
+  // net ripple when the ball hits it
+  if(SIM.goal>0&&o.t>SIM.goal){const k=o.t-SIM.goal;const a=Math.exp(-k*2.2);x.strokeStyle=`rgba(198,255,61,${.8*a})`;x.lineWidth=.12;for(let r=1;r<4;r++){x.beginPath();x.arc(L+1.5,fr.b[1],r*.8+k*3,Math.PI*.5,Math.PI*1.5,true);x.stroke()}}
+  // analytics overlays
+  if(o.trails>0){SIM.passes.forEach(ps=>{if(ps.t>o.t)return;const age=o.t-ps.t;const a=o.trails*Math.max(.25,1-age/9);x.strokeStyle=ps.shot?`rgba(198,255,61,${a})`:`rgba(111,182,255,${a})`;x.lineWidth=px(2.2);x.setLineDash(ps.lofted?[px(5),px(4)]:[]);
+    const e=Math.min(1,age/.6);const ex=lerp(ps.x0,ps.x1,e),ey=lerp(ps.y0,ps.y1,e);x.beginPath();if(ps.lofted){x.moveTo(ps.x0,ps.y0);x.quadraticCurveTo((ps.x0+ex)/2,(ps.y0+ey)/2-6*e,ex,ey)}else{x.moveTo(ps.x0,ps.y0);x.lineTo(ex,ey)}x.stroke();x.setLineDash([]);
+    const ang=Math.atan2(ey-ps.y0,ex-ps.x0);x.fillStyle=x.strokeStyle;x.beginPath();x.moveTo(ex,ey);x.lineTo(ex-Math.cos(ang-.4)*px(9),ey-Math.sin(ang-.4)*px(9));x.lineTo(ex-Math.cos(ang+.4)*px(9),ey-Math.sin(ang+.4)*px(9));x.fill();
+    x.beginPath();x.arc(ps.x0,ps.y0,px(3.5),0,6.28);x.fill()})}
+  // player run trails (last 2.5 s) for the attackers in the move
+  if(o.trails>0)[H(8),H(11),H(9)].forEach(i=>{x.beginPath();let first=true;for(let tt=Math.max(0,o.t-2.5);tt<=o.t;tt+=.1){const q=frameAt(tt).p[i];first?x.moveTo(q[0],q[1]):x.lineTo(q[0],q[1]);first=false}x.strokeStyle=`rgba(255,255,255,${.35*o.trails})`;x.lineWidth=px(3);x.lineCap='round';x.stroke()});
+  // defensive line of the away back four
+  if(o.dline>0){const D=[idx(1,2),idx(1,5),idx(1,4),idx(1,3)].map(i=>fr.p[i]).sort((a,b)=>a[1]-b[1]);x.strokeStyle=`rgba(255,107,74,${.7*o.dline})`;x.lineWidth=px(2);x.setLineDash([px(6),px(5)]);x.beginPath();D.forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.stroke();x.setLineDash([])}
+  // shot cone + xG
+  if(o.shot>0){const sh=frameAt(KICKS[4].t).b;x.fillStyle=`rgba(198,255,61,${.18*o.shot})`;x.beginPath();x.moveTo(sh[0],sh[1]);x.lineTo(L,Wd/2-3.66);x.lineTo(L,Wd/2+3.66);x.fill()}
+  // players: shadow, kit disc with facing notch, number
+  fr.p.forEach((q,i)=>{const p=P[i];const s=Math.hypot(q[2],q[3]);const hd=Math.atan2(q[3],q[2]);
+    x.fillStyle='rgba(0,0,0,.35)';x.beginPath();x.ellipse(q[0]+.35,q[1]+.45,1.05,.8,0,0,6.28);x.fill();
+    const col=p.team?'#ff6b4a':(p.pos==='GK'?'#ffcf3d':'#eef3ef');const r=1;
+    if(o.sel===i){x.strokeStyle='#c6ff3d';x.lineWidth=px(2.4);x.beginPath();x.arc(q[0],q[1],r+.9+.25*Math.sin(o.t*6),0,6.28);x.stroke()}
+    x.fillStyle=col;x.beginPath();x.arc(q[0],q[1],r,0,6.28);x.fill();
+    if(s>.4){x.fillStyle=p.team?'#8c2c18':'#0b0e0d';x.beginPath();x.arc(q[0]+Math.cos(hd)*.62,q[1]+Math.sin(hd)*.62,.28,0,6.28);x.fill()}
+    x.save();x.translate(q[0],q[1]);if(cam.rot)x.rotate(-cam.rot);x.fillStyle=p.team?'#2a0b05':'#0b0e0d';x.font=`700 ${1.15}px BC`;x.textAlign='center';x.textBaseline='middle';x.fillText(p.n,0,.08);x.restore()});
+  // ball: shadow on the grass, ball lifted by its height
+  const[bx,by,bz]=fr.b;x.fillStyle='rgba(0,0,0,.4)';x.beginPath();x.ellipse(bx+bz*.35,by+bz*.5,.42,.32,0,0,6.28);x.fill();
+  const lift=bz*.9;const rr=.38+bz*.035;const g=x.createRadialGradient(bx-.12,by-lift-.12,.05,bx,by-lift,rr);g.addColorStop(0,'#fff');g.addColorStop(1,'#c9cfcb');x.fillStyle=g;x.beginPath();x.arc(bx,by-lift,rr,0,6.28);x.fill();
+  x.restore();
+  // screen-space labels: speed on the sprinting winger, xG on the shot
+  const proj=(wx,wy)=>{let X=(wx-cam.cx)*cam.s,Y=(wy-cam.cy)*cam.s;if(cam.rot){const c=Math.cos(cam.rot),s=Math.sin(cam.rot);[X,Y]=[X*c-Y*s,X*s+Y*c]}return[W/2+X,Hh/2+Y]};
+  const chip=(sx,sy,txt,bg,fg)=>{x.font='600 12px Bar';const w=x.measureText(txt).width+14;x.fillStyle=bg;x.beginPath();x.roundRect(sx-w/2,sy-11,w,22,6);x.fill();x.fillStyle=fg;x.textAlign='center';x.textBaseline='middle';x.fillText(txt,sx,sy+.5)};
+  if(o.labels){const w=fr.p[H(11)];const sp=Math.hypot(w[2],w[3])*3.6;if(sp>18&&o.t<10.2){const[sx,sy]=proj(w[0],w[1]);chip(sx,sy-26,sp.toFixed(1)+' km/h','#c6ff3d','#0b0e0d')}
+    SIM.passes.forEach((ps,i)=>{if(ps.t>o.t||ps.shot)return;const age=o.t-ps.t;if(age>2.2)return;const[sx,sy]=proj(ps.x1,ps.y1);x.globalAlpha=Math.min(1,age*3)*(1-seg(age,1.6,2.2));chip(sx+30,sy-18,'+'+[.02,.04,.09,.17][i].toFixed(2)+' xT','#111a16ee','#6fb6ff');x.globalAlpha=1});
+    if(o.shot>0){const sh=frameAt(KICKS[4].t).b;const[sx,sy]=proj(sh[0],sh[1]);x.globalAlpha=o.shot;chip(sx-10,sy+30,'xG 0.41','#c6ff3d','#0b0e0d');x.globalAlpha=1}}
+}
+
+/* ==================== HERO: live tracking teaser ==================== */
+function drawHero(t){const c=$('#heroC');const[x,W,Hh]=fit(c);if(!W)return;const s=Math.min(W/(L+10),Hh/(Wd+10));const lt=(t*.9)%T;drawPitch(x,W,Hh,{cx:L/2,cy:Wd/2,s},{t:lt,trails:1,shot:lt>11.1&&lt<14?1:0,dline:.6,sel:H(11),labels:true});
+  x.fillStyle='#0b0e0dcc';x.beginPath();x.roundRect(14,14,170,30,8);x.fill();x.fillStyle='#ff3b3b';x.beginPath();x.arc(30,29,4,0,6.28);x.fill();x.fillStyle='#eef3ef';x.font='600 12px Bar';x.textAlign='left';x.textBaseline='middle';x.fillText('LIVE · HC 1–1 AR · 67\'',42,29.5)}
+
+/* ==================== CONSOLE LOOP ==================== */
+const con=$('#console'),tour=$('#tour'),rvs=$$('.rv'),heroLines=$$('h1 .ln>span'),counts=$$('.count'),ovs=$$('#ov span');
+const cam={cx:L/2,cy:Wd/2,s:6},mcam={cx:L/2,cy:Wd/2,s:4,rot:-Math.PI/2};
+let spHist=[],lastT=-1,last=null;
+function xgChart(c,q,goal){const[x,W,Hh]=fit(c);x.clearRect(0,0,W,Hh);const mx=m=>m/90*W,my=v=>Hh-6-v/2.4*(Hh-14);
+  x.strokeStyle='#232b28';x.lineWidth=1;[0,1,2].forEach(v=>{x.beginPath();x.moveTo(0,my(v));x.lineTo(W,my(v));x.stroke()});
+  const now=67+q*1.2;const step=(ev,col,extra)=>{x.beginPath();let v=0;x.moveTo(0,my(0));ev.forEach(([m,d])=>{if(m>now)return;x.lineTo(mx(m),my(v));v+=d;x.lineTo(mx(m),my(v))});if(extra)v+=extra;x.lineTo(mx(now),my(v));x.strokeStyle=col;x.lineWidth=2;x.stroke();return v};
+  const vh=step([[9,.08],[18,.12],[23,.78],[31,.05],[40,.19],[52,.07],[61,.33]],'#eef3ef',goal*.41);const va=step([[14,.06],[29,.21],[44,.11],[51,.22],[57,.09],[63,.25]],'#ff6b4a',0);
+  x.fillStyle='#c6ff3d';x.fillRect(mx(now)-1,0,2,Hh);return[vh,va]}
+function frame(now){const t=now/1000,dt=last===null?1/30:Math.min(.1,(now-last)/1000);last=now;const vh=innerHeight,mobile=innerWidth<=760;
+  drawHero(t);
+  heroLines.forEach((el,i)=>{const k=eo(seg(t,.25+i*.16,1.05+i*.16));el.style.transform=`translateY(${(1-k)*105}%)`});
+  const r=tour.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh));
+  // replay time driven by scroll: the move plays across q .12 -> .78, then the goal settles
+  const rt=lerp(0,T,seg(q,.1,.84));
+  const trails=eo(seg(q,.12,.2)),dline=eo(seg(q,.3,.36))*(1-eo(seg(q,.62,.7))),shot=eo(seg(rt,11.1,11.4)/1)*(1-seg(q,.92,1)),goal=SIM.goal>0&&rt>SIM.goal?1:0;
+  const fr=frameAt(rt);
+  if(!mobile){
+    const s=Math.min((innerWidth-48)/1240,(vh-62-40)/760,1.2);con.style.transform=`scale(${s})`;
+    const pc=$('#pitch');const[x,W,Hh]=fit(pc);if(W){
+      // camera: overview, then follows the ball and pushes in for the cross and finish
+      const fit0=Math.min(W/(L+6),Hh/(Wd+6));const focus=seg(q,.14,.24)*(1-seg(q,.86,.95));
+      const tz=fit0*(1+.55*focus+.35*sm(seg(rt,8.5,11)));const tx=lerp(L/2,clamp(fr.b[0]+6,L*.32,L*.78),focus),ty=lerp(Wd/2,clamp(fr.b[1],Wd*.3,Wd*.7),focus*.8);
+      const k=1-Math.exp(-dt*3);cam.cx+=(tx-cam.cx)*k;cam.cy+=(ty-cam.cy)*k;cam.s+=(tz-cam.s)*k;
+      drawPitch(x,W,Hh,cam,{t:rt,trails,shot,dline,sel:H(11),labels:true})}
+    ovs.forEach((e,i)=>e.classList.toggle('on',[trails>.5,trails>.5,shot>.5,dline>.5][i]));
+    // player focus card: Reyes until he crosses, then Osei
+    const who=rt<10.2?H(11):H(9);const pq=fr.p[who];const spd=Math.hypot(pq[2],pq[3])*3.6;
+    $('#pcNum').textContent=P[who].n;$('#pcName').textContent=NAMES['h'+P[who].n];$('#pcPos').textContent=(who===H(11)?'Left wing':'Striker')+' · Harbour City';
+    $('#pcSpd').textContent=spd.toFixed(1);$('#pcTop').textContent=(who===H(11)?Math.max(33.1,spd):Math.max(31.4,spd)).toFixed(1);
+    $('#pcDist').textContent=((who===H(11)?8.42:7.96)+rt*.0042).toFixed(2)+' km';$('#pcSpr').textContent=(who===H(11)?24:19)+(spd>25?1:0);
+    if(Math.abs(rt-lastT)>.05){spHist.push(spd);if(spHist.length>80)spHist.shift();lastT=rt}
+    {const[x,W,Hh]=fit($('#spdC'));x.clearRect(0,0,W,Hh);x.strokeStyle='#c6ff3d';x.lineWidth=2;x.beginPath();spHist.forEach((v,i)=>{const X=i/79*W,Y=Hh-4-v/36*(Hh-8);i?x.lineTo(X,Y):x.moveTo(X,Y)});x.stroke();x.fillStyle='#86918c';x.font='500 10px Bar';x.fillText('km/h · last 8 s',4,10)}
+    // header, toast, feed, xG
+    $('#score').textContent=goal?'2 – 1':'1 – 1';const mins=67*60+12+rt;$('#clock').lastChild.textContent=Math.floor(mins/60)+':'+String(Math.floor(mins%60)).padStart(2,'0');
+    const tk=goal?back(clamp((rt-SIM.goal-.2)/.5)):0;$('#toast').style.opacity=clamp(tk*1.5)*(1-seg(q,.95,1));$('#toast').style.transform=`translateX(-50%) scale(${.8+.2*tk})`;
+    const ek=goal?eo(clamp((rt-SIM.goal-.6)/.6)):0;$('#evGoal').style.opacity=ek;$('#feed').style.transform=`translateY(${(ek-1)*38}px)`;
+    const xg=xgChart($('#xgC'),q,goal?eo(clamp((rt-SIM.goal)/.8)):0);$('#xgH').textContent=xg[0].toFixed(2);$('#xgA').textContent=xg[1].toFixed(2);
+    $('#scrub').querySelector('i').style.width=(rt/T*100)+'%';$('#scrub').querySelector('b').style.left=(rt/T*100)+'%';
+    const poss=58+Math.round(seg(rt,0,11)*1);$('#possV').textContent=poss+'% · '+(100-poss)+'%';$('#possH').style.width=poss+'%';$('#tilt').textContent=(64+Math.round(seg(rt,6,12)*3))+'%';
+  }else{
+    const pc=$('#mPitch');const[x,W,Hh]=fit(pc);if(W){const fit0=Math.min(W/(Wd+4),Hh/(L+4));const focus=seg(q,.14,.24)*(1-seg(q,.86,.95));const tz=fit0*(1+.5*focus+.3*sm(seg(rt,8.5,11)));
+      const tx=lerp(L/2,clamp(fr.b[0]+4,L*.3,L*.8),focus),ty=lerp(Wd/2,clamp(fr.b[1],Wd*.3,Wd*.7),focus*.6);const k=1-Math.exp(-dt*3);mcam.cx+=(tx-mcam.cx)*k;mcam.cy+=(ty-mcam.cy)*k;mcam.s+=(tz-mcam.s)*k;
+      drawPitch(x,W,Hh,mcam,{t:rt,trails,shot,dline,sel:H(11),labels:true})}
+    $('#mScore').textContent=goal?'2 – 1':'1 – 1';const mins=67*60+12+rt;$('#mClock').lastChild.textContent=Math.floor(mins/60)+':'+String(Math.floor(mins%60)).padStart(2,'0');
+    const pq=fr.p[H(11)];$('#mSpd').textContent=(Math.hypot(pq[2],pq[3])*3.6).toFixed(1);$('#mXgH').textContent=(1.62+(goal?.41:0)).toFixed(2);
+    const tk=goal?back(clamp((rt-SIM.goal-.2)/.5)):0;$('#mToast').style.opacity=clamp(tk*1.5);$('#mToast').style.transform=`scale(${.85+.15*tk})`;
+  }
+  // feature card loops
+  ['#cv1','#cv2','#cv3'].forEach((id,i)=>{const c=$(id);const rr=c.getBoundingClientRect();if(rr.bottom<0||rr.top>vh)return;const[x,W,Hh]=fit(c);if(!W)return;
+    if(i===0){x.fillStyle='#0f1412';x.fillRect(0,0,W,Hh);for(let k=0;k<11;k++){const v=.4+.5*Math.abs(Math.sin(t*.6+k*1.3));const bw=W/11-6;x.fillStyle=v>.8?'#ff6b4a':'#c6ff3d';x.fillRect(4+k*(W/11),Hh-10-v*(Hh-30),bw,v*(Hh-30));x.fillStyle='#86918c';x.font='600 10px BC';x.fillText('#'+(k+1),6+k*(W/11),Hh-2)}}
+    else if(i===1){const s=Math.min(W/(L+4),Hh/(Wd+4));drawPitch(x,W,Hh,{cx:L/2,cy:Wd/2,s},{t:(t*1.2)%T,trails:1,shot:0,dline:0,sel:-1,labels:false})}
+    else{const s=Math.min(W/(L+4),Hh/(Wd+4));drawPitch(x,W,Hh,{cx:L/2,cy:Wd/2,s},{t:4+Math.sin(t*.4)*3,trails:0,shot:0,dline:1,sel:-1,labels:false})}});
+  rvs.forEach(el=>{let k;if(el.closest('.hero'))k=eo(seg(t,.8,1.7));else{const rr=el.getBoundingClientRect();k=eo(clamp((vh*.94-rr.top)/(vh*.28)))}el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  counts.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.95-rr.top)/(vh*.45)));el.textContent=Math.round(+el.dataset.to*k)});
+  {const inT=mobile&&r.top<=1&&r.bottom>=vh-1;$('#nav').style.transform=`translateY(${inT?-110:0}%)`}
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
