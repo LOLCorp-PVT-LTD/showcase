@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Halden House — a cliff-top home on the Cornish coast</title>
+<meta name="description" content="Halden House: a four-bedroom cliff-top home in Penwith, Cornwall, 38 m above the Atlantic.">
+<link rel="preload" as="image" href="media/tour/001.webp">
 <style>
 @font-face{font-family:Syne;src:url(assets/fonts/syne-latin-500-normal.woff2) format("woff2");font-weight:500}
 @font-face{font-family:Syne;src:url(assets/fonts/syne-latin-700-normal.woff2) format("woff2");font-weight:700}
@@ -11,50 +13,58 @@
 @font-face{font-family:Man;src:url(assets/fonts/manrope-latin-500-normal.woff2) format("woff2");font-weight:500}
 @font-face{font-family:Man;src:url(assets/fonts/manrope-latin-600-normal.woff2) format("woff2");font-weight:600}
 @font-face{font-family:Corm;src:url(assets/fonts/cormorant-garamond-latin-400-italic.woff2) format("woff2");font-style:italic}
-:root{--stone:#e9e6df;--paper:#f3f1ec;--ink:#1b1d1f;--mute:#76736c;--line:#d6d1c6;--brass:#a8834a;--sea:#47606b}
+:root{--stone:#e9e6df;--paper:#f3f1ec;--ink:#1b1d1f;--mute:#76736c;--line:#d6d1c6;--brass:#a8834a;--gold:#e8c48c;--sea:#47606b;--night:#0f1418}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--stone);color:var(--ink);font-family:Man,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 body{overflow-x:clip}
 a{color:inherit;text-decoration:none}
 em{font-family:Corm,serif;font-style:italic;font-weight:400;color:var(--brass);letter-spacing:0}
-.nav{position:fixed;inset:0 0 auto;z-index:40;display:flex;align-items:center;gap:34px;padding:20px 44px;mix-blend-mode:normal}
+.nav{position:fixed;inset:0 0 auto;z-index:40;display:flex;align-items:center;gap:34px;padding:22px 44px;color:#f6f1e8;transition:color .4s,background .4s,padding .4s}
+.nav.ink{color:var(--ink);background:#f3f1ecd9;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line);padding-top:14px;padding-bottom:14px}
+.nav::before{content:"";position:absolute;inset:0;background:linear-gradient(#0008,#0000);z-index:-1;transition:opacity .4s}
+.nav.ink::before{opacity:0}
 .brand{display:flex;gap:12px;align-items:center;font-family:Syne;font-weight:700;letter-spacing:.18em;font-size:14px}
-.brand img{width:30px}
-.nav .links{display:flex;gap:28px;font-size:13px;letter-spacing:.06em;color:var(--mute)}
+.brand img{width:30px}.nav:not(.ink) .brand img{filter:invert(1) brightness(1.4)}
+.nav .links{display:flex;gap:28px;font-size:13px;letter-spacing:.06em;opacity:.82}
 .nav .sp{flex:1}
-.btn{display:inline-flex;align-items:center;gap:12px;height:46px;padding:0 22px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--ink)}
-.btn.dark{background:var(--ink);color:var(--stone)}
-/* hero */
-.hero{position:relative;height:100vh;min-height:640px;overflow:hidden}
-.hero .cap{position:absolute;left:44px;bottom:56px;z-index:2;max-width:760px}
-.hero small{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
-h1{font-family:Syne;font-weight:500;font-size:clamp(54px,9vw,148px);line-height:.9;letter-spacing:-.045em;margin-top:18px}
-h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}h1 .ln>span{display:inline-block}
-.hero .facts{position:absolute;right:44px;bottom:60px;z-index:2;display:flex;gap:34px;text-align:right}
-.hero .facts b{display:block;font-family:Syne;font-weight:500;font-size:34px;letter-spacing:-.02em}
-.hero .facts span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
-#heroC{position:absolute;inset:0;width:100%;height:100%}
-/* build tour */
-.build{position:relative;height:700vh}
-.pin{position:sticky;top:0;height:100vh;overflow:hidden}
-#scene{position:absolute;inset:0;width:100%;height:100%}
-.chapter{position:absolute;left:44px;top:120px;width:380px;z-index:3}
-.chapter small{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--brass);font-weight:600}
-.chapter h2{font-family:Syne;font-weight:500;font-size:48px;line-height:.98;letter-spacing:-.035em;margin-top:12px}
-.chapter p{margin-top:16px;font-size:15.5px;line-height:1.65;color:var(--mute)}
-.ch{position:absolute;inset:0;opacity:0}
-.gauge{position:absolute;right:44px;top:120px;z-index:3;text-align:right;font-variant-numeric:tabular-nums}
-.gauge small{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;gap:12px;height:46px;padding:0 22px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid currentColor}
+.btn.glass{background:#ffffff1f;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+/* ---------- tour: one continuous camera move, scrubbed by scroll ---------- */
+.tour{position:relative;height:900vh;background:var(--night)}
+.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:#f6f1e8}
+#tourC{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0b0f1299 0%,#0b0f1200 26%,#0b0f1200 55%,#0b0f12cc 100%),radial-gradient(120% 90% at 50% 45%,#0000 55%,#0007 100%)}
+#grade{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light}
+#dusk{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#14233d,#1b2a44 60%,#2b2a3a);mix-blend-mode:multiply;opacity:0}
+.grain{position:absolute;inset:-50%;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero{position:absolute;left:44px;right:44px;bottom:84px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
+.hero small{font-size:12px;letter-spacing:.3em;text-transform:uppercase;opacity:.85}
+h1{font-family:Syne;font-weight:500;font-size:clamp(54px,9vw,150px);line-height:.9;letter-spacing:-.045em;margin-top:18px}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.07em}h1 .ln>span{display:inline-block}
+h1 em,.ch h2 em{color:var(--gold)}
+.facts{display:flex;gap:34px;text-align:right}
+.facts>div{white-space:nowrap}.facts b{display:block;font-family:Syne;font-weight:500;font-size:34px;letter-spacing:-.02em}
+.facts span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;display:flex;flex-direction:column;align-items:center;gap:10px}
+.cue i{display:block;width:1px;height:34px;background:linear-gradient(#fff,#fff0);transform-origin:top}
+.chs{position:absolute;left:44px;bottom:96px;width:min(440px,calc(100% - 88px))}
+.ch{position:absolute;left:0;bottom:0;width:100%;opacity:0;padding:28px 30px;background:#10161a55;backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border:1px solid #ffffff22}
+.ch small{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.ch h2{font-family:Syne;font-weight:500;font-size:42px;line-height:1;letter-spacing:-.035em;margin-top:12px}
+.ch p{margin-top:14px;font-size:15px;line-height:1.65;color:#e4ddd0}
+.gauge{position:absolute;right:44px;top:110px;text-align:right;font-variant-numeric:tabular-nums}
+.gauge small{font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.75}
 .gauge b{display:block;font-family:Syne;font-weight:500;font-size:44px;letter-spacing:-.03em}
-.gauge .sun{margin-top:14px;font-size:13px;color:var(--mute)}
-.rail{position:absolute;left:44px;right:44px;bottom:34px;z-index:3;display:flex;gap:6px}
-.rail div{flex:1;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
-.rail div i{display:block;height:2px;background:var(--line);margin-bottom:10px;position:relative;overflow:hidden}
-.rail div i b{position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0)}
-/* content */
+.gauge .sub{margin-top:8px;font-size:13px;opacity:.8}
+.rail{position:absolute;left:44px;right:44px;bottom:34px;display:flex;gap:6px}
+.rail div{flex:1;font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+.rail div i{display:block;height:2px;background:#ffffff33;margin-bottom:10px;position:relative;overflow:hidden}
+.rail div i b{position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(0)}
+.hud{opacity:0}
+/* ---------- content ---------- */
 .sec{max-width:1240px;margin:0 auto;padding:140px 44px 40px}
-.sec small.k{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--brass);font-weight:600}
-.sec h2{font-family:Syne;font-weight:500;font-size:clamp(38px,5vw,76px);letter-spacing:-.04em;line-height:.98;margin-top:14px;max-width:900px}
+small.k{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--brass);font-weight:600}
+.sec h2{font-family:Syne;font-weight:500;font-size:clamp(38px,5vw,76px);letter-spacing:-.04em;line-height:.98;margin-top:14px;max-width:920px}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:60px;align-items:start}
 .split p{font-size:17px;line-height:1.7;color:var(--mute)}
 .plan{background:var(--paper);border:1px solid var(--line);padding:24px}
@@ -63,6 +73,27 @@ h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}h1 .ln>span{display:in
 .specs div{padding:22px 18px 0 0}
 .specs b{display:block;font-family:Syne;font-weight:500;font-size:40px;letter-spacing:-.03em}
 .specs span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+/* rooms: Ken Burns stills with parallax */
+.rooms{max-width:1400px;margin:120px auto 0;padding:0 44px;display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto;gap:22px}
+.room{position:relative;overflow:hidden;background:#222;aspect-ratio:16/10}
+.room.tall{grid-row:span 2;aspect-ratio:auto;min-height:640px}
+.room img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+.room figcaption{position:absolute;left:22px;bottom:20px;right:22px;color:#fff;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;text-shadow:0 1px 12px #0006}
+.room figcaption b{font-family:Syne;font-weight:500;font-size:26px;letter-spacing:-.02em}
+.room figcaption span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.9}
+.room::after{content:"";position:absolute;inset:0;background:linear-gradient(#0000 55%,#0008)}
+.room figcaption{z-index:2}
+/* location */
+.loc{position:relative;height:120vh;margin-top:140px;overflow:hidden;color:#fff}
+.loc img{position:absolute;left:0;top:-10%;width:100%;height:120%;object-fit:cover;will-change:transform}
+.loc::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0d1418d9,#0d141855 55%,#0000)}
+.loc .in{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 44px;height:100%;display:flex;flex-direction:column;justify-content:center}
+.loc h2{font-family:Syne;font-weight:500;font-size:clamp(38px,5vw,76px);letter-spacing:-.04em;line-height:.98;margin-top:14px;max-width:640px}
+.loc h2 em{color:var(--gold)}
+.loc small.k{color:var(--gold)}
+.dist{display:grid;grid-template-columns:repeat(3,auto);gap:16px 48px;margin-top:44px;justify-content:start}
+.dist b{display:block;font-family:Syne;font-weight:500;font-size:34px;letter-spacing:-.02em}
+.dist span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
 table{width:100%;border-collapse:collapse;margin-top:50px;font-size:15px}
 th{text-align:left;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);font-weight:600;padding:12px 0;border-bottom:1px solid var(--ink)}
 td{padding:22px 0;border-bottom:1px solid var(--line)}
@@ -77,46 +108,55 @@ td b{font-family:Syne;font-weight:500;font-size:22px}
 .enqbox .btn{margin-top:26px;border-color:var(--brass);background:var(--brass);color:var(--ink)}
 footer{max-width:1240px;margin:0 auto;padding:40px 44px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
 .rv{opacity:0}
-#pre{position:fixed;inset:0;z-index:99;background:var(--stone);display:grid;place-items:center}#pre img{width:56px}
+#pre{position:fixed;inset:0;z-index:99;background:var(--night);display:grid;place-items:center;color:#cfc8bb}
+#pre div{display:flex;flex-direction:column;align-items:center;gap:22px;font-size:11px;letter-spacing:.3em;text-transform:uppercase}
+#pre img{width:56px;filter:invert(1) brightness(1.3)}
+#pre i{display:block;width:140px;height:1px;background:#ffffff26;position:relative}#pre i b{position:absolute;inset:0;background:var(--gold);transform-origin:left;transform:scaleX(0)}
 @media (max-width:760px){
   .nav{padding:16px 18px}.nav .links{display:none}.nav .btn{height:36px;padding:0 12px;font-size:10px;letter-spacing:.04em}
-  .hero .cap{left:20px;right:20px;bottom:150px}.hero .facts{left:20px;right:20px;bottom:40px;justify-content:space-between;text-align:left;gap:10px}.hero .facts b{font-size:24px}
-  .chapter{left:20px;right:20px;top:auto;bottom:60px;width:auto;height:210px}.chapter h2{font-size:32px}.chapter p{font-size:14px}
-  .gauge{right:20px;top:84px}.gauge b{font-size:30px}
-  .rail{left:20px;right:20px;bottom:22px}.rail div{font-size:0}
+  .tour{height:760vh}
+  .cue{display:none}.loc img{object-position:62% 75%}.hero{left:20px;right:20px;bottom:70px;flex-direction:column;align-items:flex-start;gap:28px}.facts{text-align:left;gap:22px}.facts b{font-size:24px}
+  .chs{left:16px;right:16px;width:auto;bottom:62px}.ch{padding:20px 20px}.ch h2{font-size:28px}.ch p{font-size:13.5px}
+  .gauge{right:18px;top:78px}.gauge b{font-size:28px}.gauge .sub{font-size:11px}
+  .rail{left:16px;right:16px;bottom:24px}.rail div{font-size:0}
   .sec{padding:90px 20px 20px}.split,.enqbox{grid-template-columns:1fr}.specs{grid-template-columns:1fr 1fr}
+  .rooms{grid-template-columns:1fr;padding:0 20px;margin-top:80px}.room.tall{grid-row:auto;min-height:0;aspect-ratio:4/5}
+  .loc{height:110vh;margin-top:90px}.loc .in{padding:0 20px;justify-content:flex-end;padding-bottom:90px}.loc::after{background:linear-gradient(#0000 20%,#0d1418e6)}.dist{grid-template-columns:repeat(3,1fr);gap:12px}.dist b{font-size:24px}
   .enq{padding:0 20px}.enqbox{padding:40px 24px}
-  table{font-size:13px}td b{font-size:17px}
+  table{font-size:13px}td b{font-size:17px}th{letter-spacing:.1em;font-size:10px}th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){display:none}
   footer{flex-direction:column;gap:8px;padding:30px 20px}
 }
+@media (prefers-reduced-motion:reduce){.tour{height:auto}.pin{position:relative}}
 </style>
 </head>
 <body>
-<div id="pre"><img src="src/img/logo.svg" alt=""></div>
-<nav class="nav"><span class="brand"><img src="src/img/logo.svg" alt="">HALDEN</span><div class="links"><a>The house</a><a>Build</a><a>Light</a><a>Residences</a><a>Location</a></div><div class="sp"></div><a class="btn dark" href="#enquire">Book a viewing</a></nav>
+<div id="pre"><div><img src="src/img/logo.svg" alt="">Halden House<i><b id="preBar"></b></i></div></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">HALDEN</span><div class="links"><a href="#tour">The tour</a><a href="#house">The house</a><a href="#rooms">Rooms</a><a href="#location">Location</a><a href="#residences">Residences</a></div><div class="sp"></div><a class="btn glass" href="#enquire">Book a viewing</a></nav>
 
-<header class="hero">
-  <canvas id="heroC"></canvas>
-  <div class="cap"><small class="rv">Penwith, Cornwall · Completion spring 2027</small>
-    <h1><span class="ln"><span>A house that</span></span><span class="ln"><span>reads the <em>light.</em></span></span></h1></div>
-  <div class="facts rv"><div><b>4</b><span>Bedrooms</span></div><div><b>412 m²</b><span>Interior</span></div><div><b>38 m</b><span>Above the sea</span></div></div>
-</header>
-
-<section class="build" id="build">
+<section class="tour" id="tour">
   <div class="pin">
-    <canvas id="scene"></canvas>
-    <div class="chapter">
-      <div class="ch"><small>01 · The site</small><h2>One acre of <em>granite</em> headland.</h2><p>Surveyed to the centimetre: the house sits on the one flat shelf of rock, 38 metres above the Atlantic.</p></div>
-      <div class="ch"><small>02 · Structure</small><h2>Concrete, poured <em>once.</em></h2><p>A board-marked plinth anchors the house to the rock, and the upper floor cantilevers 4 metres toward the sea.</p></div>
-      <div class="ch"><small>03 · Envelope</small><h2>Larch fins and <em>low-iron</em> glass.</h2><p>412 untreated larch fins shade the bedrooms and silver over time. The living floor is glass on three sides.</p></div>
-      <div class="ch"><small>04 · Light</small><h2>Oriented to a <em>whole day</em> of sun.</h2><p>Morning light reaches the kitchen, the terrace holds the afternoon, and the pool catches the last of the sunset.</p></div>
+    <canvas id="tourC" aria-label="A walk from the cliff edge, across the pool terrace and into Halden House"></canvas>
+    <div id="grade"></div><div id="dusk"></div>
+    <div class="shade"></div>
+    <div class="hero" id="hero">
+      <div><small class="hi">Penwith, Cornwall · Completion spring 2027</small>
+        <h1><span class="ln"><span>A house that</span></span><span class="ln"><span>reads the <em>light.</em></span></span></h1></div>
+      <div class="facts hi"><div><b>4</b><span>Bedrooms</span></div><div><b>412 m²</b><span>Interior</span></div><div><b>38 m</b><span>Above the sea</span></div></div>
     </div>
-    <div class="gauge"><small id="gLbl">Survey</small><b id="gVal">0%</b><div class="sun" id="gSun">—</div></div>
-    <div class="rail" id="rail"><div><i><b></b></i>Site</div><div><i><b></b></i>Structure</div><div><i><b></b></i>Envelope</div><div><i><b></b></i>Light</div></div>
+    <div class="cue hi" id="cue">Scroll to walk in<i id="cueI"></i></div>
+    <div class="chs">
+      <div class="ch"><small>01 · The headland</small><h2>One acre of <em>granite,</em> 38 m up.</h2><p>The house sits on the one flat shelf of rock on the headland, with the Atlantic breaking on three sides below it.</p></div>
+      <div class="ch"><small>02 · The terrace</small><h2>Fourteen metres of <em>water</em> on the edge.</h2><p>A heated infinity pool in pale limestone runs along the whole living floor, and its far edge lines up with the horizon.</p></div>
+      <div class="ch"><small>03 · The living floor</small><h2>Glass on <em>three</em> sides.</h2><p>One long room with a double-height ceiling, a Delabole slate fireplace wall and sliding glass that opens the whole floor to the terrace.</p></div>
+      <div class="ch"><small>04 · The stair</small><h2>Oak treads, <em>striped</em> light.</h2><p>An open oak stair rises past the kitchen. The late sun comes through 412 larch fins and lays stripes across the wall.</p></div>
+      <div class="ch"><small>05 · The main bedroom</small><h2>Wake up to the <em>whole</em> horizon.</h2><p>At the end of the 4-metre cantilever, the bed faces a full-width window with nothing but sea beyond it.</p></div>
+    </div>
+    <div class="gauge hud"><small id="gLbl">Sunset · 21 June</small><b id="gVal">20:41</b><div class="sub" id="gSub">Sun 6° · WNW</div></div>
+    <div class="rail hud" id="rail"><div><i><b></b></i>Headland</div><div><i><b></b></i>Terrace</div><div><i><b></b></i>Living</div><div><i><b></b></i>Stair</div><div><i><b></b></i>Bedroom</div></div>
   </div>
 </section>
 
-<section class="sec">
+<section class="sec" id="house">
   <small class="k rv">The house</small>
   <h2 class="rv">Four bedrooms, one long room, and <em>nothing</em> between you and the horizon.</h2>
   <div class="split">
@@ -131,7 +171,23 @@ footer{max-width:1240px;margin:0 auto;padding:40px 44px;display:flex;justify-con
   </div>
 </section>
 
-<section class="sec">
+<div class="rooms" id="rooms">
+  <figure class="room tall rv"><img src="media/still-125.jpg" alt="Living room with linen sofa, oak table and a slate fireplace, sea beyond the glass" loading="lazy"><figcaption><b>The living floor</b><span>86 m² · glass on three sides</span></figcaption></figure>
+  <figure class="room rv"><img src="media/still-060.jpg" alt="Infinity pool terrace facing the glass living floor" loading="lazy"><figcaption><b>Pool terrace</b><span>14 m · heated</span></figcaption></figure>
+  <figure class="room rv"><img src="media/still-228.jpg" alt="Main bedroom facing a full-width window over the sea" loading="lazy"><figcaption><b>Main bedroom</b><span>West-facing · 4 m cantilever</span></figcaption></figure>
+</div>
+
+<section class="loc" id="location">
+  <img src="media/location.jpg" alt="Granite cliffs and sea arches on the Penwith coast" loading="lazy">
+  <div class="in">
+    <small class="k rv">Location</small>
+    <h2 class="rv">The far west of <em>Cornwall.</em></h2>
+    <p class="rv" style="max-width:520px;margin-top:20px;line-height:1.7;color:#e4ddd0">The South West Coast Path runs past the gate, and on a clear day you can see the Isles of Scilly. It's a short drive to Porthcurno, St Ives and the Minack.</p>
+    <div class="dist rv"><div><b>12 min</b><span>Penzance station</span></div><div><b>8 min</b><span>Porthcurno beach</span></div><div><b>25 min</b><span>Land's End airport</span></div></div>
+  </div>
+</section>
+
+<section class="sec" id="residences">
   <small class="k rv">Residences</small>
   <h2 class="rv">Three homes on the headland.</h2>
   <table class="rv"><thead><tr><th>Residence</th><th>Bedrooms</th><th>Interior</th><th>Plot</th><th>Guide price</th><th>Status</th></tr></thead>
@@ -149,157 +205,74 @@ footer{max-width:1240px;margin:0 auto;padding:40px 44px;display:flex;justify-con
 (()=>{
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
-const eo=t=>1-Math.pow(1-t,4),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,sm=t=>t*t*(3-2*t);
-// damped spring settle: overshoots slightly then rests, like a heavy element lowered into place
-const spring=t=>t<=0?0:t>=1?1:1-Math.exp(-6*t)*Math.cos(9*t);
-const pre=$('#pre');if(sessionStorage.getItem('halden-seen'))pre.remove();else{sessionStorage.setItem('halden-seen','1');setTimeout(()=>{pre.style.transition='opacity .6s';pre.style.opacity=0;setTimeout(()=>pre.remove(),700)},1000)}
-const hex=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)),mix=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t),rgb=(c,a=1)=>`rgba(${c.map(Math.round).join(',')},${a})`;
-let seed=3;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
-
-/* ===================== tiny isometric 3D engine ===================== */
-function fit(c){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio,2);const w=Math.round(r.width*d),h=Math.round(r.height*d);if(c.width!==w||c.height!==h){c.width=w;c.height=h}const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return[x,r.width,r.height]}
-function Cam(W,H,scale,rot,cx,cy,tx=12,ty=10){const c=Math.cos(rot),s=Math.sin(rot),k=Math.cos(Math.PI/6),k2=.5;
-  return{rot,project(p){const X=p[0]-tx,Y=p[1]-ty;const x=X*c-Y*s,y=X*s+Y*c;return[cx+(x-y)*k*scale,cy+(x+y)*k2*scale-p[2]*scale]},depth(p){const x=p[0]*c-p[1]*s,y=p[0]*s+p[1]*c;return x+y+p[2]*.01},
-    facing(n){const x=n[0]*c-n[1]*s,y=n[0]*s+n[1]*c;return x+y>0}}}
-function poly(x,cam,pts,fill,stroke,lw){x.beginPath();pts.forEach((p,i)=>{const q=cam.project(p);i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1])});x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=lw||1;x.stroke()}}
-// convex hull (monotone chain) for shadow outlines
-function hull(P){P=P.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);const lo=[],up=[];for(const p of P){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}for(let i=P.length-1;i>=0;i--){const p=P[i];while(up.length>1&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}up.pop();lo.pop();return lo.concat(up)}
-// sun position across one day: azimuth sweeps east->south->west, elevation peaks at noon (Cornwall, late spring)
-function sunAt(d){const az=lerp(-1.9,1.9,d),el=Math.max(.04,Math.sin(Math.PI*clamp(d))*1.0);return{az,el,v:[Math.sin(az)*Math.cos(el),-Math.cos(az)*Math.cos(el),Math.sin(el)]}}
-const SKY=[[0,'#f2d7c0','#cfd9e0'],[.15,'#f6e3c9','#d8e3ea'],[.5,'#e4ecf0','#c7d8e2'],[.8,'#f3cba3','#d9b8a6'],[.92,'#7c6f86','#3d4a63'],[1,'#1d2433','#0e1320']];
-function skyAt(d){for(let i=0;i<SKY.length-1;i++){if(d<=SKY[i+1][0]){const t=(d-SKY[i][0])/(SKY[i+1][0]-SKY[i][0]);return[mix(hex(SKY[i][1]),hex(SKY[i+1][1]),t),mix(hex(SKY[i][2]),hex(SKY[i+1][2]),t)]}}return[hex(SKY[5][1]),hex(SKY[5][2])]}
-// the house as boxes [x,y,z,w,d,h,material,appear]
-const MAT={concrete:'#c9c3b8',glass:'#5d717b',larch:'#a37c55',roof:'#4a4b4d',deck:'#b89a74',pool:'#4f8fa3',chimney:'#8d867b'};
-function house(st){ // st: {plinth,g,u,roof,fins,glass,deck,pool}
-  const B=[];
-  if(st.plinth>0)B.push({p:[0,0,0],s:[20,11,1.1*st.plinth],m:'concrete'});
-  if(st.deck>0)B.push({p:[20,1,0],s:[7*st.deck,9,.6],m:'deck'});
-  if(st.pool>0)B.push({p:[1.5,11,0],s:[14*st.pool,3,.35],m:'pool'});
-  if(st.g>0)B.push({p:[2,1.2,1.1+(1-st.g)*14],s:[14,8.4,3.2],m:'glassbox'});
-  if(st.u>0)B.push({p:[-4+(1-st.u)*-16,2.2,4.3],s:[18,6.6,3.3],m:'larchbox'});
-  if(st.roof>0)B.push({p:[-4.4,1.8,7.6+(1-st.roof)*12],s:[18.8,7.4,.32],m:'roof'});
-  if(st.roof>0)B.push({p:[11,4,7.92+(1-st.roof)*12],s:[1.3,1.3,1.8],m:'chimney'});
-  return B}
-function corners(b){const[x,y,z]=b.p,[w,d,h]=b.s;return[[x,y,z],[x+w,y,z],[x+w,y+d,z],[x,y+d,z],[x,y,z+h],[x+w,y,z+h],[x+w,y+d,z+h],[x,y+d,z+h]]}
-function shade(base,n,sun,dusk){const L=Math.max(0,n[0]*sun.v[0]+n[1]*sun.v[1]+n[2]*sun.v[2]);const amb=.55-.3*dusk;const k=amb+(1-amb)*L*(1-dusk*.85);return mix(hex(base),[20,24,40],(1-k)*.85)}
-function drawBox(x,cam,b,sun,dusk,lights,t,fins,glass){
-  const C=corners(b);const[X,Y,Z]=b.p,[w,d,h]=b.s;
-  const faces=[{n:[0,0,1],v:[4,5,6,7]},{n:[1,0,0],v:[1,2,6,5]},{n:[-1,0,0],v:[0,3,7,4]},{n:[0,1,0],v:[2,3,7,6]},{n:[0,-1,0],v:[0,1,5,4]}];
-  faces.filter(f=>f.n[2]===1||cam.facing(f.n)).sort((a,b2)=>(a.n[2]?1:0)-(b2.n[2]?1:0)).forEach(f=>{
-    const pts=f.v.map(i=>C[i]);let base=MAT[b.m]||'#999';
-    if(b.m==='glassbox'&&f.n[2]===0){base='#566a74'}
-    if(b.m==='larchbox'&&f.n[2]===1)base='#4a4b4d';
-    if(b.m==='glassbox'&&f.n[2]===1)base='#c9c3b8';
-    let col=shade(base,f.n,sun,dusk);
-    poly(x,cam,pts,rgb(col));
-    // material detail
-    if(b.m==='concrete'&&f.n[2]===0){x.strokeStyle='rgba(0,0,0,.08)';for(let i=1;i<6;i++){const k=i/6;const a=pts[0].map((v,j)=>lerp(v,pts[3][j],k)),bb=pts[1].map((v,j)=>lerp(v,pts[2][j],k));const p1=cam.project(a),p2=cam.project(bb);x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.lineWidth=.6;x.stroke()}}
-    if(b.m==='glassbox'&&f.n[2]===0){
-      const sky=skyAt(dusk>0?.9:.5);
-      // reflection gradient + interior glow at dusk
-      const p0=cam.project(pts[0]),p2=cam.project(pts[2]);const g=x.createLinearGradient(p0[0],p0[1]-40,p2[0],p2[1]);
-      g.addColorStop(0,rgb(mix(sky[0],[255,255,255],.2),.55*glass));g.addColorStop(.5,`rgba(40,55,62,${.2*glass})`);g.addColorStop(1,rgb(sky[1],.45*glass));poly(x,cam,pts,g);
-      if(lights>0){poly(x,cam,pts,`rgba(255,196,120,${.75*lights})`);}
-      // mullions every 1.8 m
-      const len=f.n[0]?d:w;const n=Math.floor(len/1.8);x.strokeStyle=rgb(mix([40,42,44],[200,190,170],lights*.3),.85);x.lineWidth=1.2;
-      for(let i=0;i<=n;i++){const k=i/n;const a=pts[0].map((v,j)=>lerp(v,pts[1][j],k)),bb=pts[3].map((v,j)=>lerp(v,pts[2][j],k));const p1=cam.project(a),p2=cam.project(bb);x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.stroke()}
-    }
-    if(b.m==='larchbox'&&f.n[2]===0){
-      // vertical larch fins, revealed in sequence; gaps let interior light through at night
-      const len=f.n[0]?d:w;const n=Math.floor(len/.42);const vis=Math.floor(n*fins);
-      if(lights>0){poly(x,cam,pts,`rgba(255,190,110,${.35*lights})`)}
-      for(let i=0;i<vis;i++){const k=(i+.5)/n;const a=pts[0].map((v,j)=>lerp(v,pts[1][j],k)),bb=pts[3].map((v,j)=>lerp(v,pts[2][j],k));const p1=cam.project(a),p2=cam.project(bb);x.strokeStyle=rgb(mix(col,[255,236,200],(i%3===0?.08:0)));x.lineWidth=Math.max(1.4,cam.s*.2);x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.stroke()}
-    }
-    if(b.m==='pool'&&f.n[2]===1){const p0=cam.project(pts[0]),p2=cam.project(pts[2]);const g=x.createLinearGradient(p0[0],p0[1],p2[0],p2[1]);g.addColorStop(0,rgb(mix([79,143,163],[150,210,225],(1-dusk)*.4)));g.addColorStop(1,rgb([45,100,120]));poly(x,cam,pts,g);
-      if(lights>0)poly(x,cam,pts,`rgba(90,220,240,${.45*lights})`);
-      x.strokeStyle=`rgba(255,255,255,${.35*(1-dusk*.6)})`;x.lineWidth=1;for(let i=0;i<5;i++){const k=((t*.08+i/5)%1);const a=pts[0].map((v,j)=>lerp(v,pts[3][j],.2+.6*((i*.37)%1))),bb=pts[1].map((v,j)=>lerp(v,pts[2][j],.2+.6*((i*.37)%1)));const p1=cam.project(a.map((v,j)=>j===0?v+Math.sin(t+i)*.3:v)),p2=cam.project(bb);x.beginPath();x.moveTo(lerp(p1[0],p2[0],k),lerp(p1[1],p2[1],k));x.lineTo(lerp(p1[0],p2[0],Math.min(1,k+.12)),lerp(p1[1],p2[1],Math.min(1,k+.12)));x.stroke()}}
-    if(b.m==='deck'&&f.n[2]===1){x.strokeStyle='rgba(60,40,20,.18)';for(let i=1;i<14;i++){const k=i/14;const a=pts[0].map((v,j)=>lerp(v,pts[3][j],k)),bb=pts[1].map((v,j)=>lerp(v,pts[2][j],k));const p1=cam.project(a),p2=cam.project(bb);x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.lineWidth=.6;x.stroke()}}
-    poly(x,cam,pts,null,'rgba(20,20,20,.25)',.7);
-  });
-}
-function scene(x,W,H,o){ // o:{rot,scale,cx,cy,site,st,day,dusk,lights,t,fins,glass}
-  const cam=Cam(W,H,o.scale,o.rot,o.cx,o.cy);
-  // soft contact shadow under the floating model
-  {const p=cam.project([12,12,-14]);const g=x.createRadialGradient(p[0],p[1]+o.scale*6,o.scale*4,p[0],p[1]+o.scale*6,o.scale*46);g.addColorStop(0,'rgba(20,20,30,.22)');g.addColorStop(1,'rgba(20,20,30,0)');o._shadow=[p,g]}cam.s=o.scale;const sun=sunAt(o.day);
-  const sky=skyAt(o.dusk>0?lerp(.8,1,o.dusk):o.day*.8);
-  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,rgb(sky[1]));g.addColorStop(.6,rgb(sky[0]));g.addColorStop(1,rgb(mix(sky[0],[233,230,223],.5)));x.fillStyle=g;x.fillRect(0,0,W,H);
-  // stars at night
-  if(o.dusk>.6){x.fillStyle=`rgba(255,255,255,${(o.dusk-.6)*2})`;for(let i=0;i<90;i++){const sx=(i*137.5)%W,sy=(i*71.3)%(H*.45);x.fillRect(sx,sy,1.2,1.2)}}
-  if(o._shadow){x.fillStyle=o._shadow[1];x.beginPath();x.ellipse(o._shadow[0][0],o._shadow[0][1]+o.scale*6,o.scale*48,o.scale*14,0,0,6.28);x.fill()}
-  // ---- diorama: a cut block of headland with a slice of Atlantic, floating like an architect's model
-  const X0=-14,X1=38,Y0=-12,YC=16,Y1=36,ZB=-10,ZS=-5;
-  const box6=(x0,x1,y0,y1,z0,z1,top,side,front,detail)=>{const C=[[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0],[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]];
-    [{n:[1,0,0],v:[1,2,6,5],c:side},{n:[-1,0,0],v:[0,3,7,4],c:side},{n:[0,1,0],v:[2,3,7,6],c:front},{n:[0,-1,0],v:[0,1,5,4],c:front}].filter(f=>cam.facing(f.n)).forEach(f=>{const pts=f.v.map(i=>C[i]);poly(x,cam,pts,typeof f.c==='function'?f.c(pts):f.c);detail&&detail(f,pts)});
-    poly(x,cam,[C[4],C[5],C[6],C[7]],top)};
-  const strata=(f,pts)=>{x.strokeStyle='rgba(40,32,24,.18)';x.lineWidth=1;for(let i=1;i<9;i++){const k=i/9;const a=pts[0].map((v,j)=>lerp(v,pts[3][j],k)),b=pts[1].map((v,j)=>lerp(v,pts[2][j],k));const p1=cam.project([a[0],a[1],a[2]+Math.sin(i*1.7)*.3]),p2=cam.project(b);x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.stroke()}};
-  const rock=rgb(shade('#8a8174',[1,0,0],sun,o.dusk)),rock2=rgb(shade('#7a7266',[0,1,0],sun,o.dusk));
-  const seaTop=rgb(mix(hex('#4d6d78'),[18,26,38],o.dusk*.8)),seaSide=rgb(mix(hex('#2f4a55'),[10,16,26],o.dusk*.8));
-  const grass=rgb(shade('#cdc9a8',[0,0,1],sun,o.dusk));
-  // the land block, then the lower sea block in front of its cliff face
-  box6(X0,X1,Y0,YC,ZB,0,grass,rock,rock2,strata);
-  box6(X0,X1,YC,Y1,ZB,ZS,seaTop,seaSide,seaSide,null);
-  // waves and sun glitter on the water surface
-  x.save();poly(x,cam,[[X0,YC,ZS],[X1,YC,ZS],[X1,Y1,ZS],[X0,Y1,ZS]]);x.clip();
-  x.strokeStyle=`rgba(255,255,255,${.22*(1-o.dusk*.7)})`;x.lineWidth=1;
-  for(let i=0;i<9;i++){const yy=YC+1.5+i*2.3+((o.t*.5)%2.3);x.beginPath();for(let k=0;k<=26;k++){const xx=X0+k*2;const p=cam.project([xx,yy+Math.sin(xx*.25+o.t*.9+i)*.35,ZS]);k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])}x.stroke()}
-  // surf foam where the sea meets the cliff
-  x.strokeStyle=`rgba(255,255,255,${.5*(1-o.dusk*.6)})`;x.lineWidth=2;x.beginPath();for(let k=0;k<=52;k++){const xx=X0+k;const p=cam.project([xx,YC+.4+Math.abs(Math.sin(xx*.6+o.t*1.4))*.5,ZS]);k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])}x.stroke();
-  x.restore();
-  // a few rock steps down the cliff face
-  x.fillStyle=rock2;
-  // survey: contour lines + grid that draw in
-  if(o.site>0){x.save();x.strokeStyle=`rgba(80,70,50,${.35*o.site})`;x.lineWidth=1;
-    for(let r=1;r<=7;r++){x.beginPath();const n=60;for(let k=0;k<=n*o.site;k++){const a=k/n*6.28;const rr=r*4.2+Math.sin(a*3+r)*1.2;const p=cam.project([10+Math.cos(a)*rr*1.6,5+Math.sin(a)*rr*.8,0]);k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])}x.stroke()}
-    // corner stakes drop in
-    [[0,0],[20,0],[20,11],[0,11]].forEach(([sx,sy],i)=>{const k=spring(clamp((o.site-.3-i*.1)/.4));const a=cam.project([sx,sy,0]),b=cam.project([sx,sy,2.2*k]);x.strokeStyle='#a8834a';x.lineWidth=2;x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();x.fillStyle='#a8834a';x.beginPath();x.arc(b[0],b[1],2.6,0,6.28);x.fill()});
-    if(o.site>.5){x.setLineDash([4,4]);poly(x,cam,[[0,0,0],[20,0,0],[20,11,0],[0,11,0]],null,`rgba(168,131,74,${(o.site-.5)*2*(1-o.st.plinth)})`,1.4);x.setLineDash([])}
-    x.restore()}
-  // shadows on the ground (projected along the sun vector), drawn under the boxes
-  const B=house(o.st);
-  const shAlpha=(.28+.12*sun.v[2])*(1-o.dusk);
-  if(shAlpha>0)B.forEach(b=>{if(b.m==='pool'||b.m==='deck')return;const P=corners(b).map(p=>[p[0]-sun.v[0]*p[2]/sun.v[2],p[1]-sun.v[1]*p[2]/sun.v[2]]);const Hh=hull(P).map(p=>[p[0],p[1],0.01]);poly(x,cam,Hh,`rgba(30,30,45,${shAlpha})`)});
-  // sort boxes by depth and draw
-  B.sort((a,b)=>(a.p[2]-b.p[2])*100+cam.depth([a.p[0]+a.s[0]/2,a.p[1]+a.s[1]/2,0])-cam.depth([b.p[0]+b.s[0]/2,b.p[1]+b.s[1]/2,0]));
-  // the plinth/deck/pool are low: draw first; upper parts after their shadow on the plinth top
-  const low=B.filter(b=>b.p[2]<.5),high=B.filter(b=>b.p[2]>=.5);
-  low.forEach(b=>drawBox(x,cam,b,sun,o.dusk,o.lights,o.t,o.fins,o.glass));
-  if(shAlpha>0&&o.st.plinth>0){const top=1.1*o.st.plinth;x.save();poly(x,cam,[[0,0,top],[20,0,top],[20,11,top],[0,11,top]]);x.clip();high.forEach(b=>{const P=corners(b).map(p=>{const dz=p[2]-top;return[p[0]-sun.v[0]*dz/sun.v[2],p[1]-sun.v[1]*dz/sun.v[2]]});poly(x,cam,hull(P).map(p=>[p[0],p[1],top]),`rgba(30,30,45,${shAlpha})`)});x.restore()}
-  high.forEach(b=>drawBox(x,cam,b,sun,o.dusk,o.lights,o.t,o.fins,o.glass));
-  // warm light spill onto the terrace at night
-  if(o.lights>0){x.save();x.globalCompositeOperation='lighter';const p=cam.project([10,10,1.1]);const g2=x.createRadialGradient(p[0],p[1],5,p[0],p[1],o.scale*9);g2.addColorStop(0,`rgba(255,180,100,${.35*o.lights})`);g2.addColorStop(1,'rgba(255,180,100,0)');x.fillStyle=g2;x.fillRect(0,0,W,H);x.restore()}
-  // grass tufts swaying in the wind near the cliff edge
-  x.strokeStyle=rgb(mix(hex('#6f7a4a'),[30,35,45],o.dusk*.8));x.lineWidth=1;for(let i=0;i<70;i++){const gx=-13+(i*7.3)%50,gy=12+(i*3.7)%3.6;const sw=Math.sin(o.t*1.6+i)*.35;const a=cam.project([gx,gy,0]),b=cam.project([gx+sw,gy,.9]);x.beginPath();x.moveTo(a[0],a[1]);x.quadraticCurveTo(a[0],(a[1]+b[1])/2,b[0],b[1]);x.stroke()}
-  return{sun}
-}
-/* ===================== state per scroll ===================== */
-const build=$('#build'),chs=$$('.ch'),bars=$$('.rail b'),rvs=$$('.rv'),heroLines=$$('h1 .ln>span'),counts=$$('.count');
-function stateAt(q){return{site:seg(q,.02,.16),st:{plinth:spring(seg(q,.17,.24)),g:spring(seg(q,.22,.3)),u:spring(seg(q,.28,.36)),roof:spring(seg(q,.34,.4)),deck:eo(seg(q,.38,.43)),pool:eo(seg(q,.4,.46))},fins:eio(seg(q,.42,.55)),glass:eo(seg(q,.44,.52)),day:seg(q,.56,.86),dusk:eio(seg(q,.8,.93)),lights:eo(seg(q,.84,.92))}}
-// floor plan
+const eo=t=>1-Math.pow(1-t,4),sm=t=>t*t*(3-2*t);
+/* ---------- frames ---------- */
+const N=240,frames=new Array(N);let loaded=0;
+const src=i=>`media/tour/${String(i+1).padStart(3,'0')}.webp`;
+function load(i){return new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>{loaded++;const pb=$('#preBar');if(pb)pb.style.transform=`scaleX(${loaded/N})`;r()};im.src=src(i);frames[i]=im})}
+// key frames first so scrubbing never shows a gap, then fill in
+const order=[];for(let s of [16,4,1])for(let i=0;i<N;i+=s)if(!order.includes(i))order.push(i);
+const first=Promise.all(order.slice(0,16).map(load));
+first.then(()=>{const rest=order.slice(16);const next=()=>rest.length?load(rest.shift()).then(next):0;for(let k=0;k<6;k++)next()});
+const near=i=>{for(let d=0;d<N;d++){for(const j of [i-d,i+d]){const im=frames[j];if(im&&im.complete&&im.naturalWidth)return im}}return null};
+/* ---------- preloader ---------- */
+const pre=$('#pre');let seen=false;try{seen=!!sessionStorage.getItem('halden-seen');sessionStorage.setItem('halden-seen','1')}catch(e){}
+let preT=null;if(seen)pre.remove();
+first.then(()=>{if(!seen){preT=performance.now()}});
+/* ---------- chapters: frame ranges in the camera move ---------- */
+const CH=[[0,40],[40,86],[86,160],[160,200],[200,239]];
+const chs=$$('.ch'),bars=$$('.rail b'),his=$$('.hi'),huds=$$('.hud'),rvs=$$('.rv'),heroLines=$$('h1 .ln>span'),counts=$$('.count');
+const tour=$('#tour'),cv=$('#tourC'),ctx=cv.getContext('2d'),nav=$('#nav');
+let f=0,last=null,t0=null;
+function fit(){const d=Math.min(devicePixelRatio||1,2),r=cv.getBoundingClientRect(),w=Math.round(r.width*d),h=Math.round(r.height*d);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}return[w,h]}
+function draw(im,alpha,W,H,zoom,fx){if(!im)return;const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(W/iw,H/ih)*zoom,dw=iw*s,dh=ih*s;
+  const x=(W-dw)*fx,y=(H-dh)/2;ctx.globalAlpha=alpha;ctx.drawImage(im,x,y,dw,dh)}
+// on portrait screens, follow the subject across the frame instead of a fixed centre crop
+const FOCUS=[[0,.62],[40,.5],[86,.42],[130,.55],[160,.5],[200,.5],[239,.45]];
+const focusAt=i=>{for(let k=0;k<FOCUS.length-1;k++){const[a,x]=FOCUS[k],[b,y]=FOCUS[k+1];if(i<=b)return lerp(x,y,sm((i-a)/(b-a)))}return .5};
+/* ---------- plan drawing (kept from the architects' drawing) ---------- */
 (function(){const s=$('#planS');s.innerHTML=`<g fill="none" stroke="#1b1d1f" stroke-width="2.5"><path class="pl" d="M20 40 H500 V260 H20 Z"/><path class="pl" d="M180 40 V180 M300 40 V120 M300 160 V260 M180 220 V260 M380 120 H500"/></g><g fill="none" stroke="#a8834a" stroke-width="1.5"><path class="pl" d="M20 270 H500" stroke-dasharray="4 5"/></g><g font-family="Man" font-size="11" fill="#76736c" letter-spacing="1.5"><text x="60" y="110">KITCHEN</text><text x="200" y="110">LIVING · DOUBLE HEIGHT</text><text x="320" y="210">DINING</text><text x="400" y="80">STUDY</text><text x="40" y="240">BOOT ROOM</text><text x="200" y="290">POOL TERRACE · 14 M</text></g>`;
   s.querySelectorAll('.pl').forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.dataset.l=L})})();
 const planPaths=$$('#planS .pl');
-function frame(now){const t=now/1000,vh=innerHeight,mobile=innerWidth<=760;
-  // hero: the finished house slowly orbiting at golden hour
-  {const c=$('#heroC');const[x,W,H]=fit(c);const sc=mobile?Math.min(W/80,H/110):Math.min(W*.6/88,H*.78/62);scene(x,W,H,{rot:-.45+Math.sin(t*.12)*.25,scale:sc,cx:W*(mobile?.5:.66),cy:H*(mobile?.36:.46),site:0,st:{plinth:1,g:1,u:1,roof:1,deck:1,pool:1},fins:1,glass:1,day:.78,dusk:0,lights:0,t})}
-  heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*105}%)`});
-  // build
-  const r=build.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh));const S=stateAt(q);
-  {const c=$('#scene');const[x,W,H]=fit(c);const sc=mobile?Math.min(W/78,H/104):Math.min(W*.62/88,H*.8/62);
-   const zoom=1+(mobile?.5:.4)*sm(seg(q,.16,.45))-.3*sm(seg(q,.86,1));
-   const out=scene(x,W,H,{rot:-.7+q*1.1+Math.sin(t*.2)*.02,scale:sc*zoom,cx:W*(mobile?.5:.66),cy:H*(mobile?.34:.54),...S,t});
-   const sun=out.sun;
-   const ci=q<.16?0:q<.41?1:q<.56?2:3;const W4=[[-1,.16],[.16,.41],[.41,.56],[.56,2]];chs.forEach((c,i)=>{const[a,b]=W4[i];const k=Math.min(seg(q,a-.015,a+.015),1-seg(q,b-.015,b+.015));c.style.opacity=k;c.style.transform=`translateY(${(1-k)*16}px)`});
-   bars.forEach((b,i)=>{const rg=[[0,.16],[.16,.41],[.41,.56],[.56,1]][i];b.style.transform=`scaleX(${seg(q,rg[0],rg[1])})`});
-   const lbl=['Survey','Structure','Envelope','Sun path'][ci];$('#gLbl').textContent=lbl;
-   if(ci===3){const hrs=5.2+S.day*16;$('#gVal').textContent=String(Math.floor(hrs)).padStart(2,'0')+':'+String(Math.floor((hrs%1)*60)).padStart(2,'0');$('#gSun').textContent=S.lights>.5?'Lights on · terrace & pool':`Sun ${Math.round(sun.el*57.3)}° · ${['E','SE','S','SW','W'][Math.min(4,Math.floor(S.day*4.99))]}`}
-   else{const v=[S.site,(S.st.plinth+S.st.g+S.st.u+S.st.roof)/4,(S.fins+S.glass)/2][ci];$('#gVal').textContent=Math.round(clamp(v)*100)+'%';$('#gSun').textContent=['Granite shelf · +38 m','Cantilever · 4.0 m','412 larch fins'][ci]}
-   x.save();x.restore();
-   const navInv=S.dusk>.5;$('.nav').style.color=navInv&&r.top<=0&&r.bottom>=vh?'#e9e6df':'';$$('.chapter h2, .gauge b').forEach(e=>e.style.color=navInv?'#f3f1ec':'');$$('.chapter p').forEach(e=>e.style.color=navInv?'#c9c4ba':'')}
-  rvs.forEach(el=>{let k;if(el.closest('.hero'))k=eo(seg(t,.9,1.8));else{const rr=el.getBoundingClientRect();k=eo(clamp((vh*.94-rr.top)/(vh*.28)))}el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
-  planPaths.forEach((p,i)=>{const rr=p.closest('svg').getBoundingClientRect();const k=eio(clamp((vh*.85-rr.top)/(vh*.5)-i*.08));p.style.strokeDashoffset=p.dataset.l*(1-k)});
+function frame(now){
+  if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.1,(now-last)/1000);last=now;
+  const vh=innerHeight,mobile=innerWidth<=760;
+  if(preT!==null){const k=(now-preT)/600;pre.style.opacity=1-clamp(k);if(k>=1){pre.remove();preT=null}}
+  const r=tour.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh));
+  // camera has weight: the frame chases the scroll target with a critically damped follow
+  const target=q*(N-1);f+=(target-f)*(1-Math.exp(-dt*7));if(Math.abs(target-f)<.01)f=target;
+  if(r.bottom>0&&r.top<vh){
+    const[W,H]=fit();const i0=Math.floor(f),i1=Math.min(N-1,i0+1),a=f-i0;
+    const zoom=1.06-.06*sm(seg(q,0,.12))+.012*Math.sin(t*.35);  // slow push-in at rest, settles as you start moving
+    const fx=W/H<1.2?focusAt(f):.5;
+    ctx.globalAlpha=1;ctx.fillStyle='#0f1418';ctx.fillRect(0,0,W,H);
+    draw(near(i0),1,W,H,zoom,fx);if(a>.01)draw(frames[i1]&&frames[i1].complete?frames[i1]:null,a,W,H,zoom,fx);ctx.globalAlpha=1;
+    // grade by chapter: warm golden hour outside, neutral inside, cooling to blue hour in the bedroom
+    const warm=1-seg(f,70,120)*.6,cool=seg(f,196,239);
+    $('#grade').style.background=`linear-gradient(180deg,rgba(255,196,128,${.22*warm}),rgba(255,170,110,${.12*warm}))`;
+    $('#dusk').style.opacity=.42*sm(cool);
+    // hero copy leaves as you start to walk
+    const hk=1-seg(q,.015,.06);
+    heroLines.forEach((el,i)=>{const k=eo(seg(t,.25+i*.14,1.15+i*.14));el.style.transform=`translateY(${(1-k)*106}%)`});
+    his.forEach(el=>{const k=eo(seg(t,.9,1.7));el.style.opacity=k*hk});
+    $('#hero').style.transform=`translateY(${(1-hk)*-40}px)`;$('#hero').style.opacity=hk;
+    $('#cueI').style.transform=`scaleY(${.35+.65*(.5+.5*Math.sin(t*2.4))})`;
+    const hud=seg(q,.04,.08);huds.forEach(e=>e.style.opacity=hud);
+    chs.forEach((c,k)=>{const[a,b]=CH[k];const lo=k===0?Math.max(a,10):a;const v=Math.min(seg(f,lo+2,lo+10),k===4?1:1-seg(f,b-8,b-1))*hud;c.style.opacity=v;c.style.transform=`translateY(${(1-v)*22}px)`;c.style.pointerEvents=v>.5?'auto':'none'});
+    bars.forEach((b,k)=>{const[a,e]=CH[k];b.style.transform=`scaleX(${seg(f,a,e)})`});
+    // clock: 20:05 at the cliff edge to 21:40 at blue hour
+    const mins=20*60+5+95*(f/(N-1));$('#gVal').textContent=`${Math.floor(mins/60)}:${String(Math.floor(mins%60)).padStart(2,'0')}`;
+    const el=Math.round(lerp(9,-4,f/(N-1)));$('#gSub').textContent=el>0?`Sun ${el}° · WNW`:`Blue hour · lights on`;
+  }
+  nav.classList.toggle('ink',r.bottom<70);
+  // content reveals, counters, plan, parallax
+  rvs.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.94-rr.top)/(vh*.28)));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  planPaths.forEach((p,i)=>{const rr=p.closest('svg').getBoundingClientRect();const k=sm(clamp((vh*.85-rr.top)/(vh*.5)-i*.08));p.style.strokeDashoffset=p.dataset.l*(1-k)});
   counts.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.95-rr.top)/(vh*.45)));el.textContent=Math.round(+el.dataset.to*k)});
+  $$('.room img,.loc img').forEach((im,i)=>{const rr=im.parentElement.getBoundingClientRect();if(rr.bottom<0||rr.top>vh)return;const p=clamp((vh-rr.top)/(vh+rr.height));
+    const kb=1.04+.06*p;im.style.transform=`translate3d(${(i%2?-1:1)*p*1.5}%,${(p-.5)*-9}%,0) scale(${kb})`});
   requestAnimationFrame(frame)}
-document.fonts.ready.then(()=>requestAnimationFrame(frame));
+Promise.all([document.fonts.ready,first]).then(()=>requestAnimationFrame(frame));
 })();
 </script>
 </body>
