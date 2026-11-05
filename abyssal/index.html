@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Abyssal — Lumi's descent to 10,994 m</title>
+<style>
+@font-face{font-family:Fraunces;src:url(assets/fonts/fraunces-latin-300-normal.woff2) format("woff2");font-weight:300}
+@font-face{font-family:Fraunces;src:url(assets/fonts/fraunces-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Fraunces;src:url(assets/fonts/fraunces-latin-400-italic.woff2) format("woff2");font-weight:400;font-style:italic}
+@font-face{font-family:Grotesk;src:url(assets/fonts/space-grotesk-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Grotesk;src:url(assets/fonts/space-grotesk-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Grotesk;src:url(assets/fonts/space-grotesk-latin-700-normal.woff2) format("woff2");font-weight:700}
+:root{--sky:#9fd8e8;--top:#0b6d86;--deep:#01070d;--glow:#7ef9e4;--hot:#ff6fae;--ink:#eefcff;--mute:#9fc0ca}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--deep);color:var(--ink);font-family:Grotesk,system-ui,sans-serif;overflow-x:hidden}
+#world{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main{position:relative;z-index:2}
+.nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:22px 5vw}
+.brand{display:flex;gap:12px;align-items:center;font-weight:700;letter-spacing:.28em;font-size:13px}
+.brand img{width:30px}
+.nav .links{display:flex;gap:28px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.nav .links span.on{color:var(--ink)}
+.nav a.cta{color:var(--deep);background:var(--ink);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border-radius:99px;padding:11px 18px}
+.hud{position:fixed;right:2.4vw;top:50%;transform:translateY(-50%);z-index:9;display:flex;gap:18px;align-items:center}
+.hud .panel{padding:18px 20px;border-radius:20px;background:#02101a80;backdrop-filter:blur(14px);border:1px solid #ffffff18;text-align:right;min-width:150px}
+.hud .lbl{font-size:10px;letter-spacing:.32em;color:var(--mute);text-transform:uppercase}
+.hud .num{font-family:Fraunces;font-weight:300;font-size:36px;line-height:1.1;font-variant-numeric:tabular-nums;margin:6px 0}
+.hud .row{display:flex;justify-content:space-between;gap:14px;font-size:11px;color:var(--mute);margin-top:6px;font-variant-numeric:tabular-nums}
+.hud .row b{color:var(--ink);font-weight:500}
+.rail{display:flex;flex-direction:column;gap:14px;align-items:center}
+.rail i{width:8px;height:8px;border-radius:50%;border:1px solid #ffffff66;display:block}
+.rail i.on{background:var(--glow);border-color:var(--glow);box-shadow:0 0 12px var(--glow)}
+section{min-height:135vh;padding:0 8vw;position:relative;display:flex;flex-direction:column;justify-content:center}
+.copy{max-width:540px}
+.hero{min-height:120vh}
+.eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--glow);margin-bottom:26px;display:flex;gap:14px;align-items:center}
+.eyebrow:before{content:"";width:36px;height:1px;background:currentColor}
+h1{font-family:Fraunces;font-weight:300;font-size:clamp(66px,11.5vw,190px);line-height:.86;letter-spacing:-.045em}
+h1 em,h2 em{font-style:italic;font-weight:400;color:var(--glow)}
+.ln{display:block;overflow:hidden;padding-bottom:.08em}
+.ln>span{display:inline-block}
+.ch{display:inline-block}
+.lede{max-width:470px;margin-top:34px;font-size:clamp(16px,1.35vw,20px);line-height:1.6;color:var(--mute)}
+.lede b{color:var(--ink);font-weight:500}
+.meet{margin-top:40px;display:flex;gap:16px;align-items:center;font-size:13px;letter-spacing:.06em;color:var(--mute)}
+.meet .dot{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#ffd6ec,var(--hot) 45%,transparent 72%);box-shadow:0 0 30px var(--hot)}
+.meet b{display:block;color:var(--ink);font-size:15px;letter-spacing:.02em}
+.chap{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--mute);display:flex;gap:16px;align-items:center}
+.chap b{font-family:Fraunces;font-style:italic;font-weight:400;font-size:22px;letter-spacing:0;color:var(--glow);text-transform:none}
+.big{font-family:Fraunces;font-weight:600;font-size:clamp(64px,9vw,150px);line-height:.92;letter-spacing:-.05em;font-variant-numeric:tabular-nums;background:linear-gradient(180deg,var(--ink) 30%,#ffffff12);-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:18px}
+.big small{font-size:.32em;letter-spacing:0;margin-left:8px}
+h2{font-family:Fraunces;font-weight:300;font-size:clamp(38px,4.6vw,74px);line-height:1;letter-spacing:-.03em;margin:16px 0 22px}
+.copy p{color:var(--mute);line-height:1.65;font-size:clamp(15px,1.2vw,18px)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
+.fact{border-radius:16px;padding:14px 16px;background:#ffffff0c;border:1px solid #ffffff16;backdrop-filter:blur(10px)}
+.fact b{display:block;font-family:Fraunces;font-weight:300;font-size:28px;letter-spacing:-.02em}
+.fact span{font-size:11px;letter-spacing:.08em;color:var(--mute);line-height:1.4;display:block;margin-top:4px}
+.log{margin-top:26px;padding:16px 18px;border-left:2px solid var(--glow);background:linear-gradient(90deg,#7ef9e414,transparent);font-family:Fraunces;font-style:italic;font-size:18px;line-height:1.5;color:var(--ink)}
+.log small{display:block;font-family:Grotesk;font-style:normal;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--glow);margin-bottom:6px}
+.end{align-items:center;text-align:center;min-height:120vh;justify-content:flex-start;padding-top:16vh}
+.end h2{font-size:clamp(56px,9vw,150px);line-height:.9;letter-spacing:-.045em}
+.end .btn{margin-top:40px;display:inline-flex;gap:12px;align-items:center;padding:18px 30px;border-radius:99px;background:var(--glow);color:var(--deep);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:13px;text-decoration:none;box-shadow:0 0 50px #7ef9e455}
+footer{position:relative;z-index:2;padding:40px 8vw;display:flex;justify-content:space-between;color:var(--mute);font-size:12px;letter-spacing:.2em;text-transform:uppercase;border-top:1px solid #ffffff12}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:50;background:var(--deep);display:grid;place-items:center;font-family:Fraunces;font-style:italic;font-size:42px;color:var(--glow)}
+@media (max-width:760px){
+  section{padding:0 6vw;justify-content:flex-end;padding-bottom:12vh}
+  .hero{justify-content:flex-end;padding-bottom:14vh}
+  .copy{padding:22px;border-radius:24px;background:#02101a99;backdrop-filter:blur(14px);border:1px solid #ffffff14}
+  .hero .copy{background:none;border:0;backdrop-filter:none;padding:0}
+  .facts{grid-template-columns:repeat(3,1fr);gap:8px}.fact{padding:10px}.fact b{font-size:20px}
+  .hud{right:auto;left:6vw;top:76px;transform:none}.hud .panel{padding:10px 14px;min-width:0;text-align:left}.hud .num{font-size:22px;margin:2px 0}.hud .row,.rail{display:none}
+  .nav .links{display:none}.nav a.cta{display:none}
+  .end{justify-content:center;padding-top:0}
+  .big{font-size:64px}
+  .end .eyebrow{letter-spacing:.24em;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="pre">Abyssal</div>
+<canvas id="world"></canvas>
+<nav class="nav"><div class="brand"><img src="src/img/logo.svg" alt="">ABYSSAL</div><div class="links" id="links"><span>Sunlight</span><span>Twilight</span><span>Midnight</span><span>Abyss</span><span>Hadal</span></div><a class="cta" href="#end">Dive with Lumi</a></nav>
+<div class="hud"><div class="panel"><div class="lbl">Depth</div><div class="num" id="depth">0 m</div><div class="row"><span>Pressure</span><b id="bar">1 bar</b></div><div class="row"><span>Temp</span><b id="temp">24 °C</b></div><div class="row"><span>Light</span><b id="lux">100%</b></div></div><div class="rail" id="rail"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<main>
+  <section class="hero" data-c="0">
+    <div class="copy">
+      <div class="eyebrow rv">An interactive descent</div>
+      <h1><span class="ln"><span class="split">Into the</span></span><span class="ln"><span><em class="split">abyss.</em></span></span></h1>
+      <p class="lede rv">Follow <b>Lumi</b>, a moon-jelly no bigger than your hand, eleven kilometres down — through light, twilight and the endless dark — to the deepest point on Earth.</p>
+      <div class="meet rv"><span class="dot"></span><div><b>Meet Lumi</b>Your guide. Scroll to start the dive.</div></div>
+    </div>
+  </section>
+
+  <section data-c="1"><div class="copy">
+    <div class="chap rv"><b>i.</b>Epipelagic · 0 – 200 m</div>
+    <div class="big rv"><span class="count" data-to="200">0</span><small>m</small></div>
+    <h2 class="rv">Where the <em>light</em> still reaches.</h2>
+    <p class="rv">Ninety percent of ocean life crowds into this thin, sunlit band. A school of sardines wheels around Lumi — then scatters as she sinks past the last of the sun.</p>
+    <div class="facts rv"><div class="fact"><b>90%</b><span>of sea life lives here</span></div><div class="fact"><b>24°C</b><span>surface warmth</span></div><div class="fact"><b>50%</b><span>of Earth's oxygen</span></div></div>
+  </div></section>
+
+  <section data-c="2"><div class="copy">
+    <div class="chap rv"><b>ii.</b>Mesopelagic · 200 – 1,000 m</div>
+    <div class="big rv"><span class="count" data-to="1000">0</span><small>m</small></div>
+    <h2 class="rv">The <em>twilight</em> begins to glow.</h2>
+    <p class="rv">Blue fades to black. Lanternfish blink their photophores in code, and Lumi's rim lights up for the first time — down here, you make your own light.</p>
+    <div class="log rv"><small>Lumi's log · 640 m</small>“The sun is a rumour now. Everyone here is glowing.”</div>
+  </div></section>
+
+  <section data-c="3"><div class="copy">
+    <div class="chap rv"><b>iii.</b>Bathypelagic · 1,000 – 4,000 m</div>
+    <div class="big rv"><span class="count" data-to="4000">0</span><small>m</small></div>
+    <h2 class="rv">Something is <em>watching.</em></h2>
+    <p class="rv">A lure bobs in the dark. The anglerfish drifts closer — and Lumi fires her burglar alarm: a spinning ring of blue light that calls in bigger predators. The angler thinks better of it.</p>
+    <div class="facts rv"><div class="fact"><b>76%</b><span>of creatures glow</span></div><div class="fact"><b>400</b><span>bar of pressure</span></div><div class="fact"><b>4°C</b><span>and falling</span></div></div>
+  </div></section>
+
+  <section data-c="4"><div class="copy">
+    <div class="chap rv"><b>iv.</b>Abyssopelagic · 4,000 – 6,000 m</div>
+    <div class="big rv"><span class="count" data-to="6000">0</span><small>m</small></div>
+    <h2 class="rv">A forty-metre <em>string of lights.</em></h2>
+    <p class="rv">A siphonophore — thousands of clones moving as one — trails past like a city seen from a plane. Marine snow falls forever. Lumi just keeps sinking.</p>
+    <div class="log rv"><small>Lumi's log · 5,210 m</small>“It's snowing. It has always been snowing.”</div>
+  </div></section>
+
+  <section data-c="5"><div class="copy">
+    <div class="chap rv"><b>v.</b>Hadal · 6,000 – 10,994 m</div>
+    <div class="big rv"><span class="count" data-to="10994">0</span><small>m</small></div>
+    <h2 class="rv">The trench <em>breathes heat.</em></h2>
+    <p class="rv">The walls close in. Hydrothermal vents pour black smoke at 400 °C, tube worms sway in the warmth, and a ghostly snailfish keeps Lumi company at the bottom of the world.</p>
+    <div class="facts rv"><div class="fact"><b>1,086</b><span>bar — a tonne per cm²</span></div><div class="fact"><b>400°C</b><span>vent water</span></div><div class="fact"><b>95%</b><span>still unexplored</span></div></div>
+  </div></section>
+
+  <section class="end" id="end" data-c="6"><div>
+    <div class="eyebrow rv" style="justify-content:center">Challenger Deep · 10,994 m</div>
+    <h2><span class="ln"><span>You made it,</span></span><span class="ln"><span><em>together.</em></span></span></h2>
+    <a class="btn rv" href="#" onclick="scrollTo({top:0,behavior:'smooth'});return false">Surface with Lumi ↑</a>
+  </div></section>
+</main>
+<footer><span>Abyssal</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ready=Promise.resolve();
+const pre=$('#pre');
+if(sessionStorage.getItem('abyssal-seen'))pre.remove();else{sessionStorage.setItem('abyssal-seen','1');setTimeout(()=>{pre.style.transition='opacity .8s';pre.style.opacity=0;setTimeout(()=>pre.remove(),900)},1400)}
+$$('.split').forEach(el=>{el.innerHTML=[...el.textContent].map(c=>c===' '?' ':`<span class="ch">${c}</span>`).join('')});
+const chars=$$('.hero .ch'),endLines=$$('.end .ln>span'),rvs=$$('.rv'),counts=$$('.count'),sections=$$('section'),railDots=$$('#rail i'),links=$$('#links span');
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const hex=h=>{h=h.replace('#','');return[0,2,4].map(i=>parseInt(h.substr(i,2),16))};
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const eo=t=>1-Math.pow(1-t,4);
+const sm=t=>t*t*(3-2*t);
+const win=(u,a,b,f=.08)=>clamp((u-a)/f)*clamp((b-u)/f);
+let seed=11;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+let C={};function readColors(){C={sky:hex(css('--sky')),top:hex(css('--top')),deep:hex(css('--deep')),glow:hex(css('--glow')),hot:hex(css('--hot'))}}
+readColors();ready.then(readColors);
+
+const cv=$('#world'),x=cv.getContext('2d');let W,H,DPR,mobile;
+function size(){DPR=Math.min(devicePixelRatio,2);W=innerWidth;H=innerHeight;mobile=W<760;cv.width=W*DPR;cv.height=H*DPR;x.setTransform(DPR,0,0,DPR,0,0)}
+size();addEventListener('resize',size);
+
+// --- world entities ---
+const snow=Array.from({length:220},()=>({x:R(),y:R(),r:.3+R()*1.6,z:.2+R()*.8,p:R()*7}));
+const school=Array.from({length:70},(_,i)=>({a:R()*6.28,r:.6+R()*.8,y:R()*2-1,s:.6+R()*.6,ph:R()*7}));
+const lantern=Array.from({length:22},()=>({x:R(),y:R(),s:.6+R()*.7,d:R()<.5?1:-1,ph:R()*7,sp:.02+R()*.03}));
+const sparks=Array.from({length:60},()=>({x:R(),y:R(),r:1+R()*2.5,ph:R()*7,f:.6+R()*1.6,h:R()<.25}));
+const smoke=Array.from({length:70},()=>({o:R(),dx:R()*2-1,r:10+R()*30}));
+const worms=Array.from({length:22},(_,i)=>{const cl=i%3;return{x:[.12,.5,.86][cl]+(R()-.5)*.14,h:.35+R()*.8,ph:R()*7,lean:(R()-.5)*30,w:4+R()*4}}).sort((a,b)=>b.h-a.h);
+const tentSeed=Array.from({length:16},()=>({l:.8+R()*.5,ph:R()*7}));
+
+// jelly keyframes per chapter [x,y,scale]
+const KD=[[.72,.5,1.25],[.7,.5,1],[.72,.46,1],[.62,.48,1.05],[.72,.4,.95],[.7,.52,.85],[.5,.72,.8]];
+const KM=[[.62,.27,.78],[.5,.24,.62],[.5,.24,.62],[.42,.24,.62],[.5,.22,.6],[.5,.26,.55],[.5,.22,.72]];
+
+function fish(px,py,s,ang,col,belly){x.save();x.translate(px,py);x.rotate(ang);x.scale(s,s);
+  x.fillStyle=col;x.beginPath();x.moveTo(14,0);x.quadraticCurveTo(4,-7,-10,-1);x.lineTo(-17,-7);x.lineTo(-15,0);x.lineTo(-17,7);x.lineTo(-10,1);x.quadraticCurveTo(4,7,14,0);x.fill();
+  if(belly){x.fillStyle=belly;x.beginPath();x.ellipse(1,2,9,2,0,0,6.28);x.fill()}
+  x.fillStyle='#02101a';x.beginPath();x.arc(8,-1.2,1.4,0,6.28);x.fill();x.restore()}
+
+function glowDot(px,py,r,c,a){const g=x.createRadialGradient(px,py,0,px,py,r);g.addColorStop(0,rgba(c,a));g.addColorStop(1,rgba(c,0));x.fillStyle=g;x.beginPath();x.arc(px,py,r,0,6.28);x.fill()}
+
+// contraction profile for jet propulsion: fast squeeze (30% of cycle), slow relax (70%)
+const squeeze=ph=>{ph=((ph%1)+1)%1;return ph<.3?Math.sin(ph/.3*Math.PI/2):Math.cos((ph-.3)/.7*Math.PI/2)};
+function jelly(jx,jy,s,t,lit,alarm,ph){
+  const c=squeeze(ph);                       // 0 relaxed (flared) … 1 contracted (narrow, tall)
+  const bw=110*s*(1-.24*c),bh=92*s*(1+.2*c),rimY=jy+bh*.25,flare=(1-c)*16*s;
+  x.save();x.globalCompositeOperation='lighter';
+  glowDot(jx,jy,260*s,C.hot,.10+.18*lit);glowDot(jx,jy,140*s,C.glow,.05+.12*lit+alarm*.4);
+  // expelled water ring on each stroke
+  const ring=((ph%1)+1)%1;if(ring<.6){x.strokeStyle=`rgba(255,255,255,${(.6-ring)*.25})`;x.lineWidth=1.5*s;x.beginPath();x.ellipse(jx,rimY+20*s+ring*90*s,bw*(.6+ring*1.1),bw*(.15+ring*.25),0,0,6.28);x.stroke()}
+  x.restore();
+  // tentacles — they react to the stroke with a delay along their length
+  tentSeed.forEach((tn,i)=>{const fx=(i/(tentSeed.length-1))*2-1;let px=jx+fx*(bw+flare*.6)*.95,py=rimY;
+    const L=(250+tn.l*120)*s,seg=26;x.lineCap='round';
+    for(let k=1;k<=seg;k++){const u=k/seg;const cd=squeeze(ph-u*.45);
+      const nx=jx+fx*(bw+flare)*(.95-.45*u)*(1-.3*cd)+Math.sin(t*1.6-u*6+tn.ph)*18*s*u*(1-.5*cd);
+      const ny=rimY+L*u*(.9+.12*cd);
+      x.strokeStyle=rgba(mix(C.hot,[255,230,245],.4),(1-u)*.75);x.lineWidth=Math.max(.5,2.2*s*(1-u));x.beginPath();x.moveTo(px,py);x.lineTo(nx,ny);x.stroke();px=nx;py=ny}});
+  // oral arms (frilly ribbons)
+  for(let a=0;a<4;a++){const ox=jx+(a-1.5)*bw*.18;x.beginPath();const L=200*s,n=30;const pts=[];
+    for(let k=0;k<=n;k++){const u=k/n;const cd=squeeze(ph-u*.4);pts.push([ox+Math.sin(t*1.4-u*5+a*1.3)*16*s*u*(1-.4*cd)+(a-1.5)*u*18*s*(1-.5*cd),rimY-8*s+L*u*(.92+.1*cd)])}
+    for(let k=0;k<=n;k++){const[p0,p1]=pts[k];const w=(1-k/n)*10*s+Math.sin(k*1.9+t*4)*3*s;k?x.lineTo(p0+w,p1):x.moveTo(p0+w,p1)}
+    for(let k=n;k>=0;k--){const[p0,p1]=pts[k];const w=(1-k/n)*10*s+Math.cos(k*2.3+t*4)*3*s;x.lineTo(p0-w,p1)}
+    const g=x.createLinearGradient(0,rimY,0,rimY+L);g.addColorStop(0,rgba(mix(C.hot,[255,255,255],.3),.75));g.addColorStop(1,rgba(C.hot,0));x.fillStyle=g;x.fill()}
+  // bell: dome + flared margin that pinches in when contracting
+  x.beginPath();x.moveTo(jx-bw-flare,rimY+4*s);x.bezierCurveTo(jx-bw*1.02,jy-bh*.2,jx-bw*.85,jy-bh*1.3,jx,jy-bh*1.3);x.bezierCurveTo(jx+bw*.85,jy-bh*1.3,jx+bw*1.02,jy-bh*.2,jx+bw+flare,rimY+4*s);
+  for(let k=8;k>=0;k--){const xx=jx-bw-flare+(k/8)*(bw+flare)*2;x.quadraticCurveTo(xx+(bw+flare)/8,rimY+(4+8*(1-c))*s,xx,rimY+4*s)}
+  const bg=x.createRadialGradient(jx,jy-bh*.5,4*s,jx,jy,bw*1.15);bg.addColorStop(0,'rgba(255,240,250,.9)');bg.addColorStop(.45,rgba(C.hot,.55));bg.addColorStop(1,rgba(C.glow,.12));x.fillStyle=bg;x.fill();
+  x.strokeStyle=rgba([255,235,248],.55);x.lineWidth=1.5*s;x.stroke();
+  // muscle bands tighten during the stroke
+  x.save();x.clip();
+  x.strokeStyle=`rgba(255,255,255,${.06+.14*c})`;x.lineWidth=1*s;for(let r=1;r<=3;r++){x.beginPath();x.ellipse(jx,rimY,(bw+flare)*(1-r*.18),bh*(.25+r*.12),0,Math.PI,6.28);x.stroke()}
+  for(let g=0;g<4;g++){const a=g/4*6.28+t*.15;const gx=jx+Math.cos(a)*bw*.24,gy=jy-bh*.42+Math.sin(a)*bh*.16;x.save();x.translate(gx,gy);x.rotate(a);const gg=x.createRadialGradient(0,0,0,0,0,18*s);gg.addColorStop(0,'rgba(255,255,255,.7)');gg.addColorStop(1,rgba(C.hot,.35));x.fillStyle=gg;x.beginPath();x.ellipse(0,0,17*s,9*s,0,0,6.28);x.fill();x.restore()}
+  x.strokeStyle='rgba(255,255,255,.18)';x.lineWidth=1*s;for(let k=0;k<12;k++){const fx=k/11*2-1;x.beginPath();x.moveTo(jx,jy-bh*.6);x.quadraticCurveTo(jx+fx*bw*.6,jy-bh*.3,jx+fx*(bw+flare)*.98,rimY);x.stroke()}
+  x.restore();
+  // rim lights + burglar alarm ring
+  x.save();x.globalCompositeOperation='lighter';
+  for(let k=0;k<18;k++){const fx=k/17*2-1;const rx=jx+fx*(bw+flare),ry=rimY+4*s;const chase=alarm>0?Math.pow(.5+.5*Math.cos(t*14-k*.9),6)*alarm:0;
+    glowDot(rx,ry,(5+lit*6+chase*26)*s,mix(C.glow,[255,255,255],chase*.5),.25+lit*.6+chase)}
+  if(alarm>0){x.strokeStyle=rgba(C.glow,alarm*.6);x.lineWidth=3*s;for(let r=0;r<3;r++){const k=(t*1.6+r/3)%1;x.globalAlpha=(1-k)*alarm;x.beginPath();x.ellipse(jx,rimY,bw*(1+k*3),bw*(1+k*3)*.35,0,0,6.28);x.stroke()}x.globalAlpha=1}
+  x.restore();
+}
+
+function angler(ax,ay,s,t,open,flee){
+  x.save();x.translate(ax,ay);x.scale(s*(flee?-1:1),s);
+  // lure
+  const lx=-150+Math.sin(t*1.3)*10,ly=-150+Math.cos(t)*8;
+  x.strokeStyle='#33515f';x.lineWidth=4;x.beginPath();x.moveTo(-10,-70);x.quadraticCurveTo(-60,-190,lx,ly);x.stroke();
+  x.save();x.globalCompositeOperation='lighter';const lp=.6+.4*Math.sin(t*4);glowDot(lx,ly,70*lp,C.glow,.55);glowDot(lx,ly,16,[255,255,255],.95);x.restore();
+  // body
+  const g=x.createLinearGradient(0,-120,0,120);g.addColorStop(0,'#1c3240');g.addColorStop(1,'#060f16');x.fillStyle=g;
+  x.beginPath();x.moveTo(-120,-10);x.bezierCurveTo(-110,-110,40,-140,120,-60);x.bezierCurveTo(170,-20,200,-10,250,-60);x.lineTo(270,0);x.lineTo(250,60);x.bezierCurveTo(200,10,170,30,120,70);x.bezierCurveTo(40,130,-90,110,-120,30+open*40);x.closePath();x.fill();
+  x.strokeStyle='#2f4c5c';x.lineWidth=2;x.stroke();
+  // mouth
+  x.fillStyle='#000';x.beginPath();x.moveTo(-122,-6);x.quadraticCurveTo(-60,10,-40,20);x.quadraticCurveTo(-70,40+open*40,-120,30+open*40);x.fill();
+  x.fillStyle='#e8f6ff';for(let i=0;i<7;i++){const u=i/6;const tx=-118+u*70,ty=-4+u*20;x.beginPath();x.moveTo(tx,ty);x.lineTo(tx+5,ty+14+(i%2)*8);x.lineTo(tx+10,ty+u*3);x.fill();const by=30+open*40-u*(10+open*30);x.beginPath();x.moveTo(tx,by);x.lineTo(tx+5,by-12-(i%2)*7);x.lineTo(tx+10,by);x.fill()}
+  // eye
+  x.fillStyle='#cfe9ef';x.beginPath();x.arc(-40,-40,11,0,6.28);x.fill();x.fillStyle='#000';x.beginPath();x.arc(-43,-40,6,0,6.28);x.fill();
+  // fins
+  x.fillStyle='#14262f';x.beginPath();x.moveTo(40,40);x.quadraticCurveTo(70,100+Math.sin(t*3)*10,20,110);x.quadraticCurveTo(30,80,10,50);x.fill();
+  x.restore()}
+
+function frame(now){
+  const t=now/1000;
+  const max=document.documentElement.scrollHeight-innerHeight,y=scrollY,p=max>0?clamp(y/max):0;
+  // chapter position from section centres
+  let c=0;const mids=sections.map(s=>s.offsetTop+s.offsetHeight/2-innerHeight/2);
+  for(let i=0;i<mids.length-1;i++){if(y>=mids[i])c=i+clamp((y-mids[i])/(mids[i+1]-mids[i]))}
+  c=clamp(c,0,6);const ci=Math.min(5,Math.floor(c)),u=c-ci;
+  const depths=[0,200,1000,4000,6000,10994,10994];const depth=lerp(depths[ci],depths[ci+1],sm(u));const dn=depth/10994;
+  // water colour
+  const top=mix(C.top,C.deep,clamp(Math.pow(dn,.35)*1.05)),bot=mix(C.top,C.deep,clamp(.45+Math.pow(dn,.3)));
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,rgba(top,1));g.addColorStop(1,rgba(bot,1));x.fillStyle=g;x.fillRect(0,0,W,H);
+  // surface + sky (hero)
+  const surf=H*(mobile?.12:.16)-y*.9;
+  if(surf>-40){const sg=x.createLinearGradient(0,0,0,Math.max(surf,1));sg.addColorStop(0,rgba(mix(C.sky,[255,255,255],.3),1));sg.addColorStop(1,rgba(C.sky,1));x.fillStyle=sg;x.beginPath();x.moveTo(0,0);x.lineTo(W,0);
+    for(let xx=W;xx>=0;xx-=12)x.lineTo(xx,surf+Math.sin(xx*.012+t*1.6)*6+Math.sin(xx*.031-t*2.2)*3);x.fill();
+    x.save();x.globalCompositeOperation='lighter';glowDot(W*.78,surf-H*.05,H*.35,[255,250,220],.5);x.restore()}
+  // god rays & caustics
+  const light=clamp(1-dn*7);
+  if(light>0){x.save();x.globalCompositeOperation='lighter';
+    for(let i=0;i<7;i++){const rx=W*(.05+i*.15)+Math.sin(t*.25+i*1.7)*50;const rg=x.createLinearGradient(0,surf,0,H);rg.addColorStop(0,`rgba(255,255,240,${.16*light})`);rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.beginPath();x.moveTo(rx-18,Math.max(0,surf));x.lineTo(rx+26,Math.max(0,surf));x.lineTo(rx+220,H);x.lineTo(rx-110,H);x.fill()}
+    x.strokeStyle=`rgba(255,255,255,${.07*light})`;x.lineWidth=2;for(let k=0;k<14;k++){x.beginPath();for(let xx=0;xx<=W;xx+=20){const yy=Math.max(0,surf)+20+k*14+Math.sin(xx*.02+t*1.4+k)*8+Math.sin(xx*.05-t+k*2)*4;xx?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke()}
+    x.restore()}
+  // marine snow (moves up as we sink)
+  const snowA=.25+dn*.6;
+  for(const s of snow){const yy=((s.y*H-y*s.z*.6-t*8*s.z)%H+H)%H,xx=(s.x*W+Math.sin(t*.4+s.p)*12);x.fillStyle=`rgba(225,245,255,${snowA*(.3+s.z*.6)})`;x.beginPath();x.arc(xx,yy,s.r*(.6+s.z),0,6.28);x.fill()}
+  // jelly placement
+  const K=mobile?KM:KD;const k0=K[ci],k1=K[Math.min(6,ci+1)],e=sm(u);
+  const intro=eo(clamp((t-.4)/1.6));
+  let jx=W*lerp(k0[0],k1[0],e)+Math.sin(t*.6)*14,jy=H*lerp(k0[1],k1[1],e)+Math.sin(t*.5)*6+(1-intro)*H*.25,js=lerp(k0[2],k1[2],e)*(mobile?1:Math.min(1.1,H/850));
+  const lit=clamp((depth-150)/700);
+  // chapter 1: sardine school
+  const schoolA=win(c,.35,1.75,.35);
+  if(schoolA>0){const scatter=clamp((c-1.25)*2.2);for(const f of school){const a=f.a+t*.9*f.s;const rr=(170+f.r*120)*js*(1+scatter*3);const fx=jx+Math.cos(a)*rr,fy=jy+40*js+f.y*70*js+Math.sin(a)*rr*.35+scatter*f.y*H*.3;
+    x.globalAlpha=schoolA*(Math.sin(a)>0?1:.55);fish(fx,fy,1.1*js*(Math.sin(a)>0?1.1:.8),a+Math.PI/2+(Math.sin(a)>0?Math.PI:0)*0,rgba(mix([190,220,235],C.top,.15),1),'rgba(255,255,255,.5)')}x.globalAlpha=1}
+  // chapter 2: lanternfish
+  const lantA=win(c,1.5,3.1,.4);
+  if(lantA>0)for(const l of lantern){const lx=((l.x+t*l.sp*l.d)%1+1)%1*W,ly=l.y*H+Math.sin(t+l.ph)*10;x.globalAlpha=lantA;fish(lx,ly,1.2*l.s,l.d>0?0:Math.PI,'#122a36');
+    x.save();x.globalCompositeOperation='lighter';for(let d=0;d<4;d++){const on=.5+.5*Math.sin(t*3+l.ph+d);glowDot(lx+(l.d>0?1:-1)*(8-d*5)*l.s,ly+4*l.s,4*l.s*(1+on),C.glow,.9*on*lantA)}x.restore()}
+  x.globalAlpha=1;
+  // sparks (bioluminescence) deeper
+  const spA=clamp((dn-.06)*4);if(spA>0){x.save();x.globalCompositeOperation='lighter';for(const s of sparks){const on=Math.pow(.5+.5*Math.sin(t*s.f*2+s.ph),3);glowDot(((s.x*W+Math.sin(t*.3+s.ph)*30)%W),((s.y*H-y*.08)%H+H)%H,s.r*8,s.h?C.hot:C.glow,on*spA*.7)}x.restore()}
+  // chapter 3: anglerfish encounter
+  let alarm=0;
+  const aU=c-2.45;
+  if(aU>0&&aU<1.6){const appear=eo(clamp(aU/.6)),flee=clamp((aU-.95)/.5);alarm=win(aU,.55,1.2,.12);
+    const as=(mobile?.55:.9)*js;const ax=lerp(W*1.25,jx+(mobile?190:330)*js,appear)-eo(flee)*W*1.4,ay=jy+(mobile?140:60)*js+Math.sin(t*.8)*10+flee*120;
+    x.globalAlpha=clamp(1.4-flee);angler(ax,ay,as,t,.4+.6*clamp((aU-.3)/.3)*(1-flee),flee>0);x.globalAlpha=1}
+  // chapter 4: siphonophore
+  const siA=win(c,3.5,5,.4);
+  if(siA>0){x.save();x.globalCompositeOperation='lighter';const ox=W*(mobile?.15:.25),oy=-H*.1+((c-3.5)/1.5)*H*.4;
+    for(let i=0;i<60;i++){const u2=i/59;const px=ox+u2*W*.75+Math.sin(t*.8+u2*8)*40,py=oy+u2*H*.9+Math.cos(t*.6+u2*6)*30;glowDot(px,py,(i%5?7:14),i%5?C.glow:C.hot,siA*(.35+.3*Math.sin(t*2-u2*12)))}
+    x.restore()}
+  // chapter 5: trench walls, vents, worms, snailfish
+  const tr=clamp((c-4.3)/1.2);
+  if(tr>0){const wallW=W*(mobile?.22:.2)*eo(tr);
+    for(const side of[-1,1]){x.beginPath();const bx=side<0?0:W;x.moveTo(bx,0);for(let yy=0;yy<=H;yy+=20){const n=Math.sin(yy*.013+side*3)*30+Math.sin(yy*.041+side)*14;x.lineTo(bx-side*(wallW+n+(yy/H)*wallW*.6),yy)}x.lineTo(bx,H);
+      const wg=x.createLinearGradient(side<0?0:W,0,side<0?wallW*2:W-wallW*2,0);wg.addColorStop(0,'#000');wg.addColorStop(1,'#0b1a22');x.fillStyle=wg;x.globalAlpha=tr;x.fill()}
+    x.globalAlpha=1;
+    const floor=H*(1-.16*eo(tr));
+    x.fillStyle='#03080c';x.beginPath();x.moveTo(0,H);for(let xx=0;xx<=W;xx+=20)x.lineTo(xx,floor+Math.sin(xx*.02)*10+Math.sin(xx*.007)*20);x.lineTo(W,H);x.fill();
+    const endM=mobile?clamp((c-5.3)/.5):0;x.globalAlpha=1-endM;
+    // vent chimney
+    const vx=W*(mobile?.22:.3),vh=H*.2*eo(tr);
+    x.fillStyle='#11181c';x.beginPath();x.moveTo(vx-40,floor+10);x.lineTo(vx-14,floor-vh);x.lineTo(vx+14,floor-vh);x.lineTo(vx+44,floor+10);x.fill();
+    x.save();x.globalCompositeOperation='lighter';glowDot(vx,floor-vh,60,[255,120,60],.35*tr);x.restore();
+    for(const s of smoke){const k=((s.o+t*.12)%1);const sx=vx+s.dx*k*90+Math.sin(t+s.o*9)*16*k,sy=floor-vh-k*H*.55;x.fillStyle=`rgba(20,22,26,${(1-k)*.55*tr})`;x.beginPath();x.arc(sx,sy,s.r*(.4+k*1.6),0,6.28);x.fill()}
+    // tube worms
+    worms.forEach(w=>{const wx=W*(mobile?.5:.52)+(w.x-.5)*W*(mobile?.6:.35),wy=floor+6,wh=H*.09*w.h*eo(tr);const sway=Math.sin(t*1.5+w.ph)*8+w.lean;
+      x.strokeStyle='#e9e4da';x.lineWidth=w.w;x.lineCap='round';x.beginPath();x.moveTo(wx,wy);x.quadraticCurveTo(wx+sway*.4,wy-wh*.6,wx+sway,wy-wh);x.stroke();
+      x.fillStyle='#e0304e';for(let f=0;f<7;f++){x.beginPath();x.ellipse(wx+sway+Math.sin(t*3+f+w.ph)*3,wy-wh-6,4,13,(f-3)*.35,0,6.28);x.fill()}});
+    x.globalAlpha=1;
+    // snailfish
+    const sx=jx+Math.sin(t*.5)*150*js-90*js,sy=jy+170*js+Math.sin(t*1.1)*14;x.globalAlpha=tr*.8;x.fillStyle='rgba(255,215,235,.55)';x.beginPath();x.moveTo(sx+50,sy);x.bezierCurveTo(sx+40,sy-26,sx-10,sy-22,sx-60,sy-4+Math.sin(t*4)*4);x.bezierCurveTo(sx-10,sy+18,sx+40,sy+24,sx+50,sy);x.fill();x.fillStyle='#000';x.beginPath();x.arc(sx+34,sy-6,3,0,6.28);x.fill();x.globalAlpha=1}
+  // end: sonar rings
+  const endA=clamp((c-5.4)/.6);
+  if(endA>0){x.save();x.globalCompositeOperation='lighter';x.strokeStyle=rgba(C.glow,1);x.lineWidth=1.5;for(let r=0;r<5;r++){const k=(t*.25+r/5)%1;x.globalAlpha=(1-k)*.5*endA;x.beginPath();x.arc(jx,jy,k*Math.max(W,H)*.8,0,6.28);x.stroke()}x.restore()}
+  // Lumi
+  // swim physics: face down only while scrolling down; face up when scrolling up or idle.
+  const S=window.__swim||(window.__swim={y:y,t:t,dive:0,ph:0,eff:0});
+  const dt=Math.min(.1,Math.max(0,t-S.t)),v=(y-S.y)/Math.max(dt,1/120);S.y=y;S.t=t; // px/s
+  const effort=clamp(Math.abs(v)/1600);S.eff+=(effort-S.eff)*.1;
+  const target=v>30?1:0;S.w=S.w||0;
+  // soft, slightly under-damped spring — a lazy ~1.5 s roll, like a real jelly turning
+  for(let k=0;k<4;k++){const h=dt/4;S.w+=(2.6*(target-S.dive)-2.9*S.w)*h;S.dive+=S.w*h}
+  S.ph+=dt*(.55+1.5*S.eff);                                  // idle ≈0.55 strokes/s, swimming up to ~2/s
+  const sq=squeeze(S.ph),lunge=(sq-.45)*(12+20*S.eff)*js;     // forward lunge on squeeze, glide/sink on relax
+  const ang=S.dive*Math.PI+Math.sin(t*.9)*.05*(1-S.eff);
+  const lx=jx+Math.sin(ang)*lunge,ly=jy-Math.cos(ang)*lunge;
+  x.save();x.translate(lx,ly);x.rotate(ang);x.translate(-lx,-ly);
+  x.globalAlpha=intro;jelly(lx,ly,js,t,lit+endA*.6,alarm,S.ph);x.globalAlpha=1;x.restore();
+  // vignette
+  const vg=x.createRadialGradient(W/2,H/2,Math.min(W,H)*.3,W/2,H/2,Math.max(W,H)*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,`rgba(0,0,0,${.25+dn*.4})`);x.fillStyle=vg;x.fillRect(0,0,W,H);
+
+  // HUD
+  $('#depth').textContent=Math.round(depth).toLocaleString('en')+' m';
+  $('#bar').textContent=Math.round(1+depth/10.08).toLocaleString('en')+' bar';
+  $('#temp').textContent=(depth<200?24-depth*.04:Math.max(1.5,16-Math.log10(depth)*4)).toFixed(1)+' °C';
+  $('#lux').textContent=(depth<1000?Math.max(0,100*Math.exp(-depth/60)):0).toFixed(depth<200?0:2)+'%';
+  railDots.forEach((d,i)=>d.classList.toggle('on',Math.round(c)===i));links.forEach((l,i)=>l.classList.toggle('on',ci===i+1||(i===4&&c>5)));
+  // text motion
+  const vh=innerHeight;
+  chars.forEach((ch,i)=>{const k=eo(clamp((t-.3-i*.05)/.9));ch.style.transform=`translateY(${(1-k)*110}%) rotate(${(1-k)*10}deg)`;ch.style.opacity=k});
+  rvs.forEach((el,i)=>{let k;if(el.closest('.hero')){k=eo(clamp((t-1-[...el.parentNode.children].indexOf(el)*.15)/.9))*clamp(1-(y/vh)*1.2)}else{const r=el.getBoundingClientRect();k=eo(clamp((vh*.92-r.top)/(vh*.3)))*clamp((r.bottom-vh*.04)/(vh*.25))}el.style.opacity=k;el.style.transform=`translateY(${(1-k)*50}px)`;el.style.filter=`blur(${(1-k)*8}px)`});
+  counts.forEach(el=>{const r=el.getBoundingClientRect();const k=eo(clamp((vh*.95-r.top)/(vh*.55)));el.textContent=Math.round(+el.dataset.to*k).toLocaleString('en')});
+  endLines.forEach((el,i)=>{const r=el.parentNode.getBoundingClientRect();const k=eo(clamp((vh*.9-r.top)/(vh*.3)-i*.25));el.style.transform=`translateY(${(1-k)*110}%) rotate(${(1-k)*4}deg)`});
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

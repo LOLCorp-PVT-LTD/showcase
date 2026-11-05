@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Haulwise — the calm control room for UK freight fleets</title>
+<style>
+@font-face{font-family:Plex;src:url(assets/fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Plex;src:url(assets/fonts/ibm-plex-sans-latin-400-italic.woff2) format("woff2");font-weight:400;font-style:italic}
+@font-face{font-family:Plex;src:url(assets/fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Plex;src:url(assets/fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Plex;src:url(assets/fonts/ibm-plex-sans-latin-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:PlexMono;src:url(assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:PlexMono;src:url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2");font-weight:500}
+:root{--bg:#f4f3ef;--surface:#ffffff;--surface2:#faf9f6;--ink:#15171a;--mute:#6b7078;--line:#e6e3dc;--accent:#ff5a1f;--ok:#1f9d6b;--warn:#e39b00;--bad:#e5484d;
+--land:#efeee9;--water:#cbdfe8;--park:#dde8d4;--road:#ffffff;--case:#d6d2c8;--urban:#e5e2da;--mway:#f6cf7c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Plex,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+.mono{font-family:PlexMono,ui-monospace,monospace}
+em{font-style:italic;color:var(--accent)}
+a{color:inherit;text-decoration:none}
+/* ---------- marketing nav + hero ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;gap:36px;padding:16px 40px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:none}
+.nav .brand{display:flex;gap:10px;align-items:center;font-weight:700;font-size:18px;letter-spacing:-.02em}
+.nav .brand img{width:30px}
+.nav .links{display:flex;gap:26px;font-size:14px;color:var(--mute)}
+.nav .sp{flex:1}
+.nav .si{font-size:14px;color:var(--mute)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:12px;font-weight:600;font-size:14px;letter-spacing:-.01em}
+.btn.pri{background:var(--ink);color:var(--bg)}
+.btn.pri i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.btn.ghost{border:1px solid var(--line);background:var(--surface)}
+.hero{position:relative;min-height:100vh;padding:150px 40px 60px;overflow:hidden}
+#heroSvg{position:absolute;inset:0;width:100%;height:100%}
+.hero .in{position:relative;max-width:1180px;margin:0 auto}
+.tagline{display:inline-flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font-size:13px;color:var(--mute)}
+.tagline b{background:var(--accent);color:#fff;font-weight:600;border-radius:99px;padding:3px 9px;font-size:12px}
+h1{margin-top:26px;font-weight:600;font-size:clamp(46px,7vw,104px);line-height:.98;letter-spacing:-.045em;max-width:900px}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}
+h1 .ln>span{display:inline-block}
+.hero p.sub{margin-top:26px;max-width:520px;font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--mute)}
+.hero .ctas{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.trust{margin-top:70px;display:flex;align-items:center;gap:38px;flex-wrap:wrap;color:var(--mute)}
+.trust small{font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.trust b{font-weight:700;letter-spacing:-.02em;font-size:19px;color:color-mix(in srgb,var(--ink) 55%,transparent)}
+.chip{position:absolute;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:0 18px 40px #0000000f;font-size:13px;display:flex;gap:10px;align-items:center}
+.chip .dot{width:10px;height:10px;border-radius:50%}
+.chip b{display:block;font-size:15px}
+.chip span{color:var(--mute);font-size:12px}
+/* ---------- tour (pinned) ---------- */
+.tour{position:relative;height:620vh}
+.pin{position:sticky;top:0;height:100vh;display:grid;place-items:center;overflow:hidden;padding-top:66px}
+.cap{display:none;position:absolute;left:50%;bottom:10px;transform:translateX(-50%);gap:8px;z-index:5}
+.cap span{font-size:12px;padding:7px 12px;border-radius:99px;background:var(--surface);border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.cap span.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* console */
+.console{width:1240px;height:760px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:0 40px 90px #15171a1f,0 2px 0 #fff inset;display:grid;grid-template-columns:62px 1fr;overflow:hidden;position:relative;transform-origin:50% 50%}
+.side{background:var(--surface2);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0}
+.side img{width:32px;margin-bottom:14px}
+.side i{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:var(--mute)}
+.side i.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 0 var(--line),0 4px 10px #0000000a}
+.side i svg{width:19px;height:19px}
+.side .me{margin-top:auto;width:34px;height:34px;border-radius:50%;background:#e8d5c4;display:grid;place-items:center;font-size:12px;font-weight:600;color:#6b4a2f}
+.main{display:grid;grid-template-rows:52px 78px 1fr;min-width:0}
+.top{display:flex;align-items:center;gap:14px;padding:0 18px;border-bottom:1px solid var(--line)}
+.top h3{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.top .crumb{font-size:13px;color:var(--mute)}
+.top .search{margin-left:auto;width:250px;height:32px;border-radius:9px;border:1px solid var(--line);background:var(--surface2);display:flex;align-items:center;gap:8px;padding:0 10px;font-size:12.5px;color:var(--mute)}
+.top .search kbd{margin-left:auto;font-family:PlexMono;font-size:10.5px;border:1px solid var(--line);border-radius:5px;padding:1px 5px;background:var(--surface)}
+.top .clock{font-family:PlexMono;font-size:12.5px;padding:6px 10px;border-radius:8px;background:var(--surface2);border:1px solid var(--line)}
+.live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ok);font-weight:500}
+.live b{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)}
+.kpi{padding:12px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:3px}
+.kpi:last-child{border-right:0}
+.kpi small{font-size:11.5px;color:var(--mute)}
+.kpi b{font-size:23px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:11px;font-weight:500;color:var(--ok)}
+.kpi .d.w{color:var(--warn)}
+.body{display:grid;grid-template-columns:1fr 316px;grid-template-rows:1fr 158px;min-height:0}
+.mapwrap{position:relative;overflow:hidden;border-right:1px solid var(--line)}
+.mapwrap canvas{position:absolute;inset:0;width:100%;height:100%}
+.mtools{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
+.mtools i{width:32px;height:32px;border-radius:9px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:600;color:var(--mute);box-shadow:0 4px 10px #0000000d}
+.legend{position:absolute;left:12px;bottom:12px;display:flex;gap:12px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);font-size:11.5px;color:var(--mute)}
+.legend span{display:flex;align-items:center;gap:6px}.legend i{width:9px;height:9px;border-radius:3px;display:block}
+.toast{position:absolute;left:12px;top:12px;width:300px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:0 18px 40px #15171a22;display:flex;gap:12px;align-items:flex-start;opacity:0}
+.toast .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none}
+.toast b{font-size:13px;display:block}.toast span{font-size:12px;color:var(--mute);line-height:1.45;display:block;margin-top:2px}
+.reroute{position:absolute;left:12px;bottom:56px;width:330px;padding:14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:0 24px 50px #15171a26;opacity:0}
+.reroute h4{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.reroute h4 .spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent)}
+.reroute .txt{margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--mute);min-height:38px}
+.reroute .cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.reroute .cmp div{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.reroute .cmp small{font-size:10.5px;color:var(--mute);display:block}
+.reroute .cmp b{font-size:15px;font-variant-numeric:tabular-nums}
+.reroute .acts{display:flex;gap:8px;margin-top:12px}
+.reroute .acts span{flex:1;height:36px;border-radius:10px;display:grid;place-items:center;font-size:13px;font-weight:600}
+#approve{background:var(--accent);color:#fff;position:relative;overflow:hidden}
+#keep{border:1px solid var(--line)}
+.panel{display:flex;flex-direction:column;min-height:0;position:relative}
+.ph{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.ph b{font-size:13px}.ph small{font-size:11.5px;color:var(--mute)}
+.tele{position:absolute;inset:0;background:var(--surface);padding:0 0 10px;opacity:0;display:flex;flex-direction:column}
+.veh{display:flex;gap:12px;align-items:center;padding:4px 16px 12px;border-bottom:1px solid var(--line)}
+.veh .av{width:40px;height:40px;border-radius:12px;background:var(--ink);display:grid;place-items:center}
+.veh b{font-size:14px;display:block;white-space:nowrap}.veh span{font-size:11px;color:var(--mute);white-space:nowrap}
+.veh .st{margin-left:auto;font-size:11px;font-weight:600;padding:4px 8px;border-radius:99px}
+.gauges{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 16px}
+.g{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface2)}
+.g small{font-size:11px;color:var(--mute)}
+.g b{display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:2px}
+.g b u{text-decoration:none;font-size:11px;color:var(--mute);font-weight:500;margin-left:3px}
+.bar{height:6px;border-radius:9px;background:var(--line);margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;border-radius:9px}
+.spark{margin:0 16px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.spark small{font-size:11px;color:var(--mute);display:flex;justify-content:space-between}
+.spark svg{width:100%;height:40px;display:block;margin-top:6px}
+.drv{display:flex;align-items:center;gap:10px;margin:10px 16px 0;padding:10px 12px;border-radius:12px;border:1px solid var(--line)}
+.drv .pic{width:32px;height:32px;border-radius:50%;background:#d9c7e6;display:grid;place-items:center;font-size:11px;font-weight:600;color:#5b3a78}
+.drv b{font-size:12.5px;display:block}.drv span{font-size:11px;color:var(--mute)}
+.drv .call{margin-left:auto;width:30px;height:30px;border-radius:9px;background:var(--surface2);border:1px solid var(--line);display:grid;place-items:center}
+.feed{flex:1;overflow:hidden;padding:0 10px}
+.al{display:flex;gap:10px;padding:10px 8px;border-radius:12px;align-items:flex-start;position:relative}
+.al .ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;flex:none;font-size:13px}
+.al b{font-size:12.5px;font-weight:600;display:block}
+.al span{font-size:11.5px;color:var(--mute);line-height:1.45;display:block}
+.al time{margin-left:auto;font-size:10.5px;color:var(--mute);font-family:PlexMono;white-space:nowrap}
+.al.new{background:color-mix(in srgb,var(--warn) 9%,transparent)}
+.timeline{grid-column:1/-1;border-top:1px solid var(--line);display:grid;grid-template-columns:190px 1fr;position:relative}
+.tl-l{border-right:1px solid var(--line);padding:8px 0}
+.tl-l div{white-space:nowrap;height:26px;display:flex;align-items:center;gap:8px;padding:0 14px;font-size:12px}
+.tl-l div i{width:7px;height:7px;border-radius:50%}
+.tl-l div span{color:var(--mute);margin-left:auto;font-family:PlexMono;font-size:10.5px}
+.tl-r{position:relative;padding:8px 0}
+.tl-h{position:absolute;top:0;left:0;right:0;height:8px}
+.tl-r .row{height:26px;position:relative}
+.tl-r .row i{position:absolute;top:6px;height:14px;border-radius:5px;display:block}
+.tl-r .row i.pl{background:color-mix(in srgb,var(--ink) 9%,transparent)}
+.tl-r .row i.dn{background:var(--ink)}
+.tl-r .row i.lt{background:var(--warn)}
+.tl-r .row i.ac{background:var(--accent)}
+.now{position:absolute;top:0;bottom:0;width:2px;background:var(--accent)}
+.now:before{content:attr(data-t);position:absolute;top:2px;left:4px;font-family:PlexMono;font-size:10px;color:var(--accent);background:var(--surface);padding:0 3px}
+.hours{position:absolute;left:190px;right:0;bottom:2px;display:flex;justify-content:space-between;padding:0 6px;font-family:PlexMono;font-size:10px;color:var(--mute)}
+#cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:20;pointer-events:none;filter:drop-shadow(0 3px 4px #0005)}
+.ripple{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:2px solid var(--accent);z-index:19;opacity:0;pointer-events:none}
+/* driver app (mobile) */
+.driver{display:none;position:relative;width:100%;height:100%;background:#111}
+.driver canvas{position:absolute;inset:0;width:100%;height:100%}
+.d-top{position:absolute;left:10px;right:10px;top:12px;border-radius:18px;background:#15171a;color:#fff;padding:14px 16px;display:flex;gap:14px;align-items:center;box-shadow:0 14px 30px #0005}
+.d-top .arrow{width:44px;height:44px;border-radius:12px;background:#ffffff14;display:grid;place-items:center;flex:none}
+.d-top b{font-size:20px;letter-spacing:-.02em;display:block}
+.d-top span{font-size:13px;color:#ffffffa8}
+.d-lane{position:absolute;left:10px;top:100px;padding:8px 12px;border-radius:12px;font-size:12.5px;font-weight:600;color:#fff;display:flex;gap:8px;align-items:center}
+.d-speed{position:absolute;left:12px;bottom:230px;width:62px;height:62px;border-radius:50%;background:#fff;border:4px solid var(--bad);display:grid;place-items:center;text-align:center;line-height:1;box-shadow:0 8px 20px #0003}
+.d-speed b{font-size:20px}.d-speed small{font-size:9px;color:var(--mute);display:block}
+.d-cur{position:absolute;right:12px;bottom:230px;padding:10px 12px;border-radius:14px;background:#fff;box-shadow:0 8px 20px #0003;text-align:center}
+.d-cur b{font-size:22px;font-variant-numeric:tabular-nums;display:block;line-height:1}.d-cur small{font-size:10px;color:var(--mute)}
+.d-sheet{position:absolute;left:0;right:0;bottom:0;border-radius:24px 24px 0 0;background:var(--surface);padding:10px 18px 26px;box-shadow:0 -10px 30px #0002}
+.d-sheet .grab{width:38px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 12px}
+.d-eta{display:flex;align-items:baseline;gap:12px}
+.d-eta b{font-size:30px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.d-eta span{font-size:14px;color:var(--mute)}
+.d-eta em{margin-left:auto;font-style:normal;font-size:12px;font-weight:600;padding:4px 9px;border-radius:99px}
+.d-stop{display:flex;gap:12px;align-items:center;margin-top:12px;padding:12px;border-radius:14px;background:var(--surface2);border:1px solid var(--line)}
+.d-stop .n{width:34px;height:34px;border-radius:10px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:600;font-size:13px}
+.d-stop b{font-size:14px;display:block}.d-stop span{font-size:12px;color:var(--mute)}
+.d-tacho{margin-top:12px;font-size:12px;color:var(--mute);display:flex;justify-content:space-between}
+.d-modal{position:absolute;left:10px;right:10px;bottom:16px;border-radius:22px;background:var(--surface);padding:18px;box-shadow:0 30px 60px #0006;transform:translateY(120%)}
+.d-modal h4{font-size:17px;letter-spacing:-.01em}
+.d-modal p{font-size:13px;color:var(--mute);margin-top:6px;line-height:1.5}
+.d-modal .cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.d-modal .cmp div{border:1px solid var(--line);border-radius:12px;padding:10px}
+.d-modal .cmp small{font-size:11px;color:var(--mute);display:block}.d-modal .cmp b{font-size:18px}
+.d-modal .acts{display:flex;gap:8px;margin-top:14px}
+.d-modal .acts span{flex:1;height:48px;border-radius:14px;display:grid;place-items:center;font-weight:600;font-size:15px}
+#dAccept{background:var(--accent);color:#fff}
+#dKeep{border:1px solid var(--line)}
+.d-break{position:absolute;left:10px;right:10px;top:100px;border-radius:16px;background:#fff;padding:12px 14px;display:flex;gap:12px;align-items:center;box-shadow:0 14px 30px #0004;opacity:0}
+.d-break b{font-size:14px;display:block}.d-break span{font-size:12px;color:var(--mute)}
+#finger{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:#ffffff55;border:2px solid #fff;box-shadow:0 6px 16px #0004;z-index:20;opacity:0}
+/* ---------- sections after tour ---------- */
+.sec{max-width:1180px;margin:0 auto;padding:140px 40px 40px}
+.sec .eyebrow{font-family:PlexMono;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.sec h2{margin-top:14px;font-size:clamp(36px,4.6vw,64px);font-weight:600;letter-spacing:-.04em;line-height:1.02;max-width:760px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
+.card{border-radius:20px;background:var(--surface);border:1px solid var(--line);padding:24px;min-height:300px;display:flex;flex-direction:column}
+.card .vis{height:120px;border-radius:14px;background:var(--surface2);border:1px solid var(--line);position:relative;overflow:hidden}
+.card h4{margin-top:20px;font-size:18px;letter-spacing:-.02em}
+.card p{margin-top:8px;color:var(--mute);font-size:14.5px;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:70px;border-top:1px solid var(--line);padding-top:30px}
+.stats b{font-size:clamp(34px,4vw,56px);font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums;display:block}
+.stats span{color:var(--mute);font-size:14px}
+.quote{margin-top:90px;display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:end}
+.quote blockquote{font-size:clamp(24px,2.6vw,36px);letter-spacing:-.025em;line-height:1.25;font-weight:500}
+.quote .who{display:flex;gap:12px;align-items:center;color:var(--mute);font-size:14px}
+.quote .who i{width:44px;height:44px;border-radius:50%;background:#cfe0d6;display:grid;place-items:center;font-style:normal;font-weight:600;color:#2d5a43}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
+.tier{border-radius:20px;border:1px solid var(--line);background:var(--surface);padding:26px}
+.tier.hot{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tier small{font-size:13px;color:var(--mute)}
+.tier.hot small{color:#ffffff99}
+.tier b{display:block;font-size:40px;letter-spacing:-.04em;margin:10px 0 2px}
+.tier ul{list-style:none;margin-top:18px;display:grid;gap:9px;font-size:14px}
+.tier li:before{content:"✓";color:var(--accent);margin-right:8px;font-weight:700}
+.end{margin:120px auto 0;max-width:1180px;padding:0 40px}
+.endcard{border-radius:28px;background:var(--ink);color:var(--bg);padding:70px 60px;position:relative;overflow:hidden}
+.endcard h2{font-size:clamp(36px,5vw,70px);font-weight:600;letter-spacing:-.045em;line-height:1;max-width:700px}
+.endcard .btn.pri{background:var(--accent);color:#fff;margin-top:30px}
+footer{max-width:1180px;margin:0 auto;padding:40px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--bg);display:grid;place-items:center}
+#pre img{width:64px}
+@media (max-width:760px){
+  .nav{padding:14px 18px;gap:12px}.nav .links,.nav .si{display:none}.nav .btn{height:38px;padding:0 14px;font-size:13px}
+  .hero{padding:110px 20px 40px;min-height:auto}
+  .hero .chip{display:none}
+  .trust{gap:18px;margin-top:40px}.trust b{font-size:15px}
+  .console{display:none}.driver{display:block}
+  .pin{place-items:stretch}.cap{display:none}
+  .sec{padding:90px 20px 20px}.cards,.pricing,.quote{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}
+  .end{padding:0 20px}.endcard{padding:40px 26px}
+  footer{flex-direction:column;gap:8px;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav">
+  <a class="brand" href="#"><img src="src/img/logo.svg" alt="">Haulwise</a>
+  <div class="links"><a>Product</a><a>Live map</a><a>Driver app</a><a>Pricing</a><a>Customers</a></div>
+  <div class="sp"></div><a class="si">Sign in</a><a class="btn pri" href="#demo"><i></i>Book a demo</a>
+</nav>
+
+<header class="hero">
+  <svg id="heroSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"></svg>
+  <div class="in">
+    <span class="tagline rv"><b>New</b>Live reroutes, approved in one click</span>
+    <h1><span class="ln"><span>Every lorry.</span></span><span class="ln"><span>One <em>calm</em> view.</span></span></h1>
+    <p class="sub rv">Haulwise is the control room for UK freight fleets — live tracking, delay alerts before your customers notice, and reroutes your drivers accept from the cab.</p>
+    <div class="ctas rv"><a class="btn pri" href="#demo"><i></i>Book a demo</a><a class="btn ghost" href="#tour">Watch it work ↓</a></div>
+    <div class="trust rv"><small>Trusted by 140+ operators</small><b>NORTHLINE</b><b>Calder&nbsp;Freight</b><b>PELL&nbsp;&amp;&nbsp;SONS</b><b>brightway</b><b>Oakhaul</b></div>
+  </div>
+  <div class="chip" id="chip1" style="right:8%;top:30%"><span class="dot" style="background:var(--ok)"></span><div><b>38 / 40 on the road</b><span>2 loading at Stoke DC</span></div></div>
+  <div class="chip" id="chip2" style="right:20%;top:62%"><span class="dot" style="background:var(--accent)"></span><div><b>−19 min</b><span>HW-17 rerouted via A50</span></div></div>
+</header>
+
+<section class="tour" id="tour">
+  <div class="pin">
+    <!-- desktop: dispatch console -->
+    <div class="console" id="console">
+      <aside class="side">
+        <img src="src/img/logo.svg" alt="">
+        <i class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg></i>
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="12" height="9" rx="1"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></i>
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h7"/></svg></i>
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></i>
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></i>
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zM10 20a2 2 0 0 0 4 0"/></svg></i>
+        <div class="me">MO</div>
+      </aside>
+      <div class="main">
+        <div class="top"><h3>Live map</h3><span class="crumb">/ North &amp; Midlands network</span><div class="search">⌕ Search vehicles, drivers, orders<kbd>⌘K</kbd></div><span class="live"><b></b>Live</span><span class="clock" id="clock">14:52</span></div>
+        <div class="kpis">
+          <div class="kpi"><small>On-time deliveries</small><b id="k1">96.4%</b><span class="d" id="k1d">▲ 0.8 vs last week</span></div>
+          <div class="kpi"><small>Vehicles active</small><b id="k2">38 / 40</b><span class="d">2 loading</span></div>
+          <div class="kpi"><small>Miles today</small><b id="k3">9,412</b><span class="d">▲ 4.1%</span></div>
+          <div class="kpi"><small>Cost per mile</small><b id="k4">£1.42</b><span class="d">▼ £0.06</span></div>
+          <div class="kpi"><small>Open alerts</small><b id="k5">1</b><span class="d w" id="k5d">1 tacho warning</span></div>
+        </div>
+        <div class="body">
+          <div class="mapwrap" id="mapwrap">
+            <canvas id="map"></canvas>
+            <div class="mtools"><i>+</i><i>−</i><i>◎</i></div>
+            <div class="legend"><span><i style="background:var(--ink)"></i>On route</span><span><i style="background:var(--accent)"></i>Selected</span><span><i style="background:var(--bad)"></i>Congestion</span><span><i style="background:var(--mway)"></i>Motorway</span></div>
+            <div class="toast" id="toast"><div class="ic" id="toastIc" style="background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)">⚠</div><div><b id="toastT">HW-17 delayed · M6 J19</b><span id="toastS">Stationary traffic. ETA to Stoke DC now 15:42 (+24 min).</span></div></div>
+            <div class="reroute" id="reroute">
+              <h4><span class="spin" id="spin"></span><span id="rrT">Finding a faster route…</span></h4>
+              <div class="txt" id="rrTxt"></div>
+              <div class="cmp"><div><small>Current · M6</small><b>15:42</b></div><div style="border-color:var(--accent)"><small>Via A50 → A34</small><b style="color:var(--accent)">15:23</b></div></div>
+              <div class="acts"><span id="keep">Keep route</span><span id="approve">Approve reroute</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ph"><b>Alerts</b><small id="alc">Today · 3</small></div>
+            <div class="feed" id="feed">
+              <div class="al new" id="alNew" style="opacity:0"><div class="ic" id="alIc" style="background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)">⚠</div><div><b id="alT">HW-17 delayed at M6 J19</b><span id="alS">+24 min · Stoke DC · 26 pallets</span></div><time id="alTime">now</time></div>
+              <div class="al"><div class="ic" style="background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)">◷</div><div><b>Break due · HW-09</b><span>Tom Hale · 4h 05m driven</span></div><time>14:31</time></div>
+              <div class="al"><div class="ic" style="background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)">✓</div><div><b>Delivered · HW-22</b><span>Derby Cross-dock · POD signed</span></div><time>14:18</time></div>
+              <div class="al"><div class="ic" style="background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)">✓</div><div><b>Delivered · HW-04</b><span>Birmingham South · 2 min early</span></div><time>13:56</time></div>
+              <div class="al"><div class="ic" style="background:color-mix(in srgb,var(--ink) 8%,transparent)">⛽</div><div><b>Refuel logged · HW-31</b><span>412 L · Keele Services</span></div><time>13:40</time></div>
+              <div class="al"><div class="ic" style="background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)">✓</div><div><b>Delivered · HW-12</b><span>Leeds North · POD signed</span></div><time>13:22</time></div>
+            </div>
+            <div class="tele" id="tele">
+              <div class="ph"><b>Vehicle</b><small>Live telemetry</small></div>
+              <div class="veh"><div class="av"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="7" width="12" height="9" rx="1"/><path d="M14 10h4l3 3v3h-7z"/></svg></div><div><b>HW-17 · DAF XF 480</b><span class="mono">HW21 KLR · 26 plt · 18.4 t</span></div><span class="st" id="vst" style="background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)">Delayed</span></div>
+              <div class="gauges">
+                <div class="g"><small>Speed</small><b id="tSpd">6<u>mph</u></b><div class="bar"><i id="tSpdB" style="background:var(--ink);width:10%"></i></div></div>
+                <div class="g"><small>ETA · Stoke DC</small><b id="tEta">15:42</b><div class="bar"><i id="tEtaB" style="background:var(--warn);width:62%"></i></div></div>
+                <div class="g"><small>Fuel</small><b id="tFuel">58<u>%</u></b><div class="bar"><i id="tFuelB" style="background:var(--ok);width:58%"></i></div></div>
+                <div class="g"><small>Drive time left</small><b id="tTacho">1h 18m</b><div class="bar"><i id="tTachoB" style="background:var(--accent);width:71%"></i></div></div>
+              </div>
+              <div class="spark"><small><span>Speed · last 10 min</span><span class="mono" id="tAvg">avg 21 mph</span></small><svg id="sparkSvg" viewBox="0 0 280 58" preserveAspectRatio="none"><path id="sparkFill" fill="color-mix(in srgb,var(--accent) 14%,transparent)"/><path id="sparkLine" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg></div>
+              <div class="drv"><div class="pic">PN</div><div><b>Priya Natt</b><span>On shift since 06:40 · 4.9 ★</span></div><div class="call">✆</div></div>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="tl-l" id="tlL"></div>
+            <div class="tl-r" id="tlR"><div class="now" id="now" data-t="14:52"></div></div>
+            <div class="hours"><span>06:00</span><span>09:00</span><span>12:00</span><span>15:00</span><span>18:00</span><span>21:00</span></div>
+          </div>
+        </div>
+      </div>
+      <svg id="cursor" viewBox="0 0 24 24"><path d="M3 2l7 19 2.6-7.4L20 11z" fill="#15171a" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div class="ripple" id="ripple"></div>
+    </div>
+    <!-- mobile: driver app -->
+    <div class="driver" id="driver">
+      <canvas id="dmap"></canvas>
+      <div class="d-top"><div class="arrow" id="dArrow"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path id="dArrowP" d="M12 20V5M6 11l6-6 6 6"/></svg></div><div><b id="dDist">1.2 mi</b><span id="dRoad">Continue on M6 southbound</span></div></div>
+      <div class="d-lane" id="dLane" style="background:var(--bad)">● Queue ahead · +24 min</div>
+      <div class="d-break" id="dBreak"><div style="font-size:22px">☕</div><div><b>Break due in 38 min</b><span>Uttoxeter services in 9 mi · parking available</span></div></div>
+      <div class="d-speed"><div><b>50</b><small>LIMIT</small></div></div>
+      <div class="d-cur"><b id="dSpd">6</b><small>mph</small></div>
+      <div class="d-sheet">
+        <div class="grab"></div>
+        <div class="d-eta"><b id="dEta">15:42</b><span id="dLeft">46 mi · 50 min</span><em id="dChip" style="background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)">+24 min</em></div>
+        <div class="d-stop"><div class="n">1</div><div><b>Stoke DC · Bay 7</b><span>26 pallets · booked 15:20–15:40</span></div></div>
+        <div class="d-tacho"><span>Drive time left <b id="dTacho" style="color:var(--ink)">1h 18m</b></span><span>Fuel <b style="color:var(--ink)">58%</b></span></div>
+      </div>
+      <div class="d-modal" id="dModal">
+        <h4>Dispatch found a faster route</h4>
+        <p>Leave the M6 at J19 and take the A50 → A34. Avoids the queue at J16.</p>
+        <div class="cmp"><div><small>Current</small><b>15:42</b></div><div style="border-color:var(--accent)"><small>New route</small><b style="color:var(--accent)">15:23</b></div></div>
+        <div class="acts"><span id="dKeep">Keep</span><span id="dAccept">Accept</span></div>
+      </div>
+      <div id="finger"></div>
+    </div>
+    <div class="cap" id="cap"><span>1 · See every lorry live</span><span>2 · Catch delays first</span><span>3 · Reroute in one click</span><span>4 · Close the day calm</span></div>
+  </div>
+</section>
+
+<section class="sec" id="features">
+  <div class="eyebrow rv">Built for the yard, the road and the office</div>
+  <h2 class="rv">Dispatchers stop firefighting. Drivers stop guessing.</h2>
+  <div class="cards">
+    <div class="card rv"><div class="vis" id="v1"></div><h4>Live map, second by second</h4><p>Every vehicle, trailer and driver on one map — with traffic, tacho hours and load status layered in.</p></div>
+    <div class="card rv"><div class="vis" id="v2"></div><h4>Delays caught before customers call</h4><p>Haulwise compares live traffic against every booking window and flags risk up to 90 minutes ahead.</p></div>
+    <div class="card rv"><div class="vis" id="v3"></div><h4>Reroutes the driver can accept</h4><p>Approve in the console, and the driver gets turn-by-turn in the cab app — HGV-safe, low-bridge aware.</p></div>
+  </div>
+  <div class="stats">
+    <div class="rv"><b class="count" data-to="23" data-suf="%">0</b><span>fewer late deliveries</span></div>
+    <div class="rv"><b class="count" data-to="11" data-suf=" min">0</b><span>saved per driver per day</span></div>
+    <div class="rv"><b class="count" data-to="4800" data-suf="">0</b><span>vehicles tracked live</span></div>
+    <div class="rv"><b class="count" data-to="98" data-suf="%">0</b><span>driver app adoption</span></div>
+  </div>
+  <div class="quote rv"><blockquote>“We used to find out a load was late when the customer rang. Now we've rerouted before they've noticed.”</blockquote><div class="who"><i>DC</i><div><b style="color:var(--ink)">Dawn Calder</b><br>Ops Director, Calder Freight · 62 vehicles</div></div></div>
+</section>
+
+<section class="sec" id="pricing">
+  <div class="eyebrow rv">Pricing</div>
+  <h2 class="rv">Per vehicle. No hardware lock-in.</h2>
+  <div class="pricing">
+    <div class="tier rv"><small>Starter · up to 15 vehicles</small><b>£19</b><small>per vehicle / month</small><ul><li>Live map &amp; history</li><li>Driver app</li><li>Delay alerts</li></ul></div>
+    <div class="tier hot rv"><small>Fleet · most popular</small><b>£29</b><small>per vehicle / month</small><ul><li>Everything in Starter</li><li>One-click reroutes</li><li>Tacho &amp; break planning</li><li>Customer ETA links</li></ul></div>
+    <div class="tier rv"><small>Enterprise · 200+ vehicles</small><b>Custom</b><small>volume pricing</small><ul><li>TMS &amp; ERP integrations</li><li>SSO &amp; audit log</li><li>Dedicated success team</li></ul></div>
+  </div>
+</section>
+
+<div class="end" id="demo"><div class="endcard rv"><h2>Run a calmer fleet from <em>Monday.</em></h2><p style="margin-top:16px;color:#ffffffa0;max-width:460px;line-height:1.6">Connect your telematics in an afternoon. We'll have your whole fleet on the map before your next shift.</p><a class="btn pri" href="#">Book a 20-minute demo →</a></div></div>
+<footer><span>© Haulwise Ltd · Stoke-on-Trent</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t;
+const eo=t=>1-Math.pow(1-t,4),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const back=t=>{const c=1.4;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const seg=(q,a,b)=>clamp((q-a)/(b-a));
+let seed=5;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+let C={};const readC=()=>{for(const k of['bg','surface','ink','mute','line','accent','ok','warn','bad','land','water','park','road','case','urban','mway'])C[k]=css('--'+k)};
+readC();
+const pre=$('#pre');if(sessionStorage.getItem('haulwise-seen'))pre.remove();else{sessionStorage.setItem('haulwise-seen','1');setTimeout(()=>{pre.style.transition='opacity .6s';pre.style.opacity=0;setTimeout(()=>pre.remove(),700)},1100)}
+
+/* ================= WORLD ================= */
+const ROADS=[
+ {n:'M6',m:1,p:[[300,-80],[330,60],[360,170],[420,320],[470,470],[505,560],[525,640],[560,780],[590,900],[610,1080]]},
+ {n:'M1',m:1,p:[[1260,-80],[1235,100],[1205,260],[1182,420],[1190,560],[1215,690],[1262,850],[1295,1080]]},
+ {n:'A50',p:[[470,470],[560,450],[650,428],[740,410],[820,398],[920,392],[1030,400],[1110,410],[1182,420]]},
+ {n:'A34',p:[[820,398],[826,470],[836,540],[848,620],[860,700],[880,800],[905,920],[920,1080]]},
+ {n:'A500',p:[[525,640],[600,632],[680,622],[760,612],[848,620]]},
+ {n:'A38',p:[[860,700],[960,690],[1060,672],[1140,640],[1205,600]]},
+ {n:'A52',p:[[1182,420],[1300,402],[1420,392],[1680,380]]},
+ {n:'A53',p:[[-80,560],[100,580],[260,600],[400,630],[525,640]]},
+ {n:'A6',p:[[330,60],[460,70],[620,90],[780,110],[960,140],[1100,170],[1235,100]]},
+ {n:'A523',p:[[740,410],[730,320],[712,230],[700,140],[690,-80]]},
+ {n:'A5',p:[[590,900],[700,890],[820,860],[905,920],[1000,960],[1120,975],[1295,1000]]},
+ {n:'A61',p:[[1205,260],[1320,240],[1460,210],[1680,190]]},
+];
+const URBAN=[{x:340,y:150,r:95,n:'Manchester'},{x:860,y:690,r:88,n:'Stoke-on-Trent'},{x:1185,y:430,r:80,n:'Derby'},{x:600,y:960,r:110,n:'Birmingham'},{x:1250,y:40,r:85,n:'Leeds'},{x:1200,y:640,r:55,n:'Nottingham'}];
+const PARKS=[{x:560,y:240,rx:90,ry:60},{x:980,y:250,rx:130,ry:70},{x:300,y:820,rx:70,ry:110},{x:1400,y:640,rx:110,ry:80},{x:1000,y:540,rx:60,ry:40}];
+const RIVER=[[-80,380],[120,400],[300,430],[460,520],[640,520],[780,560],[900,520],[1020,560],[1120,520],[1260,500],[1420,540],[1680,520]];
+const DEPOTS=[{x:356,y:178,n:'Manchester Hub'},{x:872,y:712,n:'Stoke DC'},{x:1172,y:438,n:'Derby Cross-dock'},{x:604,y:944,n:'Birmingham South'},{x:1240,y:70,n:'Leeds North'}];
+const road=n=>ROADS.find(r=>r.n===n).p;
+// minor lanes & B-roads (deterministic) for map texture
+const MINOR=[];{let sd=99;const r=()=>(sd=(sd*16807)%2147483647)/2147483647;for(let i=0;i<46;i++){let x=r()*1600,y=r()*1000,a=r()*6.28;const pts=[[x,y]];const n=4+Math.floor(r()*5);for(let k=0;k<n;k++){a+=(r()-.5)*1.1;x+=Math.cos(a)*(40+r()*50);y+=Math.sin(a)*(40+r()*50);pts.push([x,y])}MINOR.push(pts)}}
+const VILLAGES=[[520,330,'Macclesfield'],[650,520,'Leek'],[980,470,'Uttoxeter'],[1050,820,'Burton'],[760,250,'Buxton'],[420,700,'Crewe'],[740,860,'Stafford'],[1400,300,'Mansfield'],[300,420,'Northwich'],[1010,140,'Glossop']];
+
+function mkPath(pts){const P=[];for(let i=0;i<pts.length-1;i++){const[a,b]=[pts[i],pts[i+1]];const L=Math.hypot(b[0]-a[0],b[1]-a[1]);const n=Math.max(1,Math.ceil(L/2));for(let k=0;k<n;k++){const t=k/n;P.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t])}}P.push(pts[pts.length-1]);
+  // smooth corners (chaikin-ish via moving average)
+  for(let it=0;it<3;it++)for(let i=2;i<P.length-2;i++)P[i]=[(P[i-2][0]+P[i-1][0]+P[i][0]+P[i+1][0]+P[i+2][0])/5,(P[i-2][1]+P[i-1][1]+P[i][1]+P[i+1][1]+P[i+2][1])/5];
+  const S=[0];for(let i=1;i<P.length;i++)S.push(S[i-1]+Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]));
+  const H=P.map((p,i)=>{const a=P[Math.max(0,i-1)],b=P[Math.min(P.length-1,i+1)];return Math.atan2(b[1]-a[1],b[0]-a[0])});
+  const lim=P.map((p,i)=>{const a=H[Math.max(0,i-8)],b=H[Math.min(P.length-1,i+8)];let d=Math.abs(((b-a+Math.PI*3)%(Math.PI*2))-Math.PI);return 1-Math.min(.72,d*1.4)});
+  for(let i=lim.length-2;i>=0;i--)lim[i]=Math.min(lim[i],lim[i+1]+.012);for(let i=1;i<lim.length;i++)lim[i]=Math.min(lim[i],lim[i-1]+.02);
+  return{P,S,H,lim,L:S[S.length-1]}}
+function at(path,d){d=clamp(d,0,path.L);let lo=0,hi=path.S.length-1;while(hi-lo>1){const m=(lo+hi)>>1;if(path.S[m]<=d)lo=m;else hi=m}const t=(d-path.S[lo])/((path.S[hi]-path.S[lo])||1);const a=path.P[lo],b=path.P[hi];return{x:a[0]+(b[0]-a[0])*t,y:a[1]+(b[1]-a[1])*t,lim:path.lim[lo]}}
+const rev=p=>p.slice().reverse();
+const cat=(...ps)=>ps.reduce((a,b)=>a.concat(a.length?b.slice(1):b),[]);
+const sub=(p,i,j)=>p.slice(i,j+1);
+
+// congestion: M6 southbound between J19 and A500
+const CONG=sub(road('M6'),2,5);
+const congPath=mkPath(CONG);
+function congested(x,y){for(let i=0;i<congPath.P.length;i+=4){const p=congPath.P[i];if(Math.abs(p[0]-x)<9&&Math.abs(p[1]-y)<9)return true}return false}
+
+// Haulwise fleet routes (depot to depot along real roads)
+const ROUTES=[
+ cat(sub(road('M6'),2,8),sub(road('A5'),0,3)),               // Manchester -> Birmingham via M6/A5
+ cat(sub(road('A50'),0,8),rev(sub(road('M1'),0,3))),          // J19 -> Derby -> Leeds
+ cat(road('A500'),sub(road('A38'),0,4)),                      // Stoke area -> Nottingham
+ cat(rev(sub(road('A34'),0,7)),sub(road('A50'),4,8)),         // south -> Derby
+ cat(road('A6'),sub(road('M1'),1,4)),                         // Manchester -> Leeds -> Derby
+ cat(rev(road('A53')).slice(0,3),sub(road('M6'),5,9)),
+ cat(sub(road('M1'),3,7),rev(sub(road('A5'),3,6))),
+ cat(sub(road('A523'),0,4)),
+ cat(sub(road('A61'),0,3)),
+ cat(sub(road('A52'),0,3)),
+ cat(sub(road('A38'),0,4),sub(road('M1'),5,7)),
+];
+const fleet=ROUTES.map((pts,i)=>{const path=mkPath(pts);return{id:['HW-04','HW-09','HW-12','HW-22','HW-31','HW-08','HW-15','HW-27','HW-33','HW-02','HW-19'][i],path,d:R()*path.L,dir:R()<.5?1:-1,v:0,vmax:30+R()*10,dwell:0,kind:'hgv'}});
+// background traffic: cars & vans on every road, both directions
+const traffic=[];ROADS.forEach(r=>{const path=mkPath(r.p);const n=Math.round(path.L/(r.m?26:60));for(let i=0;i<n;i++)traffic.push({path,d:R()*path.L,dir:R()<.5?1:-1,v:0,vmax:(r.m?46:32)+R()*12,dwell:0,kind:R()<.18?'van':'car',col:['#9aa3ad','#c9ccd1','#5d6670','#b9a68a','#7d8fa6'][Math.floor(R()*5)],wrap:true})});
+// HW-17 — the hero: Manchester -> Stoke DC; stuck in the J19 queue, then rerouted
+const M6=road('M6');
+const H17pre=cat(sub(M6,1,4));                                       // ... -> J19 (470,470)
+const H17orig=mkPath(cat(H17pre,sub(M6,4,6),road('A500').slice(1),sub(road('A34'),4,4)));
+const H17alt=mkPath(cat(H17pre,sub(road('A50'),0,4),sub(road('A34'),0,4)));
+const J19d=mkPath(H17pre).L;
+const h17={id:'HW-17',d:J19d-120,v:4,approved:false,hist:[]};
+
+function stepVeh(o,dt){
+  if(o.dwell>0){o.dwell-=dt;o.v=0;return}
+  const p=at(o.path,o.d);let lim=o.vmax*(.35+.65*p.lim);
+  if(congested(p.x,p.y))lim=Math.min(lim,o.kind==='hgv'?5:4+((o.d*7)%3));
+  const de=o.dir>0?o.path.L-o.d:o.d;if(!o.wrap)lim=Math.min(lim,Math.sqrt(2*14*Math.max(0,de-2)));
+  const a=lim>o.v?(o.kind==='car'?16:9):-22;o.v=o.v+clamp(lim-o.v,-22*dt,(o.kind==='car'?16:9)*dt);
+  o.d+=o.dir*o.v*dt;
+  if(o.d>=o.path.L||o.d<=0){if(o.wrap){o.d=o.dir>0?0:o.path.L}else{o.d=clamp(o.d,0,o.path.L);o.dir*=-1;o.dwell=2.5+R()*3}}
+}
+function stepH17(dt,q){
+  if(q>=.655)h17.approved=true;
+  const path=h17.approved?H17alt:H17orig;
+  let lim;const p=at(path,h17.d);
+  if(!h17.approved){lim=h17.d<J19d-16?3+2.5*(.5+.5*Math.sin(performance.now()/900)):0}
+  else lim=36*(.35+.65*p.lim);
+  const de=path.L-h17.d;lim=Math.min(lim,Math.sqrt(2*10*Math.max(0,de-2)));
+  h17.v+=clamp(lim-h17.v,-18*dt,7*dt);h17.d=Math.min(path.L,h17.d+h17.v*dt);
+}
+// pre-warm so the world looks mid-shift on load
+for(let i=0;i<600;i++){fleet.forEach(o=>stepVeh(o,1/15));traffic.forEach(o=>stepVeh(o,1/15))}
+
+/* ================= MAP RENDER ================= */
+function pose(path,d,dir){const a=at(path,d),b=at(path,d+dir*1.5),c=at(path,d-dir*1.5);return{x:a.x,y:a.y,h:Math.atan2(b.y-c.y,b.x-c.x)}}
+function drawVehicle(x,o,path,d,dir,z,dusk,sel,col){
+  const f=pose(path,d,dir),pv=at(path,d-dir*5),rr=at(path,d-dir*23);
+  if(o.kind==='car'||o.kind==='van'){
+    const L=o.kind==='van'?6:4.4,W=o.kind==='van'?2.8:2.4;
+    x.save();x.translate(f.x,f.y);x.rotate(f.h);x.fillStyle='rgba(0,0,0,.14)';x.fillRect(-L/2+.4,-W/2+.6,L,W);x.fillStyle=o.col;x.beginPath();x.roundRect(-L/2,-W/2,L,W,.9);x.fill();
+    if(dusk>0){x.globalCompositeOperation='lighter';const g=x.createRadialGradient(L/2+5,0,0,L/2+5,0,8);g.addColorStop(0,`rgba(255,240,200,${.5*dusk})`);g.addColorStop(1,'rgba(255,240,200,0)');x.fillStyle=g;x.beginPath();x.moveTo(L/2,-1);x.lineTo(L/2+11,-4);x.lineTo(L/2+11,4);x.lineTo(L/2,1);x.fill();x.globalCompositeOperation='source-over';x.fillStyle=`rgba(255,60,50,${.9*dusk})`;x.fillRect(-L/2-.3,-W/2,.6,W)}
+    x.restore();return}
+  // articulated HGV: tractor follows the path, trailer pivots behind
+  const th=Math.atan2(pv.y-rr.y,pv.x-rr.x),tl=Math.hypot(pv.x-rr.x,pv.y-rr.y);
+  x.save();x.translate(rr.x,rr.y);x.rotate(th);
+  x.fillStyle='rgba(0,0,0,.18)';x.fillRect(.8,-3+1.2,tl,6.4);
+  x.fillStyle=C.surface;x.strokeStyle=C.ink;x.lineWidth=.7;x.beginPath();x.roundRect(0,-3.2,tl+.5,6.4,1);x.fill();x.stroke();
+  x.fillStyle=C.ink;x.globalAlpha=.25;for(let k=3;k<tl-2;k+=3.2)x.fillRect(k,-3.2,.5,6.4);x.globalAlpha=1;
+  x.fillStyle=`rgba(255,40,30,${.35+.6*dusk})`;x.fillRect(-.2,-3,.7,1.4);x.fillRect(-.2,1.6,.7,1.4);
+  x.restore();
+  x.save();x.translate(f.x,f.y);x.rotate(f.h);
+  if(sel){x.fillStyle=C.accent;x.globalAlpha=.1+.06*Math.sin(performance.now()/260);x.beginPath();x.arc(-6,0,16,0,6.28);x.fill();x.globalAlpha=1}
+  x.fillStyle='rgba(0,0,0,.2)';x.fillRect(-5+.8,-3.4+1.2,8.5,6.8);
+  x.fillStyle=col;x.beginPath();x.roundRect(-5,-3.4,8.5,6.8,1.6);x.fill();
+  x.fillStyle='rgba(255,255,255,.75)';x.fillRect(2.2,-2.8,1,5.6);
+  if(dusk>0){x.globalCompositeOperation='lighter';const g=x.createLinearGradient(3.5,0,26,0);g.addColorStop(0,`rgba(255,244,210,${.75*dusk})`);g.addColorStop(1,'rgba(255,244,210,0)');x.fillStyle=g;x.beginPath();x.moveTo(3.5,-3);x.lineTo(26,-9);x.lineTo(26,9);x.lineTo(3.5,3);x.fill();x.globalCompositeOperation='source-over'}
+  x.restore();
+}
+function blob(x,cx,cy,rx,ry,seedv){x.beginPath();for(let i=0;i<=40;i++){const a=i/40*6.28;const r=1+.12*Math.sin(a*3+seedv)+.07*Math.sin(a*5+seedv*2);const px=cx+Math.cos(a)*rx*r,py=cy+Math.sin(a)*ry*r;i?x.lineTo(px,py):x.moveTo(px,py)}x.closePath()}
+function strokePts(x,pts){x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]))}
+function renderMap(x,W,H,cam,o){ // o: {dusk,cong,altReveal,approved,sel,labels,driver}
+  const t=performance.now()/1000;
+  x.save();x.fillStyle=C.land;x.fillRect(0,0,W,H);
+  x.translate(W*cam.ax,H*cam.ay);x.rotate(cam.rot);x.scale(cam.z,cam.z);x.translate(-cam.x,-cam.y);
+  const px=v=>v/cam.z;
+  URBAN.forEach((u,i)=>{blob(x,u.x,u.y,u.r,u.r*.8,i);x.fillStyle=C.urban;x.fill();x.save();x.clip();x.strokeStyle=C.road;x.lineWidth=px(1);for(let g=-u.r;g<u.r;g+=11){x.beginPath();x.moveTo(u.x+g,u.y-u.r);x.lineTo(u.x+g+18,u.y+u.r);x.stroke();x.beginPath();x.moveTo(u.x-u.r,u.y+g);x.lineTo(u.x+u.r,u.y+g-10);x.stroke()}x.restore()});
+  PARKS.forEach((p,i)=>{blob(x,p.x,p.y,p.rx,p.ry,i+3);x.fillStyle=C.park;x.fill()});
+  x.lineCap='round';x.lineJoin='round';
+  strokePts(x,RIVER);x.strokeStyle=C.water;x.lineWidth=Math.max(px(5),9);x.stroke();
+  [[700,330,40,22],[1340,300,34,24]].forEach(([a,b,c,d],i)=>{blob(x,a,b,c,d,i+9);x.fillStyle=C.water;x.fill()});
+  const rw=(m)=>px((m?6.5:4)*(.65+.35*Math.min(2,cam.z)));
+  MINOR.forEach(pts=>{strokePts(x,pts);x.strokeStyle=C.case;x.lineWidth=px(2.2);x.stroke();x.strokeStyle=C.road;x.lineWidth=px(1.2);x.stroke()});
+  VILLAGES.forEach(([vx,vy],i)=>{blob(x,vx,vy,22,16,i+20);x.fillStyle=C.urban;x.fill()});
+  ROADS.filter(r=>!r.m).concat(ROADS.filter(r=>r.m)).forEach(r=>{strokePts(x,r.p);x.strokeStyle=C.case;x.lineWidth=rw(r.m)+px(2.2);x.stroke();x.strokeStyle=r.m?C.mway:C.road;x.lineWidth=rw(r.m);x.stroke()});
+  // congestion overlay
+  if(o.cong>0){strokePts(x,CONG);x.strokeStyle=C.bad;x.globalAlpha=o.cong*.85;x.lineWidth=rw(1)*.75;x.setLineDash([px(7),px(5)]);x.lineDashOffset=-t*px(6);x.stroke();x.setLineDash([]);x.globalAlpha=1}
+  // routes for HW-17
+  if(o.sel>0){
+    const orig=H17orig.P.map(p=>p),alt=H17alt.P;
+    if(!o.approved){strokePts(x,orig.slice(Math.floor(h17.d/2)));x.strokeStyle=C.ink;x.globalAlpha=.45*o.sel;x.lineWidth=px(2.2);x.setLineDash([px(4),px(4)]);x.stroke();x.setLineDash([]);x.globalAlpha=1}
+    if(o.altReveal>0){const start=Math.floor(J19d/2)-2,end=Math.floor(start+(alt.length-start)*o.altReveal);strokePts(x,alt.slice(o.approved?Math.max(start,Math.floor(h17.d/2)):start,end));x.strokeStyle=C.accent;x.lineWidth=px(o.approved?4.2:3);if(!o.approved)x.setLineDash([px(6),px(4)]);x.lineDashOffset=-t*px(10);x.stroke();x.setLineDash([])}
+  }
+  // street lights at dusk
+  if(o.dusk>0){x.save();x.setTransform(1,0,0,1,0,0);x.globalCompositeOperation='multiply';x.fillStyle=`rgba(${Math.round(255-145*o.dusk)},${Math.round(255-128*o.dusk)},${Math.round(255-85*o.dusk)},1)`;x.fillRect(0,0,x.canvas.width,x.canvas.height);x.restore();
+    x.globalCompositeOperation='lighter';ROADS.forEach(r=>{const pa=mkCache(r);for(let i=0;i<pa.P.length;i+=(r.m?22:34)){const p=pa.P[i];const g=x.createRadialGradient(p[0],p[1],0,p[0],p[1],px(7));g.addColorStop(0,`rgba(255,200,120,${.28*o.dusk})`);g.addColorStop(1,'rgba(255,200,120,0)');x.fillStyle=g;x.fillRect(p[0]-px(7),p[1]-px(7),px(14),px(14))}});x.globalCompositeOperation='source-over'}
+  // vehicles
+  traffic.forEach(v=>drawVehicle(x,v,v.path,v.d,v.dir,cam.z,o.dusk,false));
+  fleet.forEach(v=>drawVehicle(x,v,v.path,v.d,v.dir,cam.z,o.dusk,false,C.ink));
+  drawVehicle(x,{kind:'hgv'},h17.approved?H17alt:H17orig,h17.d,1,cam.z,o.dusk,o.sel>0,C.accent);
+  // depots
+  DEPOTS.forEach(dp=>{x.fillStyle=C.ink;x.beginPath();x.roundRect(dp.x-px(6),dp.y-px(6),px(12),px(12),px(3));x.fill();x.fillStyle=C.surface;x.fillRect(dp.x-px(2.5),dp.y-px(2.5),px(5),px(5))});
+  x.restore();
+  // screen-space labels (stay upright when the map rotates)
+  const proj=(wx,wy)=>{const dx=(wx-cam.x)*cam.z,dy=(wy-cam.y)*cam.z;const c=Math.cos(cam.rot),s=Math.sin(cam.rot);return[W*cam.ax+dx*c-dy*s,H*cam.ay+dx*s+dy*c]};
+  x.textAlign='center';x.textBaseline='middle';
+  if(o.labels){x.font='400 10px Plex';VILLAGES.forEach(([vx,vy,n])=>{const[sx,sy]=proj(vx,vy);x.fillStyle=o.dusk>.5?'rgba(255,255,255,.5)':C.mute;x.globalAlpha=.8;x.fillText(n,sx,sy);x.globalAlpha=1});URBAN.forEach(u=>{const[sx,sy]=proj(u.x,u.y-u.r*.15);x.font=`500 ${Math.round(11+cam.z*2)}px Plex`;x.fillStyle=o.dusk>.5?'rgba(255,255,255,.75)':C.mute;x.fillText(u.n.toUpperCase(),sx,sy)});
+    ROADS.filter(r=>r.m||['A50','A34','A500'].includes(r.n)).forEach(r=>{const p=r.p[Math.floor(r.p.length*.38)];const[sx,sy]=proj(p[0],p[1]);x.font='600 10px PlexMono';const w=x.measureText(r.n).width+10;x.fillStyle=r.m?'#1d4fb8':'#2f7d4c';x.beginPath();x.roundRect(sx-w/2,sy-8,w,16,4);x.fill();x.fillStyle='#fff';x.fillText(r.n,sx,sy+.5)});}
+  if(o.sel>0){const p=pose(h17.approved?H17alt:H17orig,h17.d,1);const[sx,sy]=proj(p.x,p.y);x.globalAlpha=o.sel;x.font='600 11px Plex';const tx='HW-17';const w=x.measureText(tx).width+16;x.fillStyle=C.accent;x.beginPath();x.roundRect(sx-w/2,sy-34,w,20,6);x.fill();x.beginPath();x.moveTo(sx-5,sy-14.5);x.lineTo(sx+5,sy-14.5);x.lineTo(sx,sy-9);x.fill();x.fillStyle='#fff';x.fillText(tx,sx,sy-23.5);x.globalAlpha=1}
+}
+const pathCache=new Map();function mkCache(r){if(!pathCache.has(r))pathCache.set(r,mkPath(r.p));return pathCache.get(r)}
+
+/* ================= HERO ================= */
+const hs=$('#heroSvg');const NS='http://www.w3.org/2000/svg';const mk=(t,a,p=hs)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const heroRoutes=['M-40 760 C 260 700, 380 820, 620 720 S 1000 520, 1180 560 S 1420 640, 1500 600','M 980 -20 C 960 160, 1120 260, 1080 420 S 900 640, 1020 940','M -40 520 C 200 540, 260 420, 520 430 S 820 300, 980 330'];
+const hp=heroRoutes.map((d,i)=>{mk('path',{d,fill:'none',stroke:'var(--line)','stroke-width':i?10:14,'stroke-linecap':'round'});return mk('path',{d,fill:'none',stroke:i?'var(--case)':'var(--accent)','stroke-width':i?2:2.5,'stroke-dasharray':'8 10','stroke-linecap':'round',opacity:i?.8:.9})});
+const hTrucks=hp.map((p,i)=>{const g=mk('g',{});mk('rect',{x:-26,y:-6,width:22,height:12,rx:2,fill:'var(--surface)',stroke:'var(--ink)','stroke-width':1.4},g);const cab=mk('g',{},hs);mk('rect',{x:-7,y:-7,width:13,height:14,rx:3,fill:i?'var(--ink)':'var(--accent)'},cab);mk('rect',{x:3,y:-5.5,width:2,height:11,fill:'#fff',opacity:.8},cab);return{p,g,cab,L:p.getTotalLength()}});
+
+/* ================= TIMELINE ================= */
+const TL=[['HW-17','Stoke DC',[[6.6,9.2,'dn'],[10,13.1,'dn'],[13.6,15.7,'lt']]],['HW-09','Leeds North',[[6,10.2,'dn'],[11,14.8,'dn'],[15.5,18.6,'pl']]],['HW-22','Derby',[[7,11.5,'dn'],[12.2,14.3,'dn'],[15,17.8,'pl']]],['HW-04','Birmingham',[[5.8,9.4,'dn'],[10.2,13.9,'dn'],[14.6,19.2,'pl']]],['HW-31','Manchester',[[8,12.6,'dn'],[13.2,16.4,'dn'],[17,20.2,'pl']]]];
+const tlL=$('#tlL'),tlR=$('#tlR');
+TL.forEach(([id,to,bars],i)=>{tlL.insertAdjacentHTML('beforeend',`<div><i style="background:${i?'var(--ink)':'var(--accent)'}"></i>${id}<span>${to.slice(0,10)}</span></div>`);const row=document.createElement('div');row.className='row';bars.forEach(([a,b,c])=>{const e=document.createElement('i');e.className=c;e.style.left=((a-6)/15*100)+'%';e.style.width=((b-a)/15*100)+'%';row.appendChild(e)});tlR.appendChild(row)});
+const lateBar=tlR.querySelector('.row i.lt');
+
+/* ================= CONSOLE / DRIVER STATE ================= */
+const con=$('#console'),drv=$('#driver'),mapC=$('#map'),mx=mapC.getContext('2d'),dC=$('#dmap'),dx=dC.getContext('2d');
+const cursor=$('#cursor'),ripple=$('#ripple'),finger=$('#finger');
+const cam={x:800,y:500,z:.5,rot:0,ax:.5,ay:.5},dcam={x:470,y:470,z:2.4,rot:0,ax:.5,ay:.6};
+function rectIn(el){const r=el.getBoundingClientRect(),c=con.getBoundingClientRect(),s=c.width/1240;return{x:(r.left-c.left)/s,y:(r.top-c.top)/s,w:r.width/s,h:r.height/s}}
+function cursorAt(q){
+  const rest={x:1000,y:560},alr=rectIn($('#alNew')),apr=rectIn($('#approve'));
+  const A={x:alr.x+90,y:alr.y+20},B={x:apr.x+apr.w*.5,y:apr.y+apr.h*.55},E={x:1120,y:640};
+  // eased travel with slight overshoot, then settle
+  const leg=(p,a,b)=>{const k=back(eio(p));return{x:lerp(a.x,b.x,k),y:lerp(a.y,b.y,k)}};
+  if(q<.2)return rest;if(q<.3)return leg(seg(q,.2,.3),rest,A);if(q<.5)return A;if(q<.61)return leg(seg(q,.5,.61),A,B);if(q<.74)return B;if(q<.86)return leg(seg(q,.74,.86),B,E);return E}
+const typed='Leaving at J19 onto the A50, then south on the A34 avoids 4.1 mi of stationary traffic. HGV-safe · no low bridges.';
+const fmt=m=>{m=Math.round(m);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+
+function setup(){
+  const vw=innerWidth,vh=innerHeight;const s=Math.min((vw-48)/1240,(vh-66-46)/760,1.25);con.style.transform=`scale(${s})`;
+  const mw=$('#mapwrap');const r=mw.getBoundingClientRect();const DPR=Math.min(devicePixelRatio,2);mapC.width=(r.width/s)*DPR*s;mapC.height=(r.height/s)*DPR*s;
+  dC.width=drv.clientWidth*DPR;dC.height=drv.clientHeight*DPR;
+}
+addEventListener('resize',setup);
+
+/* ================= LOOP ================= */
+const tour=$('#tour'),rvs=$$('.rv'),counts=$$('.count'),heroLines=$$('h1 .ln>span'),caps=$$('#cap span');
+let last=null,sampleT=0;
+function frame(now){
+  const t=now/1000,dt=last===null?1/30:Math.min(.1,(now-last)/1000);last=now;
+  if(!mapC.width)setup();
+  const vh=innerHeight,y=scrollY;
+  const tr=tour.getBoundingClientRect();const q=clamp(-tr.top/(tr.height-vh));
+  const mobile=innerWidth<=760;
+  // sim
+  fleet.forEach(o=>stepVeh(o,dt));traffic.forEach(o=>stepVeh(o,dt));stepH17(dt,q);
+  // ---- hero
+  heroLines.forEach((el,i)=>{const k=eo(seg(t,.25+i*.14,1.15+i*.14));el.style.transform=`translateY(${(1-k)*105}%) rotate(${(1-k)*3}deg)`});
+  hp.forEach((p,i)=>{p.setAttribute('stroke-dashoffset',-t*(i?14:22))});
+  hTrucks.forEach((h,i)=>{const sp=[.045,.03,.038][i];const u=((t*sp+i*.37)%1);const d=u*h.L,a=h.p.getPointAtLength(d),b=h.p.getPointAtLength(Math.min(h.L,d+2)),r=h.p.getPointAtLength(Math.max(0,d-22)),pv=h.p.getPointAtLength(Math.max(0,d-5));
+    const ang=Math.atan2(b.y-a.y,b.x-a.x)*57.3,ta=Math.atan2(pv.y-r.y,pv.x-r.x)*57.3;
+    h.cab.setAttribute('transform',`translate(${a.x} ${a.y}) rotate(${ang})`);h.g.setAttribute('transform',`translate(${pv.x} ${pv.y}) rotate(${ta})`)});
+  const hk=clamp(1-y/(vh*.8));
+  $('#chip1').style.transform=`translateY(${(1-eo(seg(t,1.2,2)))*30+Math.sin(t*1.1)*5-y*.15}px)`;$('#chip1').style.opacity=eo(seg(t,1.2,2))*hk;
+  $('#chip2').style.transform=`translateY(${(1-eo(seg(t,1.5,2.3)))*30+Math.sin(t*1.3+1)*5-y*.25}px)`;$('#chip2').style.opacity=eo(seg(t,1.5,2.3))*hk;
+  $('#nav').style.borderBottomColor=y>20?'var(--line)':'transparent';
+  // ---- tour state
+  const cong=eo(seg(q,.1,.17)),sel=eo(seg(q,.3,.36)),approved=h17.approved;
+  const altReveal=approved?1:eio(seg(q,.42,.55)),dusk=eio(seg(q,.76,.92));
+  caps.forEach((c,i)=>c.classList.toggle('on',i===(q<.15?0:q<.3?1:q<.7?2:3)));
+  if(!mobile){
+    // camera
+    const H17p=pose(approved?H17alt:H17orig,h17.d,1);
+    const focus=q>=.3&&q<.74;const tz=focus?1.55:Math.min(mapC.width,mapC.height)/(Math.min(mapC.width/1500,mapC.height/900)>0?1:1);
+    const W=mapC.width,Hh=mapC.height;const fitZ=Math.min(W/1450,Hh/950);
+    const tgt=focus?{x:H17p.x+70,y:H17p.y+10,z:fitZ*3.1}:{x:800,y:520,z:fitZ};
+    const kk=1-Math.exp(-dt*2.2);cam.x+=(tgt.x-cam.x)*kk;cam.y+=(tgt.y-cam.y)*kk;cam.z=Math.exp(Math.log(cam.z)+(Math.log(tgt.z)-Math.log(cam.z))*kk);
+    const DPR=W/mapC.getBoundingClientRect().width*(con.getBoundingClientRect().width/1240);
+    mx.setTransform(1,0,0,1,0,0);
+    renderMap(mx,W,Hh,{...cam,z:cam.z},{dusk,cong,altReveal,approved,sel,labels:true});
+    // clock, KPIs
+    const mins=14*60+52+q*52;$('#clock').textContent=fmt(mins);$('#now').dataset.t=fmt(mins);$('#now').style.left=((mins/60-6)/15*100)+'%';
+    const intro=eo(seg(t,.4,2.2));
+    $('#k1').textContent=(96.4*intro+(approved?eo(seg(q,.7,.8))*.7:0)).toFixed(1)+'%';
+    $('#k3').textContent=Math.round((9412+q*1830)*intro).toLocaleString('en');
+    $('#k4').textContent='£'+(1.42*intro).toFixed(2);
+    $('#k5').textContent=(q>=.15&&!approved?2:1);$('#k5d').textContent=q>=.15&&!approved?'1 delay · 1 tacho':'1 tacho warning';
+    // toast
+    const tIn=eo(seg(q,.13,.17)),tOut=seg(q,.29,.32),ok=approved;
+    const tA=ok?eo(seg(q,.665,.69))*(1-seg(q,.78,.81)):tIn*(1-tOut);
+    $('#toast').style.opacity=tA;$('#toast').style.transform=`translateY(${(1-(ok?eo(seg(q,.665,.69)):tIn))*-14}px)`;
+    if(ok){$('#toastT').textContent='Reroute accepted by Priya';$('#toastS').textContent='HW-17 now via A50 → A34. New ETA 15:23 — inside the booking window.';$('#toastIc').style.background='color-mix(in srgb,var(--ok) 16%,transparent)';$('#toastIc').style.color='var(--ok)';$('#toastIc').textContent='✓'}
+    else{$('#toastT').textContent='HW-17 delayed · M6 J19';$('#toastS').textContent='Stationary traffic. ETA to Stoke DC now 15:42 (+24 min).';$('#toastIc').style.background='color-mix(in srgb,var(--warn) 18%,transparent)';$('#toastIc').style.color='var(--warn)';$('#toastIc').textContent='⚠'}
+    // alert row
+    const an=eo(seg(q,.15,.2));$('#alNew').style.opacity=an;$('#alNew').style.transform=`translateY(${(1-an)*-10}px)`;
+    $('#feed').style.transform=`translateY(${(an-1)*48}px)`;
+    if(approved){$('#alNew').classList.remove('new');$('#alT').textContent='HW-17 rerouted via A50';$('#alS').textContent='Saved 19 min · approved by Mo';$('#alIc').textContent='✓';$('#alIc').style.background='color-mix(in srgb,var(--ok) 16%,transparent)';$('#alIc').style.color='var(--ok)'}
+    else{$('#alNew').classList.add('new');$('#alT').textContent='HW-17 delayed at M6 J19';$('#alS').textContent='+24 min · Stoke DC · 26 pallets';$('#alIc').textContent='⚠';$('#alIc').style.background='color-mix(in srgb,var(--warn) 18%,transparent)';$('#alIc').style.color='var(--warn)'}
+    // telemetry panel
+    const tl=eo(seg(q,.31,.37))*(1-eo(seg(q,.8,.86)));$('#tele').style.opacity=tl;$('#tele').style.transform=`translateX(${(1-tl)*24}px)`;
+    const mph=Math.round(h17.v*1.55);$('#tSpd').innerHTML=mph+'<u>mph</u>';$('#tSpdB').style.width=clamp(mph/56)*100+'%';
+    const eta=approved?lerp(15*60+42,15*60+23,eo(seg(q,.66,.74))):15*60+42;$('#tEta').textContent=fmt(eta);$('#tEtaB').style.background=approved&&q>.7?'var(--ok)':'var(--warn)';$('#tEtaB').style.width=(62+q*20)+'%';
+    $('#vst').textContent=approved?'On route':'Delayed';$('#vst').style.background=`color-mix(in srgb,var(--${approved?'ok':'warn'}) 16%,transparent)`;$('#vst').style.color=`var(--${approved?'ok':'warn'})`;
+    const tach=78-q*20;$('#tTacho').textContent=Math.floor(tach/60)+'h '+String(Math.round(tach%60)).padStart(2,'0')+'m';$('#tTachoB').style.width=(tach/110*100)+'%';
+    $('#tFuel').innerHTML=Math.round(58-q*4)+'<u>%</u>';$('#tFuelB').style.width=(58-q*4)+'%';
+    if(t-sampleT>.25){sampleT=t;h17.hist.push(mph);if(h17.hist.length>60)h17.hist.shift()}
+    const hist=h17.hist.length>1?h17.hist:[0,0];const pts=hist.map((v,i)=>[i/(hist.length-1)*280,56-v/60*52]);
+    $('#sparkLine').setAttribute('d','M'+pts.map(p=>p.join(' ')).join(' L'));$('#sparkFill').setAttribute('d','M0 58 L'+pts.map(p=>p.join(' ')).join(' L')+' L280 58Z');
+    $('#tAvg').textContent='avg '+Math.round(hist.reduce((a,b)=>a+b,0)/hist.length)+' mph';
+    // reroute card
+    const rr=eo(seg(q,.38,.42))*(1-eo(seg(q,.7,.74)));$('#reroute').style.opacity=rr;$('#reroute').style.transform=`translateY(${(1-rr)*20}px)`;
+    const found=q>=.42;$('#rrT').textContent=found?'Faster route found':'Finding a faster route…';$('#spin').style.transform=`rotate(${t*400}deg)`;$('#spin').style.display=found?'none':'block';
+    $('#rrTxt').textContent=typed.slice(0,Math.floor(typed.length*seg(q,.42,.52)))+(found&&q<.53&&Math.sin(t*12)>0?'▍':'');
+    const hov=seg(q,.6,.62),press=q>=.63&&q<.66;$('#approve').style.boxShadow=`0 0 0 ${hov*4}px color-mix(in srgb,var(--accent) 25%,transparent)`;$('#approve').style.transform=`scale(${press?.96:1})`;
+    if(approved)$('#approve').textContent='✓ Approved';else $('#approve').textContent='Approve reroute';
+    lateBar.className=approved&&q>.7?'ac':'lt';lateBar.style.width=((approved&&q>.7?15.38:15.7)-13.6)/15*100+'%';
+    // cursor + clicks
+    const cp=cursorAt(q);const cv=eo(seg(q,.18,.22))*(1-eo(seg(q,.88,.93)));cursor.style.opacity=cv;cursor.style.transform=`translate(${cp.x}px,${cp.y}px) scale(${(q>.3&&q<.315)||(q>.635&&q<.655)?.86:1})`;
+    const rip=(a)=>{const k=seg(q,a,a+.035);return k>0&&k<1?k:0};const rk=rip(.3)||rip(.635);const rpos=rip(.3)?cursorAt(.3):cursorAt(.64);
+    ripple.style.opacity=rk?(1-rk):0;ripple.style.left=rpos.x+'px';ripple.style.top=rpos.y+'px';ripple.style.transform=`scale(${.3+rk*1.4})`;
+  }else{
+    // ---- driver app (mobile)
+    const W=dC.width,Hh=dC.height;const path=approved?H17alt:H17orig;const p=pose(path,h17.d,1);const ahead=at(path,h17.d+40);
+    const kk=1-Math.exp(-dt*2.4);dcam.x+=(p.x-dcam.x)*kk;dcam.y+=(p.y-dcam.y)*kk;
+    const trg=-Math.atan2(ahead.y-p.y,ahead.x-p.x)-Math.PI/2;let dr=trg-dcam.rot;dr=((dr+Math.PI*3)%(Math.PI*2))-Math.PI;dcam.rot+=dr*(1-Math.exp(-dt*1.6));
+    const DPR=W/drv.clientWidth;dcam.z=2.6*DPR;dx.setTransform(1,0,0,1,0,0);
+    renderMap(dx,W,Hh,dcam,{dusk,cong:1,altReveal:approved?1:eio(seg(q,.42,.55)),approved,sel:1,labels:false});
+    const mph=Math.round(h17.v*1.55);$('#dSpd').textContent=mph;
+    const eta=approved?lerp(15*60+42,15*60+23,eo(seg(q,.66,.74))):15*60+42;$('#dEta').textContent=fmt(eta);
+    const left=(path.L-h17.d)/16;$('#dLeft').textContent=left.toFixed(0)+' mi · '+Math.max(2,Math.round(eta-(14*60+52+q*52)))+' min';
+    $('#dChip').textContent=approved?'−19 min':'+24 min';$('#dChip').style.background=`color-mix(in srgb,var(--${approved?'ok':'warn'}) 16%,transparent)`;$('#dChip').style.color=`var(--${approved?'ok':'warn'})`;
+    const toJ=Math.max(0,(J19d-h17.d)/160);
+    $('#dDist').textContent=approved?(left>1?'Continue 6 mi':'Arriving'):toJ.toFixed(1)+' mi';$('#dRoad').textContent=approved?'A50 east, then A34 south':'Queue on M6 · exit 19 ahead';
+    $('#dArrowP').setAttribute('d',approved?'M8 20V12a4 4 0 0 1 4-4h6M14 4l4 4-4 4':'M12 20V5M6 11l6-6 6 6');
+    $('#dLane').style.background=approved?'var(--ok)':'var(--bad)';$('#dLane').textContent=approved?'✓ New route from dispatch · saves 19 min':'● Queue ahead · +24 min';
+    const mo=eo(seg(q,.38,.44))*(1-eo(seg(q,.66,.7)));$('#dModal').style.transform=`translateY(${(1-mo)*120}%)`;
+    const ar=$('#dAccept').getBoundingClientRect(),dr2=drv.getBoundingClientRect();const fx=ar.left-dr2.left+ar.width*.5,fy=ar.top-dr2.top+ar.height*.5;
+    const fv=seg(q,.52,.56)*(1-seg(q,.68,.7));const fk=back(eio(seg(q,.52,.62)));finger.style.opacity=fv;finger.style.left=lerp(dr2.width*.75,fx,fk)+'px';finger.style.top=lerp(dr2.height*.95,fy,fk)+'px';finger.style.transform=`scale(${q>.63&&q<.66?.8:1})`;
+    $('#dAccept').style.transform=`scale(${q>.63&&q<.66?.96:1})`;
+    const tach=78-q*20;$('#dTacho').textContent=Math.floor(tach/60)+'h '+String(Math.round(tach%60)).padStart(2,'0')+'m';
+    const br=eo(seg(q,.82,.86));$('#dBreak').style.opacity=br;$('#dBreak').style.transform=`translateY(${(1-br)*-12}px)`;$('#dLane').style.opacity=1-br;
+  }
+  // ---- post-tour sections
+  rvs.forEach(el=>{let k;if(el.closest('.hero'))k=eo(seg(t,.7+[...el.parentNode.children].indexOf(el)*.12,1.6+[...el.parentNode.children].indexOf(el)*.12));else{const r=el.getBoundingClientRect();k=eo(clamp((vh*.94-r.top)/(vh*.28)))}el.style.opacity=k;el.style.transform=`translateY(${(1-k)*34}px)`});
+  counts.forEach(el=>{const r=el.getBoundingClientRect();const k=eo(clamp((vh*.95-r.top)/(vh*.45)));el.textContent=Math.round(+el.dataset.to*k).toLocaleString('en')+el.dataset.suf});
+  requestAnimationFrame(frame);
+}
+// feature card mini-visuals
+(function(){const v1=$('#v1'),v2=$('#v2'),v3=$('#v3');
+  v1.innerHTML='<svg viewBox="0 0 300 120" width="100%" height="100%"><path d="M-10 90 C60 60 120 100 180 60 S280 30 320 40" fill="none" stroke="var(--case)" stroke-width="8" stroke-linecap="round"/><path d="M-10 30 C80 40 140 10 200 40 S270 100 320 90" fill="none" stroke="var(--case)" stroke-width="8" stroke-linecap="round"/><circle id="v1a" r="6" fill="var(--accent)"/><circle id="v1b" r="6" fill="var(--ink)"/></svg>';
+  v2.innerHTML='<div style="position:absolute;inset:16px;display:flex;flex-direction:column;gap:9px">'+[['HW-17','var(--warn)',.78],['HW-09','var(--ok)',.42],['HW-22','var(--ok)',.6]].map(([a,c,w],i)=>`<div style="display:flex;gap:10px;align-items:center;font-size:12px"><span class="mono" style="width:44px">${a}</span><div style="flex:1;height:10px;border-radius:9px;background:var(--line);overflow:hidden"><i class="v2b" data-w="${w}" style="display:block;height:100%;width:0;background:${c};border-radius:9px"></i></div></div>`).join('')+'</div>';
+  v3.innerHTML='<div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);width:150px;border-radius:14px;background:var(--surface);border:1px solid var(--line);padding:10px;box-shadow:0 10px 20px #0000000f;font-size:11px"><b style="font-size:12px">Faster route found</b><div style="color:var(--mute);margin-top:3px">Saves 19 min</div><div id="v3btn" style="margin-top:8px;height:26px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:600">Accept</div></div>';
+  const p1=v1.querySelectorAll('path');function anim(now){const t=now/1000;[[p1[0],'#v1a',.12],[p1[1],'#v1b',.09]].forEach(([p,id,s])=>{const L=p.getTotalLength(),pt=p.getPointAtLength(((t*s)%1)*L);const e=v1.querySelector(id);e.setAttribute('cx',pt.x);e.setAttribute('cy',pt.y)});
+    v2.querySelectorAll('.v2b').forEach((b,i)=>{b.style.width=(+b.dataset.w*(.85+.15*Math.sin(t*1.2+i*2)))*100+'%'});
+    const ph=(t%3)/3;const btn=v3.querySelector('#v3btn');btn.style.transform=`scale(${ph>.6&&ph<.66?.94:1})`;btn.textContent=ph>.66?'✓ Accepted':'Accept';btn.style.background=ph>.66?'var(--ok)':'var(--accent)';
+    requestAnimationFrame(anim)}requestAnimationFrame(anim)})();
+document.fonts.ready.then(()=>{setup();requestAnimationFrame(frame)});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOLCorp — Selected work</title>
+<meta name="description" content="Websites, web apps and mobile apps designed and built by LOLCorp PVT LTD.">
+<style>
+:root{--bg:#0a3838;--ink:#f4f7f6;--mute:#9fbcb8;--card:#0e4444;--line:#ffffff1a;--accent:#2fd1b0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+header{max-width:1200px;margin:0 auto;padding:56px 24px 24px;display:flex;align-items:center;gap:16px}
+header img{width:64px}
+header b{font-family:Arial,Helvetica,sans-serif;font-size:26px;letter-spacing:.01em}
+header span{color:var(--mute);letter-spacing:.2em;font-size:13px;margin-left:6px}
+.intro{max-width:1200px;margin:0 auto;padding:24px 24px 40px}
+.intro h1{font-size:clamp(36px,6vw,72px);letter-spacing:-.04em;line-height:1;font-weight:700;max-width:820px}
+.intro h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.intro p{margin-top:18px;color:var(--mute);max-width:560px;line-height:1.6;font-size:17px}
+.grid{max-width:1200px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.card:hover{transform:translateY(-6px);box-shadow:0 30px 60px #0006}
+.card video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#000;display:block}
+.card .meta{padding:18px 20px 22px}
+.card small{color:var(--accent);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.card h2{font-size:22px;margin-top:6px;letter-spacing:-.02em}
+.card p{color:var(--mute);font-size:14.5px;line-height:1.55;margin-top:6px}
+.card .go{margin-top:14px;display:inline-block;font-weight:600;font-size:14px}
+footer{max-width:1200px;margin:0 auto;padding:30px 24px 50px;color:var(--mute);font-size:13px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+footer a{color:var(--ink)}
+</style>
+</head>
+<body>
+<header><img src="img/lolcorp-mark.svg" alt="LOLCorp" style="filter:invert(1) brightness(1.2)"><b>LOLCorp</b><span>PVT LTD</span></header>
+<section class="intro">
+  <h1>Websites and software that <em>move.</em></h1>
+  <p>Selected work from our studio: story-driven websites, web apps and mobile apps, every one designed and built in-house.</p>
+</section>
+<main class="grid" id="grid">
+  <!-- WORK:START -->
+  <a class="card" href="haulwise/"><video src="reels/haulwise.mp4" poster="img/haulwise.jpg" muted loop playsinline preload="none"></video><div class="meta"><small>Fleet management · Web app</small><h2>Haulwise</h2><p>A live control room for a UK freight fleet, plus the driver app in the cab.</p><span class="go">Open live demo →</span></div></a>
+  <a class="card" href="abyssal/"><video src="reels/abyssal.mp4" poster="img/abyssal.jpg" muted loop playsinline preload="none"></video><div class="meta"><small>Interactive storytelling · Website</small><h2>Abyssal</h2><p>An 11 km dive into the ocean, guided by a hand-animated jellyfish.</p><span class="go">Open live demo →</span></div></a>
+  <!-- WORK:END -->
+</main>
+<footer><span>© LOLCorp PVT LTD</span><a href="https://marketplace.lolcorp.co.uk">marketplace.lolcorp.co.uk</a></footer>
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.preload='auto';v.play().catch(()=>{})}else v.pause()}),{threshold:.4});
+document.querySelectorAll('video').forEach(v=>io.observe(v));
+</script>
+</body>
+</html>
