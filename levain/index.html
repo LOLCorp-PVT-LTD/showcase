@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Levain — reserve a warm loaf, watch it bake</title>
+<style>
+@font-face{font-family:Young;src:url(assets/fonts/young-serif-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Instr;src:url(assets/fonts/instrument-serif-latin-400-italic.woff2) format("woff2");font-style:italic}
+@font-face{font-family:DM;src:url(assets/fonts/dm-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:DM;src:url(assets/fonts/dm-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:DM;src:url(assets/fonts/dm-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:DM;src:url(assets/fonts/dm-sans-latin-700-normal.woff2) format("woff2");font-weight:700}
+:root{--flour:#f6efe4;--paper:#fbf7f0;--card:#fffdf9;--ink:#2a1d14;--mute:#8a7766;--line:#eadfce;--crust:#6b3a1e;--gold:#d9a066;--rye:#4c6b3c;--ember:#e2562b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--flour);color:var(--ink);font-family:DM,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:inherit;text-decoration:none}
+em{font-family:Instr,serif;font-style:italic;font-weight:400;color:var(--ember);letter-spacing:-.01em}
+.nav{position:fixed;inset:0 0 auto;z-index:40;transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:30px;padding:18px 44px;background:color-mix(in srgb,var(--flour) 85%,transparent);backdrop-filter:blur(12px)}
+.brand{display:flex;gap:10px;align-items:center;font-family:Young;font-size:22px}
+.brand img{width:32px}
+.nav .links{display:flex;gap:24px;font-size:14px;color:var(--mute)}
+.nav .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:99px;font-weight:600;font-size:14px}
+.pill.dark{background:var(--ink);color:var(--flour)}
+.pill.light{background:var(--card);border:1px solid var(--line)}
+/* hero */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:30px;padding:120px 44px 40px;max-width:1280px;margin:0 auto}
+.kick{display:inline-flex;gap:10px;align-items:center;font-size:13px;color:var(--mute);padding:7px 14px 7px 8px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+.kick b{width:22px;height:22px;border-radius:50%;background:var(--ember);display:grid;place-items:center;color:#fff;font-size:12px}
+h1{font-family:Young;font-weight:400;font-size:clamp(48px,6.6vw,104px);line-height:.98;letter-spacing:-.035em;margin-top:24px}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.1em}h1 .ln>span{display:inline-block}
+.hero p{margin-top:22px;max-width:470px;font-size:18px;line-height:1.6;color:var(--mute)}
+.hero .ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero .meta{display:flex;gap:28px;margin-top:44px;font-size:13px;color:var(--mute)}
+.hero .meta b{display:block;font-family:Young;font-weight:400;font-size:26px;color:var(--ink)}
+#heroC{width:100%;aspect-ratio:1/1;max-height:80vh}
+/* tour */
+.tour{position:relative;height:640vh}
+.pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 390px 1fr;align-items:center;gap:56px;padding:72px 44px 10px;max-width:1280px;margin:0 auto}
+.steps{display:flex;flex-direction:column;gap:6px}
+.step{padding:16px 18px;border-radius:18px;transition:none;position:relative}
+.step small{font-size:12px;letter-spacing:.14em;color:var(--mute);font-weight:600}
+.step h3{font-family:Young;font-weight:400;font-size:26px;letter-spacing:-.02em;margin-top:4px}
+.step p{font-size:14.5px;line-height:1.55;color:var(--mute);margin-top:6px;max-width:330px}
+.step .bar{position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;background:var(--line)}
+.step .bar i{display:block;width:100%;background:var(--ember);border-radius:3px}
+.side{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.stat{padding:14px 18px;border-radius:18px;background:var(--card);border:1px solid var(--line);box-shadow:0 14px 30px #2a1d140d;min-width:200px}
+.stat small{font-size:12px;color:var(--mute)}
+.stat b{display:block;font-family:Young;font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}
+/* device */
+.device{position:relative;width:390px;height:844px;border-radius:58px;background:#1d140e;padding:12px;box-shadow:0 50px 100px #2a1d1438,inset 0 0 0 2px #ffffff14;transform-origin:50% 50%}
+.screen{position:relative;width:100%;height:100%;border-radius:46px;overflow:hidden;background:var(--paper)}
+.island{position:absolute;left:50%;top:10px;width:120px;height:34px;margin-left:-60px;border-radius:20px;background:#000;z-index:30}
+.sb{position:absolute;left:0;right:0;top:0;height:50px;display:flex;justify-content:space-between;align-items:center;padding:6px 30px 0;font-size:15px;font-weight:600;z-index:25}
+.view{position:absolute;inset:0;padding:58px 0 0;background:var(--paper);overflow:hidden}
+.pad{padding:0 20px}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding-top:10px;font-size:10.5px;color:var(--mute);z-index:20}
+.tabbar span{display:flex;flex-direction:column;align-items:center;gap:4px}
+.tabbar span.on{color:var(--ink)}
+
+.tabbar span.bag{position:relative}
+.tabbar span.bag b{position:absolute;top:-4px;right:-8px;min-width:18px;height:18px;border-radius:9px;background:var(--ember);color:#fff;font-size:11px;display:grid;place-items:center;transform:scale(0)}
+/* home */
+.hi{font-size:14px;color:var(--mute);margin-top:6px}
+.title{font-family:Young;font-weight:400;font-size:30px;letter-spacing:-.02em;line-height:1.05;margin-top:4px}
+.loc{margin-top:14px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);font-size:13px}
+.loc .dot{width:9px;height:9px;border-radius:50%;background:var(--rye);box-shadow:0 0 0 4px #4c6b3c22}
+.loc b{font-weight:600}
+.chip{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border-radius:99px;background:#e2562b14;color:var(--ember);font-size:12.5px;font-weight:600}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 10px}
+.sec-h b{font-family:Young;font-weight:400;font-size:20px}.sec-h span{font-size:12.5px;color:var(--mute)}
+.rail{display:flex;gap:12px;padding:0 20px;overflow:visible}
+.bake{flex:none;width:158px;border-radius:20px;background:var(--card);border:1px solid var(--line);padding:10px;position:relative}
+.bake canvas{width:138px;height:104px;display:block;border-radius:14px;background:#f1e6d4}
+.bake b{display:block;font-size:14px;margin-top:8px}.bake span{font-size:12px;color:var(--mute)}
+.bake .pr{position:absolute;right:10px;bottom:12px;font-weight:700;font-size:13px}
+.usual{margin:18px 20px 0;border-radius:20px;background:var(--ink);color:var(--flour);padding:16px;display:flex;gap:14px;align-items:center}
+.usual b{font-family:Young;font-weight:400;font-size:18px;display:block}.usual span{font-size:12.5px;opacity:.7}
+.usual .go{margin-left:auto;width:40px;height:40px;border-radius:50%;background:var(--ember);display:grid;place-items:center;font-weight:700}
+/* product */
+.back{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--mute);padding:6px 20px}
+#prodC{width:100%;height:300px;display:block}
+.pname{font-family:Young;font-weight:400;font-size:32px;letter-spacing:-.02em}
+.pdesc{font-size:14px;color:var(--mute);line-height:1.55;margin-top:8px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.facts div{border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--card)}
+.facts small{font-size:11px;color:var(--mute);display:block}.facts b{font-size:15px}
+.cta{position:absolute;left:20px;right:20px;bottom:34px;height:58px;border-radius:20px;background:var(--ink);color:var(--flour);display:flex;align-items:center;justify-content:center;gap:10px;font-weight:600;font-size:16px;overflow:hidden}
+/* live */
+.live-h{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ember)}
+.live-h i{width:8px;height:8px;border-radius:50%;background:var(--ember)}
+#ovenC{width:350px;height:250px;display:block;border-radius:26px;margin:14px 20px 0;background:#140b07}
+.stages{display:flex;gap:6px;padding:12px 20px 0;flex-wrap:wrap}
+.stages span{font-size:11.5px;padding:6px 10px;border-radius:99px;border:1px solid var(--line);color:var(--mute);background:var(--card)}
+.stages span.on{background:var(--ink);color:var(--flour);border-color:var(--ink)}
+.stages span.done{color:var(--rye);border-color:#4c6b3c55}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 20px 0}
+.trio div{border-radius:16px;background:var(--card);border:1px solid var(--line);padding:10px 12px}
+.trio small{font-size:11px;color:var(--mute);display:block}.trio b{font-family:Young;font-weight:400;font-size:22px;font-variant-numeric:tabular-nums}
+#chartC{width:350px;height:110px;display:block;margin:12px 20px 0;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+/* ready */
+#rackC{width:100%;height:250px;display:block}
+.code{margin:6px 20px 0;border-radius:22px;background:var(--card);border:1px solid var(--line);padding:16px;display:flex;gap:16px;align-items:center}
+.code canvas{width:96px;height:96px;border-radius:10px;background:#fff}
+.code small{font-size:12px;color:var(--mute)}.code b{display:block;font-family:Young;font-weight:400;font-size:30px;letter-spacing:.02em}
+.map{margin:12px 20px 0;height:150px;border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative;background:#efe6d6}
+.map svg{width:100%;height:100%}
+.map .eta{position:absolute;left:12px;bottom:12px;padding:8px 12px;border-radius:12px;background:var(--card);font-size:12.5px;font-weight:600;box-shadow:0 6px 14px #0001}
+.banner{position:absolute;left:10px;right:10px;top:-120px;border-radius:22px;background:color-mix(in srgb,#fff 88%,transparent);backdrop-filter:blur(16px);box-shadow:0 18px 40px #2a1d1430;padding:12px 14px;display:flex;gap:12px;align-items:center;z-index:28}
+.banner img{width:38px;border-radius:10px}
+.banner b{font-size:13.5px;display:block}.banner span{font-size:12.5px;color:var(--mute)}
+#finger{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#2a1d1433;border:2px solid #fff;box-shadow:0 6px 16px #0004;z-index:40;opacity:0;pointer-events:none}
+#fly{position:absolute;width:70px;height:52px;z-index:35;pointer-events:none;opacity:0}
+/* sections */
+.sec{max-width:1180px;margin:0 auto;padding:130px 44px 30px}
+.sec .eb{font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--ember)}
+.sec h2{font-family:Young;font-weight:400;font-size:clamp(36px,4.6vw,64px);letter-spacing:-.03em;line-height:1.02;margin-top:12px;max-width:760px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px}
+.cardx{border-radius:24px;background:var(--card);border:1px solid var(--line);padding:22px}
+.cardx canvas{width:100%;height:150px;border-radius:16px;background:#f1e6d4;display:block}
+.cardx h4{font-family:Young;font-weight:400;font-size:21px;margin-top:16px}
+.cardx p{color:var(--mute);font-size:14.5px;line-height:1.6;margin-top:6px}
+.visit{display:grid;grid-template-columns:1.2fr 1fr;gap:30px;margin-top:40px;align-items:center}
+.hours{border-radius:24px;background:var(--ink);color:var(--flour);padding:30px}
+.hours div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #ffffff1a;font-size:15px}
+.hours div:last-child{border:0}
+.get{margin:120px auto 0;max-width:1180px;padding:0 44px}
+.getcard{border-radius:32px;background:var(--crust);color:var(--flour);padding:64px 56px;position:relative;overflow:hidden}
+.getcard h2{font-family:Young;font-weight:400;font-size:clamp(36px,5vw,72px);letter-spacing:-.03em;line-height:1;max-width:640px}
+.getcard em{color:var(--gold)}
+.getcard .pill{margin-top:28px;margin-right:10px}
+footer{max-width:1180px;margin:0 auto;padding:40px 44px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--flour);display:grid;place-items:center}
+#pre img{width:62px}
+@media (max-width:760px){
+  .nav{padding:14px 18px}.nav .links,.nav .pill.light{display:none}.nav .pill{height:38px;font-size:13px;padding:0 14px}
+  .hero{grid-template-columns:1fr;padding:96px 20px 30px;min-height:auto}
+  #heroC{max-height:46vh}
+  .hero .meta{gap:18px}
+  .pin{grid-template-columns:1fr;padding:0;gap:0;height:100vh}
+  .steps,.side{display:none}
+  .device{width:100vw;height:100vh;border-radius:0;padding:0;box-shadow:none;transform:none!important}
+  .screen{border-radius:0}.island{display:none}
+  .sec{padding:90px 20px 20px}.cards,.visit{grid-template-columns:1fr}
+  .get{padding:0 20px}.getcard{padding:40px 26px}
+  footer{flex-direction:column;gap:8px;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav"><span class="brand"><img src="src/img/logo.svg" alt="">Levain</span><div class="links"><a>Today's bakes</a><a>Live oven</a><a>Our bakery</a><a>Wholesale</a></div><div class="sp"></div><a class="pill light">Visit us</a><a class="pill dark" href="#get">Get the app</a></nav>
+
+<header class="hero">
+  <div>
+    <span class="kick rv"><b>●</b>Out of the oven at 11:40 today</span>
+    <h1><span class="ln"><span>Bread, the</span></span><span class="ln"><span><em>moment</em> it's ready.</span></span></h1>
+    <p class="rv">Reserve a warm loaf from Levain, watch it rise and brown in our oven, live, then pick it up while it's still crackling on the rack.</p>
+    <div class="ctas rv"><a class="pill dark" href="#get">Get the app</a><a class="pill light" href="#tour">See how it works ↓</a></div>
+    <div class="meta rv"><div><b>38 h</b>slow ferment</div><div><b>245°C</b>stone deck oven</div><div><b>6 a.m.</b>first bake, daily</div></div>
+  </div>
+  <canvas id="heroC"></canvas>
+</header>
+
+<section class="tour" id="tour">
+  <div class="pin">
+    <div class="steps" id="steps">
+      <div class="step"><span class="bar"><i></i></span><small>01</small><h3>Browse today's bakes</h3><p>See exactly what's coming out of the oven, and when, before you leave the house.</p></div>
+      <div class="step"><span class="bar"><i></i></span><small>02</small><h3>Reserve a warm loaf</h3><p>One tap holds a loaf from the next bake. No queue, no sold-out sign.</p></div>
+      <div class="step"><span class="bar"><i></i></span><small>03</small><h3>Watch it bake, live</h3><p>Oven spring, the ear opening, the crust turning gold, right from the oven camera.</p></div>
+      <div class="step"><span class="bar"><i></i></span><small>04</small><h3>Collect it singing</h3><p>Your code and a walking route are ready the minute it leaves the oven.</p></div>
+    </div>
+    <div class="device" id="device"><div class="screen" id="screen">
+      <div class="island"></div>
+      <div class="sb" id="sb"><span id="sbt">10:52</span><span>●●● ▮</span></div>
+      <!-- HOME -->
+      <div class="view" id="vHome">
+        <div class="pad"><div class="hi">Good morning, Sam</div><div class="title">What's baking<br>at Levain</div>
+          <div class="loc"><span class="dot"></span><div><b>Stokes Croft, Bristol</b><br><span style="color:var(--mute)">Open till 4 pm · 6 min walk</span></div></div>
+          <div class="sec-h"><b>Next bake · 11:40</b><span class="chip">● Oven at 245°C</span></div>
+        </div>
+        <div class="rail" id="rail"></div>
+        <div class="usual"><div><b>Your usual</b><span>Country sourdough · Sat mornings</span></div><span class="go">→</span></div>
+        <div class="tabbar"><span class="on"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"/></svg>Today</span><span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3c3 4 5 6 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3-1-3 0-6 1-9z"/></svg>Oven</span><span class="bag" id="bagTab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 8h14l-1 12H6zM9 8a3 3 0 0 1 6 0"/></svg>Bag<b id="bagN">1</b></span><span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Me</span></div>
+      </div>
+      <!-- PRODUCT -->
+      <div class="view" id="vProd" style="transform:translateX(100%)">
+        <div class="back">‹ Today</div>
+        <canvas id="prodC"></canvas>
+        <div class="pad"><div class="chip">● 6 left from the 11:40 bake</div><div class="pname" style="margin-top:10px">Country sourdough</div>
+          <div class="pdesc">Stoneground wheat and a little rye, fermented for 38 hours, baked dark on the stone. Blistered crust, open, custardy crumb.</div>
+          <div class="facts"><div><small>Weight</small><b>900 g</b></div><div><small>Ferment</small><b>38 h</b></div><div><small>Price</small><b>£5.20</b></div></div></div>
+        <div class="cta" id="cta"><span id="ctaT">Reserve a warm loaf · £5.20</span></div>
+      </div>
+      <!-- LIVE -->
+      <div class="view" id="vLive" style="transform:translateX(100%)">
+        <div class="back">‹ Bag</div>
+        <div class="pad"><div class="live-h"><i id="liveDot"></i>LIVE · OVEN CAM 2</div><div class="title" style="font-size:26px">Your loaf is in the oven</div></div>
+        <canvas id="ovenC"></canvas>
+        <div class="stages" id="stages"><span>Loaded</span><span>Oven spring</span><span>Steam out</span><span>Browning</span><span>Done</span></div>
+        <div class="trio"><div><small>Oven</small><b id="tOven">245°</b></div><div><small>Core</small><b id="tCore">31°</b></div><div><small>Ready in</small><b id="tLeft">40:00</b></div></div>
+        <canvas id="chartC"></canvas>
+      </div>
+      <!-- READY -->
+      <div class="view" id="vReady" style="transform:translateX(100%)">
+        <div class="pad"><div class="live-h" style="color:var(--rye)"><i style="background:var(--rye)"></i>READY · COOLING RACK</div><div class="title" style="font-size:26px">Out of the oven, <em>singing.</em></div></div>
+        <canvas id="rackC"></canvas>
+        <div class="code"><canvas id="qrC" width="96" height="96"></canvas><div><small>Pickup code</small><b>LV-2741</b><small>Show this at the counter</small></div></div>
+        <div class="map"><svg viewBox="0 0 350 150" id="mapS"></svg><span class="eta" id="eta">6 min walk · warm until 12:30</span></div>
+      </div>
+      <div class="banner" id="banner"><img src="src/img/logo.svg" alt=""><div><b>Your loaf just went in 🔥</b><span>Country sourdough · ready at 12:20. Tap to watch.</span></div></div>
+      <canvas id="fly" width="140" height="104"></canvas>
+      <div id="finger"></div>
+    </div></div>
+    <div class="side">
+      <div class="stat"><small>Bake progress</small><b id="sProg">—</b></div>
+      <div class="stat"><small>Crust colour</small><b id="sCrust">Pale</b></div>
+      <div class="stat"><small>Loaves reserved today</small><b id="sRes">184</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eb rv">FROM OUR OVENS, NOT A WAREHOUSE</div>
+  <h2 class="rv">Three bakers, one stone oven, and a starter called Margaret.</h2>
+  <div class="cards">
+    <div class="cardx rv"><canvas id="c1"></canvas><h4>A 38-hour ferment</h4><p>Mixed at dawn, folded by hand, retarded overnight. It's slower, and you can taste it.</p></div>
+    <div class="cardx rv"><canvas id="c2"></canvas><h4>Baked dark, on purpose</h4><p>We push the crust past golden to deep mahogany. That's where the flavour is.</p></div>
+    <div class="cardx rv"><canvas id="c3"></canvas><h4>Nothing goes to waste</h4><p>Reservations tell us how much to bake. Leftovers go to Bristol's food banks by 5 pm.</p></div>
+  </div>
+  <div class="visit">
+    <div><div class="eb rv">VISIT</div><h2 class="rv" style="font-size:44px">142 Stokes Croft, Bristol BS1 3RU</h2><p class="rv" style="color:var(--mute);margin-top:14px;line-height:1.6;max-width:440px">Bakes come out at 7:00, 9:20, 11:40 and 14:00. Coffee from Small Batch, butter from Bath Soft Cheese.</p></div>
+    <div class="hours rv"><div><span>Tue – Fri</span><b>7:00 – 16:00</b></div><div><span>Saturday</span><b>7:30 – 15:00</b></div><div><span>Sunday</span><b>8:00 – 13:00</b></div><div><span>Monday</span><b>Starter's day off</b></div></div>
+  </div>
+</section>
+
+<div class="get" id="get"><div class="getcard rv"><h2>Warm bread, <em>on your schedule.</em></h2><p style="margin-top:16px;opacity:.75;max-width:440px;line-height:1.6">Free on iPhone and Android. Your first loaf is on us.</p><a class="pill light" style="color:var(--ink)">Download for iPhone</a><a class="pill light" style="color:var(--ink)">Download for Android</a></div></div>
+<footer><span>© Levain Bakery Ltd · Bristol</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,back=t=>{const c=1.5;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const sm=t=>t*t*(3-2*t);
+const pre=$('#pre');if(sessionStorage.getItem('levain-seen'))pre.remove();else{sessionStorage.setItem('levain-seen','1');setTimeout(()=>{pre.style.transition='opacity .6s';pre.style.opacity=0;setTimeout(()=>pre.remove(),700)},1000)}
+let seed=21;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+const hex=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));
+const rgb=(c,a=1)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+// crust colour along a Maillard ramp: raw dough -> pale -> golden -> mahogany
+const RAMP=['#eadcc2','#e3c597','#d29a58','#a8622c','#7a3f1c'].map(hex);
+function crustAt(b){b=clamp(b);const x=b*(RAMP.length-1),i=Math.min(RAMP.length-2,Math.floor(x));return mixc(RAMP[i],RAMP[i+1],x-i)}
+const flourDots=Array.from({length:260},()=>[R()*2-1,R()*2-1,R()]);
+function fit(c){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio,2);const w=Math.round(r.width*d),h=Math.round(r.height*d);if(c.width!==w||c.height!==h){c.width=w;c.height=h}const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return[x,r.width,r.height]}
+/* A batard: flat base, domed top whose height comes from oven spring, a long curved score that opens into an "ear". */
+function loaf(x,cx,cy,L,H,o){ // o:{rise,ear,bake,flour,rot}
+  const rise=o.rise??1,ear=o.ear??1,bake=o.bake??1,fl=o.flour??.6;
+  const h=Math.min(H,L*.38)*(.6+.4*rise),w=L*(1+.05*(1-rise));
+  // batard profile: flat base, rounded ends, gently domed top that is flatter in the middle
+  const top=u=>-h*Math.pow(Math.max(0,1-Math.pow(Math.abs(u),2.6)),.55); // u in [-1,1]
+  x.save();x.translate(cx,cy);x.rotate(o.rot||0);
+  const sg=x.createRadialGradient(0,2,w*.15,0,2,w*.6);sg.addColorStop(0,'rgba(40,20,8,.38)');sg.addColorStop(1,'rgba(40,20,8,0)');x.fillStyle=sg;x.beginPath();x.ellipse(0,4,w*.6,h*.16,0,0,6.28);x.fill();
+  const body=()=>{x.beginPath();x.moveTo(-w*.5,0);for(let i=0;i<=40;i++){const u=-1+2*i/40;x.lineTo(u*w*.5,top(u))}x.quadraticCurveTo(w*.5,h*.06,w*.38,h*.07);x.lineTo(-w*.38,h*.07);x.quadraticCurveTo(-w*.5,h*.06,-w*.5,0);x.closePath()};
+  const c=crustAt(bake),dark=mixc(c,[35,15,5],.4+.2*bake),lite=mixc(c,[255,236,200],.22);
+  body();const g=x.createLinearGradient(0,-h,0,h*.07);g.addColorStop(0,rgb(lite));g.addColorStop(.45,rgb(c));g.addColorStop(1,rgb(dark));x.fillStyle=g;x.fill();
+  x.save();body();x.clip();
+  // side shading: the ends curve away from the light
+  const sgd=x.createLinearGradient(-w*.5,0,w*.5,0);sgd.addColorStop(0,'rgba(30,12,4,.35)');sgd.addColorStop(.25,'rgba(30,12,4,0)');sgd.addColorStop(.75,'rgba(30,12,4,0)');sgd.addColorStop(1,'rgba(30,12,4,.4)');x.fillStyle=sgd;x.fillRect(-w*.5,-h,w,h*1.1);
+  if(bake>.45){x.fillStyle=rgb(mixc(c,[50,20,6],.6),.35*(bake-.45)*2);for(let i=0;i<90;i++){const d=flourDots[i];const u=d[0]*.9;x.beginPath();x.arc(u*w*.5,top(u)*(.25+.7*d[2]),.8+d[2]*1.4,0,6.28);x.fill()}}
+  // flour dusting from the banneton: heavier on the shoulders, burnt away where the crust browns most
+  x.fillStyle='rgb(250,246,238)';flourDots.forEach(([a,b2,s2])=>{const u=a*.95;const py=top(u)*(.35+.6*((b2+1)/2));x.globalAlpha=fl*(.25+.55*Math.abs(a))*s2*(1-.5*bake);x.beginPath();x.arc(u*w*.5,py,.6+s2*1.2,0,6.28);x.fill()});x.globalAlpha=1;
+  // the score: runs along the top just off-centre; as it opens it reveals pale crumb under a lifted, darker lip (the ear)
+  const u0=-.62,u1=.66,open=ear*h*.2;
+  const sy=(u,k)=>top(u)*.97+h*.06+Math.sin((u-u0)/(u1-u0)*Math.PI)*k;
+  x.beginPath();for(let i=0;i<=30;i++){const u=lerp(u0,u1,i/30);x.lineTo(u*w*.5,sy(u,-open*.15))}for(let i=30;i>=0;i--){const u=lerp(u0,u1,i/30);x.lineTo(u*w*.5,sy(u,open))}x.closePath();
+  const cg=x.createLinearGradient(0,-h,0,-h*.55);cg.addColorStop(0,rgb(mixc(crustAt(bake*.5),[255,246,228],.3)));cg.addColorStop(1,rgb(crustAt(bake*.75)));x.fillStyle=cg;x.fill();
+  x.beginPath();for(let i=0;i<=30;i++){const u=lerp(u0,u1,i/30);x.lineTo(u*w*.5,sy(u,-open*.15))}x.strokeStyle=rgb(mixc(c,[25,10,3],.6));x.lineWidth=Math.max(1,h*.045*(.3+ear));x.lineCap='round';x.stroke();
+  x.beginPath();for(let i=0;i<=30;i++){const u=lerp(u0,u1,i/30);x.lineTo(u*w*.5,sy(u,-open*.15)-h*.03)}x.strokeStyle=`rgba(255,232,190,${.25*ear})`;x.lineWidth=1;x.stroke();
+  x.restore();
+  body();x.strokeStyle=`rgba(255,235,200,${.1+.1*(1-bake)})`;x.lineWidth=1;x.stroke();
+  x.restore();
+}
+/* ---------------- HERO: a loaf resting on a board, steam rising, flour drifting ---------------- */
+const steam=Array.from({length:40},()=>({o:R(),x:R()*2-1,s:.5+R(),w:R()*6.28}));
+const flourFall=Array.from({length:70},()=>({x:R(),y:R(),s:.3+R(),p:R()*6.28}));
+function drawHero(t){const c=$('#heroC');const[x,W,H]=fit(c);x.clearRect(0,0,W,H);
+  const cx=W*.52,cy=H*.66;
+  // board
+  x.save();x.translate(cx,cy+18);x.rotate(-.06);const bg=x.createLinearGradient(-W*.4,0,W*.4,0);bg.addColorStop(0,'#b98a5c');bg.addColorStop(1,'#a3744a');x.fillStyle=bg;x.beginPath();x.roundRect(-W*.42,-8,W*.84,40,18);x.fill();x.strokeStyle='rgba(80,45,20,.18)';x.lineWidth=1;for(let i=0;i<6;i++){x.beginPath();x.moveTo(-W*.4,i*6-4);x.bezierCurveTo(-W*.1,i*6+2,W*.1,i*6-6,W*.4,i*6-2);x.stroke()}x.restore();
+  const k=eo(clamp((t-.3)/1.6));
+  loaf(x,cx,cy,W*.62*(.9+.1*k),H*.34,{rise:.9+.1*k,ear:1,bake:.92,flour:.7,rot:-.06});
+  // steam: buoyant wisps that widen and curl as they rise
+  x.save();x.globalCompositeOperation='screen';
+  steam.forEach(s=>{const life=((t*.12*s.s+s.o)%1);const y=cy-H*.28-life*H*.55,xx=cx+s.x*W*.18+Math.sin(life*5+s.w+t*.6)*30*life;const r=10+life*50;const g=x.createRadialGradient(xx,y,0,xx,y,r);g.addColorStop(0,`rgba(255,255,255,${.22*(1-life)*Math.min(1,life*5)})`);g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(xx,y,r,0,6.28);x.fill()});x.restore();
+  flourFall.forEach(f=>{const yy=((f.y*H+t*12*f.s)%H),xx=f.x*W+Math.sin(t*.7+f.p)*14;x.fillStyle=`rgba(255,253,248,${.5*f.s})`;x.beginPath();x.arc(xx,yy,f.s*1.6,0,6.28);x.fill()});
+}
+/* ---------------- APP ---------------- */
+const BAKES=[['Country sourdough','11:40 · 6 left','£5.20',.92,'bat'],['Seeded rye','11:40 · 9 left','£5.80',1,'rye'],['Cardamom bun','9:20 · warm','£3.40',.75,'bun'],['Focaccia','14:00 · 12 left','£4.50',.6,'foc']];
+const rail=$('#rail');BAKES.forEach(([n,s,p],i)=>{rail.insertAdjacentHTML('beforeend',`<div class="bake" id="bk${i}"><canvas></canvas><b>${n}</b><span>${s}</span><span class="pr">${p}</span></div>`)});
+function drawThumb(c,kind,bake,t){const[x,W,H]=fit(c);x.clearRect(0,0,W,H);
+  if(kind==='bat')loaf(x,W/2,H*.78,W*.82,H*.62,{bake,flour:.6});
+  else if(kind==='rye'){loaf(x,W/2,H*.8,W*.74,H*.5,{bake:1,ear:.2,flour:.1});x.fillStyle='rgba(240,225,190,.9)';for(let i=0;i<40;i++){const d=flourDots[i];x.beginPath();x.ellipse(W/2+d[0]*W*.3,H*.55+d[1]*H*.12,1.6,.8,d[2]*3,0,6.28);x.fill()}}
+  else if(kind==='bun'){for(let i=0;i<3;i++){const bx=W*(.3+i*.2),by=H*.72-(i%2)*8;const g=x.createRadialGradient(bx-6,by-14,2,bx,by-8,26);g.addColorStop(0,'#e7b277');g.addColorStop(1,'#9c5a26');x.fillStyle=g;x.beginPath();x.ellipse(bx,by-8,24,18,0,0,6.28);x.fill();x.strokeStyle='rgba(255,240,210,.5)';x.lineWidth=2;x.beginPath();x.arc(bx,by-8,10,0,4.5);x.stroke()}x.fillStyle='rgba(255,255,255,.9)';for(let i=0;i<50;i++){const d=flourDots[i+50];x.fillRect(W*.5+d[0]*W*.32,H*.58+d[1]*H*.14,1.2,1.2)}}
+  else{const g=x.createLinearGradient(0,H*.3,0,H*.9);g.addColorStop(0,'#e9b86e');g.addColorStop(1,'#b97a35');x.fillStyle=g;x.beginPath();x.roundRect(W*.12,H*.35,W*.76,H*.45,10);x.fill();x.fillStyle='rgba(120,70,25,.35)';for(let i=0;i<24;i++){x.beginPath();x.arc(W*(.18+(i%6)*.13),H*(.45+Math.floor(i/6)*.09),3,0,6.28);x.fill()}x.fillStyle='#5f7d3e';for(let i=0;i<6;i++){x.beginPath();x.ellipse(W*(.24+i*.1),H*(.5+(i%2)*.15),4,2,i,0,6.28);x.fill()}}
+}
+const views={home:$('#vHome'),prod:$('#vProd'),live:$('#vLive'),ready:$('#vReady')};
+// iOS-style push: incoming slides from the right; outgoing parallaxes left 30% and dims
+function push(from,to,k){const e=eio(k);to.style.transform=`translateX(${(1-e)*100}%)`;to.style.boxShadow=`-20px 0 40px rgba(0,0,0,${.12*e*(1-e)*4})`;if(from){from.style.transform=`translateX(${-30*e}%)`;from.style.filter=`brightness(${1-.12*e})`}}
+function screenPt(el,fx=.5,fy=.5){const s=$('#screen').getBoundingClientRect(),r=el.getBoundingClientRect(),sc=s.width/$('#screen').offsetWidth;return{x:(r.left-s.left)/sc+r.width/sc*fx,y:(r.top-s.top)/sc+r.height/sc*fy}}
+function oven(t,b){const c=$('#ovenC');const[x,W,H]=fit(c);
+  const heat=.75+.25*Math.sin(t*1.7)*Math.sin(t*.9+1);
+  const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#2a140a');bg.addColorStop(.5,'#1a0c06');bg.addColorStop(1,'#120804');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  // heating elements glow, top and bottom
+  [[H*.08,1],[H*.95,.7]].forEach(([y,s])=>{const g=x.createLinearGradient(0,y-24,0,y+24);g.addColorStop(0,'rgba(255,90,20,0)');g.addColorStop(.5,`rgba(255,${110+40*heat|0},40,${.55*s*heat})`);g.addColorStop(1,'rgba(255,90,20,0)');x.fillStyle=g;x.fillRect(0,y-24,W,48);x.strokeStyle=`rgba(255,${150+60*heat|0},70,${.9*s})`;x.lineWidth=3;x.beginPath();for(let i=0;i<=W;i+=6){x.lineTo(i,y+Math.sin(i*.12)*3)}x.stroke()});
+  // stone deck
+  const dg=x.createLinearGradient(0,H*.74,0,H);dg.addColorStop(0,'#4a3424');dg.addColorStop(1,'#2a1c12');x.fillStyle=dg;x.fillRect(0,H*.74,W,H*.26);
+  x.fillStyle='rgba(255,220,180,.06)';for(let i=0;i<30;i++){const d=flourDots[i];x.fillRect(W*(.5+d[0]*.5),H*(.78+.18*d[2]),1.5,1.5)}
+  // oven spring: fast early rise, then set. Ear opens with the rise.
+  const rise=1/(1+Math.exp(-(b-.18)*18));const ear=sm(clamp((b-.08)/.32));
+  loaf(x,W*.5,H*.76,W*.62,H*.5,{rise,ear,bake:clamp((b-.15)/.85),flour:.65});
+  // warm light from below on the loaf
+  x.save();x.globalCompositeOperation='screen';const lg=x.createRadialGradient(W*.5,H*.95,10,W*.5,H*.8,W*.5);lg.addColorStop(0,`rgba(255,120,40,${.22*heat})`);lg.addColorStop(1,'rgba(255,120,40,0)');x.fillStyle=lg;x.fillRect(0,0,W,H);
+  // steam: dense until vented at ~38%, then a few wisps
+  const dens=b<.38?1:.18;for(let i=0;i<34;i++){const s=steam[i];const life=((t*.18*s.s+s.o)%1);const sx=W*(.5+s.x*.45)+Math.sin(life*6+s.w+t)*18,sy=H*.7-life*H*.75;const r=14+life*40;const g=x.createRadialGradient(sx,sy,0,sx,sy,r);g.addColorStop(0,`rgba(255,240,225,${.16*dens*(1-life)})`);g.addColorStop(1,'rgba(255,240,225,0)');x.fillStyle=g;x.beginPath();x.arc(sx,sy,r,0,6.28);x.fill()}
+  x.restore();
+  // glass door: reflection band + frame
+  x.fillStyle='rgba(255,255,255,.05)';x.beginPath();x.moveTo(W*.12,0);x.lineTo(W*.3,0);x.lineTo(W*.08,H);x.lineTo(-W*.1,H);x.fill();
+  x.strokeStyle='rgba(0,0,0,.6)';x.lineWidth=10;x.strokeRect(0,0,W,H);
+  x.fillStyle='rgba(255,255,255,.85)';x.font='600 10px DM';x.fillText('● REC  OVEN CAM 2 · DECK 1',12,20);
+}
+function chart(b){const c=$('#chartC');const[x,W,H]=fit(c);x.clearRect(0,0,W,H);
+  x.fillStyle='#8a7766';x.font='500 10px DM';x.fillText('Core temperature',12,16);x.fillText('96°C done',W-70,16);
+  const px=u=>12+u*(W-24),py=v=>H-14-(v-20)/80*(H-34);
+  x.strokeStyle='#eadfce';x.setLineDash([3,4]);x.beginPath();x.moveTo(12,py(96));x.lineTo(W-12,py(96));x.stroke();x.setLineDash([]);
+  x.beginPath();for(let i=0;i<=60;i++){const u=i/60*b;const v=core(u);i?x.lineTo(px(u),py(v)):x.moveTo(px(u),py(v))}x.strokeStyle='#e2562b';x.lineWidth=2.4;x.stroke();
+  const v=core(b);x.fillStyle='#e2562b';x.beginPath();x.arc(px(b),py(v),4,0,6.28);x.fill();
+}
+const core=u=>30+66*(1-Math.exp(-3.4*u))/(1-Math.exp(-3.4));
+function rack(t,cool){const c=$('#rackC');const[x,W,H]=fit(c);x.clearRect(0,0,W,H);
+  const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#f3e7d3');bg.addColorStop(1,'#e8d6bb');x.fillStyle=bg;x.fillRect(0,0,W,H);
+  // wire cooling rack in perspective
+  x.strokeStyle='#8d7a66';x.lineWidth=1.4;for(let i=0;i<=12;i++){const u=i/12;x.beginPath();x.moveTo(W*(.05+u*.9),H*.92);x.lineTo(W*(.18+u*.64),H*.62);x.stroke()}
+  for(let j=0;j<4;j++){const v=j/3;x.beginPath();x.moveTo(lerp(W*.05,W*.18,v),lerp(H*.92,H*.62,v));x.lineTo(lerp(W*.95,W*.82,v),lerp(H*.92,H*.62,v));x.stroke()}
+  loaf(x,W*.5,H*.8,W*.6,H*.45,{bake:1,flour:.6,rot:.02});
+  // the loaf "sings": the crust contracts as it cools and fine cracks flash across it
+  x.strokeStyle='rgba(255,236,200,.85)';x.lineWidth=1;for(let i=0;i<9;i++){const ph=(t*1.3+i*.37)%1;if(ph<.18){const d=flourDots[i*7];const sx=W*.5+d[0]*W*.22,sy=H*.8-H*.25-Math.abs(d[1])*H*.12;x.globalAlpha=1-ph/.18;x.beginPath();x.moveTo(sx,sy);x.lineTo(sx+6,sy-3);x.lineTo(sx+10,sy+1);x.stroke()}}x.globalAlpha=1;
+  x.save();x.globalCompositeOperation='screen';steam.slice(0,20).forEach(s=>{const life=((t*.14*s.s+s.o)%1);const sx=W*(.5+s.x*.22)+Math.sin(life*5+s.w+t*.5)*24*life,sy=H*.5-life*H*.5;const r=10+life*30;const g=x.createRadialGradient(sx,sy,0,sx,sy,r);g.addColorStop(0,`rgba(255,255,255,${.35*cool*(1-life)})`);g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(sx,sy,r,0,6.28);x.fill()});x.restore();
+}
+// QR (deterministic pattern with proper finder squares)
+(function(){const c=$('#qrC'),x=c.getContext('2d'),n=25,s=96/n;x.fillStyle='#fff';x.fillRect(0,0,96,96);x.fillStyle='#2a1d14';let sd=7;const r=()=>(sd=(sd*48271)%2147483647)/2147483647;
+  const fin=(a,b)=>{x.fillRect(a*s,b*s,7*s,7*s);x.fillStyle='#fff';x.fillRect((a+1)*s,(b+1)*s,5*s,5*s);x.fillStyle='#2a1d14';x.fillRect((a+2)*s,(b+2)*s,3*s,3*s)};
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++){const inF=(i<8&&j<8)||(i>n-9&&j<8)||(i<8&&j>n-9);if(!inF&&r()<.5)x.fillRect(i*s,j*s,s,s)}fin(0,0);fin(n-7,0);fin(0,n-7)})();
+// walking map
+(function(){const s=$('#mapS');s.innerHTML=`<rect width="350" height="150" fill="#efe6d6"/><path d="M0 40 H350 M0 112 H350 M70 0 V150 M190 0 V150 M290 0 V150" stroke="#fffaf2" stroke-width="12"/><path d="M0 40 H350 M0 112 H350 M70 0 V150 M190 0 V150 M290 0 V150" stroke="#e3d6c1" stroke-width="1"/><rect x="200" y="54" width="80" height="46" rx="6" fill="#dde6cf"/><path id="route" d="M40 128 V112 H190 V40 H262" fill="none" stroke="#e2562b" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 7"/><circle cx="40" cy="128" r="7" fill="#2a1d14" stroke="#fff" stroke-width="3"/><g transform="translate(262 40)"><circle r="12" fill="#3b2314"/><text y="4" text-anchor="middle" font-size="11" fill="#f6efe4" font-family="DM" font-weight="700">L</text></g>`})();
+const sc=[$('#c1'),$('#c2'),$('#c3')];
+/* ---------------- LOOP ---------------- */
+const tour=$('#tour'),steps=$$('.step'),rvs=$$('.rv'),heroLines=$$('h1 .ln>span'),stageEls=$$('#stages span');
+let flyFrom=null;
+function frame(now){const t=now/1000,vh=innerHeight,y=scrollY;
+  const tr=tour.getBoundingClientRect(),q=clamp(-tr.top/(tr.height-vh));const mobile=innerWidth<=760;
+  // device scale on desktop
+  if(!mobile){const s=Math.min((vh-110)/844,1);$('#device').style.transform=`scale(${s})`;$('#device').style.margin=`${(s-1)*422}px ${(s-1)*195}px`}
+  {const inT=mobile&&tr.top<=1&&tr.bottom>=vh-1;$('.nav').style.transform=`translateY(${inT?-110:0}%)`}
+  drawHero(t);
+  heroLines.forEach((el,i)=>{const k=eo(seg(t,.25+i*.15,1.15+i*.15));el.style.transform=`translateY(${(1-k)*105}%) rotate(${(1-k)*3}deg)`});
+  // ---- tour timeline
+  const pProd=seg(q,.14,.2),pLive=seg(q,.42,.48),pReady=seg(q,.8,.86);
+  push(views.home,views.prod,pProd);if(pProd===0){views.home.style.transform='';views.home.style.filter=''}
+  push(pProd>0?views.prod:null,views.live,pLive);if(pLive>0){views.home.style.transform='translateX(-30%)'}
+  push(pLive>0?views.live:null,views.ready,pReady);
+  // home cards slide in on a stagger
+  BAKES.forEach((b,i)=>{const el=$('#bk'+i);const k=eo(seg(t,.6+i*.1,1.4+i*.1));el.style.transform=`translateX(${(1-k)*60}px)`;el.style.opacity=k;drawThumb(el.querySelector('canvas'),b[4],b[3],t)});
+  // tap 1: Country sourdough card
+  const card=$('#bk0'),cta=$('#cta'),bag=$('#bagTab'),bnr=$('#banner');
+  let fp=null,fv=0,press=0;
+  const home=screenPt(card,.5,.45);const ctaP={x:195,y:844-34-29};const bnrP={x:195,y:60};
+  if(q>.06&&q<.16){const k=back(eio(seg(q,.06,.12)));fp={x:lerp(300,home.x,k),y:lerp(760,home.y,k)};fv=seg(q,.06,.08)*(1-seg(q,.145,.16));press=q>.12&&q<.14?1:0}
+  {const k=eo(seg(t,.6,1.4));card.style.transform=`translateX(${(1-k)*60}px) scale(${press?.96:1})`}
+  // product screen
+  {const[x,W,H]=fit($('#prodC'));x.clearRect(0,0,W,H);const bg=x.createRadialGradient(W/2,H*.6,10,W/2,H*.6,W*.7);bg.addColorStop(0,'#f6e6cc');bg.addColorStop(1,'#efe0c6');x.fillStyle=bg;x.fillRect(0,0,W,H);const k=eo(seg(q,.17,.24));loaf(x,W/2,H*.78,W*.78*(.9+.1*k),H*.58,{bake:.92,flour:.65,rot:Math.sin(t*.5)*.015})}
+  if(q>.22&&q<.33){const k=back(eio(seg(q,.22,.29)));fp={x:lerp(320,ctaP.x,k),y:lerp(560,ctaP.y,k)};fv=seg(q,.22,.24)*(1-seg(q,.315,.33));if(q>.29&&q<.31)press=2}
+  cta.style.transform=`scale(${press===2?.97:1})`;
+  const reserved=q>=.31;$('#ctaT').textContent=reserved?'✓ Reserved for the 11:40 bake':'Reserve a warm loaf · £5.20';cta.style.background=reserved?'var(--rye)':'var(--ink)';
+  // loaf flies to the bag on an arc with squash on landing
+  const fly=$('#fly');const fk=seg(q,.31,.37);
+  if(fk>0&&fk<1){const a={x:195,y:200},bTab=screenPt(bag,.5,.3),c={x:330,y:120};const e=eio(fk);const px=(1-e)*(1-e)*a.x+2*(1-e)*e*c.x+e*e*bTab.x,py=(1-e)*(1-e)*a.y+2*(1-e)*e*c.y+e*e*bTab.y;
+    fly.style.opacity=1;fly.style.left=(px-35)+'px';fly.style.top=(py-26)+'px';fly.style.transform=`scale(${1.6-1.3*e}) rotate(${e*40}deg)`;const fx=fly.getContext('2d');fx.clearRect(0,0,140,104);loaf(fx,70,86,120,72,{bake:.92,flour:.6})}else fly.style.opacity=0;
+  // bag badge pops in with an overshoot
+  const bb=back(seg(q,.365,.39));$('#bagN').style.transform=`scale(${q>.365?bb:0})`;
+  // notification banner drops in from the top (springy), tapped, then dismissed
+  const bin=back(seg(q,.36,.39)),bout=seg(q,.42,.44);bnr.style.top=(-120+(130+0)*bin-130*eio(bout))+'px';
+  if(q>.37&&q<.44){const k=back(eio(seg(q,.37,.41)));fp={x:lerp(260,bnrP.x,k),y:lerp(420,bnrP.y+6,k)};fv=Math.max(fv,seg(q,.37,.385)*(1-seg(q,.43,.44)));if(q>.41&&q<.425)press=3}
+  bnr.style.transform=`scale(${press===3?.97:1})`;
+  // live bake: compress 40 minutes into the scroll
+  const b=seg(q,.46,.79);
+  oven(t,b);chart(b);
+  $('#tOven').textContent=(b<.38?245:230)+'°';$('#tCore').textContent=Math.round(core(b))+'°';
+  const left=Math.max(0,40*(1-b));$('#tLeft').textContent=Math.floor(left)+':'+String(Math.floor((left%1)*60)).padStart(2,'0');
+  const st=b<.06?0:b<.38?1:b<.45?2:b<.98?3:4;stageEls.forEach((e,i)=>{e.className=i<st?'done':i===st?'on':''});
+  $('#liveDot').style.opacity=.4+.6*(Math.sin(t*5)>0?1:0);
+  // ready
+  rack(t,1-seg(q,.86,1)*.5);
+  const route=document.getElementById('route');route&&route.setAttribute('stroke-dashoffset',-t*16);
+  // finger
+  const fg=$('#finger');fg.style.opacity=fv;if(fp){fg.style.left=fp.x+'px';fg.style.top=fp.y+'px'}fg.style.transform=`scale(${press?.82:1})`;
+  // status bar clock & side stats
+  const mins=10*60+52+q*90;$('#sbt').textContent=Math.floor(mins/60)+':'+String(Math.floor(mins%60)).padStart(2,'0');
+  $('#sProg').textContent=b>0?Math.round(b*100)+'%':'—';$('#sCrust').textContent=['Raw','Pale','Golden','Amber','Mahogany'][Math.min(4,Math.floor(clamp((b-.15)/.85)*4.99))];
+  $('#sRes').textContent=184+(reserved?1:0);
+  const si=q<.14?0:q<.42?1:q<.8?2:3;steps.forEach((s,i)=>{const on=i===si;s.style.background=on?'var(--card)':'transparent';s.style.boxShadow=on?'0 14px 30px #2a1d140f':'none';s.style.opacity=on?1:.5;const rng=[[0,.14],[.14,.42],[.42,.8],[.8,1]][i];s.querySelector('.bar i').style.height=seg(q,rng[0],rng[1])*100+'%'});
+  // feature cards
+  sc.forEach((c,i)=>{const r=c.getBoundingClientRect();if(r.top>vh||r.bottom<0)return;const[x,W,H]=fit(c);x.clearRect(0,0,W,H);
+    if(i===0){const pr=.5+.5*Math.sin(t*.6);x.fillStyle='#e9dcc6';x.beginPath();x.ellipse(W/2,H*.82,W*.32,H*.08,0,0,6.28);x.fill();const g=x.createRadialGradient(W/2-10,H*.45,5,W/2,H*.6,W*.3);g.addColorStop(0,'#f7efe2');g.addColorStop(1,'#e2cfae');x.fillStyle=g;x.beginPath();x.ellipse(W/2,H*.78-H*.18*(.8+.2*pr),W*(.26+.02*pr),H*(.3+.05*pr),0,Math.PI,0);x.lineTo(W/2+W*.28,H*.8);x.lineTo(W/2-W*.28,H*.8);x.fill();x.fillStyle='rgba(180,150,110,.5)';for(let k=0;k<14;k++){const d=flourDots[k];x.beginPath();x.arc(W/2+d[0]*W*.18,H*.55+d[1]*H*.12,1.5+2*pr*d[2],0,6.28);x.fill()}}
+    else if(i===1){const bk=.5+.5*Math.sin(t*.4);loaf(x,W/2,H*.85,W*.6,H*.6,{bake:.3+.7*bk,flour:.5})}
+    else{for(let k=0;k<5;k++){const ph=((t*.25+k*.2)%1);const xx=lerp(W*.1,W*.9,ph);x.globalAlpha=Math.sin(ph*Math.PI);loaf(x,xx,H*.8,W*.22,H*.32,{bake:.9,flour:.5});x.globalAlpha=1}x.fillStyle='#8a7766';x.font='600 11px DM';x.fillText('→ Bristol food banks · 5 pm',12,18)}
+  });
+  rvs.forEach(el=>{let k;if(el.closest('.hero'))k=eo(seg(t,.8,1.7));else{const r=el.getBoundingClientRect();k=eo(clamp((vh*.94-r.top)/(vh*.28)))}el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  requestAnimationFrame(frame);
+}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
