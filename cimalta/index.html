@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cimalta — book every hut on the Dolomites high routes</title>
+<meta name="description" content="Cimalta is the hut-to-hut trekking app for the Dolomites: plan an Alta Via, reserve every rifugio in one go, and walk with live weather and offline maps.">
+<style>
+@font-face{font-family:Arch;src:url(assets/fonts/archivo-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Arch;src:url(assets/fonts/archivo-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Arch;src:url(assets/fonts/archivo-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Arch;src:url(assets/fonts/archivo-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:News;src:url(assets/fonts/newsreader-latin-400-italic.woff2) format("woff2");font-style:italic}
+:root{--snow:#f4f1ea;--paper:#fbfaf6;--granite:#2b2f33;--mute:#6f6d68;--line:#dcd7cc;--rose:#e7a48b;--rose2:#c97a62;--pine:#2f4a3a;--ice:#cfe0ea;--sun:#f2b84b;--night:#0e1420}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--snow);color:var(--granite);font-family:Arch,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:inherit;text-decoration:none}
+em{font-family:News,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:30px;padding:20px 40px;color:#fff;transition:color .4s,background .4s}
+.nav.ink{color:var(--granite);background:#f4f1eadd;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}.brand img{width:32px}
+.nav .links{display:flex;gap:26px;font-size:14px;opacity:.85}.nav .sp{flex:1}
+.pillbtn{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:99px;font-weight:600;font-size:14px;background:#fff;color:var(--granite)}
+.nav.ink .pillbtn{background:var(--granite);color:#fff}
+/* ---------- hero: drone climbs the pass as you scroll ---------- */
+.hero{position:relative;height:260vh;background:#0d1114}
+.hpin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:#fff}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hshade{position:absolute;inset:0;background:linear-gradient(180deg,#0b0f1499 0%,#0b0f1200 30%,#0b0f1200 50%,#0b0f12b3 100%)}
+.hcopy{position:absolute;left:40px;bottom:70px;max-width:720px}
+.eyebrow{font-size:12px;letter-spacing:.26em;text-transform:uppercase;font-weight:600}
+h1{font-weight:800;font-size:clamp(52px,8.4vw,128px);line-height:.9;letter-spacing:-.055em;margin-top:18px}
+h1 em{font-weight:400;color:var(--rose);letter-spacing:-.03em}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}h1 .ln>span{display:inline-block}
+.hcopy p{font-size:18px;line-height:1.55;max-width:470px;margin-top:22px;color:#eee9df}
+.stores{display:flex;gap:12px;margin-top:28px}
+.store{height:52px;padding:0 20px;border-radius:14px;background:#ffffff1f;border:1px solid #ffffff44;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;justify-content:center;font-size:11px;letter-spacing:.06em;opacity:.95}
+.store b{font-size:16px;letter-spacing:-.01em}
+.hstat{position:absolute;right:40px;bottom:76px;display:flex;gap:30px;text-align:right}
+.hstat b{display:block;font-weight:800;font-size:38px;letter-spacing:-.04em}.hstat span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.hcap{position:absolute;left:40px;bottom:80px;opacity:0;max-width:640px}.hcap .eyebrow{color:var(--rose)}.hcap b{display:block;font-weight:800;font-size:clamp(36px,5vw,72px);letter-spacing:-.05em;line-height:.95;margin-top:14px}.hcap em{color:var(--rose)}
+.alt{position:absolute;right:40px;top:110px;text-align:right;font-variant-numeric:tabular-nums}
+.alt small{font-size:11px;letter-spacing:.26em;text-transform:uppercase;opacity:.8}.alt b{display:block;font-weight:800;font-size:46px;letter-spacing:-.04em}
+/* ---------- story ---------- */
+.story{position:relative;height:1050vh;background:var(--night)}
+.spin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:#fff}
+.bgs video{opacity:0}
+.sshade{position:absolute;inset:0;background:linear-gradient(90deg,#0b0f14d9 0%,#0b0f1466 42%,#0b0f1422 70%,#0b0f1455 100%)}
+#night{position:absolute;inset:0;background:linear-gradient(#0a1022,#121b33 55%,#2a2540);mix-blend-mode:multiply;opacity:0}
+#stars{position:absolute;inset:0;width:100%;height:60%;opacity:0}
+.chap{position:absolute;left:40px;top:50%;width:min(420px,38vw);transform:translateY(-50%)}
+.cp{position:absolute;left:0;top:0;transform:translateY(-50%);opacity:0;width:100%}
+.cp .eyebrow{color:var(--rose)}
+.cp h2{font-weight:800;font-size:clamp(38px,4.4vw,64px);line-height:.95;letter-spacing:-.05em;margin-top:14px}
+.cp h2 em{color:var(--rose)}
+.cp p{font-size:17px;line-height:1.6;color:#e6e1d6;margin-top:18px}
+.cp ul{list-style:none;margin-top:20px;display:grid;gap:10px;font-size:14px;color:#d8d2c6}
+.cp li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--rose);margin-right:12px;vertical-align:2px}
+.steps{position:absolute;left:40px;bottom:34px;display:flex;gap:8px}
+.steps i{display:block;width:46px;height:3px;border-radius:2px;background:#ffffff33;overflow:hidden;position:relative}.steps i b{position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(0)}
+.place{position:absolute;right:40px;bottom:34px;text-align:right;font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.8}
+/* phone */
+.phone-wrap{position:absolute;left:62%;top:50%;width:340px;height:700px;margin:-350px 0 0 -170px}
+.phone{position:absolute;inset:0;border-radius:54px;background:#15181b;padding:12px;box-shadow:0 60px 120px #0009,0 0 0 1.5px #ffffff26 inset,0 0 0 1px #000}
+.scr{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;background:var(--paper);color:var(--granite)}
+.island{position:absolute;left:50%;top:10px;width:96px;height:28px;margin-left:-48px;border-radius:20px;background:#000;z-index:20}
+.sbar{position:absolute;left:0;right:0;top:0;height:46px;display:flex;justify-content:space-between;align-items:center;padding:4px 28px 0;font-size:13px;font-weight:600;z-index:15}
+.sc{position:absolute;inset:0;padding:54px 18px 18px;overflow:hidden;background:var(--paper)}
+.sc h3{font-weight:800;font-size:26px;letter-spacing:-.04em;line-height:1}
+.sc .sub{font-size:12px;color:var(--mute);margin-top:4px}
+.chips{display:flex;gap:6px;margin-top:14px}.chip{font-size:11px;font-weight:600;padding:7px 11px;border-radius:99px;border:1px solid var(--line);white-space:nowrap}.chip.on{background:var(--granite);color:#fff;border-color:var(--granite)}
+.rcard{position:relative;margin-top:12px;border-radius:20px;overflow:hidden;height:168px;background:#ccc}
+.rcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rcard::after{content:"";position:absolute;inset:0;background:linear-gradient(#0000 40%,#000a)}
+.rcard .t{position:absolute;left:14px;right:14px;bottom:12px;color:#fff;z-index:2;display:flex;justify-content:space-between;align-items:flex-end}
+.rcard .t b{display:block;font-weight:800;font-size:18px;letter-spacing:-.03em}.rcard .t span{font-size:11px;opacity:.9}
+.rcard .px{font-size:12px;font-weight:600;padding:6px 10px;border-radius:99px;background:#fff;color:var(--granite)}
+.rcard .badge{position:absolute;left:12px;top:12px;z-index:2;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#ffffffe6;padding:5px 9px;border-radius:99px}
+.tabs{position:absolute;left:12px;right:12px;bottom:12px;height:58px;border-radius:22px;background:#fffffff2;box-shadow:0 10px 30px #0002,0 0 0 1px var(--line);display:flex;justify-content:space-around;align-items:center;font-size:10px;font-weight:600;color:var(--mute);z-index:12}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:4px}.tabs i{width:18px;height:18px;border-radius:6px;border:2px solid currentColor;display:block}.tabs .on{color:var(--granite)}
+/* route */
+.hero2{margin:-54px -18px 0;height:200px;position:relative;overflow:hidden}
+.hero2 img{width:100%;height:100%;object-fit:cover}
+.hero2::after{content:"";position:absolute;inset:0;background:linear-gradient(#0000 50%,var(--paper))}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.stats b{display:block;font-weight:800;font-size:18px;letter-spacing:-.03em}.stats span{font-size:10px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.prof{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 10px 6px}
+.prof svg{width:100%;height:88px;display:block}
+.stage{display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:12px}
+.stage .n{width:22px;height:22px;border-radius:50%;background:var(--snow);display:grid;place-items:center;font-weight:700;font-size:10px}
+.stage b{flex:1;font-weight:600}.stage span{color:var(--mute)}
+/* book */
+.hut{border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);margin-top:12px}
+.hut img{width:100%;height:118px;object-fit:cover;display:block}
+.hut .in{padding:12px}.hut b{font-weight:800;font-size:16px;letter-spacing:-.02em}.hut .sub{margin-top:2px}
+.seg{display:flex;background:var(--snow);border-radius:12px;padding:3px;margin-top:12px;position:relative}
+.seg div{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px 0;position:relative;z-index:2}
+.seg i{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);border-radius:10px;background:#fff;box-shadow:0 2px 8px #0002}
+.dates{display:flex;gap:6px;margin-top:12px}
+.dates div{flex:1;border:1px solid var(--line);border-radius:12px;padding:7px 0;text-align:center;font-size:10px;color:var(--mute)}
+.dates b{display:block;font-size:15px;color:var(--granite);font-weight:700}.dates .on{background:var(--granite);border-color:var(--granite);color:#ffffffb3}.dates .on b{color:#fff}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:12px}
+.tog{width:40px;height:24px;border-radius:12px;background:var(--line);position:relative}.tog i{position:absolute;left:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0003}
+.cta{position:absolute;left:18px;right:18px;bottom:84px;height:52px;border-radius:16px;background:var(--granite);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;overflow:hidden;z-index:5}
+.cta .rip{position:absolute;width:40px;height:40px;border-radius:50%;background:#ffffff55;left:50%;top:50%;margin:-20px;transform:scale(0)}
+.ok{position:absolute;inset:0;background:var(--pine);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;opacity:0;z-index:13;text-align:center;padding:30px}
+.ok svg{width:74px;height:74px}.ok b{font-weight:800;font-size:24px;letter-spacing:-.03em}.ok span{font-size:13px;opacity:.85;line-height:1.5}
+/* live */
+.map{position:absolute;inset:0;background:#e9eee6}
+.map svg{width:100%;height:100%;display:block}
+.lhead{position:absolute;left:12px;right:12px;top:52px;z-index:4;background:#fffffff2;border-radius:18px;padding:12px 14px;box-shadow:0 8px 24px #0002}
+.lhead b{font-weight:800;font-size:17px;letter-spacing:-.03em}.lhead .sub{margin-top:2px}
+.alert{position:absolute;left:12px;right:12px;top:126px;z-index:4;background:#2b2f33;color:#fff;border-radius:16px;padding:11px 13px;font-size:12px;line-height:1.4;display:flex;gap:10px;align-items:center}
+.alert i{flex:none;width:28px;height:28px;border-radius:9px;background:var(--sun);display:grid;place-items:center;color:var(--granite);font-style:normal;font-weight:800}
+.lsheet{position:absolute;left:0;right:0;bottom:0;z-index:4;background:#fff;border-radius:24px 24px 0 0;padding:14px 16px 84px;box-shadow:0 -10px 30px #0002}
+.lsheet .grip{width:36px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 10px}
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.lgrid b{display:block;font-weight:800;font-size:19px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}.lgrid span{font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+/* tonight */
+.sc.dark{background:linear-gradient(#141b2c,#232a42);color:#fff}
+.lock{text-align:center;margin-top:26px}.lock small{font-size:13px;opacity:.75}.lock b{display:block;font-weight:600;font-size:66px;letter-spacing:-.04em;line-height:1;margin-top:4px;font-variant-numeric:tabular-nums}
+.note{margin-top:14px;background:#ffffff1f;backdrop-filter:blur(10px);border-radius:18px;padding:12px;display:flex;gap:10px;font-size:12px;line-height:1.4}
+.note img{width:34px;height:34px;flex:none;border-radius:9px}.note b{display:block;font-size:13px}.note span{opacity:.8}
+.tn{margin-top:10px;background:#ffffff14;border-radius:16px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tn div{font-size:11px;opacity:.85}.tn b{display:block;font-size:16px;font-weight:700;letter-spacing:-.02em;opacity:1}
+.finger{position:absolute;width:44px;height:44px;border-radius:50%;background:#ffffff66;border:2px solid #fff;box-shadow:0 6px 18px #0004;z-index:30;opacity:0;margin:-22px;pointer-events:none}
+/* ---------- content ---------- */
+.sec{max-width:1240px;margin:0 auto;padding:130px 40px 30px}
+.k{font-size:12px;letter-spacing:.26em;text-transform:uppercase;font-weight:600;color:var(--rose2)}
+.sec h2{font-weight:800;font-size:clamp(38px,5vw,74px);letter-spacing:-.055em;line-height:.95;margin-top:14px;max-width:900px}
+.sec h2 em{color:var(--rose2)}
+.routes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.route{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden}
+.route .im{height:300px;overflow:hidden;position:relative}.route img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;will-change:transform}
+.route .in{padding:20px 22px 24px}.route b{font-weight:800;font-size:22px;letter-spacing:-.03em}.route p{font-size:14px;color:var(--mute);margin-top:6px;line-height:1.5}
+.route .meta{display:flex;gap:16px;margin-top:16px;font-size:12px;color:var(--mute)}.route .meta strong{display:block;color:var(--granite);font-size:16px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:56px}
+.plan{border-radius:26px;padding:34px;border:1px solid var(--line);background:#fff}
+.plan.pro{background:var(--granite);color:#fff;border-color:var(--granite)}
+.plan h3{font-weight:800;font-size:24px;letter-spacing:-.03em}.plan .pr{font-weight:800;font-size:54px;letter-spacing:-.05em;margin-top:14px}.plan .pr span{font-size:16px;font-weight:500;opacity:.7;letter-spacing:0}
+.plan ul{list-style:none;margin-top:20px;display:grid;gap:10px;font-size:15px}.plan li::before{content:"✓";margin-right:10px;color:var(--rose2)}.plan.pro li::before{color:var(--rose)}
+.plan .pillbtn{margin-top:26px;background:var(--granite);color:#fff}.plan.pro .pillbtn{background:var(--rose);color:var(--granite)}
+.quote{max-width:1240px;margin:120px auto 0;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.quote blockquote{font-family:News;font-style:italic;font-size:clamp(28px,3vw,42px);line-height:1.2;letter-spacing:-.01em}
+.quote cite{display:block;margin-top:18px;font-style:normal;font-size:13px;color:var(--mute);letter-spacing:.1em;text-transform:uppercase}
+.qnums{display:grid;grid-template-columns:1fr 1fr;gap:20px}.qnums div{border-top:1px solid var(--granite);padding-top:14px}.qnums b{display:block;font-weight:800;font-size:46px;letter-spacing:-.05em}.qnums span{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.12em}
+.dl{position:relative;margin:130px 40px 0;border-radius:34px;overflow:hidden;color:#fff;min-height:520px;display:flex;align-items:center}
+.dl img{position:absolute;inset:0;width:100%;height:120%;top:-10%;object-fit:cover;will-change:transform}
+.dl::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b0f14d9,#0b0f1433)}
+.dl .in{position:relative;z-index:2;padding:60px;max-width:620px}.dl h2{font-weight:800;font-size:clamp(38px,5vw,70px);letter-spacing:-.055em;line-height:.95}.dl h2 em{color:var(--rose)}
+.dl p{margin-top:16px;color:#e6e1d6;line-height:1.6}
+footer{max-width:1240px;margin:0 auto;padding:46px 40px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--granite);display:grid;place-items:center}#pre img{width:64px}
+@media (max-width:760px){
+  .nav{padding:14px 16px}.nav .links{display:none}.pillbtn{height:38px;padding:0 14px;font-size:12px}
+  .hcopy{left:20px;right:20px;bottom:150px}.hcopy p{font-size:15px}.stores{margin-top:20px}.store{height:46px;padding:0 14px}
+  .hstat{left:20px;right:20px;bottom:46px;justify-content:space-between;text-align:left;gap:10px}.hstat b{font-size:26px}
+  .alt{right:18px;top:76px}.hcap{left:20px;right:20px;bottom:120px}.alt b{font-size:30px}
+  .story{height:900vh}
+  .chap{left:20px;right:20px;width:auto;top:74px;transform:none}.cp{transform:none}.cp h2{font-size:30px}.cp p{font-size:13.5px;margin-top:10px}.cp ul{display:none}
+  .sshade{background:linear-gradient(#0b0f14e6 0%,#0b0f1499 32%,#0b0f1422 60%,#0b0f1466)}
+  .phone-wrap{left:50%;top:auto;bottom:-40px;margin:0 0 0 -170px}
+  .steps{left:20px;bottom:18px}.steps i{width:30px}.place{display:none}
+  .sec{padding:90px 20px 20px}.routes,.plans,.quote,.qnums{grid-template-columns:1fr}.quote{padding:0 20px;margin-top:80px}
+  .dl{margin:90px 16px 0}.dl .in{padding:34px 24px}
+  footer{flex-direction:column;gap:8px;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">cimalta</span><div class="links"><a href="#story">How it works</a><a href="#routes">Routes</a><a href="#pricing">Pricing</a><a href="#huts">For huts</a></div><div class="sp"></div><a class="pillbtn" href="#get">Get the app</a></nav>
+
+<section class="hero" id="hero">
+  <div class="hpin">
+    <video class="bgv" id="hv" src="media/hero.mp4" poster="media/hero.jpg" muted playsinline preload="auto"></video>
+    <div class="hshade"></div>
+    <div class="alt hi"><small>Passo Giau · live altitude</small><b id="altV">2,108 m</b></div>
+    <div class="hcopy">
+      <div class="eyebrow hi">Hut-to-hut trekking in the Dolomites</div>
+      <h1><span class="ln"><span>Sleep where</span></span><span class="ln"><span>the trail <em>ends.</em></span></span></h1>
+      <p class="hi">Plan an Alta Via, reserve every rifugio on it in one go, and walk with live weather and maps that work offline.</p>
+      <div class="stores hi"><div class="store">Download on<b>iPhone</b></div><div class="store">Get it on<b>Android</b></div></div>
+    </div>
+    <div class="hcap" id="hcap"><div class="eyebrow">Stage 3 · Passo Giau</div><b>Rifugio at 2,236 m.<br>Your bed is <em>already</em> booked.</b></div>
+    <div class="hstat hi"><div><b>214</b><span>Rifugi bookable</span></div><div><b>38</b><span>High routes</span></div><div><b>4.9★</b><span>18k reviews</span></div></div>
+  </div>
+</section>
+
+<section class="story" id="story">
+  <div class="spin">
+    <div class="bgs">
+      <video class="bgv" src="media/lake.mp4" poster="media/lake.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/hero.mp4" poster="media/hero.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/hut.mp4" poster="media/hut.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/summit.mp4" poster="media/summit.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/dusk.mp4" poster="media/dusk.jpg" muted playsinline preload="metadata"></video>
+    </div>
+    <div id="night"></div><canvas id="stars"></canvas>
+    <div class="sshade"></div>
+    <div class="chap">
+      <div class="cp"><div class="eyebrow">01 · Choose a route</div><h2>Six days, <em>one</em> line on the map.</h2><p>Browse 38 high routes with real ascent, hut-by-hut stages and the best months to go.</p><ul><li>Filters for days, grade and via ferrata</li><li>Stage times from 61,000 logged hikes</li></ul></div>
+      <div class="cp"><div class="eyebrow">02 · See every stage</div><h2>Know the climb <em>before</em> you start.</h2><p>Alta Via 1 runs 120 km from Lago di Braies to Belluno. Cimalta breaks it into six stages, each ending at a rifugio.</p><ul><li>Elevation profile for every day</li><li>Water, cable cars and bail-out paths</li></ul></div>
+      <div class="cp"><div class="eyebrow">03 · Book every hut</div><h2>Six rifugi, <em>one</em> tap.</h2><p>Pick dorm or private and add half-board. Cimalta reserves every night of the trip, holding each bed until the hut confirms.</p><ul><li>Live availability from 214 huts</li><li>Free cancellation up to 7 days</li></ul></div>
+      <div class="cp"><div class="eyebrow">04 · Walk it</div><h2>Maps that work <em>above</em> the signal.</h2><p>Offline topo, your position on the line, and storm alerts timed against your pace, so you know if you'll beat the weather.</p><ul><li>Works with no signal</li><li>Shares your ETA with the hut</li></ul></div>
+      <div class="cp"><div class="eyebrow">05 · Tonight</div><h2>Dinner at seven, <em>sunrise</em> at six.</h2><p>Your bed, your dinner slot and tomorrow's first light, all on your lock screen when you arrive.</p><ul><li>Hut check-in with one tap</li><li>Alarm set for alpenglow</li></ul></div>
+    </div>
+    <div class="steps" id="steps"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    <div class="place" id="place">Lago di Sorapis · 1,925 m</div>
+
+    <div class="phone-wrap" id="pw"><div class="phone" id="phone"><div class="scr" id="scr">
+      <div class="island"></div>
+      <div class="sbar" id="sbar"><span id="clock">09:41</span><span>●●● 5G ▮</span></div>
+
+      <div class="sc" id="sc0">
+        <h3>Where to?</h3><div class="sub">Dolomites · June – September</div>
+        <div class="chips"><span class="chip on">All</span><span class="chip">5–7 days</span><span class="chip">No via ferrata</span><span class="chip">Loops</span></div>
+        <div class="rcard" id="card0"><img src="media/route-4312789.jpg" alt=""><span class="badge">Most booked</span><div class="t"><div><b>Alta Via 1</b><span>6 days · 120 km · +7,300 m</span></div><span class="px">from €486</span></div></div>
+        <div class="rcard"><img src="media/route-5561678.jpg" alt=""><div class="t"><div><b>Puez–Odle Traverse</b><span>4 days · 52 km · +3,900 m</span></div><span class="px">from €312</span></div></div>
+        <div class="tabs"><div class="on"><i></i>Explore</div><div><i></i>Trips</div><div><i></i>Map</div><div><i></i>Me</div></div>
+      </div>
+
+      <div class="sc" id="sc1">
+        <div class="hero2"><img src="media/route-4312789.jpg" alt=""></div>
+        <h3 style="margin-top:-30px;position:relative">Alta Via 1</h3><div class="sub">Lago di Braies → La Pissa · Grade T3</div>
+        <div class="stats"><div><b class="cnt" data-to="120">0</b><span>km</span></div><div><b class="cnt" data-to="7300" data-sep="1">0</b><span>m ascent</span></div><div><b class="cnt" data-to="6">0</b><span>days</span></div></div>
+        <div class="prof"><svg viewBox="0 0 300 88" preserveAspectRatio="none"><defs><linearGradient id="pg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e7a48b" stop-opacity=".45"/><stop offset="1" stop-color="#e7a48b" stop-opacity="0"/></linearGradient></defs><path id="profA" d="" fill="url(#pg)"/><path id="profL" d="" fill="none" stroke="#c97a62" stroke-width="2"/><g id="profH"></g></svg></div>
+        <div class="stage"><span class="n">1</span><b>Rif. Biella</b><span>6h 10 · +1,120</span></div>
+        <div class="stage"><span class="n">2</span><b>Rif. Fanes</b><span>5h 40 · +690</span></div>
+        <div class="stage"><span class="n">3</span><b>Rif. Lagazuoi</b><span>6h 30 · +1,350</span></div>
+        <div class="tabs"><div class="on"><i></i>Explore</div><div><i></i>Trips</div><div><i></i>Map</div><div><i></i>Me</div></div>
+      </div>
+
+      <div class="sc" id="sc2">
+        <h3>Book your huts</h3><div class="sub">Alta Via 1 · 6 nights · 2 hikers</div>
+        <div class="hut"><img src="media/hut.jpg" alt=""><div class="in"><b>Rifugio Lagazuoi</b><div class="sub">Night 3 · 2,752 m · 11 beds left</div></div></div>
+        <div class="seg"><i id="segI"></i><div>Dorm</div><div>Private</div></div>
+        <div class="dates"><div class="on"><b>17</b>Jul</div><div class="on"><b>18</b>Jul</div><div class="on"><b>19</b>Jul</div><div class="on"><b>20</b>Jul</div><div class="on"><b>21</b>Jul</div><div class="on"><b>22</b>Jul</div></div>
+        <div class="row"><span>Half-board (dinner + breakfast)</span><span class="tog" id="tog"><i id="togI"></i></span></div>
+        <div class="cta" id="cta"><span>Reserve 6 nights</span><span id="price">€486</span><b class="rip" id="rip"></b></div>
+        <div class="tabs"><div><i></i>Explore</div><div class="on"><i></i>Trips</div><div><i></i>Map</div><div><i></i>Me</div></div>
+        <div class="ok" id="ok"><svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="34" fill="none" stroke="#fff" stroke-width="3" opacity=".35"/><path id="okP" d="M22 38 L33 49 L53 27" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Six huts confirmed</b><span>Biella, Fanes, Lagazuoi, Nuvolau,<br>Città di Fiume, Pramperet</span></div>
+      </div>
+
+      <div class="sc" id="sc3" style="padding:0">
+        <div class="map"><svg viewBox="0 0 316 676" preserveAspectRatio="xMidYMid slice" id="mapS"></svg></div>
+        <div class="lhead"><b>Stage 3 · to Rif. Lagazuoi</b><div class="sub">Passo Falzarego cable car as bail-out</div></div>
+        <div class="alert" id="alert"><i>!</i><div><b style="font-weight:700">Storm risk from 15:00</b><br>At your pace you reach the hut at 13:40.</div></div>
+        <div class="lsheet"><div class="grip"></div><div class="lgrid"><div><b id="lKm">4.2</b><span>km left</span></div><div><b id="lAlt">2,431</b><span>m now</span></div><div><b id="lEta">13:40</b><span>ETA</span></div></div></div>
+        <div class="tabs"><div><i></i>Explore</div><div><i></i>Trips</div><div class="on"><i></i>Map</div><div><i></i>Me</div></div>
+      </div>
+
+      <div class="sc dark" id="sc4">
+        <div class="lock"><small>Thursday 19 July</small><b id="lockT">18:52</b></div>
+        <div class="note"><img src="src/img/logo.svg" alt=""><div><b>Welcome to Rifugio Lagazuoi</b><span>You're checked in. Bed 14, dorm B. Dinner is at 19:00.</span></div></div>
+        <div class="tn"><div>Sunset<b>21:06</b></div><div>Sunrise alarm<b>05:41</b></div><div>Tomorrow<b>Stage 4 · 6h 20</b></div><div>Weather<b>Clear, 4 °C</b></div></div>
+        <div class="note" style="margin-top:10px"><img src="src/img/logo.svg" alt=""><div><b>Alpenglow tomorrow</b><span>Clear skies forecast. The Tofane turn pink at 05:58.</span></div></div>
+      </div>
+      <div class="finger" id="finger"></div>
+    </div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="routes">
+  <div class="k rv">Routes</div>
+  <h2 class="rv">Thirty-eight high routes, <em>every</em> hut on them.</h2>
+  <div class="routes">
+    <article class="route rv"><div class="im"><img src="media/route-224718.jpg" alt="Dolomite peaks glowing red at sunset" loading="lazy"></div><div class="in"><b>Alta Via 2</b><p>The harder sister: Bressanone to Feltre over the Pale di San Martino.</p><div class="meta"><div><strong>8 days</strong>Duration</div><div><strong>+9,800 m</strong>Ascent</div><div><strong>€648</strong>Huts from</div></div></div></article>
+    <article class="route rv"><div class="im"><img src="media/route-8087330.jpg" alt="Golden limestone towers above forest" loading="lazy"></div><div class="in"><b>Catinaccio Circuit</b><p>Four days around the Rosengarten, where the peaks turn pink every evening.</p><div class="meta"><div><strong>4 days</strong>Duration</div><div><strong>+3,400 m</strong>Ascent</div><div><strong>€298</strong>Huts from</div></div></div></article>
+    <article class="route rv"><div class="im"><img src="media/route-6728318.jpg" alt="Mountain reflected in a small alpine lake at dusk" loading="lazy"></div><div class="in"><b>Giau &amp; Nuvolau</b><p>A weekend loop for first-timers, with one hut night and a sunrise you'll remember.</p><div class="meta"><div><strong>2 days</strong>Duration</div><div><strong>+1,250 m</strong>Ascent</div><div><strong>€84</strong>Huts from</div></div></div></article>
+  </div>
+</section>
+
+<div class="quote" id="huts">
+  <div class="rv"><blockquote>“Cimalta fills our beds weeks earlier, and on storm days we know who's still on the mountain.”</blockquote><cite>Hut keeper · Rifugio at 2,575 m</cite></div>
+  <div class="qnums rv"><div><b class="cnt" data-to="214">0</b><span>Partner rifugi</span></div><div><b class="cnt" data-to="61" data-suf="k">0</b><span>Hikes logged</span></div><div><b class="cnt" data-to="93" data-suf="%">0</b><span>Beds filled, July</span></div><div><b>0</b><span>No-shows on storm days</span></div></div>
+</div>
+
+<section class="sec" id="pricing">
+  <div class="k rv">Pricing</div>
+  <h2 class="rv">Free to plan. <em>Pass</em> when you go.</h2>
+  <div class="plans">
+    <div class="plan rv"><h3>Explorer</h3><div class="pr">€0</div><ul><li>All 38 routes and stage profiles</li><li>Hut booking, no fees</li><li>Weather on each stage</li></ul><a class="pillbtn">Start planning</a></div>
+    <div class="plan pro rv"><h3>Cimalta Pass</h3><div class="pr">€39<span> / year</span></div><ul><li>Offline topo maps for every route</li><li>Storm alerts timed against your pace</li><li>Live ETA shared with each hut</li><li>Free cancellation up to 7 days</li></ul><a class="pillbtn">Try 14 days free</a></div>
+  </div>
+</section>
+
+<section class="dl" id="get"><img src="media/route-4843193.jpg" alt="Seceda ridge at golden hour" loading="lazy"><div class="in"><div class="k rv" style="color:var(--rose)">Get the app</div><h2 class="rv" style="margin-top:14px">Your first hut is <em>waiting.</em></h2><p class="rv">Free on iPhone and Android. Booking for summer 2027 opens 1 February.</p><div class="stores rv"><div class="store">Download on<b>iPhone</b></div><div class="store">Get it on<b>Android</b></div></div></div></section>
+<footer><span>Cimalta S.r.l. · Cortina d'Ampezzo · Dolomites</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),sm=t=>t*t*(3-2*t);
+const back=t=>{const c=1.6;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const pre=$('#pre');let seen=false;try{seen=!!sessionStorage.getItem('cimalta-seen');sessionStorage.setItem('cimalta-seen','1')}catch(e){}
+let preStart=seen?null:0;if(seen)pre.remove();
+/* elevation profile of Alta Via 1 (metres, every ~10 km) */
+const ELE=[1496,1810,2327,2042,2104,2300,2752,2105,2575,1990,1917,2190,1450,1220,1640,1100,690];
+(function(){const W=300,H=88,mn=600,mx=2900;const P=ELE.map((e,i)=>[i/(ELE.length-1)*W,H-6-(e-mn)/(mx-mn)*(H-14)]);
+  let d=`M${P[0][0]},${P[0][1]}`;for(let i=1;i<P.length;i++){const[a,b]=[P[i-1],P[i]];const cx=(a[0]+b[0])/2;d+=` C${cx},${a[1]} ${cx},${b[1]} ${b[0]},${b[1]}`}
+  $('#profL').setAttribute('d',d);$('#profA').setAttribute('d',d+` L${W},${H} L0,${H} Z`);
+  $('#profH').innerHTML=[2,4,6,8,11,14].map((i,k)=>`<circle cx="${P[i][0]}" cy="${P[i][1]}" r="3.2" fill="#fff" stroke="#2b2f33" stroke-width="1.6"/>`).join('')})();
+const profL=$('#profL'),profLen=profL.getTotalLength();profL.style.strokeDasharray=profLen;
+/* offline topo map: contours + trail */
+(function(){const s=$('#mapS');let g='<rect width="316" height="676" fill="#e8ede4"/>';
+  for(let r=0;r<14;r++){let d='';for(let k=0;k<=72;k++){const a=k/72*6.283;const rr=30+r*22+Math.sin(a*3+r*.7)*10+Math.cos(a*5-r)*6;d+=(k?'L':'M')+(170+Math.cos(a)*rr*1.05).toFixed(1)+','+(330+Math.sin(a)*rr*1.25).toFixed(1)}g+=`<path d="${d}Z" fill="none" stroke="${r%4===0?'#b9b29f':'#cfc9b8'}" stroke-width="${r%4===0?1.2:.7}"/>`}
+  g+='<path d="M0 600 C60 560 90 620 140 590 S230 520 316 560 V676 H0Z" fill="#cfe0ea" opacity=".7"/>';
+  g+='<path id="trail" d="M40 640 C70 590 60 540 110 500 S190 470 170 410 S110 330 150 280 S240 230 230 170 S200 120 250 90" fill="none" stroke="#c97a62" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 9"/>';
+  g+='<path id="done" d="M40 640 C70 590 60 540 110 500 S190 470 170 410 S110 330 150 280 S240 230 230 170 S200 120 250 90" fill="none" stroke="#c97a62" stroke-width="4.5" stroke-linecap="round"/>';
+  g+='<g transform="translate(250 90)"><rect x="-13" y="-30" width="26" height="22" rx="6" fill="#2b2f33"/><path d="M-6 -14 V-20 L0 -25 L6 -20 V-14" fill="none" stroke="#fff" stroke-width="2"/><circle r="5" fill="#2b2f33"/></g>';
+  g+='<g id="me"><circle r="16" fill="#2f6bff" opacity=".18" id="meP"/><circle r="7" fill="#2f6bff" stroke="#fff" stroke-width="3"/></g>';
+  s.innerHTML=g})();
+const trail=$('#done'),tLen=trail.getTotalLength();trail.style.strokeDasharray=tLen;
+/* stars for the hut night */
+const st=$('#stars'),sx=st.getContext('2d');let S=[];for(let i=0;i<220;i++)S.push([Math.random(),Math.random(),Math.random()*1.3+.3,Math.random()*6.28]);
+const hv=$('#hv'),hero=$('#hero'),story=$('#story'),vids=$$('.bgs video'),cps=$$('.cp'),steps=$$('#steps b'),scs=[0,1,2,3,4].map(i=>$('#sc'+i));
+const heroLines=$$('h1 .ln>span'),his=$$('.hi'),rvs=$$('.rv'),cnts=$$('.cnt'),nav=$('#nav'),pw=$('#pw'),phone=$('#phone'),finger=$('#finger');
+vids.concat([hv]).forEach(v=>{v.pause()});
+const PLACES=['Lago di Sorapis · 1,925 m','Passo Giau · 2,236 m','Rifugio Averau · 2,413 m','Cadini di Misurina · 2,300 m','Lagazuoi · 2,752 m · 18:52'];
+let t0=null,last=null,hq=0,sp=0,spV=0,tilt=0,tiltV=0,lastY=scrollY,vel=0;
+function seek(v,t){if(!v.duration)return;const tt=Math.min(v.duration-.05,Math.max(0,t));if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}
+function fmt(n){return n.toLocaleString('en-GB')}
+function frame(now){
+  if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.1,(now-last)/1000);last=now;
+  if(preStart!==null){const k=seg(t,.6,1.2);pre.style.opacity=1-k;if(k>=1){pre.remove();preStart=null}}
+  const vh=innerHeight,vw=innerWidth,mobile=vw<=760;
+  vel=lerp(vel,(scrollY-lastY)/Math.max(dt,.001),.15);lastY=scrollY;
+  /* hero: the drone climbs as you scroll; the footage has weight, so it eases toward the scroll position */
+  {const r=hero.getBoundingClientRect();const q=clamp(-r.top/(r.height-vh));hq+=(q-hq)*(1-Math.exp(-dt*6));
+   if(r.bottom>0){seek(hv,.2+hq*9.6);
+    heroLines.forEach((el,i)=>{const k=eo(seg(t,.35+i*.14,1.25+i*.14));el.style.transform=`translateY(${(1-k)*108}%)`});
+    const out=1-seg(q,.55,.95);his.forEach(el=>el.style.opacity=eo(seg(t,1,1.8))*out);$('.hcopy').style.transform=`translateY(${-seg(q,.5,1)*60}px)`;$('.hcopy h1').style.opacity=out;
+    {const c=Math.min(seg(q,.6,.75),1-seg(q,.93,1));$('#hcap').style.opacity=c;$('#hcap').style.transform=`translateY(${(1-c)*30}px)`}$('#altV').textContent=fmt(Math.round(lerp(2108,2236,sm(hq))/1)) +' m'}}
+  /* story */
+  const r=story.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh)),inS=r.top<vh&&r.bottom>0;
+  nav.classList.toggle('ink',r.bottom<70);
+  if(inS){
+    const C=5,x=q*C,ci=Math.min(C-1,Math.floor(x)),lp=x-ci;
+    // which screen: hold most of each chapter, then hand over with a spring
+    const target=ci+sm(seg(lp,.84,1))*(ci<C-1?1:0);
+    const k=120,d=2*Math.sqrt(k)*.82;spV+=(-(sp-target)*k-spV*d)*dt;sp+=spV*dt;
+    // backgrounds crossfade with the chapter; the active clip runs on the clock (slowed to read as drone footage)
+    vids.forEach((v,i)=>{const o=clamp(1-Math.abs(x-.5-i)*1.6+.6);v.style.opacity=o;if(o>.01)seek(v,(t*.8+i*1.3)%Math.max(1,(v.duration||8)-.2))});
+    const nk=sm(seg(x,4.05,4.7));$('#night').style.opacity=.55*nk;
+    {const W=st.width=Math.round(st.clientWidth),H=st.height=Math.round(st.clientHeight);st.style.opacity=nk;if(nk>0){sx.fillStyle='#fff';S.forEach(([a,b,s,p])=>{sx.globalAlpha=(.4+.6*Math.abs(Math.sin(t*1.3+p)))*nk;sx.beginPath();sx.arc(a*W,b*H,s,0,6.28);sx.fill()})}}
+    cps.forEach((c,i)=>{const v=Math.min(seg(x,i-.02,i+.12),i===C-1?1:1-seg(x,i+.86,i+.98));c.style.opacity=v;c.style.marginTop=(1-v)*24+'px'});
+    steps.forEach((b,i)=>b.style.transform=`scaleX(${clamp(x-i)})`);
+    $('#place').textContent=PLACES[ci];
+    // phone: scale to fit, gentle idle bob, tilts with scroll velocity on an under-damped spring
+    const sc=mobile?Math.min(.78,(vh-250)/700,(vw-24)/340):Math.min(1,(vh-90)/700);
+    tiltV+=(-(tilt-clamp(vel/2600,-1,1)*4)*60-tiltV*9)*dt;tilt+=tiltV*dt;
+    const enter=eo(seg(q,0,.03));
+    pw.style.transform=`translateY(${(1-enter)*160+Math.sin(t*1.1)*4}px) scale(${sc}) rotateX(${tilt}deg) rotateZ(${tilt*.25-1+Math.sin(t*.7)*.3}deg)`;pw.style.transformOrigin=mobile?'50% 100%':'50% 50%';
+    scs.forEach((s,i)=>{const o=i-sp;s.style.transform=`translateX(${o*100}%) scale(${1-Math.min(.06,Math.abs(o)*.06)})`;s.style.filter=o<0?`brightness(${1+o*.25})`:'';s.style.visibility=Math.abs(o)<1.02?'visible':'hidden'});
+    $('#sbar').style.color=sp>3.5?'#fff':(sp>2.6&&sp<3.4?'#2b2f33':'');
+    // scripted interactions per chapter (finger taps, presses, data)
+    let fx=-99,fy=-99,fo=0,press=0;
+    if(ci===0){$('#clock').textContent='09:41';const p=seg(lp,.35,.62);fx=lerp(250,160,eo(p));fy=lerp(560,240,eo(p));fo=seg(lp,.3,.4)*(1-seg(lp,.8,.86));press=seg(lp,.62,.68)*(1-seg(lp,.7,.78));
+      $('#card0').style.transform=`scale(${1-.035*press})`;}
+    if(ci===1){const p=seg(lp,.05,.6);profL.style.strokeDashoffset=profLen*(1-eo(p));$('#profA').style.opacity=eo(seg(lp,.3,.7));
+      cnts.slice(0,3).forEach(el=>{const v=Math.round(+el.dataset.to*eo(seg(lp,.08,.5)));el.textContent=el.dataset.sep?fmt(v):v});}
+    if(ci===2){$('#clock').textContent='09:44';
+      const s1=seg(lp,.14,.24),s2=seg(lp,.36,.46),s3=seg(lp,.6,.66);
+      // tap "Private", tap half-board, press reserve
+      if(lp<.3){fx=lerp(260,226,eo(seg(lp,.05,.14)));fy=lerp(560,322,eo(seg(lp,.05,.14)));press=seg(lp,.14,.17)*(1-seg(lp,.19,.24))}
+      else if(lp<.52){fx=lerp(226,272,eo(seg(lp,.3,.38)));fy=lerp(322,450,eo(seg(lp,.3,.38)));press=seg(lp,.38,.41)*(1-seg(lp,.43,.47))}
+      else{fx=lerp(272,160,eo(seg(lp,.5,.6)));fy=lerp(450,560,eo(seg(lp,.5,.6)));press=seg(lp,.6,.63)*(1-seg(lp,.65,.7))}
+      fo=seg(lp,.04,.1)*(1-seg(lp,.7,.76));
+      $('#segI').style.transform=`translateX(${back(s1)*100}%)`;
+      const tg=back(s2);$('#togI').style.transform=`translateX(${tg*16}px)`;$('#tog').style.background=s2>.5?'#2f4a3a':'';
+      const price=Math.round(lerp(486,lerp(612,792,s2),s1));$('#price').textContent='€'+price;
+      $('#cta').style.transform=`scale(${1-.04*press})`;const rp=seg(lp,.61,.72);$('#rip').style.transform=`scale(${rp*14})`;$('#rip').style.opacity=1-rp;
+      const ok=seg(lp,.7,.76);$('#ok').style.opacity=ok;const okp=$('#okP');const L=okp.getTotalLength();okp.style.strokeDasharray=L;okp.style.strokeDashoffset=L*(1-eo(seg(lp,.73,.82)));
+      $('#ok').style.transform=`scale(${.96+.04*back(ok)})`;}
+    if(ci===3){$('#clock').textContent='11:'+String(12+Math.floor(lp*40)).padStart(2,'0');const p=sm(seg(lp,.02,.95));trail.style.strokeDashoffset=tLen*(1-(.18+.6*p));
+      const pt=trail.getPointAtLength(tLen*(.18+.6*p));$('#me').setAttribute('transform',`translate(${pt.x} ${pt.y})`);$('#meP').setAttribute('r',14+Math.sin(t*3)*4);
+      $('#lKm').textContent=(lerp(6.8,1.9,p)).toFixed(1);$('#lAlt').textContent=fmt(Math.round(lerp(2240,2690,p)));
+      const a=back(seg(lp,.3,.4));$('#alert').style.transform=`translateY(${(1-a)*-90}px)`;$('#alert').style.opacity=clamp(seg(lp,.3,.34));}
+    if(ci===4){$('#lockT').textContent='18:'+String(52+Math.floor(lp*7)).padStart(2,'0');$$('#sc4 .note,#sc4 .tn').forEach((n,i)=>{const k=back(seg(lp,.12+i*.12,.26+i*.12));n.style.opacity=clamp(seg(lp,.12+i*.12,.18+i*.12));n.style.transform=`translateY(${(1-k)*-30}px) scale(${.96+.04*k})`})}
+    finger.style.left=fx+'px';finger.style.top=fy+'px';finger.style.opacity=fo;finger.style.transform=`scale(${1-.25*press})`;finger.style.background=`rgba(255,255,255,${.4+.4*press})`;
+  }
+  rvs.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.94-rr.top)/(vh*.28)));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  cnts.slice(3).forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.95-rr.top)/(vh*.4)));el.textContent=Math.round(+el.dataset.to*k)+(el.dataset.suf||'')});
+  $$('.route img,.dl img').forEach((im,i)=>{const rr=im.parentElement.getBoundingClientRect();if(rr.bottom<0||rr.top>vh)return;const p=clamp((vh-rr.top)/(vh+rr.height));im.style.transform=`translateY(${(p-.5)*-8}%) scale(${1.04+.06*p})`});
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
