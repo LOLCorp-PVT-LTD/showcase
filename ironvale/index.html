@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ironvale Forge — hand-forged architectural ironwork, Sheffield</title>
+<meta name="description" content="Ironvale Forge makes hand-forged gates, railings and door hardware in Sheffield. Commissions, restoration and bespoke ironwork since 1987.">
+<style>
+@font-face{font-family:Shoulders;src:url(assets/fonts/big-shoulders-display-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Shoulders;src:url(assets/fonts/big-shoulders-display-latin-900-normal.woff2) format("woff2");font-weight:900}
+@font-face{font-family:Work;src:url(assets/fonts/work-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Work;src:url(assets/fonts/work-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Work;src:url(assets/fonts/work-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Caslon;src:url(assets/fonts/libre-caslon-text-latin-400-italic.woff2) format("woff2");font-style:italic}
+:root{--soot:#121211;--iron:#1c1c1a;--iron2:#262623;--ash:#e9e3d6;--mute:#9b958a;--line:#ffffff1c;--heat:#ff7a1a;--ember:#c2361b;--straw:#ffc14d}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--soot);color:var(--ash);font-family:Work,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:inherit;text-decoration:none}
+em{font-family:Caslon,serif;font-style:italic;font-weight:400;color:var(--heat);text-transform:none;letter-spacing:-.01em}
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:30px;padding:20px 40px;transition:background .4s}
+.nav.solid{background:#121211e6;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-family:Shoulders;font-weight:900;font-size:22px;letter-spacing:.08em;text-transform:uppercase}.brand img{width:34px}
+.nav .links{display:flex;gap:26px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#cfc8ba}.nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--heat);color:#1a0d04}
+.btn.ghost{background:transparent;color:var(--ash);border:1px solid #ffffff4d}
+h1,h2,.disp{font-family:Shoulders;font-weight:900;text-transform:uppercase;letter-spacing:-.005em}
+/* ---------- hero ---------- */
+.hero{position:relative;height:230vh}
+.hpin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.spark{mix-blend-mode:screen;opacity:.85}
+.hshade{position:absolute;inset:0;background:linear-gradient(90deg,#121211f2 0%,#121211b3 38%,#12121133 70%,#12121166),linear-gradient(#0000 60%,#121211)}
+#forgeC{position:absolute;inset:0;width:100%;height:100%}
+.hcopy{position:absolute;left:40px;top:50%;transform:translateY(-46%);max-width:640px}
+.kick{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--heat);font-weight:600}
+h1{font-size:clamp(68px,10.5vw,170px);line-height:.84;margin-top:16px}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}h1 .ln>span{display:inline-block}
+h1 em{font-size:.86em}
+.hcopy p{font-size:18px;line-height:1.6;color:#d8d1c3;max-width:460px;margin-top:24px}
+.hcta{display:flex;gap:12px;margin-top:30px}
+.temp{position:absolute;right:40px;top:110px;text-align:right;font-variant-numeric:tabular-nums}
+.temp small{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--mute)}
+.temp b{display:block;font-family:Shoulders;font-weight:900;font-size:64px;line-height:1;margin-top:6px}
+.temp span{font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.since{position:absolute;left:40px;right:40px;bottom:30px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--mute)}
+/* ---------- process ---------- */
+.proc{position:relative;height:880vh}
+.ppin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.pbg video,.pbg .ph{opacity:0}
+.pbg .ph{position:absolute;inset:-6%;background-size:cover;background-position:center}
+.pshade{position:absolute;inset:0;background:linear-gradient(90deg,#121211f5 0%,#121211c7 36%,#12121155 64%,#121211aa 100%)}
+.cps{position:absolute;left:40px;top:50%;width:min(430px,36vw)}
+.cp{position:absolute;left:0;top:0;transform:translateY(-50%);opacity:0;width:100%}
+.cp .n{font-family:Shoulders;font-weight:900;font-size:120px;line-height:.8;color:transparent;-webkit-text-stroke:1.5px #ffffff3a}
+.cp h2{font-size:clamp(46px,5vw,78px);line-height:.88;margin-top:10px}
+.cp p{font-size:16px;line-height:1.65;color:#d3ccbe;margin-top:18px}
+.cp .facts{display:flex;gap:26px;margin-top:22px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.cp .facts b{display:block;font-family:Shoulders;font-weight:800;font-size:28px;letter-spacing:.02em;color:var(--ash)}
+.bench{position:absolute;right:40px;top:50%;width:min(560px,44vw);transform:translateY(-50%);background:#121211b8;border:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.bench .hd{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}
+.bench .hd b{color:var(--ash);font-weight:600}
+#barC{display:block;width:100%;height:300px}
+.gauge{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:16px 18px;border-top:1px solid var(--line)}
+.gauge .t{font-family:Shoulders;font-weight:900;font-size:52px;line-height:.9;font-variant-numeric:tabular-nums;min-width:170px}
+.gauge .t small{font-size:20px;color:var(--mute)}
+.scale{position:relative;height:10px;background:linear-gradient(90deg,#2a2a28 0%,#5a0f05 30%,#8f1d0a 42%,#c2361b 55%,#ff7a1a 72%,#ffc14d 86%,#fff3c4 100%)}
+.scale i{position:absolute;top:-6px;width:2px;height:22px;background:#fff;box-shadow:0 0 10px #fff}
+.scale+div{display:flex;flex-wrap:wrap;justify-content:space-between;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-top:8px}
+#cName{font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-top:8px}
+.rail{position:absolute;left:40px;right:40px;bottom:28px;display:flex;gap:8px}
+.rail div{flex:1;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.rail i{display:block;height:2px;background:#ffffff26;margin-bottom:10px;position:relative;overflow:hidden}.rail i b{position:absolute;inset:0;background:var(--heat);transform-origin:left;transform:scaleX(0)}
+/* ---------- content ---------- */
+.sec{max-width:1280px;margin:0 auto;padding:140px 40px 40px}
+.sec h2{font-size:clamp(48px,7vw,112px);line-height:.86;margin-top:14px;max-width:1000px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;margin-top:60px}
+.work{position:relative;overflow:hidden;background:var(--iron)}
+.work img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform;filter:saturate(.85) contrast(1.05)}
+.work::after{content:"";position:absolute;inset:0;background:linear-gradient(#0000 50%,#000c)}
+.work .cap{position:absolute;left:20px;right:20px;bottom:18px;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.work .cap b{font-family:Shoulders;font-weight:800;font-size:28px;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.work .cap span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#d3ccbe;text-align:right}
+.w1{grid-column:span 7;height:560px}.w2{grid-column:span 5;height:560px}.w3{grid-column:span 5;height:440px}.w4{grid-column:span 7;height:440px}
+.svc{margin-top:60px;border-top:1px solid var(--ash)}
+.svc .r{display:grid;grid-template-columns:70px 1.3fr 1.6fr .9fr .9fr;gap:20px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line)}
+.svc .r .i{font-family:Shoulders;font-weight:800;font-size:20px;color:var(--heat)}
+.svc .r b{font-family:Shoulders;font-weight:800;font-size:36px;text-transform:uppercase;line-height:1}
+.svc .r p{font-size:15px;color:#cfc8ba;line-height:1.55}
+.svc .r small{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.svc .r div{font-size:16px;font-weight:500}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:80px}
+.nums div{border-top:2px solid var(--heat);padding-top:16px}
+.nums b{display:block;font-family:Shoulders;font-weight:900;font-size:76px;line-height:.9}
+.nums span{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.comm{max-width:1280px;margin:140px auto 0;padding:0 40px}
+.cbox{position:relative;overflow:hidden;border:1px solid var(--line);display:grid;grid-template-columns:1.1fr 1fr}
+.cbox .l{position:relative;min-height:560px;overflow:hidden}
+.cbox .l video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cbox .l::after{content:"";position:absolute;inset:0;background:linear-gradient(#1212114d,#121211e6)}
+.cbox .l .in{position:absolute;left:40px;right:40px;bottom:40px;z-index:2}
+.cbox h2{font-size:clamp(46px,5.4vw,84px);line-height:.86}
+.cbox .l p{margin-top:16px;color:#d3ccbe;line-height:1.6;max-width:420px}
+.cbox form{padding:40px;background:var(--iron);display:flex;flex-direction:column;gap:2px}
+.fld{border-bottom:1px solid var(--line);padding:16px 0;display:flex;justify-content:space-between;gap:14px;font-size:14px}
+.fld span{color:var(--mute);letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:18px 0}
+.chip{font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border:1px solid #ffffff33}.chip.on{background:var(--ash);color:var(--soot);border-color:var(--ash)}
+.cbox form .btn{margin-top:22px;justify-content:space-between}
+footer{max-width:1280px;margin:0 auto;padding:50px 40px;display:flex;justify-content:space-between;gap:20px;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--soot);display:grid;place-items:center}#pre img{width:64px}
+@media (max-width:760px){
+  .nav{padding:14px 16px}.nav .links{display:none}.nav .btn{height:38px;padding:0 12px;font-size:11px}.brand{font-size:17px}.brand img{width:28px}
+  .hshade{background:linear-gradient(#12121199,#12121155 35%,#121211e6 72%)}
+  .hcopy{left:20px;right:20px;top:auto;bottom:70px;transform:none}.hcopy p{font-size:15px}.hcta .btn{height:42px;padding:0 14px;font-size:11px}
+  .temp{right:18px;top:76px}.temp b{font-size:40px}.since{left:20px;right:20px;bottom:18px;font-size:9px;letter-spacing:.18em}
+  .proc{height:800vh}
+  .pshade{background:linear-gradient(#121211f0 0%,#121211b3 36%,#12121166 55%,#121211d9 100%)}
+  .cps{left:20px;right:20px;width:auto;top:84px}.cp{transform:none}.cp .n{font-size:64px}.cp h2{font-size:42px}.cp p{font-size:13.5px;margin-top:10px}.cp .facts{display:none}
+  .bench{left:16px;right:16px;width:auto;top:auto;bottom:56px;transform:none}#barC{height:190px}.scale+div{display:none}#bStep{display:none}.bench .hd{font-size:10px;letter-spacing:.16em}.gauge .t{font-size:38px;min-width:120px}
+  .rail{left:16px;right:16px;bottom:22px}.rail div{font-size:0}
+  .sec{padding:90px 20px 20px}.grid{grid-template-columns:1fr}.w1,.w2,.w3,.w4{grid-column:auto;height:380px}
+  .svc .r{grid-template-columns:1fr 1fr;gap:8px 16px}.svc .r .i{display:none}.svc .r b,.svc .r p{grid-column:span 2}.svc .r b{font-size:30px}
+  .nums{grid-template-columns:1fr 1fr}.nums b{font-size:56px}
+  .comm{padding:0 16px;margin-top:90px}.cbox{grid-template-columns:1fr}.cbox .l{min-height:420px}.cbox .l .in{left:22px;right:22px;bottom:26px}.cbox form{padding:24px}
+  footer{flex-direction:column;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">Ironvale</span><div class="links"><a href="#process">Process</a><a href="#work">Work</a><a href="#services">Services</a><a href="#commission">Commission</a></div><div class="sp"></div><a class="btn" href="#commission">Start a commission</a></nav>
+
+<header class="hero" id="hero">
+  <div class="hpin">
+    <video class="bgv" id="vEmb" src="media/embers.mp4" poster="media/embers.jpg" muted playsinline preload="auto"></video>
+    <video class="bgv spark" id="vSpk" src="media/sparks.mp4" muted playsinline preload="auto"></video>
+    <div class="hshade"></div>
+    <canvas id="forgeC"></canvas>
+    <div class="hcopy">
+      <div class="kick hi">Ironvale Forge · Kelham Island, Sheffield</div>
+      <h1><span class="ln"><span>Iron, shaped</span></span><span class="ln"><span>by <em>hand.</em></span></span></h1>
+      <p class="hi">Gates, railings and door hardware, forged one piece at a time by three smiths, and fitted by the same hands that made them.</p>
+      <div class="hcta hi"><a class="btn" href="#commission">Start a commission →</a><a class="btn ghost" href="#work">See the work</a></div>
+    </div>
+    <div class="temp hi"><small>Forge, live</small><b id="hT">1,240°</b><span id="hC">Straw yellow · welding heat</span></div>
+    <div class="since hi"><span>Est. 1987</span><span>Scroll to forge</span><span>BS EN 1090 certified</span></div>
+  </div>
+</header>
+
+<section class="proc" id="process">
+  <div class="ppin">
+    <div class="pbg">
+      <video class="bgv" src="media/coals.mp4" poster="media/coals.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/anvil.mp4" poster="media/anvil.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/grind.mp4" poster="media/grind.jpg" muted playsinline preload="metadata"></video>
+      <div class="ph" style="background-image:url(media/work-2641324.jpg)"></div>
+    </div>
+    <div class="pshade"></div>
+    <div class="cps">
+      <div class="cp"><div class="n">01</div><h2>Bring it to <em>heat.</em></h2><p>Mild steel bar goes into a coke fire at 1,250 °C. We read the temperature by colour, the way smiths always have: cherry, then orange, then straw.</p><div class="facts"><div><b>1,250 °C</b>Fire</div><div><b>4 min</b>To forging heat</div></div></div>
+      <div class="cp"><div class="n">02</div><h2>Draw it <em>out.</em></h2><p>Hammer blows on the anvil taper the end, about forty to a heat. When the colour drops below orange the bar goes back in the fire, never forced cold.</p><div class="facts"><div><b>2 lb</b>Cross-pein</div><div><b>~40</b>Blows a heat</div></div></div>
+      <div class="cp"><div class="n">03</div><h2>Turn the <em>scroll.</em></h2><p>The tapered end is rolled over the horn, then closed on a scroll jig. Every scroll on a gate is matched by eye to its pair.</p><div class="facts"><div><b>850 °C</b>Cherry red</div><div><b>±1 mm</b>Pair match</div></div></div>
+      <div class="cp"><div class="n">04</div><h2>Finish and <em>fit.</em></h2><p>Dressed, wire-brushed and finished in beeswax and linseed, or hot-dip galvanised and painted for the street. Then we fit it ourselves.</p><div class="facts"><div><b>60 yr</b>Galvanised life</div><div><b>Fitted</b>By the maker</div></div></div>
+    </div>
+    <div class="bench" id="bench">
+      <div class="hd"><span>On the anvil · <b id="bName">19 mm round bar</b></span><span id="bStep">Heat 1 of 6</span></div>
+      <canvas id="barC"></canvas>
+      <div class="gauge"><div class="t" id="gT">20<small>°C</small></div><div><div class="scale"><i id="gI"></i></div><div><span>Black</span><span>Cherry</span><span>Orange</span><span>Straw</span><span>White</span></div><div id="cName">Black · cold</div></div></div>
+    </div>
+    <div class="rail" id="rail"><div><i><b></b></i>Heat</div><div><i><b></b></i>Draw</div><div><i><b></b></i>Scroll</div><div><i><b></b></i>Finish</div></div>
+  </div>
+</section>
+
+<section class="sec" id="work">
+  <div class="kick rv">Recent work</div>
+  <h2 class="rv">Made for one <em>doorway,</em> one street, one house.</h2>
+  <div class="grid">
+    <figure class="work w1 rv"><img src="media/work-2641324.jpg" alt="Forged iron gate panel with leaves and a rose" loading="lazy"><figcaption class="cap"><b>Rose gate panel</b><span>Ecclesall Road · 2025<br>14 forged leaves</span></figcaption></figure>
+    <figure class="work w2 rv"><img src="media/work-2667858.jpg" alt="Polished iron door knocker on a timber door" loading="lazy"><figcaption class="cap"><b>Ring knocker</b><span>Door hardware<br>from £180</span></figcaption></figure>
+    <figure class="work w3 rv"><img src="media/work-3287738.jpg" alt="Iron ball finial on a gate post" loading="lazy"><figcaption class="cap"><b>Ball finial</b><span>Gate posts<br>Grade II restoration</span></figcaption></figure>
+    <figure class="work w4 rv"><img src="media/work-3356125.jpg" alt="Lion-head knocker on a riveted bronze door" loading="lazy"><figcaption class="cap"><b>Lion-head door</b><span>Restoration · Bath<br>Re-cast and re-hung</span></figcaption></figure>
+  </div>
+</section>
+
+<section class="sec" id="services">
+  <div class="kick rv">What we make</div>
+  <h2 class="rv">Priced plainly, <em>made</em> slowly.</h2>
+  <div class="svc">
+    <div class="r rv"><span class="i">01</span><b>Gates</b><p>Garden, side and drive gates, hung on forged hinges and collars. Automation available.</p><div><small>From</small>£2,800</div><div><small>Lead time</small>8–10 weeks</div></div>
+    <div class="r rv"><span class="i">02</span><b>Railings</b><p>Street railings and balustrades, matched to period patterns or drawn new.</p><div><small>From</small>£420 / m</div><div><small>Lead time</small>6–8 weeks</div></div>
+    <div class="r rv"><span class="i">03</span><b>Door hardware</b><p>Knockers, pulls, thumb latches and strap hinges, waxed or galvanised.</p><div><small>From</small>£180</div><div><small>Lead time</small>3 weeks</div></div>
+    <div class="r rv"><span class="i">04</span><b>Restoration</b><p>Listed ironwork surveyed, dismantled, repaired by fire-welding and re-fitted.</p><div><small>From</small>Survey £240</div><div><small>Lead time</small>On survey</div></div>
+  </div>
+  <div class="nums">
+    <div class="rv"><b class="cnt" data-to="38">0</b><span>Years at the fire</span></div>
+    <div class="rv"><b class="cnt" data-to="2140" data-sep="1">0</b><span>Commissions fitted</span></div>
+    <div class="rv"><b class="cnt" data-to="3">0</b><span>Smiths, no subcontractors</span></div>
+    <div class="rv"><b class="cnt" data-to="96" data-suf="%">0</b><span>Steel recycled</span></div>
+  </div>
+</section>
+
+<section class="comm" id="commission">
+  <div class="cbox rv">
+    <div class="l"><video id="vAnv2" src="media/anvil.mp4" poster="media/anvil.jpg" muted playsinline preload="metadata"></video><div class="in"><div class="kick">Commission</div><h2 style="margin-top:12px">Tell us about the <em>opening.</em></h2><p>Send a photo and rough measurements. We'll reply within two working days with a sketch, a price and a slot on the anvil.</p></div></div>
+    <form onsubmit="return false">
+      <div class="fld"><span>Name</span><b>—</b></div>
+      <div class="fld"><span>Postcode</span><b>—</b></div>
+      <div class="chips"><span class="chip on">Gate</span><span class="chip">Railings</span><span class="chip">Door hardware</span><span class="chip">Restoration</span><span class="chip">Something else</span></div>
+      <div class="fld"><span>Opening width</span><b>approx. 1.2 m</b></div>
+      <div class="fld"><span>Finish</span><b>Galvanised + painted ▾</b></div>
+      <div class="fld"><span>Photos</span><b>Add photos +</b></div>
+      <a class="btn">Send to the forge <span>→</span></a>
+    </form>
+  </div>
+</section>
+<footer><span>Ironvale Forge Ltd · Unit 4, Cotton Mill Walk, Kelham Island, Sheffield S3</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),sm=t=>t*t*(3-2*t);
+const pre=$('#pre');let seen=false;try{seen=!!sessionStorage.getItem('ironvale-seen');sessionStorage.setItem('ironvale-seen','1')}catch(e){}
+if(seen)pre.remove();
+/* ---- incandescence: steel colour by temperature (°C), from a smith's colour chart ---- */
+const HS=[[20,[86,84,79]],[450,[70,40,32]],[550,[90,15,5]],[650,[143,29,10]],[750,[194,54,27]],[850,[230,80,25]],[950,[255,122,26]],[1050,[255,160,50]],[1150,[255,193,77]],[1300,[255,243,196]]];
+function heat(T){if(T<=HS[0][0])return HS[0][1];for(let i=1;i<HS.length;i++)if(T<=HS[i][0]){const k=(T-HS[i-1][0])/(HS[i][0]-HS[i-1][0]);return HS[i-1][1].map((v,j)=>v+(HS[i][1][j]-v)*k)}return HS[HS.length-1][1]}
+const rgb=(c,a=1)=>`rgba(${c.map(Math.round).join(',')},${a})`;
+function cname(T){return T>1200?'White-yellow · welding heat':T>1080?'Straw yellow · forging heat':T>930?'Bright orange · drawing heat':T>800?'Cherry red · scrolling heat':T>600?'Dull red · stop and reheat':T>420?'Black heat · still hot':'Black · cold'}
+const fmt=n=>n.toLocaleString('en-GB');
+/* ---- hero: an S-scroll forged across the screen, cooling behind the hammer ---- */
+const fc=$('#forgeC'),fx=fc.getContext('2d');
+function scrollPath(){// classic S-scroll: left volute (inside out), a sweeping body, right volute (outside in)
+  const vol=(cx,cy,R,turns,dir,phase,n)=>{const P=[];for(let k=0;k<=n;k++){const u=k/n,t=u*turns*2*Math.PI,r=R*(0.12+0.88*u);P.push([cx+Math.cos(phase+dir*t)*r,cy+Math.sin(phase+dir*t)*r])}return P};
+  const L=vol(.24,.66,.17,2.2,1,Math.PI*.9,150);// inner -> outer
+  const R=vol(.76,.34,.17,2.2,1,-Math.PI*.1,150).reverse();// outer -> inner
+  const a=L[L.length-1],b=R[0],B=[];const c1=[a[0]+.05,a[1]-.42],c2=[b[0]-.05,b[1]+.42];
+  for(let k=1;k<120;k++){const u=k/120,m=1-u;B.push([m*m*m*a[0]+3*m*m*u*c1[0]+3*m*u*u*c2[0]+u*u*u*b[0],m*m*m*a[1]+3*m*m*u*c1[1]+3*m*u*u*c2[1]+u*u*u*b[1]])}
+  return L.concat(B,R)}
+const SP=scrollPath();let forged=new Array(SP.length).fill(null);
+const sparks=[];let headLast=0;
+function drawForge(t,dt,d,W,H,mobile){fx.clearRect(0,0,W,H);
+  const S=mobile?Math.min(W*.96,H*.42):Math.min(W*.5,H*.82),ox=mobile?(W-S)/2:W-S*1.04,oy=mobile?H*.1:H*.5-S*.5;
+  const head=Math.floor(d*(SP.length-1));
+  for(let i=0;i<SP.length;i++){if(i<=head){if(forged[i]===null)forged[i]=t-(i<headLast?3:0)}else forged[i]=null}headLast=head;
+  fx.lineCap='round';fx.lineJoin='round';
+  for(let i=1;i<=head;i++){const age=t-forged[i];const T=20+1230*Math.exp(-age/1.8);const c=heat(T);const taper=Math.min(1,.35+i/60,.35+(SP.length-i)/60);
+    const p0=SP[i-1],p1=SP[i];fx.strokeStyle=rgb(c);fx.lineWidth=Math.max(3,S*.03*taper);
+    if(T>650){fx.shadowColor=rgb(c,.9);fx.shadowBlur=(T-650)/600*S*.05}else fx.shadowBlur=0;
+    fx.beginPath();fx.moveTo(ox+p0[0]*S,oy+p0[1]*S);fx.lineTo(ox+p1[0]*S,oy+p1[1]*S);fx.stroke()}
+  fx.shadowBlur=0;
+  // dark iron sheen on cooled sections
+  if(head>2&&d<1){const p=SP[head];const hx=ox+p[0]*S,hy=oy+p[1]*S;if(Math.random()<.9)for(let k=0;k<3;k++)sparks.push({x:hx,y:hy,vx:(Math.random()-.5)*380,vy:-Math.random()*360-40,l:.5+Math.random()*.6,a:0})
+    const g=fx.createRadialGradient(hx,hy,0,hx,hy,S*.07);g.addColorStop(0,'rgba(255,243,196,.9)');g.addColorStop(1,'rgba(255,160,50,0)');fx.fillStyle=g;fx.fillRect(hx-S*.08,hy-S*.08,S*.16,S*.16)}
+  // sparks: ballistic, drag, fade with cooling colour
+  for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.a+=dt;if(s.a>s.l){sparks.splice(i,1);continue}s.vy+=900*dt;s.vx*=1-1.5*dt;const x0=s.x,y0=s.y;s.x+=s.vx*dt;s.y+=s.vy*dt;const T=1300-900*(s.a/s.l);fx.strokeStyle=rgb(heat(T),1-s.a/s.l);fx.lineWidth=1.6;fx.beginPath();fx.moveTo(x0,y0);fx.lineTo(s.x,s.y);fx.stroke()}
+  if(sparks.length>400)sparks.splice(0,sparks.length-400);
+  return head>0?20+1230*Math.exp(-(t-forged[head])/1.8):20}
+/* ---- process bench: one bar heated, drawn out, scrolled and cooled ---- */
+const bc=$('#barC'),bx=bc.getContext('2d');const bsp=[];let lastStrike=-1,squash=0,squashV=0,flash=0;
+function barShape(n,draw,curl){// returns centreline points and half-widths in unit space
+  const P=[];let x=0,y=0,a=0;const L=lerp(.62,.78,draw),ds=L/n;
+  for(let i=0;i<=n;i++){const s=i/n;P.push({x,y,w:lerp(1,lerp(1,.32,draw),sm(seg(s,.5,1)))*.034});
+    const k=curl*Math.pow(seg(s,.42,1),1.6)*26;a-=k*ds;x+=Math.cos(a)*ds;y+=Math.sin(a)*ds}
+  return P}
+function drawBench(t,dt,x,W,H){bx.clearRect(0,0,W,H);
+  const ci=Math.min(3,Math.floor(x)),lp=x-ci;
+  // temperatures along the bar: the tip is the hot end; the far end stays near ambient
+  let Tip,draw=0,curl=0,cool=0;
+  if(ci===0){Tip=lerp(20,1180,eo(seg(lp,.1,.85)))}
+  else if(ci===1){draw=sm(seg(lp,.08,.9));Tip=1180-260*((lp*3)%1)}
+  else if(ci===2){draw=1;curl=sm(seg(lp,.05,.85));Tip=lerp(960,860,lp)}
+  else{draw=1;curl=1;cool=seg(lp,0,.7);Tip=20+840*Math.exp(-cool*4.2)}
+  // hammer strikes while drawing out: under-damped squash, flash, sparks
+  if(ci===1&&lp>.06&&lp<.92){const st=Math.floor(t/.52);if(st!==lastStrike){lastStrike=st;squashV-=9;flash=1;for(let k=0;k<14;k++)bsp.push({x:0,y:0,vx:(Math.random()-.5)*2.2,vy:-Math.random()*1.6-.3,l:.35+Math.random()*.4,a:0,fresh:1})}}
+  squashV+=(-squash*260-squashV*14)*dt;squash+=squashV*dt;flash=Math.max(0,flash-dt*5);
+  const P=barShape(80,draw,curl);
+  const S=Math.min(W*1.05,H*2.6),ox=W*.06,oy=H*(ci>=2?.42:.52);
+  const tipP=P[P.length-1];
+  bx.lineCap='round';
+  for(let i=1;i<P.length;i++){const s=i/(P.length-1);const T=20+(Tip-20)*Math.pow(s,2.2);const c=heat(T);
+    const p0=P[i-1],p1=P[i];bx.strokeStyle=rgb(c);bx.lineWidth=Math.max(2,P[i].w*S*(1+(ci===1?squash*.02:0)));
+    if(T>700){bx.shadowColor=rgb(c,.85);bx.shadowBlur=(T-700)/500*22}else bx.shadowBlur=0;
+    bx.beginPath();bx.moveTo(ox+p0.x*S,oy+p0.y*S);bx.lineTo(ox+p1.x*S,oy+p1.y*S);bx.stroke()}
+  bx.shadowBlur=0;
+  // wax finish: a slow highlight sweeps the cooled bar
+  if(ci===3&&lp>.55){const k=seg(lp,.55,.95);for(let i=1;i<P.length;i++){const s=i/(P.length-1);const g=Math.max(0,1-Math.abs(s-k)*8);if(g<=0)continue;bx.strokeStyle=`rgba(255,255,255,${.35*g})`;bx.lineWidth=2;const p0=P[i-1],p1=P[i];bx.beginPath();bx.moveTo(ox+p0.x*S,oy+p0.y*S-P[i].w*S*.3);bx.lineTo(ox+p1.x*S,oy+p1.y*S-P[i].w*S*.3);bx.stroke()}}
+  // anvil face line
+  bx.fillStyle='#ffffff12';bx.fillRect(0,oy+P[0].w*S+6,W,1);
+  if(flash>0){const hx=ox+tipP.x*S,hy=oy+tipP.y*S;const g=bx.createRadialGradient(hx,hy,0,hx,hy,60);g.addColorStop(0,`rgba(255,243,196,${.7*flash})`);g.addColorStop(1,'rgba(255,160,50,0)');bx.fillStyle=g;bx.fillRect(hx-60,hy-60,120,120)}
+  for(let i=bsp.length-1;i>=0;i--){const s=bsp[i];if(s.fresh){s.x=tipP.x*S;s.y=tipP.y*S;s.fresh=0}s.a+=dt;if(s.a>s.l){bsp.splice(i,1);continue}s.vy+=4*dt;const x0=s.x,y0=s.y;s.x+=s.vx*S*.5*dt;s.y+=s.vy*S*.5*dt;bx.strokeStyle=rgb(heat(1300-900*s.a/s.l),1-s.a/s.l);bx.lineWidth=1.4;bx.beginPath();bx.moveTo(ox+x0,oy+y0);bx.lineTo(ox+s.x,oy+s.y);bx.stroke()}
+  return{Tip,ci,lp}}
+function fit(c){const d=Math.min(devicePixelRatio||1,2),r=c.getBoundingClientRect(),w=Math.round(r.width*d),h=Math.round(r.height*d);if(c.width!==w||c.height!==h){c.width=w;c.height=h}c.getContext('2d').setTransform(d,0,0,d,0,0);return[r.width,r.height]}
+function seek(v,t){if(!v.duration)return;const tt=((t%(v.duration-.1))+(v.duration-.1))%(v.duration-.1);if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}
+const hero=$('#hero'),proc=$('#process'),vEmb=$('#vEmb'),vSpk=$('#vSpk'),pv=$$('.pbg video'),ph=$('.pbg .ph'),cps=$$('.cp'),bars=$$('.rail b');
+const heroLines=$$('h1 .ln>span'),his=$$('.hi'),rvs=$$('.rv'),cnts=$$('.cnt'),nav=$('#nav');
+[vEmb,vSpk,...pv,$('#vAnv2')].forEach(v=>v.pause());
+let t0=null,last=null,hd=0;
+function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.05,(now-last)/1000);last=now;
+  if(!seen&&pre.isConnected){const k=seg(t,.5,1.1);pre.style.opacity=1-k;if(k>=1)pre.remove()}
+  const vh=innerHeight,vw=innerWidth,mobile=vw<=760;
+  nav.classList.toggle('solid',scrollY>vh*.5);
+  {const r=hero.getBoundingClientRect();if(r.bottom>0){const q=clamp(-r.top/(r.height-vh));
+    seek(vEmb,t*.9);seek(vSpk,t);
+    // the line forges itself a little on arrival, then follows the scroll (with weight)
+    const target=Math.max(.16*eo(seg(t,.8,3.2)),q*1.12);hd+=(clamp(target)-hd)*(1-Math.exp(-dt*5));
+    const[W,H]=fit(fc);const T=drawForge(t,dt,hd,W,H,mobile);
+    $('#hT').textContent=fmt(Math.round(1240+Math.sin(t*1.7)*6+Math.sin(t*4.3)*3))+'°';
+    heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
+    his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*(1-seg(q,.75,1)));$('.hcopy').style.transform=(mobile?'':'translateY(-46%) ')+`translateY(${-seg(q,.6,1)*50}px)`}}
+  {const r=proc.getBoundingClientRect();if(r.top<vh&&r.bottom>0){const q=clamp(-r.top/(r.height-vh)),x=q*4;
+    pv.forEach((v,i)=>{const o=clamp(1-Math.abs(x-.5-i)*1.6+.6);v.style.opacity=o;if(o>.01)seek(v,t*.85+i)});
+    {const o=clamp(1-Math.abs(x-3.5)*1.6+.6);ph.style.opacity=o;ph.style.transform=`scale(${1.04+.08*seg(x,3,4)}) translateX(${-seg(x,3,4)*2}%)`}
+    cps.forEach((c,i)=>{const v=Math.min(seg(x,i-.02,i+.12),i===3?1:1-seg(x,i+.86,i+.98));c.style.opacity=v;c.style.marginTop=(1-v)*24+'px'});
+    bars.forEach((b,i)=>b.style.transform=`scaleX(${clamp(x-i)})`);
+    const[W,H]=fit($('#barC'));const B=drawBench(t,dt,Math.min(3.999,x),W,H);
+    $('#gT').innerHTML=fmt(Math.round(B.Tip))+'<small>°C</small>';$('#gT').style.color=B.Tip>500?rgb(heat(B.Tip)):'';
+    $('#gI').style.left=clamp((B.Tip-20)/1280)*100+'%';$('#cName').textContent=cname(B.Tip);
+    $('#bStep').textContent=['Heat 1 of 6','Heat 2 of 6','Heat 4 of 6','Finished · beeswax'][B.ci];
+    $('#bName').textContent=['19 mm round bar','Taper · 190 mm','Scroll · 3 turns','Gate scroll, left'][B.ci]}}
+  {const v=$('#vAnv2'),r=v.getBoundingClientRect();if(r.top<vh&&r.bottom>0)seek(v,t*.9)}
+  rvs.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.94-rr.top)/(vh*.28)));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  cnts.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.95-rr.top)/(vh*.4)));const v=Math.round(+el.dataset.to*k);el.textContent=(el.dataset.sep?fmt(v):v)+(el.dataset.suf||'')});
+  $$('.work img').forEach((im,i)=>{const rr=im.parentElement.getBoundingClientRect();if(rr.bottom<0||rr.top>vh)return;const p=clamp((vh-rr.top)/(vh+rr.height));im.style.transform=`translateY(${(p-.5)*-8}%) scale(${1.04+.07*p})`});
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
