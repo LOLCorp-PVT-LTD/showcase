@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fiddlehead — ferns and houseplants that come with a gardener</title>
+<meta name="description" content="Fiddlehead is a plant shop app that matches ferns and houseplants to your light, reminds you when to water, and keeps a growth journal for every plant.">
+<style>
+@font-face{font-family:Bric;src:url(assets/fonts/bricolage-grotesque-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Bric;src:url(assets/fonts/bricolage-grotesque-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Bric;src:url(assets/fonts/bricolage-grotesque-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Bric;src:url(assets/fonts/bricolage-grotesque-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Play;src:url(assets/fonts/playfair-display-latin-400-italic.woff2) format("woff2");font-style:italic}
+:root{--forest:#10251c;--forest2:#183427;--moss:#4c7a3d;--fern:#a7d36b;--cream:#f3efe4;--paper:#fbf9f3;--ink:#16221b;--mute:#6c7368;--line:#e1ddd0;--terra:#c8693f;--sky:#7fb7d9}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);color:var(--ink);font-family:Bric,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}a{color:inherit;text-decoration:none}
+em{font-family:Play,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;gap:30px;padding:18px 36px;color:var(--cream);transition:background .35s,color .35s}
+.nav.solid{background:#f3efe4e6;color:var(--ink);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:-.03em}.brand img{width:34px}
+.nav .links{display:flex;gap:26px;font-size:14px;opacity:.88}.nav .sp{flex:1}
+.pill{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;border-radius:99px;font-weight:600;font-size:14px;background:var(--fern);color:var(--forest)}
+.pill.dark{background:var(--forest);color:var(--cream)}
+/* hero: the fiddlehead unfurls as you scroll */
+.hero{position:relative;height:260vh;background:#050806}
+.hpin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:var(--cream)}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#hv{object-position:62% 50%}
+.hshade{position:absolute;inset:0;background:linear-gradient(90deg,#050806f0 0%,#05080699 34%,#05080600 60%)}
+.hcopy{position:absolute;left:36px;top:50%;transform:translateY(-50%);max-width:600px}
+.eb{font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--fern)}
+h1{font-weight:800;font-size:clamp(54px,8vw,124px);line-height:.9;letter-spacing:-.05em;margin-top:16px}
+h1 em{color:var(--fern);font-size:1.02em}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.1em}h1 .ln>span{display:inline-block}
+.hcopy p{font-size:18px;line-height:1.6;color:#d9dccf;max-width:440px;margin-top:20px}
+.stores{display:flex;gap:10px;margin-top:26px}
+.store{height:52px;padding:0 18px;border-radius:14px;border:1px solid #ffffff40;background:#ffffff14;display:flex;flex-direction:column;justify-content:center;font-size:11px}.store b{font-size:16px}
+.grow{position:absolute;right:36px;bottom:40px;text-align:right;font-variant-numeric:tabular-nums}
+.grow small{font-size:11px;letter-spacing:.24em;text-transform:uppercase;opacity:.75}.grow b{display:block;font-weight:800;font-size:54px;letter-spacing:-.04em;line-height:1}
+.grow span{font-size:13px;opacity:.8}
+/* story */
+.story{position:relative;height:1000vh;background:var(--forest)}
+.spin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:var(--cream)}
+.sbg video{opacity:0}
+.sshade{position:absolute;inset:0;background:linear-gradient(90deg,#10251cf2 0%,#10251cb3 34%,#10251c33 62%,#10251c66)}
+.chap{position:absolute;left:36px;top:50%;width:min(420px,36vw)}
+.cp{position:absolute;left:0;top:0;transform:translateY(-50%);opacity:0;width:100%}
+.cp h2{font-weight:800;font-size:clamp(38px,4.4vw,64px);line-height:.95;letter-spacing:-.045em;margin-top:12px}
+.cp h2 em{color:var(--fern)}
+.cp p{font-size:17px;line-height:1.6;color:#d9dccf;margin-top:16px}
+.steps{position:absolute;left:36px;bottom:32px;display:flex;gap:8px}
+.steps i{display:block;width:46px;height:3px;border-radius:2px;background:#ffffff33;overflow:hidden;position:relative}.steps i b{position:absolute;inset:0;background:var(--fern);transform-origin:left;transform:scaleX(0)}
+/* phone */
+.pw{position:absolute;left:64%;top:50%;width:340px;height:700px;margin:-350px 0 0 -170px}
+.phone{position:absolute;inset:0;border-radius:54px;background:#0d1410;padding:12px;box-shadow:0 60px 120px #0009,0 0 0 1.5px #ffffff22 inset}
+.scr{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;background:var(--paper);color:var(--ink)}
+.island{position:absolute;left:50%;top:10px;width:96px;height:28px;margin-left:-48px;border-radius:20px;background:#000;z-index:20}
+.sbar{position:absolute;left:0;right:0;top:0;height:46px;display:flex;justify-content:space-between;align-items:center;padding:4px 28px 0;font-size:13px;font-weight:600;z-index:15}
+.sc{position:absolute;inset:0;padding:54px 16px 16px;background:var(--paper);overflow:hidden}
+.sc h3{font-weight:800;font-size:26px;letter-spacing:-.04em;line-height:1}.sc .sub{font-size:12px;color:var(--mute);margin-top:4px}
+.chips{display:flex;gap:6px;margin-top:12px}.chip{font-size:11px;font-weight:600;padding:7px 11px;border-radius:99px;border:1px solid var(--line);white-space:nowrap}.chip.on{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pc{border-radius:18px;background:#fff;border:1px solid var(--line);overflow:hidden;position:relative}
+.pc img{width:100%;height:122px;object-fit:cover;display:block}
+.pc .in{padding:8px 10px 10px}.pc b{display:block;font-size:13px;letter-spacing:-.01em}.pc span{font-size:11px;color:var(--mute)}
+.pc .pr{position:absolute;right:8px;top:8px;background:#fffffff0;border-radius:99px;font-size:11px;font-weight:700;padding:4px 8px}
+.pc .lt{display:inline-flex;gap:3px;margin-top:5px}.pc .lt i{width:7px;height:7px;border-radius:50%;background:var(--line)}.pc .lt i.on{background:var(--terra)}
+.cart{position:absolute;left:16px;right:16px;bottom:84px;height:52px;border-radius:16px;background:var(--forest);color:var(--cream);display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-weight:600;font-size:14px;z-index:5;transform:translateY(140%)}
+.cart b{background:var(--fern);color:var(--forest);border-radius:99px;padding:4px 10px;font-size:12px}
+.tabs{position:absolute;left:12px;right:12px;bottom:12px;height:58px;border-radius:22px;background:#fffffff2;box-shadow:0 10px 30px #0002,0 0 0 1px var(--line);display:flex;justify-content:space-around;align-items:center;font-size:10px;font-weight:600;color:var(--mute);z-index:12}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:4px}.tabs i{width:18px;height:18px;border-radius:6px;border:2px solid currentColor;display:block}.tabs .on{color:var(--forest)}
+/* light match */
+.dial{position:relative;width:250px;height:150px;margin:18px auto 0}
+.dial svg{width:100%;height:100%;overflow:visible}
+.lux{text-align:center;margin-top:-8px}.lux b{display:block;font-weight:800;font-size:44px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.lux span{font-size:12px;color:var(--mute)}
+.match{margin-top:14px;border-radius:20px;background:#fff;border:1px solid var(--line);display:flex;gap:12px;padding:10px;align-items:center;opacity:0}
+.match img{width:70px;height:70px;border-radius:14px;object-fit:cover}.match b{display:block;font-size:15px}.match span{font-size:11.5px;color:var(--mute);line-height:1.4}
+.match .m{margin-left:auto;font-weight:800;font-size:18px;color:var(--moss)}
+.scan{position:absolute;left:16px;right:16px;top:178px;height:2px;background:var(--fern);box-shadow:0 0 12px var(--fern);opacity:0}
+/* care */
+.care{border-radius:22px;background:var(--forest);color:var(--cream);padding:16px;margin-top:12px;position:relative;overflow:hidden}
+.care .row{display:flex;justify-content:space-between;align-items:flex-start}
+.care b{font-size:18px;letter-spacing:-.02em}.care span{font-size:12px;opacity:.75}
+.moist{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:14px}
+.moist i{flex:1;border-radius:5px 5px 2px 2px;background:#a7d36b55}
+.wbtn{margin-top:14px;height:46px;border-radius:14px;background:var(--fern);color:var(--forest);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.wbtn .rip{position:absolute;width:30px;height:30px;border-radius:50%;background:#ffffff88;transform:scale(0)}
+.drop{position:absolute;width:10px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--sky);opacity:0}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px;text-align:center;font-size:10px;color:var(--mute)}
+.week div b{display:block;width:30px;height:30px;margin:4px auto 0;border-radius:10px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--ink)}
+.week div.w b{background:#dbeef9;border-color:#bcdcf0}.week div.today b{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+.streak{display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-radius:16px;background:#fff;border:1px solid var(--line);padding:12px 14px;font-size:12px}
+.streak b{font-size:22px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+/* journal */
+.jhead{border-radius:22px;overflow:hidden;position:relative;height:200px;margin-top:10px;background:#000}
+.jhead video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.jhead .tag{position:absolute;left:10px;bottom:10px;background:#000a;color:#fff;border-radius:99px;font-size:11px;padding:5px 10px;font-weight:600}
+.jstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;text-align:center}
+.jstats div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}.jstats b{display:block;font-weight:800;font-size:20px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}.jstats span{font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.strip{display:flex;gap:6px;margin-top:10px}.strip img{width:calc(25% - 4.5px);height:62px;object-fit:cover;border-radius:10px}
+.note{position:absolute;left:10px;right:10px;top:50px;z-index:18;border-radius:20px;background:#fffffff5;box-shadow:0 14px 34px #0003;padding:11px 12px;display:flex;gap:10px;align-items:center;font-size:12px;opacity:0}
+.note img{width:34px;height:34px;border-radius:10px}.note b{display:block;font-size:13px}.note span{color:var(--mute)}
+.finger{position:absolute;width:42px;height:42px;border-radius:50%;background:#ffffff66;border:2px solid #fff;box-shadow:0 6px 18px #0004;z-index:30;opacity:0;margin:-21px;pointer-events:none}
+/* content */
+.sec{max-width:1240px;margin:0 auto;padding:130px 36px 30px}
+.k{font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--moss)}
+.sec h2{font-weight:800;font-size:clamp(40px,5.4vw,80px);letter-spacing:-.05em;line-height:.95;margin-top:14px;max-width:900px}
+.sec h2 em{color:var(--terra)}
+.shop{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:50px}
+.item{background:var(--paper);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.item .im{height:260px;overflow:hidden;position:relative}.item img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;will-change:transform}
+.item .in{padding:16px 18px 20px}.item b{font-weight:800;font-size:19px;letter-spacing:-.02em}.item p{font-size:13px;color:var(--mute);margin-top:4px}
+.item .row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-weight:700}
+.item .add{font-size:12px;padding:7px 12px;border-radius:99px;background:var(--forest);color:var(--cream)}
+.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px}
+.promise div{border-top:2px solid var(--forest);padding-top:16px}.promise b{display:block;font-weight:800;font-size:44px;letter-spacing:-.04em}.promise span{font-size:14px;color:var(--mute)}
+.dl{position:relative;margin:120px 36px 0;border-radius:34px;overflow:hidden;color:var(--cream);min-height:520px;display:flex;align-items:center;background:#000}
+.dl video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+.dl::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#050806f0,#05080633)}
+.dl .in{position:relative;z-index:2;padding:56px;max-width:560px}.dl h2{font-weight:800;font-size:clamp(40px,5vw,72px);letter-spacing:-.05em;line-height:.95}.dl h2 em{color:var(--fern)}
+.dl p{margin-top:14px;color:#d9dccf;line-height:1.6}
+footer{max-width:1240px;margin:0 auto;padding:46px 36px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--forest);display:grid;place-items:center}#pre img{width:64px}
+@media (max-width:760px){
+  .nav{padding:14px 16px}.nav .links{display:none}.pill{height:38px;padding:0 14px;font-size:13px}
+  #hv{object-position:68% 50%}.hshade{background:linear-gradient(#05080666,#05080611 30%,#050806e6 72%)}
+  .hcopy{left:20px;right:20px;top:auto;bottom:110px;transform:none}.hcopy p{font-size:15px}
+  .grow{right:20px;left:20px;bottom:28px;text-align:left}.grow b{font-size:32px}
+  .story{height:900vh}.sshade{background:linear-gradient(#10251cf0,#10251cb3 34%,#10251c55 60%,#10251ccc)}
+  .chap{left:20px;right:20px;width:auto;top:76px}.cp{transform:none}.cp h2{font-size:31px}.cp p{font-size:13.5px;margin-top:8px}
+  .pw{left:50%;top:auto;bottom:-40px;margin:0 0 0 -170px}
+  .steps{left:20px;bottom:16px}.steps i{width:30px}
+  .sec{padding:90px 20px 20px}.shop{grid-template-columns:1fr 1fr}.item .im{height:170px}.promise{grid-template-columns:1fr}
+  .dl{margin:90px 16px 0}.dl .in{padding:32px 24px}
+  footer{flex-direction:column;gap:8px;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">fiddlehead</span><div class="links"><a href="#story">How it works</a><a href="#shop">Shop</a><a href="#promise">Our promise</a></div><div class="sp"></div><a class="pill" href="#get">Get the app</a></nav>
+
+<header class="hero" id="hero">
+  <div class="hpin">
+    <video class="bgv" id="hv" src="media/unfurl.mp4" poster="media/unfurl.jpg" muted playsinline preload="metadata"></video>
+    <div class="hshade"></div>
+    <div class="hcopy">
+      <div class="eb hi">Ferns and houseplants · Bristol</div>
+      <h1><span class="ln"><span>Plants that</span></span><span class="ln"><span>come with a <em>gardener.</em></span></span></h1>
+      <p class="hi">Fiddlehead matches every plant to your light, tells you when to water, and keeps a journal of every new frond.</p>
+      <div class="stores hi"><div class="store">Download on<b>iPhone</b></div><div class="store">Get it on<b>Android</b></div></div>
+    </div>
+    <div class="grow hi"><small>Day <span id="day">1</span> of a male fern</small><b id="grH">2.0 cm</b><span>Scroll to watch it unfurl</span></div>
+  </div>
+</header>
+
+<section class="story" id="story">
+  <div class="spin">
+    <div class="sbg">
+      <video class="bgv" src="media/frond.mp4" poster="media/frond.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/water.mp4" poster="media/water.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/drops.mp4" poster="media/drops.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/sprout.mp4" poster="media/sprout.jpg" muted playsinline preload="metadata"></video>
+    </div>
+    <div class="sshade"></div>
+    <div class="chap">
+      <div class="cp"><div class="eb">01 · Shop</div><h2>Ferns, grown <em>slowly</em> in Somerset.</h2><p>Forty-two ferns and houseplants from our own glasshouse, each with a light rating, a pot size and a real photo of the plant you'll get.</p></div>
+      <div class="cp"><div class="eb">02 · Match</div><h2>Hold your phone <em>where</em> it will live.</h2><p>Fiddlehead reads the light at the spot, then shows only the plants that will be happy there.</p></div>
+      <div class="cp"><div class="eb">03 · Care</div><h2>Water when it's <em>thirsty</em>, not on Sundays.</h2><p>Reminders follow the season, the pot and the room, so a fern by a north window isn't watered like a cactus.</p></div>
+      <div class="cp"><div class="eb">04 · Grow</div><h2>Every new frond, <em>noticed.</em></h2><p>Snap a photo each week and Fiddlehead builds a timelapse, counts the new fronds and tells you when it's ready to repot.</p></div>
+    </div>
+    <div class="steps" id="steps"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+
+    <div class="pw" id="pw"><div class="phone"><div class="scr">
+      <div class="island"></div><div class="sbar" id="sbar"><span id="clock">08:14</span><span>●●● 5G ▮</span></div>
+      <div class="sc" id="s0">
+        <h3>Good morning, Priya</h3><div class="sub">2 plants want water this week</div>
+        <div class="chips"><span class="chip on">Ferns</span><span class="chip">Low light</span><span class="chip">Pet safe</span><span class="chip">Under £25</span></div>
+        <div class="pgrid">
+          <div class="pc" id="pc0"><img src="media/p-10349666.jpg" alt=""><span class="pr">£22</span><div class="in"><b>Boston fern</b><span>Bright, indirect</span><div class="lt"><i class="on"></i><i class="on"></i><i></i></div></div></div>
+          <div class="pc"><img src="media/p-187949.jpg" alt=""><span class="pr">£18</span><div class="in"><b>Lady fern</b><span>Shade</span><div class="lt"><i class="on"></i><i></i><i></i></div></div></div>
+          <div class="pc"><img src="media/p-7119343.jpg" alt=""><span class="pr">£26</span><div class="in"><b>Bird's nest</b><span>Low light</span><div class="lt"><i class="on"></i><i></i><i></i></div></div></div>
+          <div class="pc"><img src="media/p-2004483.jpg" alt=""><span class="pr">£12</span><div class="in"><b>Echeveria</b><span>Full sun</span><div class="lt"><i class="on"></i><i class="on"></i><i class="on"></i></div></div></div>
+        </div>
+        <div class="cart" id="cart"><span>Boston fern · 17 cm pot</span><b>Added · £22</b></div>
+        <div class="tabs"><div class="on"><i></i>Shop</div><div><i></i>Match</div><div><i></i>My plants</div><div><i></i>Journal</div></div>
+      </div>
+      <div class="sc" id="s1">
+        <h3>Light match</h3><div class="sub">Living room · north window · 2.5 m away</div>
+        <div class="dial"><svg viewBox="0 0 250 150"><path d="M20 130 A105 105 0 0 1 230 130" fill="none" stroke="#e1ddd0" stroke-width="14" stroke-linecap="round"/><path id="arc" d="M20 130 A105 105 0 0 1 230 130" fill="none" stroke="#4c7a3d" stroke-width="14" stroke-linecap="round"/><line id="ndl" x1="125" y1="130" x2="125" y2="44" stroke="#16221b" stroke-width="4" stroke-linecap="round"/><circle cx="125" cy="130" r="9" fill="#16221b"/><text x="16" y="148" font-size="10" fill="#6c7368">Shade</text><text x="196" y="148" font-size="10" fill="#6c7368">Full sun</text></svg></div>
+        <div class="lux"><b id="luxV">0 lux</b><span id="luxL">Measuring…</span></div>
+        <div class="match" id="m0"><img src="media/p-7119343.jpg" alt=""><div><b>Bird's nest fern</b><span>Loves this spot.<br>Water every 9 days.</span></div><span class="m">96%</span></div>
+        <div class="match" id="m1"><img src="media/p-10349666.jpg" alt=""><div><b>Boston fern</b><span>Happy, a bit slower.<br>Mist twice a week.</span></div><span class="m">88%</span></div>
+        <div class="match" id="m2" style="opacity:0"><img src="media/p-2004483.jpg" alt=""><div><b>Echeveria</b><span>Too dark here.</span></div><span class="m" style="color:#c8693f">21%</span></div>
+        <div class="scan" id="scan"></div>
+        <div class="tabs"><div><i></i>Shop</div><div class="on"><i></i>Match</div><div><i></i>My plants</div><div><i></i>Journal</div></div>
+      </div>
+      <div class="sc" id="s2">
+        <h3>Ferdinand</h3><div class="sub">Boston fern · bathroom shelf · since March</div>
+        <div class="care"><div class="row"><div><b>Water today</b><br><span>250 ml, room-temperature</span></div><span id="soil">Soil 18%</span></div>
+          <div class="moist" id="moist"></div>
+          <div class="wbtn" id="wbtn"><span id="wlbl">I've watered it</span><b class="rip" id="wrip"></b></div></div>
+        <div class="week"><div class="w">Mon<b>9</b></div><div>Tue<b>10</b></div><div>Wed<b>11</b></div><div class="w">Thu<b>12</b></div><div>Fri<b>13</b></div><div class="today">Sat<b id="satB">14</b></div><div>Sun<b>15</b></div></div>
+        <div class="streak"><span>Care streak</span><b id="streak">41 days</b></div>
+        <div class="tabs"><div><i></i>Shop</div><div><i></i>Match</div><div class="on"><i></i>My plants</div><div><i></i>Journal</div></div>
+      </div>
+      <div class="sc" id="s3">
+        <h3>Journal</h3><div class="sub">Male fern · week 6</div>
+        <div class="jhead"><video id="jv" src="media/sprout.mp4" muted playsinline preload="metadata"></video><span class="tag">Timelapse · 6 weeks</span></div>
+        <div class="jstats"><div><b id="jF">3</b><span>Fronds</span></div><div><b id="jH">11</b><span>cm tall</span></div><div><b>9</b><span>Days to water</span></div></div>
+        <div class="strip"><img src="media/p-6531279.jpg" alt=""><img src="media/p-187949.jpg" alt=""><img src="media/p-10349666.jpg" alt=""><img src="media/p-7119343.jpg" alt=""></div>
+        <div class="tabs"><div><i></i>Shop</div><div><i></i>Match</div><div><i></i>My plants</div><div class="on"><i></i>Journal</div></div>
+      </div>
+      <div class="note" id="note"><img src="src/img/logo.svg" alt=""><div><b>A new frond is unfurling 🌱</b><span>Your male fern grew 2 cm this week.</span></div></div>
+      <div class="finger" id="finger"></div>
+    </div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="shop">
+  <div class="k rv">This week in the glasshouse</div>
+  <h2 class="rv">Grown by us, <em>delivered</em> in paper and wool.</h2>
+  <div class="shop">
+    <article class="item rv"><div class="im"><img src="media/p-10349666.jpg" alt="Boston fern fronds" loading="lazy"></div><div class="in"><b>Boston fern</b><p>17 cm pot · bright, indirect</p><div class="row"><span>£22</span><span class="add">Add</span></div></div></article>
+    <article class="item rv"><div class="im"><img src="media/p-6531279.jpg" alt="Tree fern fronds with raindrops" loading="lazy"></div><div class="in"><b>Tree fern</b><p>30 cm pot · shade, humid</p><div class="row"><span>£64</span><span class="add">Add</span></div></div></article>
+    <article class="item rv"><div class="im"><img src="media/p-716579.jpg" alt="Cacti and succulents on a windowsill" loading="lazy"></div><div class="in"><b>Windowsill trio</b><p>Three succulents · full sun</p><div class="row"><span>£28</span><span class="add">Add</span></div></div></article>
+    <article class="item rv"><div class="im"><img src="media/p-3693409.jpg" alt="Silver rosette succulents" loading="lazy"></div><div class="in"><b>Echeveria tray</b><p>Six plugs · full sun</p><div class="row"><span>£18</span><span class="add">Add</span></div></div></article>
+  </div>
+  <div class="promise" id="promise">
+    <div class="rv"><b class="cnt" data-to="30">0</b><span>day happy-plant promise: if it struggles, we replace it</span></div>
+    <div class="rv"><b class="cnt" data-to="0">0</b><span>plastic in the box: paper, wool and a cardboard pot cage</span></div>
+    <div class="rv"><b class="cnt" data-to="18" data-suf="k">0</b><span>plants matched to a real windowsill this year</span></div>
+  </div>
+</section>
+
+<section class="dl" id="get"><video id="dlv" src="media/unfurl.mp4" muted playsinline preload="metadata"></video><div class="in"><div class="k rv" style="color:var(--fern)">Get the app</div><h2 class="rv" style="margin-top:12px">Grow something <em>slowly.</em></h2><p class="rv">Free on iPhone and Android. Your first plant ships with a care card and three months of reminders.</p><div class="stores rv"><div class="store">Download on<b>iPhone</b></div><div class="store">Get it on<b>Android</b></div></div></div></section>
+<footer><span>Fiddlehead Plants Ltd · glasshouse in Wrington, Somerset · shop in Bristol</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),sm=t=>t*t*(3-2*t);const back=t=>{const c=1.6;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const pre=$('#pre');let seen=false;try{seen=!!sessionStorage.getItem('fiddlehead-seen');sessionStorage.setItem('fiddlehead-seen','1')}catch(e){}if(seen)pre.remove();
+const hero=$('#hero'),hv=$('#hv'),story=$('#story'),vids=$$('.sbg video'),cps=$$('.cp'),steps=$$('#steps b'),pw=$('#pw'),scs=[0,1,2,3].map(i=>$('#s'+i)),finger=$('#finger');
+const heroLines=$$('h1 .ln>span'),his=$$('.hi'),rvs=$$('.rv'),cnts=$$('.cnt'),nav=$('#nav');
+[hv,...vids,$('#jv'),$('#dlv')].forEach(v=>v.pause());
+function seek(v,t,loop=true){if(!v.duration)return;const d=v.duration-.08;const tt=loop?((t%d)+d)%d:clamp(t,0,d);if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}
+// soil moisture bars: dry over the week, refill when watered
+const mo=$('#moist');const MB=[62,55,47,40,33,27,22,18];MB.forEach(()=>mo.insertAdjacentHTML('beforeend','<i></i>'));const mbs=[...mo.children];
+const arc=$('#arc'),arcL=arc.getTotalLength();arc.style.strokeDasharray=arcL;
+let t0=null,last=null,hq=0,sp=0,spV=0,tilt=0,tiltV=0,lastY=scrollY,vel=0;
+function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.05,(now-last)/1000);last=now;
+  if(!seen&&pre.isConnected){const k=seg(t,.5,1.1);pre.style.opacity=1-k;if(k>=1)pre.remove()}
+  const vh=innerHeight,vw=innerWidth,mobile=vw<=760;vel=lerp(vel,(scrollY-lastY)/Math.max(dt,.001),.15);lastY=scrollY;
+  nav.classList.toggle('solid',story.getBoundingClientRect().bottom<70);
+  {const r=hero.getBoundingClientRect();if(r.bottom>0){const q=clamp(-r.top/(r.height-vh));
+    // the timelapse is the scroll: it opens a little on arrival, then follows the page with weight
+    const target=Math.max(.06*eo(seg(t,.6,2.6)),q);hq+=(target-hq)*(1-Math.exp(-dt*4));seek(hv,hq*(hv.duration||16),false);
+    $('#day').textContent=1+Math.round(hq*20);$('#grH').textContent=(2+hq*14.5).toFixed(1)+' cm';
+    heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
+    const out=1-seg(q,.7,1);his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*out);$('.hcopy h1').style.opacity=out}}
+  const r=story.getBoundingClientRect();
+  if(r.top<vh&&r.bottom>0){const q=clamp(-r.top/(r.height-vh)),C=4,x=q*C,ci=Math.min(C-1,Math.floor(x)),lp=x-ci;
+    vids.forEach((v,i)=>{const o=clamp(1-Math.abs(x-.5-i)*1.6+.6);v.style.opacity=o;if(o>.01)seek(v,t*.8+i)});
+    cps.forEach((c,i)=>{const v=Math.min(seg(x,i-.02,i+.12),i===C-1?1:1-seg(x,i+.86,i+.98));c.style.opacity=v;c.style.marginTop=(1-v)*24+'px'});
+    steps.forEach((b,i)=>b.style.transform=`scaleX(${clamp(x-i)})`);
+    const target=ci+(ci<C-1?sm(seg(lp,.86,1)):0);const k=120,d=2*Math.sqrt(k)*.82;spV+=(-(sp-target)*k-spV*d)*dt;sp+=spV*dt;
+    scs.forEach((s,i)=>{const o=i-sp;s.style.transform=`translateX(${o*100}%) scale(${1-Math.min(.06,Math.abs(o)*.06)})`;s.style.filter=o<0?`brightness(${1+o*.25})`:'';s.style.visibility=Math.abs(o)<1.02?'visible':'hidden'});
+    const sc=mobile?Math.min(.78,(vh-250)/700,(vw-24)/340):Math.min(1,(vh-90)/700);
+    tiltV+=(-(tilt-clamp(vel/2600,-1,1)*4)*60-tiltV*9)*dt;tilt+=tiltV*dt;const enter=eo(seg(q,0,.03));
+    pw.style.transformOrigin=mobile?'50% 100%':'50% 50%';pw.style.transform=`translateY(${(1-enter)*160+Math.sin(t*1.1)*4}px) scale(${sc}) rotateX(${tilt}deg) rotateZ(${tilt*.25-1+Math.sin(t*.7)*.3}deg)`;
+    let fx=-99,fy=-99,fo=0,press=0;
+    if(ci===0){$('#clock').textContent='08:14';const p=eo(seg(lp,.3,.5));fx=lerp(250,90,p);fy=lerp(600,250,p);fo=seg(lp,.25,.32)*(1-seg(lp,.8,.86));press=seg(lp,.52,.56)*(1-seg(lp,.58,.64));
+      $('#pc0').style.transform=`scale(${1-.04*press})`;const c=back(seg(lp,.58,.68));$('#cart').style.transform=`translateY(${(1-c)*140}%)`}
+    if(ci===1){$('#clock').textContent='08:16';const m=sm(seg(lp,.05,.45));const wob=Math.sin(t*9)*3*(1-m)*(m>0?1:0);const lux=Math.round(lerp(0,640,m)+Math.sin(t*3)*6*m);
+      $('#luxV').textContent=lux+' lux';$('#luxL').textContent=m<1?'Measuring…':'Medium-low light · great for ferns';
+      const a=lerp(-90,-38,m)+wob;$('#ndl').setAttribute('transform',`rotate(${a+90-90} 125 130)`);$('#ndl').setAttribute('transform',`rotate(${a} 125 130)`);arc.style.strokeDashoffset=arcL*(1-m*.29);
+      $('#scan').style.opacity=lp<.45?.8:0;$('#scan').style.top=(170+((t*120)%300))+'px';
+      ['#m0','#m1','#m2'].forEach((s,i)=>{const kk=back(seg(lp,.48+i*.08,.6+i*.08));$(s).style.opacity=clamp(seg(lp,.48+i*.08,.52+i*.08))*(i===2?.55:1);$(s).style.transform=`translateY(${(1-kk)*24}px)`})}
+    if(ci===2){$('#clock').textContent='09:02';const p=eo(seg(lp,.2,.4));fx=lerp(250,165,p);fy=lerp(620,330,p);fo=seg(lp,.15,.22)*(1-seg(lp,.75,.8));press=seg(lp,.42,.46)*(1-seg(lp,.48,.54));
+      const w=seg(lp,.44,.7);$('#wbtn').style.transform=`scale(${1-.04*press})`;$('#wrip').style.transform=`scale(${seg(lp,.43,.55)*12})`;$('#wrip').style.opacity=1-seg(lp,.43,.55);
+      $('#wlbl').textContent=w>0?'Watered · next in 9 days':'I\'ve watered it';$('#wbtn').style.background=w>0?'#dbeef9':'';
+      mbs.forEach((b,i)=>{const fill=i===mbs.length-1?lerp(MB[i],84,sm(w)):MB[i];b.style.height=fill+'%';b.style.background=i===mbs.length-1&&w>0?'#7fb7d9':''});
+      $('#soil').textContent='Soil '+Math.round(lerp(18,84,sm(w)))+'%';$('#satB').textContent=w>0?'💧':'14';
+      $('#streak').textContent=(w>.5?42:41)+' days';$('#streak').style.transform=`scale(${1+.15*Math.max(0,1-Math.abs(lp-.6)*12)})`}
+    if(ci===3){$('#clock').textContent='18:30';seek($('#jv'),lp*($('#jv').duration||13),false);$('#jF').textContent=3+Math.floor(sm(seg(lp,.1,.8))*2);$('#jH').textContent=Math.round(lerp(11,16,sm(seg(lp,.1,.8))));
+      const n=back(seg(lp,.45,.55));$('#note').style.opacity=seg(lp,.45,.48)*(1-seg(lp,.86,.92));$('#note').style.transform=`translateY(${(1-n)*-40}px)`}
+    else $('#note').style.opacity=0;
+    finger.style.left=fx+'px';finger.style.top=fy+'px';finger.style.opacity=fo;finger.style.transform=`scale(${1-.25*press})`}
+  rvs.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.94-rr.top)/(vh*.28)));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  cnts.forEach(el=>{const rr=el.getBoundingClientRect();if(rr.top>vh)return;const k=eo(clamp((vh*.95-rr.top)/(vh*.4)));el.textContent=Math.round(+el.dataset.to*k)+(el.dataset.suf||'')});
+  $$('.item img').forEach(im=>{const rr=im.parentElement.getBoundingClientRect();if(rr.bottom<0||rr.top>vh)return;const p=clamp((vh-rr.top)/(vh+rr.height));im.style.transform=`translateY(${(p-.5)*-8}%) scale(${1.04+.07*p})`});
+  {const v=$('#dlv'),rr=v.getBoundingClientRect();if(rr.top<vh&&rr.bottom>0)seek(v,t*.8)}
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
