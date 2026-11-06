@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bramble — practice software for independent vets</title>
+<meta name="description" content="Bramble runs an independent veterinary clinic on one calm screen: the day's list, patient records, a live anaesthetic monitor and owner messaging.">
+<style>
+@font-face{font-family:Jak;src:url(assets/fonts/plus-jakarta-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Jak;src:url(assets/fonts/plus-jakarta-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Jak;src:url(assets/fonts/plus-jakarta-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Jak;src:url(assets/fonts/plus-jakarta-sans-latin-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Jak;src:url(assets/fonts/plus-jakarta-sans-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Serif;src:url(assets/fonts/dm-serif-display-latin-400-italic.woff2) format("woff2");font-style:italic}
+:root{--bg:#f5f7f4;--card:#fff;--ink:#17233a;--mute:#6b7480;--line:#e2e7e1;--berry:#7a2e5a;--berry2:#a2366f;--mint:#2fb38f;--mintbg:#e3f5ee;--amber:#f2a33a;--amberbg:#fdf1de;--red:#e5484d;--mon:#0c1220}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Jak,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}
+a{color:inherit;text-decoration:none}
+em{font-family:Serif,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.nav{position:fixed;inset:0 0 auto;z-index:60;display:flex;align-items:center;gap:30px;padding:18px 36px;color:#fff;transition:background .35s,color .35s}
+.nav.solid{background:#f5f7f4e6;color:var(--ink);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.03em}.brand img{width:34px}
+.nav .links{display:flex;gap:26px;font-size:14px;font-weight:500;opacity:.9}.nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;border-radius:14px;font-weight:700;font-size:14px;background:var(--berry);color:#fff}
+.btn.light{background:#fff;color:var(--ink)}
+/* hero */
+.hero{position:relative;height:210vh;background:#0e1216}
+.hpin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:#fff}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hshade{position:absolute;inset:0;background:linear-gradient(90deg,#0e1622e6 0%,#0e162299 38%,#0e162200 66%),linear-gradient(#0000 60%,#0e1622aa)}
+.hcopy{position:absolute;left:36px;top:50%;transform:translateY(-50%);max-width:620px}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700}
+h1{font-weight:800;font-size:clamp(50px,7.4vw,112px);line-height:.94;letter-spacing:-.05em;margin-top:18px}
+h1 em{color:#9fe3cc;font-size:1.04em}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}h1 .ln>span{display:inline-block}
+.hcopy p{font-size:18px;line-height:1.6;color:#e1e6ec;max-width:470px;margin-top:22px}
+.hcta{display:flex;gap:12px;margin-top:28px}
+.toast{position:absolute;display:flex;gap:12px;align-items:center;padding:12px 16px 12px 12px;border-radius:18px;background:#ffffffeb;color:var(--ink);box-shadow:0 20px 50px #0004;backdrop-filter:blur(12px);font-size:13px;opacity:0;min-width:250px}
+.toast img{width:40px;height:40px;border-radius:12px;object-fit:cover}.toast b{display:block;font-size:14px}.toast span{color:var(--mute)}
+.toast .dot{width:9px;height:9px;border-radius:50%;background:var(--mint);margin-left:auto;box-shadow:0 0 0 4px var(--mintbg)}
+/* story */
+.story{position:relative;height:1050vh;background:#0e1216}
+.spin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.sbg video{opacity:0;filter:saturate(.95)}
+.sshade{position:absolute;inset:0;background:linear-gradient(90deg,#0e1622f2 0%,#0e1622b3 30%,#0e162266 60%,#0e162288)}
+.chap{position:absolute;left:36px;top:50%;width:min(330px,26vw);color:#fff}
+.cp{position:absolute;left:0;top:0;transform:translateY(-50%);opacity:0;width:100%}
+.cp .eyebrow{color:#9fe3cc}
+.cp h2{font-weight:800;font-size:clamp(34px,3.4vw,52px);line-height:.98;letter-spacing:-.045em;margin-top:12px}
+.cp h2 em{color:#9fe3cc}
+.cp p{font-size:15.5px;line-height:1.6;color:#d9dee6;margin-top:14px}
+.steps{position:absolute;left:36px;bottom:30px;display:flex;gap:8px}
+.steps i{display:block;width:46px;height:3px;border-radius:2px;background:#ffffff33;overflow:hidden;position:relative}.steps i b{position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(0)}
+/* app window */
+.clip{position:absolute;inset:0;pointer-events:none}.clip>*{pointer-events:auto}
+.appw{position:absolute;right:36px;top:50%;width:1040px;height:650px;margin-top:-325px;transform-origin:100% 50%}
+.app{position:absolute;inset:0;border-radius:20px;background:var(--bg);overflow:hidden;box-shadow:0 60px 120px #0008,0 0 0 1px #ffffff22;display:grid;grid-template-columns:196px 1fr;color:var(--ink)}
+.side{background:#fff;border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:4px}
+.side .brand{font-size:17px;margin:0 6px 18px}.side .brand img{width:28px}
+.nv{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:13px;font-weight:600;color:var(--mute);position:relative}
+.nv i{width:16px;height:16px;border-radius:5px;border:2px solid currentColor}
+.nv.on{background:var(--bg);color:var(--ink)}
+.nv .bd{margin-left:auto;font-size:10px;font-weight:700;background:var(--berry);color:#fff;border-radius:99px;padding:2px 7px;font-style:normal}
+.side .me{margin-top:auto;display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;background:var(--bg);font-size:12px}
+.me .av{width:30px;height:30px;border-radius:10px;background:var(--berry);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+.main{position:relative;overflow:hidden}
+.top{height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 20px;background:#fffc}
+.search{flex:1;height:36px;border-radius:11px;background:var(--bg);display:flex;align-items:center;padding:0 14px;font-size:13px;color:var(--mute)}
+.top .bell{width:36px;height:36px;border-radius:11px;background:var(--bg);display:grid;place-items:center;position:relative;font-size:15px}
+.top .bell b{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--red);transform:scale(0)}
+.view{position:absolute;left:0;right:0;top:58px;bottom:0;padding:20px;overflow:hidden}
+.vh{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.vh h3{font-weight:800;font-size:24px;letter-spacing:-.035em}.vh .sub{font-size:12px;color:var(--mute);margin-top:3px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font-weight:800;font-size:24px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.kpi span{font-size:11px;color:var(--mute);font-weight:600}
+.board{display:grid;grid-template-columns:52px repeat(3,1fr);gap:0 10px;margin-top:14px;position:relative}
+.board .col{font-size:11px;font-weight:700;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;padding-bottom:8px}
+.times{display:flex;flex-direction:column;font-size:10.5px;color:var(--mute);font-variant-numeric:tabular-nums}.times div{height:46px}
+.lane{position:relative;height:368px;border-left:1px dashed var(--line)}
+.appt{position:absolute;left:6px;right:0;border-radius:12px;padding:8px 10px;display:flex;gap:9px;align-items:flex-start;font-size:11.5px;background:#fff;border:1px solid var(--line);box-shadow:0 4px 10px #17233a0d;overflow:hidden}
+.appt img{width:30px;height:30px;border-radius:9px;object-fit:cover;flex:none}
+.appt b{display:block;font-size:12.5px}.appt span{color:var(--mute)}
+.appt .st{position:absolute;right:8px;top:8px;font-size:9.5px;font-weight:700;padding:3px 7px;border-radius:99px;background:var(--bg);color:var(--mute)}
+.appt.surg{border-left:3px solid var(--berry)}.appt.vac{border-left:3px solid var(--mint)}.appt.con{border-left:3px solid var(--amber)}
+.nowl{position:absolute;left:52px;right:0;height:2px;background:var(--red);z-index:3}.nowl::before{content:"";position:absolute;left:-5px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--red)}
+/* patient */
+.pt{display:grid;grid-template-columns:300px 1fr;gap:14px;margin-top:4px;height:100%}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.pcard .ph{height:190px;position:relative;overflow:hidden}.pcard .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.pcard .in{padding:14px 16px}.pcard h3{font-weight:800;font-size:26px;letter-spacing:-.04em}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tg{font-size:11px;font-weight:600;padding:5px 9px;border-radius:99px;background:var(--bg)}.tg.al{background:#fde8e8;color:#b4232a}
+.pfacts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;font-size:11px;color:var(--mute)}.pfacts b{display:block;color:var(--ink);font-size:15px}
+.pr{display:flex;flex-direction:column;gap:12px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.panel h4{font-size:12px;font-weight:700;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between}
+.panel svg{width:100%;height:120px;display:block;margin-top:6px}
+.meds div{display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;border-bottom:1px solid var(--line)}.meds div:last-child{border:0}.meds span{color:var(--mute)}
+.pbtn{height:42px;border-radius:12px;background:var(--berry);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* monitor */
+.mon{position:absolute;inset:0;background:var(--mon);color:#e6edf7;padding:16px 18px;display:grid;grid-template-columns:1fr 200px;grid-template-rows:auto 1fr;gap:12px}
+.mon .mh{grid-column:1/3;display:flex;align-items:center;gap:12px;font-size:12px;color:#93a1b8}
+.mon .mh b{color:#fff;font-size:15px}.mon .mh .live{display:flex;align-items:center;gap:6px;color:#ff6b6b;font-weight:700}.mon .mh .live i{width:8px;height:8px;border-radius:50%;background:#ff6b6b}
+.waves{display:grid;grid-template-rows:repeat(3,1fr);gap:8px;min-height:0}
+.wv{position:relative;border-radius:12px;background:#111a2c;overflow:hidden}
+.wv canvas{position:absolute;inset:0;width:100%;height:100%}
+.wv small{position:absolute;left:10px;top:7px;font-size:10px;font-weight:700;letter-spacing:.1em}
+.nums{display:grid;grid-template-rows:repeat(5,1fr);gap:8px}
+.nm{border-radius:12px;background:#111a2c;padding:8px 12px;display:flex;flex-direction:column;justify-content:center}
+.nm small{font-size:10px;font-weight:700;letter-spacing:.1em;color:#93a1b8}.nm b{font-size:30px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.05}.nm b span{font-size:12px;font-weight:600;color:#93a1b8;margin-left:4px}
+.malert{position:absolute;left:18px;right:236px;bottom:16px;border-radius:12px;padding:10px 14px;font-size:12.5px;display:flex;gap:10px;align-items:center;background:var(--amber);color:#2a1a00;font-weight:600;opacity:0}
+/* comms */
+.cm{display:grid;grid-template-columns:240px 1fr;gap:14px;height:100%}
+.thr{background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px}
+.th{display:flex;gap:10px;align-items:center;padding:9px;border-radius:12px;font-size:12px}.th.on{background:var(--bg)}
+.th img{width:34px;height:34px;border-radius:11px;object-fit:cover}.th b{display:block;font-size:13px}.th span{color:var(--mute)}
+.chat{background:#fff;border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
+.chat .ch{padding:12px 16px;border-bottom:1px solid var(--line);font-size:12px;color:var(--mute)}.chat .ch b{color:var(--ink);font-size:14px;display:block}
+.msgs{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;justify-content:flex-end}
+.bub{max-width:72%;padding:10px 13px;border-radius:16px;font-size:13px;line-height:1.45}
+.bub.out{align-self:flex-end;background:var(--berry);color:#fff;border-bottom-right-radius:5px}
+.bub.in{align-self:flex-start;background:var(--bg);border-bottom-left-radius:5px}
+.bub img{display:block;width:210px;height:130px;object-fit:cover;border-radius:11px;margin-bottom:6px}
+.typing{display:flex;gap:4px;padding:12px 14px}.typing i{width:7px;height:7px;border-radius:50%;background:#9aa3ae}
+.comp{display:flex;gap:10px;align-items:center;padding:12px;border-top:1px solid var(--line)}
+.comp .box{flex:1;min-height:40px;border-radius:12px;background:var(--bg);padding:10px 12px;font-size:13px;line-height:1.4}
+.comp .box .car{display:inline-block;width:1.5px;height:15px;background:var(--berry);vertical-align:-2px;margin-left:1px}
+.comp .send{width:40px;height:40px;border-radius:12px;background:var(--berry);color:#fff;display:grid;place-items:center;font-weight:800}
+.paid{position:absolute;right:20px;top:72px;z-index:6;background:var(--ink);color:#fff;border-radius:14px;padding:11px 14px;font-size:12.5px;display:flex;gap:10px;align-items:center;box-shadow:0 14px 34px #0003;opacity:0}
+.paid i{width:22px;height:22px;border-radius:50%;background:var(--mint);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:12px}
+.cursor{position:absolute;z-index:40;width:22px;height:22px;pointer-events:none;opacity:0;margin:-3px 0 0 -3px}
+.cursor svg{width:22px;height:22px;filter:drop-shadow(0 2px 3px #0005)}
+.cursor .rip{position:absolute;left:-12px;top:-12px;width:28px;height:28px;border-radius:50%;border:2px solid var(--berry2);opacity:0}
+/* content */
+.sec{max-width:1240px;margin:0 auto;padding:130px 36px 30px}
+.k{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--berry)}
+.sec h2{font-weight:800;font-size:clamp(38px,5.2vw,76px);letter-spacing:-.05em;line-height:.98;margin-top:14px;max-width:880px}
+.sec h2 em{color:var(--berry)}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:54px}
+.feat{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px}
+.feat .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:20px;background:var(--mintbg)}
+.feat b{display:block;font-weight:800;font-size:19px;letter-spacing:-.03em;margin-top:18px}.feat p{font-size:14px;color:var(--mute);line-height:1.55;margin-top:8px}
+.quote{display:grid;grid-template-columns:1fr 1.2fr;gap:0;margin-top:60px;border-radius:28px;overflow:hidden;background:var(--ink);color:#fff}
+.quote .im{position:relative;min-height:420px;overflow:hidden}.quote .im img{position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;will-change:transform}
+.quote .in{padding:54px}.quote blockquote{font-family:Serif;font-style:italic;font-size:clamp(26px,2.8vw,40px);line-height:1.18}
+.quote cite{display:block;font-style:normal;margin-top:20px;font-size:13px;color:#aab4c4}
+.qn{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}.qn b{display:block;font-weight:800;font-size:38px;letter-spacing:-.04em;color:#9fe3cc}.qn span{font-size:12px;color:#aab4c4}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:54px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:24px;padding:30px}
+.plan.hot{background:var(--berry);color:#fff;border-color:var(--berry)}
+.plan h3{font-weight:800;font-size:20px}.plan .pr{font-weight:800;font-size:48px;letter-spacing:-.05em;margin-top:12px}.plan .pr span{font-size:14px;font-weight:500;opacity:.7;letter-spacing:0}
+.plan ul{list-style:none;margin-top:18px;display:grid;gap:9px;font-size:14px}.plan li::before{content:"✓";margin-right:9px;color:var(--mint);font-weight:800}.plan.hot li::before{color:#9fe3cc}
+.plan .btn{margin-top:24px}.plan.hot .btn{background:#fff;color:var(--berry)}
+.cta{position:relative;margin:120px 36px 0;border-radius:32px;overflow:hidden;color:#fff;min-height:480px;display:flex;align-items:center}
+.cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0e1622e6,#0e162233)}
+.cta .in{position:relative;z-index:2;padding:56px;max-width:600px}.cta h2{font-weight:800;font-size:clamp(38px,5vw,68px);letter-spacing:-.05em;line-height:.98}.cta h2 em{color:#9fe3cc}
+.cta p{margin-top:14px;color:#e1e6ec;line-height:1.6}
+footer{max-width:1240px;margin:0 auto;padding:46px 36px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--ink);display:grid;place-items:center}#pre img{width:64px}
+@media (max-width:760px){
+  .nav{padding:14px 16px}.nav .links{display:none}.btn{height:40px;padding:0 14px;font-size:13px}
+  .hshade{background:linear-gradient(#0e162288,#0e162233 30%,#0e1622f0 75%)}
+  .hcopy{left:20px;right:20px;top:auto;bottom:60px;transform:none}.hcopy p{font-size:15px}
+  .toast{display:none}
+  .story{height:950vh}
+  .sshade{background:linear-gradient(#0e1622f0 0%,#0e1622cc 30%,#0e162288 60%,#0e1622cc)}
+  .chap{left:20px;right:20px;width:auto;top:76px}.cp{transform:none}.cp h2{font-size:30px}.cp p{font-size:13.5px;margin-top:8px}
+  .clip{inset:auto 10px 50px 10px;height:56vh;overflow:hidden;border-radius:18px;box-shadow:0 30px 60px #0008}.appw{right:auto;left:0;top:0;margin:0;transform-origin:0 0}.app{border-radius:0}
+  .steps{left:20px;bottom:22px}.steps i{width:30px}
+  .sec{padding:90px 20px 20px}.feats,.plans{grid-template-columns:1fr}.quote{grid-template-columns:1fr}.quote .im{min-height:300px}.quote .in{padding:30px 24px}
+  .cta{margin:90px 16px 0}.cta .in{padding:32px 24px}
+  footer{flex-direction:column;gap:8px;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">bramble</span><div class="links"><a href="#story">Product</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#stories">Clinics</a></div><div class="sp"></div><a class="btn" href="#demo">Book a demo</a></nav>
+
+<header class="hero" id="hero">
+  <div class="hpin">
+    <video class="bgv" id="hv" src="media/hero.mp4" poster="media/hero.jpg" muted playsinline preload="auto"></video>
+    <div class="hshade"></div>
+    <div class="hcopy">
+      <div class="eyebrow hi" style="color:#9fe3cc">Practice software for independent vets</div>
+      <h1><span class="ln"><span>The whole clinic,</span></span><span class="ln"><span><em>one</em> calm screen.</span></span></h1>
+      <p class="hi">Bramble puts the day's list, every patient's history, a live anaesthetic monitor and owner messaging in one place, so your team spends the day with the animals.</p>
+      <div class="hcta hi"><a class="btn" href="#demo">Book a demo →</a><a class="btn light" href="#story">See a day in Bramble</a></div>
+    </div>
+    <div class="toast" id="t1" style="right:7%;top:24%"><img src="media/otto.jpg" alt=""><div><b>Otto · post-op</b><span>Recovering well · HR 88</span></div><i class="dot"></i></div>
+    <div class="toast" id="t2" style="right:15%;top:44%"><img src="media/pet-10388991.jpg" alt=""><div><b>Biscuit · checked in</b><span>Puppy vaccines · Consult 2</span></div></div>
+    <div class="toast" id="t3" style="right:6%;top:64%"><img src="media/pet-6838073.jpg" alt=""><div><b>Mochi's owner replied</b><span>"Eating again tonight 🐟"</span></div></div>
+  </div>
+</header>
+
+<section class="story" id="story">
+  <div class="spin">
+    <div class="sbg">
+      <video class="bgv" src="media/exam.mp4" poster="media/exam.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/otto.mp4" poster="media/otto.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/recover.mp4" poster="media/recover.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/lake.mp4" poster="media/lake.jpg" muted playsinline preload="metadata"></video>
+    </div>
+    <div class="sshade"></div>
+    <div class="chap">
+      <div class="cp"><div class="eyebrow">08:42 · Today</div><h2>The whole day, <em>at a glance.</em></h2><p>Thirty-eight appointments across two consult rooms and theatre. Check in a patient in one tap, and the room sees them arrive.</p></div>
+      <div class="cp"><div class="eyebrow">10:05 · The patient</div><h2>Otto's whole <em>history</em>, before you say hello.</h2><p>Weight trend, allergies, meds and last bloods on one page. The meloxicam allergy is flagged before anything is drawn up.</p></div>
+      <div class="cp"><div class="eyebrow">10:48 · Theatre</div><h2>A monitor that <em>keeps</em> the record.</h2><p>ECG, SpO₂ and capnography stream into the anaesthetic record. When Otto's temperature drifts, the nurse is told before it's a problem.</p></div>
+      <div class="cp"><div class="eyebrow">16:30 · Home time</div><h2>Owners hear it <em>from you</em>, not a portal.</h2><p>Send a photo, the discharge notes and the recheck date in one message. The invoice is paid from the same chat.</p></div>
+    </div>
+    <div class="steps" id="steps"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+
+    <div class="clip" id="clip"><div class="appw" id="appw"><div class="app">
+      <aside class="side">
+        <span class="brand"><img src="src/img/logo.svg" alt="">bramble</span>
+        <div class="nv" id="nv0"><i></i>Today<em class="bd" style="font-family:Jak">38</em></div>
+        <div class="nv" id="nv1"><i></i>Patients</div>
+        <div class="nv" id="nv2"><i></i>Theatre</div>
+        <div class="nv" id="nv3"><i></i>Messages<em class="bd" style="font-family:Jak" id="msgBd">3</em></div>
+        <div class="nv"><i></i>Billing</div>
+        <div class="nv"><i></i>Stock</div>
+        <div class="nv"><i></i>Reports</div>
+        <div class="me"><span class="av">AR</span><div><b>Dr Ana Reyes</b><br><span style="color:var(--mute)">Hollin Lane Vets</span></div></div>
+      </aside>
+      <div class="main">
+        <div class="top"><div class="search" id="search">Search patients, owners, invoices…</div><span class="bell">🔔<b id="bellB"></b></span><span class="av" style="width:36px;height:36px;border-radius:11px;background:var(--mintbg);display:grid;place-items:center;font-weight:700;font-size:12px;color:var(--ink)">+</span></div>
+
+        <div class="view" id="v0">
+          <div class="vh"><div><h3>Today, Thursday 12 March</h3><div class="sub">Hollin Lane Vets · 3 vets, 4 nurses on</div></div><span class="pbtn" style="padding:0 16px;height:36px;font-size:12px">+ New appointment</span></div>
+          <div class="kpis"><div class="kpi"><b class="cnt" data-to="38">0</b><span>Appointments</span></div><div class="kpi"><b id="kIn">11</b><span>Checked in</span></div><div class="kpi"><b>3</b><span>Waiting now</span></div><div class="kpi"><b>£<span class="cnt" data-to="6420" data-sep="1">0</span></b><span>Booked today</span></div></div>
+          <div class="board">
+            <div></div><div class="col">Consult 1 · Dr Reyes</div><div class="col">Consult 2 · Dr Okafor</div><div class="col">Theatre · Dr Lund</div>
+            <div class="times"><div>08:30</div><div>09:00</div><div>09:30</div><div>10:00</div><div>10:30</div><div>11:00</div><div>11:30</div><div>12:00</div></div>
+            <div class="lane">
+              <div class="appt con" style="top:4px;height:62px"><img src="media/pet-8618301.jpg" alt=""><div><b>Pepper</b><span>Itchy ears · cat</span></div><span class="st">Done</span></div>
+              <div class="appt vac" style="top:74px;height:40px"><img src="media/pet-7330712.jpg" alt=""><div><b>Nova</b><span>Booster</span></div><span class="st">Done</span></div>
+              <div class="appt" id="ottoAppt" style="top:122px;height:62px"><img src="media/otto.jpg" alt=""><div><b>Otto</b><span>Pre-op check · TPLO</span></div><span class="st" id="ottoSt">Due 09:45</span></div>
+              <div class="appt con" style="top:240px;height:62px"><img src="media/pet-8501579.jpg" alt=""><div><b>Rolo</b><span>Limping, left fore</span></div><span class="st">11:00</span></div>
+            </div>
+            <div class="lane">
+              <div class="appt vac" style="top:30px;height:62px"><img src="media/pet-10388991.jpg" alt=""><div><b>Biscuit</b><span>Puppy vaccines 2/2</span></div><span class="st" style="background:var(--mintbg);color:#18775d">In room</span></div>
+              <div class="appt con" style="top:146px;height:62px"><img src="media/pet-6838073.jpg" alt=""><div><b>Mochi</b><span>Not eating · 2 days</span></div><span class="st">10:15</span></div>
+              <div class="appt vac" style="top:262px;height:40px"><img src="media/pet-4608266.jpg" alt=""><div><b>Pip</b><span>Nail clip</span></div><span class="st">11:15</span></div>
+            </div>
+            <div class="lane">
+              <div class="appt surg" style="top:168px;height:136px;background:#fbf4f8"><img src="media/otto.jpg" alt=""><div><b>Otto · TPLO, right stifle</b><span>German shepherd · 38.4 kg<br>Anaesthetic: Nurse Jo</span></div><span class="st" style="background:#f3e3ec;color:var(--berry)">10:30</span></div>
+            </div>
+            <div class="nowl" id="nowl" style="top:120px"></div>
+          </div>
+        </div>
+
+        <div class="view" id="v1">
+          <div class="pt">
+            <div class="pcard"><div class="ph"><img src="media/otto.jpg" alt=""></div><div class="in"><h3>Otto</h3><div class="sub" style="font-size:12px;color:var(--mute)">German shepherd · male neutered · 6 yrs</div>
+              <div class="tags"><span class="tg al">⚠ Meloxicam allergy</span><span class="tg">Microchipped</span><span class="tg">Insured · Petwise</span></div>
+              <div class="pfacts"><div><b id="wNow">38.4 kg</b>Weight</div><div><b>Sam Hale</b>Owner</div><div><b>37.9 °C</b>Temp today</div><div><b>Calm</b>Handling</div></div></div></div>
+            <div class="pr">
+              <div class="panel"><h4><span>Weight, 18 months</span><span style="color:var(--mint)">−2.1 kg since diet plan</span></h4><svg viewBox="0 0 520 120" preserveAspectRatio="none"><path id="wA" fill="#2fb38f1f"/><path id="wL" fill="none" stroke="#2fb38f" stroke-width="2.4"/><circle id="wD" r="5" fill="#fff" stroke="#2fb38f" stroke-width="2.4"/></svg></div>
+              <div class="panel meds"><h4><span>Plan for today</span><span>Dr Lund</span></h4><div><b>Methadone 0.2 mg/kg IV</b><span>Premed · 09:55</span></div><div><b>Propofol to effect</b><span>Induction</span></div><div><b>Isoflurane in O₂</b><span>Maintenance</span></div><div><b>Robenacoxib</b><span style="color:#b4232a">Swapped: allergy</span></div></div>
+              <div class="pbtn" id="startRec">Start anaesthetic record →</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="view" id="v2" style="padding:0">
+          <div class="mon">
+            <div class="mh"><b>Otto · TPLO, right stifle</b><span>Theatre 1 · Dr Lund · Nurse Jo</span><span style="margin-left:auto" id="aTime">Anaesthetic 00:18:42</span><span class="live"><i id="liveI"></i>LIVE</span></div>
+            <div class="waves">
+              <div class="wv"><small style="color:#4be38f">ECG II</small><canvas id="w0"></canvas></div>
+              <div class="wv"><small style="color:#5cc8ff">SpO₂ PLETH</small><canvas id="w1"></canvas></div>
+              <div class="wv"><small style="color:#ffd166">CO₂</small><canvas id="w2"></canvas></div>
+            </div>
+            <div class="nums">
+              <div class="nm"><small style="color:#4be38f">HR</small><b id="nHR" style="color:#4be38f">88<span>bpm</span></b></div>
+              <div class="nm"><small style="color:#5cc8ff">SpO₂</small><b id="nSp" style="color:#5cc8ff">98<span>%</span></b></div>
+              <div class="nm"><small style="color:#ffd166">EtCO₂</small><b id="nCo" style="color:#ffd166">38<span>mmHg</span></b></div>
+              <div class="nm"><small>RESP</small><b id="nRR">12<span>/min</span></b></div>
+              <div class="nm"><small id="nTl">TEMP</small><b id="nT">37.4<span>°C</span></b></div>
+            </div>
+          </div>
+          <div class="malert" id="malert">⚠ Temperature 36.4 °C and falling · warm air blanket suggested</div>
+        </div>
+
+        <div class="view" id="v3">
+          <div class="cm">
+            <div class="thr">
+              <div class="th on"><img src="media/otto.jpg" alt=""><div><b>Sam Hale · Otto</b><span>Discharge today</span></div></div>
+              <div class="th"><img src="media/pet-6838073.jpg" alt=""><div><b>Lena Park · Mochi</b><span>Eating again 🐟</span></div></div>
+              <div class="th"><img src="media/pet-10388991.jpg" alt=""><div><b>Raj Mistry · Biscuit</b><span>Thanks so much!</span></div></div>
+              <div class="th"><img src="media/pet-8501579.jpg" alt=""><div><b>Kate Ellis · Rolo</b><span>Rest for 10 days</span></div></div>
+            </div>
+            <div class="chat">
+              <div class="ch"><b>Sam Hale</b>Owner of Otto · usually replies in minutes</div>
+              <div class="msgs" id="msgs">
+                <div class="bub in" style="font-size:12px">Morning! Any news on Otto? 🙏</div>
+                <div class="bub out" id="bPhoto" style="opacity:0"><img src="media/recover.jpg" alt="">Otto's surgery went perfectly. He's awake, warm and asking for breakfast. Collect him from 4:30 pm.</div>
+                <div class="bub out" id="bNotes" style="opacity:0;font-size:12px">📄 Discharge notes · 6 weeks lead walks only · recheck Thu 26 March, 10:00</div>
+                <div class="typing bub in" id="typing" style="opacity:0"><i></i><i></i><i></i></div>
+                <div class="bub in" id="bReply" style="opacity:0">He's wagging in that photo! Thank you all so much 💛 Just paid.</div>
+              </div>
+              <div class="comp"><div class="box" id="box"><span id="typed"></span><span class="car" id="car"></span></div><span class="send" id="send">↑</span></div>
+            </div>
+          </div>
+          <div class="paid" id="paid"><i>✓</i><div><b>Invoice #4471 paid · £2,184.60</b><br><span style="opacity:.7">Insurance claim sent to Petwise</span></div></div>
+        </div>
+        <div class="cursor" id="cur"><svg viewBox="0 0 22 22"><path d="M3 2l15 8-6.5 1.6L8.6 18z" fill="#17233a" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="rip" id="rip"></span></div>
+      </div>
+    </div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="features">
+  <div class="k rv">Features</div>
+  <h2 class="rv">Built with nurses, vets and <em>one</em> very patient receptionist.</h2>
+  <div class="feats">
+    <div class="feat rv"><div class="ic">🗓</div><b>A day that fits</b><p>Drag-and-drop list for consults and theatre, online booking, and reminders by text that cut no-shows by a third.</p></div>
+    <div class="feat rv"><div class="ic" style="background:#f3e3ec">🩺</div><b>Records in seconds</b><p>Templates for every consult, dictation that writes the history for you, and allergy checks on every prescription.</p></div>
+    <div class="feat rv"><div class="ic" style="background:#e5eefc">📈</div><b>Live theatre</b><p>Connect your monitor once. Bramble writes the anaesthetic record every 5 minutes and warns early on temperature, CO₂ and heart rate.</p></div>
+    <div class="feat rv"><div class="ic" style="background:var(--amberbg)">💬</div><b>Owners, kept close</b><p>WhatsApp-style messaging with photos, discharge notes, insurance claims and card payment in the same thread.</p></div>
+  </div>
+  <div class="quote rv" id="stories"><div class="im"><img src="media/pet-8501579.jpg" alt="Border collie running through autumn leaves" loading="lazy"></div><div class="in"><blockquote>“We used to keep three systems and a whiteboard. Now the whole team looks at one screen, and owners say we feel like a family clinic again.”</blockquote><cite>Practice manager · independent clinic, Leeds</cite><div class="qn"><div><b class="cnt" data-to="31" data-suf="%">0</b><span>Fewer no-shows</span></div><div><b class="cnt" data-to="47" data-suf=" min">0</b><span>Saved per vet a day</span></div><div><b class="cnt" data-to="412">0</b><span>Clinics on Bramble</span></div></div></div></div>
+</section>
+
+<section class="sec" id="pricing">
+  <div class="k rv">Pricing</div>
+  <h2 class="rv">Per vet, per month. <em>No</em> setup fees.</h2>
+  <div class="plans">
+    <div class="plan rv"><h3>Solo</h3><div class="pr">£149<span> / vet</span></div><ul><li>Diary, records and billing</li><li>Owner messaging</li><li>Data import from your old system</li></ul><a class="btn">Start free trial</a></div>
+    <div class="plan hot rv"><h3>Clinic</h3><div class="pr">£119<span> / vet</span></div><ul><li>Everything in Solo</li><li>Live theatre monitor and records</li><li>Insurance claims, direct</li><li>Stock and controlled drugs</li></ul><a class="btn">Book a demo</a></div>
+    <div class="plan rv"><h3>Group</h3><div class="pr">Let's talk</div><ul><li>Multi-site reporting</li><li>Referral handover</li><li>SSO and audit logs</li></ul><a class="btn">Contact sales</a></div>
+  </div>
+</section>
+
+<section class="cta" id="demo"><video id="ctaV" src="media/lake.mp4" poster="media/lake.jpg" muted playsinline preload="metadata"></video><div class="in"><div class="k rv" style="color:#9fe3cc">Book a demo</div><h2 class="rv" style="margin-top:12px">Back on all four paws, <em>sooner.</em></h2><p class="rv">A 30-minute walk-through with your own data. We'll move your records over in a weekend.</p><div class="hcta rv"><a class="btn">Book a demo →</a><a class="btn light">Talk to a vet on our team</a></div></div></section>
+<footer><span>Bramble Software Ltd · Harrogate · Made with vets</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),sm=t=>t*t*(3-2*t);const back=t=>{const c=1.5;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const fmt=n=>n.toLocaleString('en-GB');
+const pre=$('#pre');let seen=false;try{seen=!!sessionStorage.getItem('bramble-seen');sessionStorage.setItem('bramble-seen','1')}catch(e){}if(seen)pre.remove();
+const hero=$('#hero'),story=$('#story'),hv=$('#hv'),vids=$$('.sbg video'),cps=$$('.cp'),steps=$$('#steps b'),appw=$('#appw'),views=[0,1,2,3].map(i=>$('#v'+i)),nvs=[0,1,2,3].map(i=>$('#nv'+i));
+const heroLines=$$('h1 .ln>span'),his=$$('.hi'),rvs=$$('.rv'),cnts=$$('.cnt'),nav=$('#nav'),cur=$('#cur'),rip=$('#rip');
+[hv,...vids,$('#ctaV')].forEach(v=>v.pause());
+function seek(v,t){if(!v.duration)return;const d=v.duration-.1,tt=((t%d)+d)%d;if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}
+/* weight chart */
+const WT=[40.5,40.6,40.2,40.4,40.1,39.8,39.9,39.5,39.3,39.4,39,38.8,38.9,38.6,38.5,38.6,38.4];
+const wP=WT.map((w,i)=>[i/(WT.length-1)*520,110-(w-38)/(41-38)*100]);let wd=`M${wP[0]}`;for(let i=1;i<wP.length;i++){const a=wP[i-1],b=wP[i],cx=(a[0]+b[0])/2;wd+=` C${cx},${a[1]} ${cx},${b[1]} ${b[0]},${b[1]}`}
+$('#wL').setAttribute('d',wd);$('#wA').setAttribute('d',wd+' L520,120 L0,120Z');const wL=$('#wL'),wLen=wL.getTotalLength();wL.style.strokeDasharray=wLen;
+/* physiological waveforms: PQRST from gaussians, pleth with dicrotic notch, capnogram plateau */
+const g=(x,m,s,a)=>a*Math.exp(-((x-m)*(x-m))/(2*s*s));
+const ecg=p=>g(p,.18,.025,.12)-g(p,.33,.008,.12)+g(p,.36,.011,1)-g(p,.39,.01,.25)+g(p,.6,.045,.28);
+const pleth=p=>{const u=(p+.92)%1;return u<.16?sm(u/.16):(Math.exp(-(u-.16)*3.2)*(1+.12*g(u,.42,.04,1))-.05*(u-.16))};
+const capno=p=>p<.06?sm(p/.06)*.95:p<.5?.95+.05*(p-.06)/.44:p<.56?1-sm((p-.5)/.06):0;
+const wc=[0,1,2].map(i=>$('#w'+i));
+function drawWave(c,fn,period,col,t,amp,base){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!W)return;if(c.width!==W||c.height!==H){c.width=W;c.height=H}const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,r.width,r.height);
+  // sweep monitor: trace written left->right, a gap erases ahead of the pen
+  const span=4,pen=(t%span)/span*r.width;x.strokeStyle=col;x.lineWidth=1.8;x.shadowColor=col;x.shadowBlur=6;x.beginPath();let first=true;
+  for(let px=0;px<r.width;px+=1.5){if(px>pen&&px<pen+18){first=true;continue}const tt=px<=pen?t-(pen-px)/r.width*span:t-span-(pen-px)/r.width*span;const ph=((tt/period)%1+1)%1;const y=r.height*(base-amp*fn(ph));if(first){x.moveTo(px,y);first=false}else x.lineTo(px,y)}x.stroke();x.shadowBlur=0}
+/* cursor: eased moves with slight overshoot, clicks with ripple */
+function curAt(keys,lp){let p=keys[0];for(let i=1;i<keys.length;i++){const[a,x,y]=keys[i];const[pa,px,py]=keys[i-1];if(lp<=a){const k=back(seg(lp,pa+(a-pa)*.15,a));return[lerp(px,x,k),lerp(py,y,k)]}p=keys[i]}return[p[1],p[2]]}
+let t0=null,last=null,cs=0,csV=0,fxs=700,fys=300;
+const T1=[$('#t1'),$('#t2'),$('#t3')];
+const MSG="Hi Sam, Otto's surgery went perfectly. He's awake, warm and asking for breakfast. Collect him from 4:30 pm.";
+function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.05,(now-last)/1000);last=now;
+  if(!seen&&pre.isConnected){const k=seg(t,.5,1.1);pre.style.opacity=1-k;if(k>=1)pre.remove()}
+  const vh=innerHeight,vw=innerWidth,mobile=vw<=760;
+  nav.classList.toggle('solid',story.getBoundingClientRect().bottom<70);
+  {const r=hero.getBoundingClientRect();if(r.bottom>0){const q=clamp(-r.top/(r.height-vh));seek(hv,t*.8);
+    heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
+    const out=1-seg(q,.6,.95);his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*out);$('.hcopy h1').style.opacity=out;
+    T1.forEach((el,i)=>{const k=back(seg(t,1.6+i*.5,2.2+i*.5));el.style.opacity=clamp(seg(t,1.6+i*.5,1.8+i*.5))*out;el.style.transform=`translateY(${(1-k)*30+Math.sin(t*1.2+i*2)*5}px) scale(${.92+.08*k})`})}}
+  const r=story.getBoundingClientRect();
+  if(r.top<vh&&r.bottom>0){const q=clamp(-r.top/(r.height-vh)),C=4,x=q*C,ci=Math.min(C-1,Math.floor(x)),lp=x-ci;
+    vids.forEach((v,i)=>{const o=clamp(1-Math.abs(x-.5-i)*1.6+.6);v.style.opacity=o;if(o>.01)seek(v,t*.8+i)});
+    cps.forEach((c,i)=>{const v=Math.min(seg(x,i-.02,i+.12),i===C-1?1:1-seg(x,i+.86,i+.98));c.style.opacity=v;c.style.marginTop=(1-v)*24+'px'});
+    steps.forEach((b,i)=>b.style.transform=`scaleX(${clamp(x-i)})`);
+    // app fits the viewport; on phones it sits under the copy
+    const enter=eo(seg(q,0,.03));
+    if(!mobile){const sc=Math.min(1,(vw*.68)/1040,(vh-110)/650);appw.style.transform=`translateY(${(1-enter)*120}px) scale(${sc})`}
+    // view change on a slightly under-damped spring: content slides up and settles
+    const target=ci+(ci<C-1?sm(seg(lp,.88,1)):0);csV+=(-(cs-target)*140-csV*2*Math.sqrt(140)*.85)*dt;cs+=csV*dt;
+    views.forEach((v,i)=>{const o=i-cs;v.style.opacity=clamp(1-Math.abs(o)*1.6);v.style.transform=`translateY(${o*40}px)`;v.style.visibility=Math.abs(o)<.9?'visible':'hidden'});
+    nvs.forEach((n,i)=>n.classList.toggle('on',Math.round(cs)===i));
+    let keys=[[0,980,600]],click=[];
+    if(ci===0){keys=[[0,980,600],[.3,560,320],[.55,560,320],[.62,1000,340],[.9,740,250]];click=[.36,.66]; // click Otto, then check in
+      $('#nowl').style.top=(120+lp*18)+'px';const chk=seg(lp,.38,.42);$('#ottoSt').textContent=chk>0?'Checked in':'Due 09:45';$('#ottoSt').style.background=chk>0?'var(--mintbg)':'';$('#ottoSt').style.color=chk>0?'#18775d':'';
+      $('#ottoAppt').style.transform=`scale(${1-.03*Math.max(0,1-Math.abs(lp-.37)*30)})`;$('#ottoAppt').style.boxShadow=chk>0?'0 0 0 2px var(--mint)':'';$('#kIn').textContent=chk>0?12:11;
+      cnts.slice(0,2).forEach(el=>{const v=Math.round(+el.dataset.to*eo(seg(lp,.02,.3)));el.textContent=el.dataset.sep?fmt(v):v})}
+    if(ci===1){keys=[[0,740,250],[.45,520,300],[.65,520,300],[.8,820,560],[.95,820,560]];click=[.84];
+      wL.style.strokeDashoffset=wLen*(1-eo(seg(lp,.05,.55)));$('#wA').style.opacity=seg(lp,.3,.6);const pt=wL.getPointAtLength(wLen*eo(seg(lp,.05,.55)));$('#wD').setAttribute('cx',pt.x);$('#wD').setAttribute('cy',pt.y);
+      $('#startRec').style.transform=`scale(${1-.04*Math.max(0,1-Math.abs(lp-.84)*30)})`}
+    if(ci===2){keys=[[0,820,560],[.5,1000,620],[.95,1000,620]];
+      const mins=18*60+42+Math.floor(lp*45*60);$('#aTime').textContent=`Anaesthetic 00:${String(Math.floor(mins/60)).padStart(2,'0')}:${String(mins%60).padStart(2,'0')}`;
+      const hr=88+Math.round(Math.sin(t*.4)*2);$('#nHR').firstChild.textContent=hr;$('#nSp').firstChild.textContent=98+(Math.sin(t*.3)>.6?1:0);$('#nCo').firstChild.textContent=38+Math.round(Math.sin(t*.25));
+      // temperature drifts down, alert fires, warming brings it back
+      const temp=lp<.6?lerp(37.4,36.4,sm(seg(lp,.05,.45))):lerp(36.4,37.1,sm(seg(lp,.6,.98)));$('#nT').firstChild.textContent=temp.toFixed(1);
+      const al=seg(lp,.4,.46)*(1-seg(lp,.82,.9));$('#malert').style.opacity=al;$('#malert').style.transform=`translateY(${(1-back(seg(lp,.4,.48)))*30}px)`;$('#malert').style.background=lp>.6?'#2fb38f':'';$('#malert').style.color=lp>.6?'#fff':'';$('#malert').textContent=lp>.6?'✓ Warm air blanket on · temperature recovering':'⚠ Temperature 36.4 °C and falling · warm air blanket suggested';
+      $('#nT').style.color=temp<36.6?'var(--amber)':'';$('#liveI').style.opacity=.4+.6*(Math.sin(t*6)>0?1:0);
+      drawWave(wc[0],ecg,60/hr,'#4be38f',t,.62,.78);drawWave(wc[1],pleth,60/hr,'#5cc8ff',t,.62,.82);drawWave(wc[2],capno,5,'#ffd166',t,.62,.85)}
+    if(ci===3){keys=[[0,1000,620],[.08,1000,620],[.42,1000,620],[.48,1010,610],[.9,900,400]];click=[.47];
+      const n=Math.floor(MSG.length*seg(lp,.08,.42));const tp=lp<.47?MSG.slice(0,n):'';$('#typed').textContent=tp;$('#car').style.opacity=lp<.47&&(Math.sin(t*8)>0||n<MSG.length)?1:0;
+      const s1=seg(lp,.48,.53),s2=seg(lp,.56,.6);$('#bPhoto').style.opacity=s1;$('#bPhoto').style.transform=`translateY(${(1-back(s1))*20}px)`;$('#bNotes').style.opacity=s2;$('#bNotes').style.transform=`translateY(${(1-back(s2))*20}px)`;
+      const ty=seg(lp,.62,.64)*(1-seg(lp,.74,.76));$('#typing').style.opacity=ty;$('#typing').style.display=ty>0?'flex':'none';$$('#typing i').forEach((d,i)=>d.style.transform=`translateY(${-Math.max(0,Math.sin(t*7-i*.8))*4}px)`);
+      const rp=seg(lp,.76,.8);$('#bReply').style.opacity=rp;$('#bReply').style.display=rp>0?'block':'none';$('#bReply').style.transform=`translateY(${(1-back(rp))*20}px)`;
+      $('#bPhoto').style.display=s1>0?'block':'none';$('#bNotes').style.display=s2>0?'block':'none';
+      const pd=back(seg(lp,.82,.88));$('#paid').style.opacity=seg(lp,.82,.85);$('#paid').style.transform=`translateY(${(1-pd)*-24}px)`;$('#bellB').style.transform=`scale(${back(seg(lp,.77,.83))})`;$('#msgBd').textContent=lp>.78?'4':'3'}
+    if(ci!==3){$('#typed').textContent='';}
+    // views are positioned relative to the app; cursor coords are in app space (1040x650)
+    const[cx,cy]=curAt(keys,lp);
+    if(mobile){// a camera that follows the cursor around the app, with weight
+      const cw=$('#clip').clientWidth,ch=$('#clip').clientHeight,sc=.62;fxs+=(cx-fxs)*(1-Math.exp(-dt*3));fys+=(cy-fys)*(1-Math.exp(-dt*3));
+      const tx=clamp(cw/2-fxs*sc,cw-1040*sc,0),ty=clamp(ch/2-fys*sc,ch-650*sc,0);appw.style.transform=`translate(${tx}px,${ty+(1-enter)*120}px) scale(${sc})`}cur.style.left=cx+'px';cur.style.top=cy+'px';cur.style.opacity=seg(lp,.02,.08)*(ci===2?1-seg(lp,.4,.5):1);
+    let rp=0;click.forEach(c=>{const k=seg(lp,c,c+.06);if(k>0&&k<1)rp=k});rip.style.opacity=rp?1-rp:0;rip.style.transform=`scale(${.4+rp*1.6})`;cur.querySelector('svg').style.transform=`scale(${rp&&rp<.3?.85:1})`;
+  }
+  rvs.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.94-rr.top)/(vh*.28)));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  cnts.slice(2).forEach(el=>{const rr=el.getBoundingClientRect();if(rr.top>vh)return;const k=eo(clamp((vh*.95-rr.top)/(vh*.4)));const v=Math.round(+el.dataset.to*k);el.textContent=(el.dataset.sep?fmt(v):v)+(el.dataset.suf||'')});
+  {const im=$('.quote img'),rr=im.parentElement.getBoundingClientRect();if(rr.top<vh&&rr.bottom>0){const p=clamp((vh-rr.top)/(vh+rr.height));im.style.transform=`translateY(${(p-.5)*-8}%) scale(${1.04+.06*p})`}}
+  {const v=$('#ctaV'),rr=v.getBoundingClientRect();if(rr.top<vh&&rr.bottom>0)seek(v,t*.8)}
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
