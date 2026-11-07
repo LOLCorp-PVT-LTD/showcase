@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brookwatch — flood warnings for councils, minutes earlier</title>
+<meta name="description" content="Brookwatch gives councils one console for river gauges, rainfall radar and flood warnings, so residents hear before the water arrives.">
+<style>
+@font-face{font-family:Pub;src:url(assets/fonts/public-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Pub;src:url(assets/fonts/public-sans-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Pub;src:url(assets/fonts/public-sans-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Pub;src:url(assets/fonts/public-sans-latin-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:Pub;src:url(assets/fonts/public-sans-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Ser;src:url(assets/fonts/source-serif-4-latin-400-italic.woff2) format("woff2");font-style:italic}
+:root{--paper:#f4f6f6;--card:#fff;--slate:#0f1b24;--slate2:#1b2a35;--mute:#64727c;--line:#dfe5e7;--river:#0c6e78;--river2:#3fb8c4;--amber:#ffb020;--amberbg:#fff4dc;--red:#d7263d;--redbg:#fde7ea;--green:#1f9d6b;--greenbg:#e2f4ec}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--slate);font-family:Pub,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:clip}a{color:inherit;text-decoration:none}
+em{font-family:Ser,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.nav{position:fixed;inset:0 0 auto;z-index:60;display:flex;align-items:center;gap:30px;padding:18px 36px;color:#fff;transition:background .35s,color .35s}
+.nav.solid{background:#f4f6f6e8;color:var(--slate);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}.brand img{width:34px}
+.nav .links{display:flex;gap:26px;font-size:14px;font-weight:500;opacity:.9}.nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;border-radius:10px;font-weight:700;font-size:14px;background:var(--amber);color:var(--slate)}
+.btn.light{background:#fff;color:var(--slate)}.btn.dark{background:var(--slate);color:#fff}
+.hero{position:relative;height:200vh;background:#0b1218}
+.hpin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;color:#fff}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hshade{position:absolute;inset:0;background:linear-gradient(90deg,#0b1218eb 0%,#0b121899 40%,#0b121822 70%),linear-gradient(#0000 55%,#0b1218cc)}
+.hcopy{position:absolute;left:36px;top:50%;transform:translateY(-50%);max-width:640px}
+.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+h1{font-weight:800;font-size:clamp(48px,7vw,108px);line-height:.95;letter-spacing:-.045em;margin-top:18px}
+h1 em{color:var(--amber);font-size:1.04em}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}h1 .ln>span{display:inline-block}
+.hcopy p{font-size:18px;line-height:1.6;color:#d8e1e5;max-width:470px;margin-top:22px}
+.hcta{display:flex;gap:12px;margin-top:28px}
+.gauge{position:absolute;right:36px;bottom:60px;width:300px;border-radius:16px;background:#0b1218cc;border:1px solid #ffffff22;backdrop-filter:blur(12px);padding:16px 18px;opacity:0}
+.gauge small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#a8b6be}.gauge b{display:block;font-size:44px;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1.05}
+.gauge .bar{height:6px;border-radius:3px;background:#ffffff1f;margin-top:10px;position:relative;overflow:hidden}.gauge .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--river2);border-radius:3px}
+.gauge .lv{display:flex;justify-content:space-between;font-size:11px;color:#a8b6be;margin-top:6px}
+/* story */
+.story{position:relative;height:1050vh;background:#0b1218}
+.spin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.sbg video{opacity:0}
+.sshade{position:absolute;inset:0;background:linear-gradient(90deg,#0b1218f2 0%,#0b1218b3 30%,#0b121866 60%,#0b121888)}
+.chap{position:absolute;left:36px;top:50%;width:min(330px,26vw);color:#fff}
+.cp{position:absolute;left:0;top:0;transform:translateY(-50%);opacity:0;width:100%}
+.cp .eyebrow{color:var(--amber)}
+.cp h2{font-weight:800;font-size:clamp(34px,3.4vw,52px);line-height:.98;letter-spacing:-.04em;margin-top:12px}
+.cp h2 em{color:var(--amber)}
+.cp p{font-size:15.5px;line-height:1.6;color:#d8e1e5;margin-top:14px}
+.steps{position:absolute;left:36px;bottom:30px;display:flex;gap:8px}
+.steps i{display:block;width:46px;height:3px;border-radius:2px;background:#ffffff33;overflow:hidden;position:relative}.steps i b{position:absolute;inset:0;background:var(--amber);transform-origin:left;transform:scaleX(0)}
+.clip{position:absolute;inset:0;pointer-events:none}.clip>*{pointer-events:auto}
+.appw{position:absolute;right:36px;top:50%;width:1040px;height:650px;margin-top:-325px;transform-origin:100% 50%}
+.app{position:absolute;inset:0;border-radius:16px;background:var(--paper);overflow:hidden;box-shadow:0 60px 120px #0008,0 0 0 1px #ffffff22;display:grid;grid-template-columns:190px 1fr;color:var(--slate)}
+.side{background:var(--slate);color:#c9d4da;padding:16px 12px;display:flex;flex-direction:column;gap:3px}
+.side .brand{font-size:16px;margin:0 6px 16px;color:#fff}.side .brand img{width:26px}
+.nv{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:13px;font-weight:600;position:relative}
+.nv i{width:15px;height:15px;border-radius:4px;border:2px solid currentColor;opacity:.8}
+.nv.on{background:#ffffff14;color:#fff}
+.nv .bd{margin-left:auto;font-size:10px;font-weight:800;background:var(--amber);color:var(--slate);border-radius:99px;padding:2px 7px;font-style:normal;font-family:Pub}
+.side .who{margin-top:auto;padding:10px;border-radius:10px;background:#ffffff0f;font-size:11.5px;line-height:1.4}.who b{color:#fff;display:block;font-size:12.5px}
+.main{position:relative;overflow:hidden}
+.top{height:54px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 18px;background:#fff}
+.top .t{font-weight:700;font-size:14px}.top .sp{flex:1}
+.pillst{font-size:11px;font-weight:700;padding:6px 10px;border-radius:99px;background:var(--greenbg);color:var(--green);display:flex;gap:6px;align-items:center}
+.pillst i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.top .tm{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.view{position:absolute;left:0;right:0;top:54px;bottom:0;padding:16px;overflow:hidden}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px}.kpi b{display:block;font-weight:800;font-size:24px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}.kpi span{font-size:11px;color:var(--mute);font-weight:600}
+.ov{display:grid;grid-template-columns:1fr 250px;gap:12px;margin-top:12px;height:calc(100% - 72px)}
+.map{position:relative;border-radius:14px;overflow:hidden;background:#e9eef0;border:1px solid var(--line)}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.list{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px;overflow:hidden}
+.li{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:9px;font-size:12px}.li.on{background:var(--paper)}
+.li .dt{width:10px;height:10px;border-radius:50%;flex:none}.li b{display:block;font-size:12.5px}.li span{color:var(--mute)}.li .v{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.gh{display:flex;justify-content:space-between;align-items:flex-end}.gh h3{font-weight:800;font-size:22px;letter-spacing:-.03em}.gh .sub{font-size:12px;color:var(--mute);margin-top:3px}
+.lvl{text-align:right}.lvl b{font-weight:800;font-size:40px;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}.lvl span{font-size:12px;color:var(--mute)}
+.chart{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;height:330px;position:relative}
+.chart svg{position:absolute;inset:10px 10px 6px 40px;width:calc(100% - 50px);height:calc(100% - 16px);overflow:visible}
+.ax{position:absolute;left:8px;top:10px;bottom:22px;display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:var(--mute);font-variant-numeric:tabular-nums}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.facts div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:11px;color:var(--mute)}.facts b{display:block;color:var(--slate);font-size:15px}
+.warn{display:grid;grid-template-columns:1fr 330px;gap:12px;height:100%}
+.wmap{position:relative;border-radius:14px;overflow:hidden;background:#e9eef0;border:1px solid var(--line)}.wmap svg{position:absolute;inset:0;width:100%;height:100%}
+.form{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:12px}
+.form h4{font-size:15px;font-weight:800}
+.sev{display:flex;gap:6px}.sev span{flex:1;text-align:center;padding:8px 0;border-radius:8px;border:1px solid var(--line);font-weight:700;font-size:11px}
+.sev .on{background:var(--amber);border-color:var(--amber)}
+.msg{border:1px solid var(--line);border-radius:10px;padding:10px;min-height:96px;line-height:1.45;font-size:12.5px;background:var(--paper)}
+.msg .car{display:inline-block;width:1.5px;height:14px;background:var(--slate);vertical-align:-2px;margin-left:1px}
+.chs{display:flex;flex-wrap:wrap;gap:6px}.chs span{padding:6px 9px;border-radius:99px;background:var(--paper);font-weight:600;font-size:11px}.chs .on{background:var(--slate);color:#fff}
+.rc{display:flex;justify-content:space-between;align-items:center}.rc b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.send{height:44px;border-radius:10px;background:var(--red);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.prog{height:6px;border-radius:3px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;width:0;background:var(--green)}
+.rec{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;height:100%}
+.feed{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.ev{display:flex;gap:10px;font-size:12px;line-height:1.4;padding:8px;border-radius:10px;background:var(--paper)}.ev b{display:block;font-size:12.5px}.ev time{font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums;min-width:38px}
+.ring{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.ring svg{width:120px;height:120px}.ring b{display:block;font-size:30px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}.ring span{font-size:12px;color:var(--mute)}
+.toast{position:absolute;right:16px;top:66px;z-index:6;background:var(--slate);color:#fff;border-radius:12px;padding:10px 14px;font-size:12.5px;display:flex;gap:10px;align-items:center;box-shadow:0 14px 34px #0003;opacity:0}
+.toast i{width:22px;height:22px;border-radius:50%;background:var(--green);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:12px}
+.cursor{position:absolute;z-index:40;width:22px;height:22px;pointer-events:none;opacity:0;margin:-3px 0 0 -3px}
+.cursor svg{width:22px;height:22px;filter:drop-shadow(0 2px 3px #0005)}
+.cursor .rip{position:absolute;left:-12px;top:-12px;width:28px;height:28px;border-radius:50%;border:2px solid var(--red);opacity:0}
+.sec{max-width:1240px;margin:0 auto;padding:130px 36px 30px}
+.k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--river)}
+.sec h2{font-weight:800;font-size:clamp(38px,5.2vw,76px);letter-spacing:-.045em;line-height:.98;margin-top:14px;max-width:900px}
+.sec h2 em{color:var(--river)}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:54px}
+.feat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}.feat b{display:block;font-weight:800;font-size:20px;letter-spacing:-.02em;margin-top:14px}.feat p{font-size:14px;color:var(--mute);line-height:1.55;margin-top:8px}
+.feat .ic{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:#e1f2f4}
+.proof{display:grid;grid-template-columns:1.1fr 1fr;margin-top:60px;border-radius:24px;overflow:hidden;background:var(--slate);color:#fff}
+.proof .im{position:relative;min-height:420px;overflow:hidden}.proof video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.proof .in{padding:50px}.proof blockquote{font-family:Ser;font-style:italic;font-size:clamp(24px,2.6vw,36px);line-height:1.25}
+.proof cite{display:block;font-style:normal;margin-top:18px;font-size:13px;color:#a8b6be}
+.qn{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}.qn b{display:block;font-weight:800;font-size:36px;letter-spacing:-.04em;color:var(--amber)}.qn span{font-size:12px;color:#a8b6be}
+.cta{position:relative;margin:120px 36px 0;border-radius:28px;overflow:hidden;color:#fff;min-height:460px;display:flex;align-items:center}
+.cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b1218eb,#0b121833)}
+.cta .in{position:relative;z-index:2;padding:56px;max-width:600px}.cta h2{font-weight:800;font-size:clamp(38px,5vw,66px);letter-spacing:-.045em;line-height:.98}.cta h2 em{color:var(--amber)}
+.cta p{margin-top:14px;color:#d8e1e5;line-height:1.6}
+footer{max-width:1240px;margin:0 auto;padding:46px 36px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.rv{opacity:0}
+#pre{position:fixed;inset:0;z-index:99;background:var(--slate);display:grid;place-items:center}#pre img{width:64px}
+@media (max-width:760px){
+  .nav{padding:14px 16px}.nav .links{display:none}.btn{height:40px;padding:0 14px;font-size:13px}
+  .hshade{background:linear-gradient(#0b121888,#0b121833 30%,#0b1218f0 72%)}
+  .hcopy{left:20px;right:20px;top:auto;bottom:70px;transform:none}.hcopy p{font-size:15px}.gauge{display:none}
+  .story{height:950vh}.sshade{background:linear-gradient(#0b1218f0,#0b1218cc 30%,#0b121888 60%,#0b1218cc)}
+  .chap{left:20px;right:20px;width:auto;top:76px}.cp{transform:none}.cp h2{font-size:30px}.cp p{font-size:13.5px;margin-top:8px}
+  .clip{inset:auto 10px 50px 10px;height:56vh;overflow:hidden;border-radius:16px;box-shadow:0 30px 60px #0008}.appw{right:auto;left:0;top:0;margin:0;transform-origin:0 0}.app{border-radius:0}
+  .steps{left:20px;bottom:22px}.steps i{width:30px}
+  .sec{padding:90px 20px 20px}.feats{grid-template-columns:1fr}.proof{grid-template-columns:1fr}.proof .im{min-height:280px}.proof .in{padding:28px 22px}
+  .cta{margin:90px 16px 0}.cta .in{padding:32px 24px}
+  footer{flex-direction:column;gap:8px;padding:30px 20px}
+}
+</style>
+</head>
+<body>
+<div id="pre"><img src="src/img/logo.svg" alt=""></div>
+<nav class="nav" id="nav"><span class="brand"><img src="src/img/logo.svg" alt="">Brookwatch</span><div class="links"><a href="#story">Product</a><a href="#features">Features</a><a href="#councils">Councils</a></div><div class="sp"></div><a class="btn" href="#demo">Request a pilot</a></nav>
+
+<header class="hero" id="hero">
+  <div class="hpin">
+    <video class="bgv" id="hv" src="media/storm.mp4" poster="media/storm.jpg" muted playsinline preload="metadata"></video>
+    <div class="hshade"></div>
+    <div class="hcopy">
+      <div class="eyebrow hi" style="color:var(--amber)">Flood warning software for councils</div>
+      <h1><span class="ln"><span>Warn every street</span></span><span class="ln"><span>before the <em>water.</em></span></span></h1>
+      <p class="hi">Brookwatch brings river gauges, rain radar and resident alerts into one console, so a duty officer can see the rise and send a targeted warning in under two minutes.</p>
+      <div class="hcta hi"><a class="btn" href="#demo">Request a pilot →</a><a class="btn light" href="#story">See a storm night</a></div>
+    </div>
+    <div class="gauge" id="hg"><small>River Calder · Elland Bridge</small><b id="hL">1.12 m</b><div class="bar"><i id="hB"></i></div><div class="lv"><span>Normal</span><span>Alert 2.1</span><span>Warning 2.8</span></div></div>
+  </div>
+</header>
+
+<section class="story" id="story">
+  <div class="spin">
+    <div class="sbg">
+      <video class="bgv" src="media/clouds.mp4" poster="media/clouds.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/surge.mp4" poster="media/surge.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/poles.mp4" poster="media/poles.jpg" muted playsinline preload="metadata"></video>
+      <video class="bgv" src="media/town.mp4" poster="media/town.jpg" muted playsinline preload="metadata"></video>
+    </div>
+    <div class="sshade"></div>
+    <div class="chap">
+      <div class="cp"><div class="eyebrow">21:40 · Watch</div><h2>Forty-two gauges, <em>one</em> map.</h2><p>Every river gauge, rain gauge and drain sensor in the borough on one live map. The radar shows tonight's band of rain moving in from the west.</p></div>
+      <div class="cp"><div class="eyebrow">23:15 · The rise</div><h2>See the river <em>before</em> it peaks.</h2><p>The Calder is rising 18 cm an hour. Brookwatch forecasts the peak from upstream gauges and rainfall, and it will cross the warning line at 02:10.</p></div>
+      <div class="cp"><div class="eyebrow">23:22 · Warn</div><h2>Draw the area, <em>send</em> the warning.</h2><p>Select the streets at risk, check the plain-English message and send it by text, app, phone call and the council website at once.</p></div>
+      <div class="cp"><div class="eyebrow">06:30 · After</div><h2>Everyone <em>accounted</em> for.</h2><p>The river peaks below the barrier and falls by dawn. Ninety-six per cent of residents confirmed they were safe, and the incident log writes itself.</p></div>
+    </div>
+    <div class="steps" id="steps"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    <div class="clip" id="clip"><div class="appw" id="appw"><div class="app">
+      <aside class="side">
+        <span class="brand"><img src="src/img/logo.svg" alt="">Brookwatch</span>
+        <div class="nv" id="nv0"><i></i>Live map</div>
+        <div class="nv" id="nv1"><i></i>Gauges<em class="bd" id="gBd">6</em></div>
+        <div class="nv" id="nv2"><i></i>Warnings</div>
+        <div class="nv" id="nv3"><i></i>Incident log</div>
+        <div class="nv"><i></i>Residents</div>
+        <div class="nv"><i></i>Assets</div>
+        <div class="nv"><i></i>Reports</div>
+        <div class="who"><b>Sam Okoro</b>Duty flood officer<br>Calder Vale Council</div>
+      </aside>
+      <div class="main">
+        <div class="top"><span class="t" id="tt">Live map</span><span class="pillst" id="st"><i></i>All normal</span><span class="sp"></span><span class="tm" id="clk">21:40</span></div>
+        <div class="view" id="v0">
+          <div class="kpis"><div class="kpi"><b>42</b><span>Gauges online</span></div><div class="kpi"><b id="kRise">2</b><span>Rising fast</span></div><div class="kpi"><b id="kRain">4.2</b><span>mm/h, borough avg</span></div><div class="kpi"><b class="cnt" data-to="18240" data-sep="1">0</b><span>Residents subscribed</span></div></div>
+          <div class="ov">
+            <div class="map"><svg viewBox="0 0 560 420" preserveAspectRatio="xMidYMid slice" id="mapS"></svg></div>
+            <div class="list" id="glist"></div>
+          </div>
+        </div>
+        <div class="view" id="v1">
+          <div class="gh"><div><h3>River Calder at Elland Bridge</h3><div class="sub">Gauge CV-07 · reported every 5 min · upstream: Todmorden, Hebden Bridge</div></div><div class="lvl"><b id="lvl">1.12 m</b><br><span id="lvlR">+0.18 m/h</span></div></div>
+          <div class="chart"><div class="ax"><span>3.5</span><span>2.8</span><span>2.1</span><span>1.4</span><span>0.7</span><span>0</span></div><svg viewBox="0 0 900 300" preserveAspectRatio="none" id="hyd"></svg></div>
+          <div class="facts"><div><b id="fPeak">2.96 m</b>Forecast peak</div><div><b id="fWhen">02:10</b>Crosses warning line</div><div><b>3.10 m</b>Barrier crest</div><div><b>412</b>Properties at risk</div></div>
+        </div>
+        <div class="view" id="v2">
+          <div class="warn">
+            <div class="wmap"><svg viewBox="0 0 560 520" preserveAspectRatio="xMidYMid slice" id="wmapS"></svg></div>
+            <div class="form">
+              <h4>New flood warning</h4>
+              <div class="sev"><span>Alert</span><span class="on" id="sevW">Warning</span><span>Severe</span></div>
+              <div class="msg" id="msg"><span id="typed"></span><span class="car" id="car"></span></div>
+              <div class="chs"><span class="on">Text</span><span class="on">App</span><span class="on">Phone call</span><span class="on">Website</span><span>Sirens</span></div>
+              <div class="rc"><span>Recipients in area</span><b id="rcN">0</b></div>
+              <div class="send" id="send">Send warning</div>
+              <div class="prog"><i id="prog"></i></div>
+              <div class="rc" style="font-size:11.5px;color:var(--mute)"><span id="delv">Ready</span><span id="delvN"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="view" id="v3">
+          <div class="rec">
+            <div class="feed" id="feed">
+              <div class="ev"><time>23:24</time><div><b>Warning delivered to 3,412 people</b>Text 2,980 · App 1,604 · Calls 214</div></div>
+              <div class="ev"><time>00:05</time><div><b>Flood barrier closed, Elland Wharf</b>Field team 2 · photo attached</div></div>
+              <div class="ev"><time>01:50</time><div><b>Sandbags delivered, Gas Works Lane</b>48 bags · 6 homes</div></div>
+              <div class="ev"><time>02:40</time><div><b>Peak 2.94 m, 16 cm below barrier crest</b>Gauge CV-07</div></div>
+              <div class="ev"><time>06:30</time><div><b>Warning stood down</b>River falling 9 cm/h</div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="#dfe5e7" stroke-width="12"/><circle id="ringA" cx="60" cy="60" r="48" fill="none" stroke="#1f9d6b" stroke-width="12" stroke-linecap="round" transform="rotate(-90 60 60)"/></svg><div><b id="safeN">0%</b><span>Residents confirmed safe</span></div></div>
+              <div class="ring" style="grid-template-columns:1fr"><div><b>0</b><span>Homes flooded internally</span></div></div>
+              <div class="ring" style="grid-template-columns:1fr"><div><b>1 h 58 m</b><span>Warning lead time before peak</span></div></div>
+            </div>
+          </div>
+          <div class="toast" id="toast"><i>✓</i><div><b>Incident report ready</b><br><span style="opacity:.7">Shared with the Environment Agency</span></div></div>
+        </div>
+        <div class="cursor" id="cur"><svg viewBox="0 0 22 22"><path d="M3 2l15 8-6.5 1.6L8.6 18z" fill="#0f1b24" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="rip" id="rip"></span></div>
+      </div>
+    </div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="features">
+  <div class="k rv">Features</div>
+  <h2 class="rv">Built with duty officers who've <em>been up</em> all night.</h2>
+  <div class="feats">
+    <div class="feat rv"><div class="ic">📈</div><b>Forecast the peak</b><p>Upstream gauges and radar rainfall feed a model tuned to your rivers. You get a peak height and time, with an honest error band.</p></div>
+    <div class="feat rv"><div class="ic" style="background:var(--amberbg)">🗺</div><b>Warn by street, not postcode</b><p>Draw the area on the map. Brookwatch finds every subscribed resident, business and care home inside it.</p></div>
+    <div class="feat rv"><div class="ic" style="background:var(--greenbg)">✓</div><b>Know who's safe</b><p>Residents reply "safe" with one tap. Anyone who doesn't gets a phone call, then a door knock from the field team.</p></div>
+  </div>
+  <div class="proof rv" id="councils"><div class="im"><video id="pv" src="media/calm.mp4" poster="media/calm.jpg" muted playsinline preload="metadata"></video></div><div class="in"><blockquote>“Last winter we warned the Wharf two hours before the peak. Everyone had their sandbags down, and nobody's kitchen flooded.”</blockquote><cite>Flood risk manager · a West Yorkshire council</cite><div class="qn"><div><b class="cnt" data-to="118" data-suf=" min">0</b><span>Average lead time</span></div><div><b class="cnt" data-to="96" data-suf="%">0</b><span>Residents confirmed safe</span></div><div><b class="cnt" data-to="23">0</b><span>Councils on Brookwatch</span></div></div></div></div>
+</section>
+
+<section class="cta" id="demo"><video id="ctaV" src="media/town.mp4" poster="media/town.jpg" muted playsinline preload="metadata"></video><div class="in"><div class="k rv" style="color:var(--amber)">Pilot</div><h2 class="rv" style="margin-top:12px">Your rivers, live in <em>a week.</em></h2><p class="rv">We connect your existing gauges and resident lists, and run a 90-day pilot through the wettest months. G-Cloud 14 listed.</p><div class="hcta rv"><a class="btn">Request a pilot →</a><a class="btn light">Talk to a flood officer on our team</a></div></div></section>
+<footer><span>Brookwatch Ltd · Hebden Bridge · Made with flood teams</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const eo=t=>1-Math.pow(1-t,4),sm=t=>t*t*(3-2*t);const back=t=>{const c=1.5;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+const fmt=n=>n.toLocaleString('en-GB');
+const pre=$('#pre');let seen=false;try{seen=!!sessionStorage.getItem('brookwatch-seen');sessionStorage.setItem('brookwatch-seen','1')}catch(e){}if(seen)pre.remove();
+const hero=$('#hero'),story=$('#story'),hv=$('#hv'),vids=$$('.sbg video'),cps=$$('.cp'),steps=$$('#steps b'),appw=$('#appw'),views=[0,1,2,3].map(i=>$('#v'+i)),nvs=[0,1,2,3].map(i=>$('#nv'+i));
+const heroLines=$$('h1 .ln>span'),his=$$('.hi'),rvs=$$('.rv'),cnts=$$('.cnt'),nav=$('#nav'),cur=$('#cur'),rip=$('#rip');
+[hv,...vids,$('#ctaV'),$('#pv')].forEach(v=>v.pause());
+function seek(v,t,loop=true){if(!v.duration)return;const d=v.duration-.08,tt=loop?((t%d)+d)%d:clamp(t,0,d);if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}
+/* river level model: rain falls, the river responds hours later (unit hydrograph), peaks below the barrier */
+const H=k=>{if(k<.42)return 1.05+.08*k;const u=(k-.42)/.58;return 1.08+1.86*Math.pow(Math.sin(Math.min(1,u/.62)*Math.PI/2),1.6)*(u<.62?1:1-.55*Math.pow((u-.62)/.38,1.4))};
+const RAIN=[0,0,.4,1,2,3.4,5.8,8.2,9.6,8.8,7,5.2,3.8,2.4,1.2,.6,.2,0,0,0,0,0,0,0];
+/* live map: river, town blocks, gauges */
+const G=[['CV-01','Todmorden',90,150,1.4],['CV-03','Hebden Bridge',180,190,1.9],['CV-05','Mytholmroyd',260,210,1.6],['CV-07','Elland Bridge',360,250,1.12],['CV-09','Brighouse',450,290,.9],['RG-2','Rain · Walsden',120,90,0],['RG-4','Rain · Heptonstall',210,120,0]];
+(function(){const s=$('#mapS');let g='<rect width="560" height="420" fill="#e9eef0"/>';
+  for(let r=0;r<9;r++)g+=`<path d="M0 ${40+r*44} C140 ${20+r*44} 300 ${70+r*44} 560 ${30+r*44}" stroke="#d6dee1" fill="none"/>`;
+  [[300,200,70,40],[330,270,60,30],[420,250,50,60],[160,220,50,30],[240,240,40,30],[380,300,60,30],[480,320,40,40]].forEach(([x,y,w,h])=>g+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="#d3dade"/>`);
+  g+='<path id="riv" d="M20 120 C80 140 120 180 180 190 S300 220 360 250 S470 300 560 330" stroke="#3fb8c4" stroke-width="10" fill="none" stroke-linecap="round" opacity=".85"/>';
+  g+='<g id="radar"></g><path id="area0" d="M320 215 L420 230 L430 300 L330 300 Z" fill="#ffb02033" stroke="#ffb020" stroke-width="2" stroke-dasharray="5 4" opacity="0"/>';
+  G.forEach(([id,n,x,y],i)=>g+=`<g transform="translate(${x} ${y})"><circle r="16" fill="#0c6e7822" id="gp${i}"/><circle r="7" fill="${id.startsWith('RG')?'#0f1b24':'#1f9d6b'}" stroke="#fff" stroke-width="2.5" id="gd${i}"/><text x="12" y="-10" font-size="10" font-weight="700" fill="#0f1b24">${id}</text></g>`);
+  s.innerHTML=g;
+  $('#glist').innerHTML=G.filter(g=>g[4]>0).map((g,i)=>`<div class="li${g[0]==='CV-07'?' on':''}"><span class="dt" id="ld${i}" style="background:#1f9d6b"></span><div><b>${g[1]}</b><span>${g[0]} · River Calder</span></div><span class="v" id="lv${i}">${g[4].toFixed(2)} m</span></div>`).join('')+'<div class="li"><span class="dt" style="background:#0f1b24"></span><div><b>Walsden</b><span>RG-2 · rain gauge</span></div><span class="v" id="rg2">2 mm/h</span></div>';
+  const w=$('#wmapS');let h='<rect width="560" height="520" fill="#e9eef0"/>';
+  for(let i=0;i<14;i++)h+=`<path d="M${i*44} 0 L${i*44+30} 520" stroke="#d6dee1"/>`;for(let i=0;i<12;i++)h+=`<path d="M0 ${i*46} L560 ${i*46+20}" stroke="#d6dee1"/>`;
+  [[80,120,90,50],[200,150,70,60],[300,110,80,50],[120,250,110,40],[260,260,90,60],[380,240,80,50],[150,350,70,50],[280,370,100,40],[420,350,70,60]].forEach(([x,y,ww,hh],i)=>h+=`<rect x="${x}" y="${y}" width="${ww}" height="${hh}" rx="4" fill="#d3dade" id="bk${i}"/>`);
+  h+='<path d="M0 220 C120 230 220 330 330 320 S480 300 560 380" stroke="#3fb8c4" stroke-width="22" fill="none" opacity=".8"/>';
+  h+='<path id="poly" d="" fill="#ffb02040" stroke="#d7263d" stroke-width="2.5" stroke-dasharray="6 4"/><g id="pdots"></g>';
+  [[310,300,'Elland Wharf'],[170,280,'Gas Works Lane'],[420,330,'Calder Court (care home)']].forEach(([x,y,n])=>h+=`<text x="${x}" y="${y}" font-size="11" font-weight="700" fill="#0f1b24">${n}</text>`);
+  w.innerHTML=h})();
+const POLY=[[110,230],[250,240],[350,280],[480,300],[500,380],[300,410],[120,330]];
+const hyd=$('#hyd');(function(){let g='';[[2.1,'#ffb020','Alert 2.1 m'],[2.8,'#d7263d','Warning 2.8 m'],[3.1,'#0f1b24','Barrier 3.1 m']].forEach(([v,c,l])=>{const y=300-v/3.5*300;g+=`<line x1="0" x2="900" y1="${y}" y2="${y}" stroke="${c}" stroke-dasharray="6 5" stroke-width="1.5" opacity=".8"/><text x="896" y="${y-5}" font-size="12" text-anchor="end" fill="${c}" font-weight="700">${l}</text>`});
+  RAIN.forEach((r,i)=>g+=`<rect x="${i*900/24+4}" y="0" width="${900/24-8}" height="${r*7}" fill="#3fb8c4" opacity=".45" id="rb${i}"/>`);
+  g+='<path id="obs" fill="none" stroke="#0c6e78" stroke-width="3"/><path id="fc" fill="none" stroke="#0c6e78" stroke-width="2.5" stroke-dasharray="6 6"/><path id="band" fill="#0c6e7818"/><circle id="now" r="6" fill="#0c6e78" stroke="#fff" stroke-width="2.5"/><line id="nowL" y1="0" y2="300" stroke="#0f1b24" stroke-width="1" opacity=".3"/>';hyd.innerHTML=g})();
+function pathTo(k0,k1,off=0){let d='';for(let i=0;i<=60;i++){const k=lerp(k0,k1,i/60);const x=k*900,y=300-(H(k)+off)/3.5*300;d+=(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1)}return d}
+function curAt(keys,lp){let p=keys[0];for(let i=1;i<keys.length;i++){const[a,x,y]=keys[i];const[pa,px,py]=keys[i-1];if(lp<=a){const k=back(seg(lp,pa+(a-pa)*.15,a));return[lerp(px,x,k),lerp(py,y,k)]}p=keys[i]}return[p[1],p[2]]}
+const MSG="Flood warning, River Calder at Elland. Water is expected to reach Elland Wharf, Gas Works Lane and Calder Court from 1 am. Move valuables upstairs, collect sandbags at Elland Library, and reply SAFE when you're ready.";
+const ringA=$('#ringA'),ringL=2*Math.PI*48;ringA.style.strokeDasharray=ringL;
+let t0=null,last=null,cs=0,csV=0,fxs=600,fys=300;
+const tStr=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(Math.floor(m%60)).padStart(2,'0')};
+function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.05,(now-last)/1000);last=now;
+  if(!seen&&pre.isConnected){const k=seg(t,.5,1.1);pre.style.opacity=1-k;if(k>=1)pre.remove()}
+  const vh=innerHeight,vw=innerWidth,mobile=vw<=760;nav.classList.toggle('solid',story.getBoundingClientRect().bottom<70);
+  {const r=hero.getBoundingClientRect();if(r.bottom>0){const q=clamp(-r.top/(r.height-vh));seek(hv,t*.8);
+    heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
+    const out=1-seg(q,.6,.95);his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*out);$('.hcopy h1').style.opacity=out;
+    const g=back(seg(t,1.6,2.3));$('#hg').style.opacity=clamp(seg(t,1.6,1.9))*out;$('#hg').style.transform=`translateY(${(1-g)*30}px)`;
+    const lv=1.12+q*1.2+Math.sin(t*.8)*.004;$('#hL').textContent=lv.toFixed(2)+' m';$('#hB').style.width=(lv/3.1*100)+'%';$('#hB').style.background=lv>2.1?'#ffb020':''}}
+  const r=story.getBoundingClientRect();
+  if(r.top<vh&&r.bottom>0){const q=clamp(-r.top/(r.height-vh)),C=4,x=q*C,ci=Math.min(C-1,Math.floor(x)),lp=x-ci;
+    vids.forEach((v,i)=>{const o=clamp(1-Math.abs(x-.5-i)*1.6+.6);v.style.opacity=o;if(o>.01)seek(v,t*.8+i)});
+    cps.forEach((c,i)=>{const v=Math.min(seg(x,i-.02,i+.12),i===C-1?1:1-seg(x,i+.86,i+.98));c.style.opacity=v;c.style.marginTop=(1-v)*24+'px'});
+    steps.forEach((b,i)=>b.style.transform=`scaleX(${clamp(x-i)})`);
+    const enter=eo(seg(q,0,.03));
+    if(!mobile){const sc=Math.min(1,(vw*.68)/1040,(vh-110)/650);appw.style.transform=`translateY(${(1-enter)*120}px) scale(${sc})`}
+    const target=ci+(ci<C-1?sm(seg(lp,.88,1)):0);csV+=(-(cs-target)*140-csV*2*Math.sqrt(140)*.85)*dt;cs+=csV*dt;
+    views.forEach((v,i)=>{const o=i-cs;v.style.opacity=clamp(1-Math.abs(o)*1.6);v.style.transform=`translateY(${o*40}px)`;v.style.visibility=Math.abs(o)<.9?'visible':'hidden'});
+    nvs.forEach((n,i)=>n.classList.toggle('on',Math.round(cs)===i));$('#tt').textContent=['Live map','Gauge CV-07','New warning','Incident log'][Math.round(clamp(cs,0,3))];
+    const clock=[[21*60+40,23*60+10],[23*60+15,23*60+21],[23*60+22,23*60+26],[24*60+6*60+30,24*60+6*60+40]][ci];$('#clk').textContent=tStr(lerp(clock[0],clock[1],lp));
+    const stt=ci===0?(lp>.5?['Rising',1]:['All normal',0]):ci<3?['Flood warning',2]:['Stood down',0];$('#st').lastChild.textContent=stt[0];$('#st').style.background=['var(--greenbg)','var(--amberbg)','var(--redbg)'][stt[1]];$('#st').style.color=['var(--green)','#9a6400','var(--red)'][stt[1]];
+    let keys=[[0,990,600]],click=[];
+    if(ci===0){keys=[[0,990,600],[.45,960,600],[.6,556,304],[.85,556,304],[.92,300,140]];click=[.66];
+      // radar: a band of heavy rain sweeps in from the west; gauges respond
+      const rad=$('#radar');let rg='';for(let i=0;i<7;i++){const cx=lerp(-120,320,lp)+i*26,cy=150+Math.sin(i*1.7)*50;rg+=`<ellipse cx="${cx}" cy="${cy}" rx="${70-i*5}" ry="${46-i*3}" fill="${i<3?'#2f6bff':'#1fb5d0'}" opacity="${.14+i*.02}"/>`}rad.innerHTML=rg;
+      const rise=sm(seg(lp,.35,.8));[0,1,2,3].forEach(i=>{const c=rise>.5&&i<4?(i===3&&lp>.6?'#ffb020':'#1f9d6b'):'#1f9d6b';$('#gd'+i).setAttribute('fill',c);$('#gp'+i).setAttribute('r',16+Math.sin(t*4+i)*4*rise)});
+      const lv=[1.4,1.9,1.6,1.12,.9].map((v,i)=>v+rise*[.3,.5,.45,.38,.2][i]);lv.forEach((v,i)=>{$('#lv'+i).textContent=v.toFixed(2)+' m';$('#ld'+i).style.background=(i===3&&lp>.6)?'#ffb020':'#1f9d6b'});
+      $('#rg2').textContent=Math.round(lerp(2,11,rise))+' mm/h';$('#kRain').textContent=lerp(4.2,9.6,rise).toFixed(1);$('#kRise').textContent=Math.round(lerp(2,6,rise));
+      $('#area0').style.opacity=lp>.66?.9:0;
+      cnts.slice(0,1).forEach(el=>{el.textContent=fmt(Math.round(+el.dataset.to*eo(seg(lp,.02,.3))))})}
+    if(ci===1){keys=[[0,300,140],[.5,700,190],[.9,700,190]];
+      const k=lerp(.42,.56,sm(seg(lp,.05,.9)));$('#obs').setAttribute('d',pathTo(0,k));$('#fc').setAttribute('d',pathTo(k,1));
+      const fcV=sm(seg(lp,.3,.6));$('#fc').style.opacity=fcV;let up='',dn='';for(let i=0;i<=40;i++){const kk=lerp(k,1,i/40),x=kk*900,e=.05+.25*(i/40);up+=(i?'L':'M')+x+','+(300-(H(kk)+e)/3.5*300);dn=`L${x},${300-(H(kk)-e)/3.5*300}`+dn}$('#band').setAttribute('d',up+dn.replace(/^L/,'L')+'Z');$('#band').style.opacity=fcV;
+      const nx=k*900,ny=300-H(k)/3.5*300;$('#now').setAttribute('cx',nx);$('#now').setAttribute('cy',ny);$('#nowL').setAttribute('x1',nx);$('#nowL').setAttribute('x2',nx);
+      RAIN.forEach((rr,i)=>$('#rb'+i).style.opacity=i/24<k?.55:.18);
+      $('#lvl').textContent=H(k).toFixed(2)+' m';$('#lvl').style.color=H(k)>2.1?'#b77700':'';$('#lvlR').textContent='+'+(lerp(.12,.21,lp)).toFixed(2)+' m/h'}
+    if(ci===2){keys=[[0,700,190],[.06,250,300],[.3,520,370],[.36,840,250],[.66,840,250],[.72,846,454],[.95,846,454]];click=[.07,.11,.15,.19,.23,.27,.31,.72];
+      // drawing the warning area point by point
+      const np=Math.min(POLY.length,Math.floor(seg(lp,.06,.32)*POLY.length+.01)+(lp>.06?1:0));const pts=POLY.slice(0,np);
+      $('#poly').setAttribute('d',pts.length?('M'+pts.map(p=>p.join(',')).join('L')+(np===POLY.length?'Z':'')):'');$('#pdots').innerHTML=pts.map(([a,b])=>`<circle cx="${a}" cy="${b}" r="4.5" fill="#fff" stroke="#d7263d" stroke-width="2"/>`).join('');
+      for(let i=0;i<9;i++)$('#bk'+i).setAttribute('fill',np===POLY.length&&[3,4,5,7,8].includes(i)?'#ffb02099':'#d3dade');
+      $('#rcN').textContent=fmt(Math.round(3412*sm(seg(lp,.3,.36))));
+      const n=Math.floor(MSG.length*seg(lp,.36,.66));$('#typed').textContent=MSG.slice(0,n);$('#car').style.opacity=lp<.7&&Math.sin(t*8)>0?1:0;
+      const press=Math.max(0,1-Math.abs(lp-.72)*30);$('#send').style.transform=`scale(${1-.04*press})`;
+      const pr=sm(seg(lp,.73,.95));$('#prog').style.width=(pr*100)+'%';$('#delv').textContent=pr>0?(pr<1?'Delivering…':'Delivered'):'Ready';$('#delvN').textContent=pr>0?fmt(Math.round(3412*pr))+' / 3,412':'';
+      $('#send').textContent=pr>=1?'Sent ✓':'Send warning';$('#send').style.background=pr>=1?'var(--green)':''}
+    if(ci!==2)$('#typed').textContent=lp>0&&ci>2?MSG:'';
+    if(ci===3){keys=[[0,846,454],[.5,700,300],[.9,700,300]];
+      $$('#feed .ev').forEach((e,i)=>{const kk=back(seg(lp,.05+i*.1,.15+i*.1));e.style.opacity=clamp(seg(lp,.05+i*.1,.09+i*.1));e.style.transform=`translateX(${(1-kk)*-20}px)`});
+      const sv=eo(seg(lp,.15,.7));ringA.style.strokeDashoffset=ringL*(1-.96*sv);$('#safeN').textContent=Math.round(96*sv)+'%';
+      const tt=back(seg(lp,.72,.8));$('#toast').style.opacity=seg(lp,.72,.75);$('#toast').style.transform=`translateY(${(1-tt)*-24}px)`}
+    const[cx,cy]=curAt(keys,lp);
+    if(mobile){const cw=$('#clip').clientWidth,ch=$('#clip').clientHeight,sc=.62;fxs+=(cx-fxs)*(1-Math.exp(-dt*3));fys+=(cy-fys)*(1-Math.exp(-dt*3));
+      const tx=clamp(cw/2-fxs*sc,cw-1040*sc,0),ty=clamp(ch/2-fys*sc,ch-650*sc,0);appw.style.transform=`translate(${tx}px,${ty+(1-enter)*120}px) scale(${sc})`}
+    cur.style.left=cx+'px';cur.style.top=cy+'px';cur.style.opacity=seg(lp,.02,.08)*(ci===3?1-seg(lp,.4,.5):1);
+    let rp=0;click.forEach(c=>{const k=seg(lp,c,c+.04);if(k>0&&k<1)rp=k});rip.style.opacity=rp?1-rp:0;rip.style.transform=`scale(${.4+rp*1.6})`}
+  rvs.forEach(el=>{const rr=el.getBoundingClientRect();const k=eo(clamp((vh*.94-rr.top)/(vh*.28)));el.style.opacity=k;el.style.transform=`translateY(${(1-k)*30}px)`});
+  cnts.slice(1).forEach(el=>{const rr=el.getBoundingClientRect();if(rr.top>vh)return;const k=eo(clamp((vh*.95-rr.top)/(vh*.4)));el.textContent=Math.round(+el.dataset.to*k)+(el.dataset.suf||'')});
+  for(const id of ['#ctaV','#pv']){const v=$(id),rr=v.getBoundingClientRect();if(rr.top<vh&&rr.bottom>0)seek(v,t*.8)}
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
