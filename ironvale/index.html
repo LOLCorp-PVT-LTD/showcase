@@ -144,8 +144,6 @@ footer{max-width:1280px;margin:0 auto;padding:50px 40px;display:flex;justify-con
       <p class="hi">Gates, railings and door hardware, forged one piece at a time by three smiths, and fitted by the same hands that made them.</p>
       <div class="hcta hi"><a class="btn" href="#commission">Start a commission →</a><a class="btn ghost" href="#work">See the work</a></div>
     </div>
-    <div class="temp hi"><small>Forge, live</small><b id="hT">1,240°</b><span id="hC">Straw yellow · welding heat</span></div>
-    <div class="since hi"><span>Est. 1987</span><span>Scroll to forge</span><span>BS EN 1090 certified</span></div>
   </div>
 </header>
 
@@ -307,7 +305,6 @@ function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/6
     // the line forges itself a little on arrival, then follows the scroll (with weight)
     const target=Math.max(.16*eo(seg(t,.8,3.2)),q*1.12);hd+=(clamp(target)-hd)*(1-Math.exp(-dt*5));
     const[W,H]=fit(fc);const T=drawForge(t,dt,hd,W,H,mobile);
-    $('#hT').textContent=fmt(Math.round(1240+Math.sin(t*1.7)*6+Math.sin(t*4.3)*3))+'°';
     heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
     his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*(1-seg(q,.75,1)));$('.hcopy').style.transform=(mobile?'':'translateY(-46%) ')+`translateY(${-seg(q,.6,1)*50}px)`}}
   {const r=proc.getBoundingClientRect();if(r.top<vh&&r.bottom>0){const q=clamp(-r.top/(r.height-vh)),x=q*4;

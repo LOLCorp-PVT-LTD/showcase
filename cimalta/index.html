@@ -178,7 +178,6 @@ footer{max-width:1240px;margin:0 auto;padding:46px 40px;display:flex;justify-con
   <div class="hpin">
     <video class="bgv" id="hv" src="media/hero.mp4" poster="media/hero.jpg" muted playsinline preload="auto"></video>
     <div class="hshade"></div>
-    <div class="alt hi"><small>Passo Giau · live altitude</small><b id="altV">2,108 m</b></div>
     <div class="hcopy">
       <div class="eyebrow hi">Hut-to-hut trekking in the Dolomites</div>
       <h1><span class="ln"><span>Sleep where</span></span><span class="ln"><span>the trail <em>ends.</em></span></span></h1>
@@ -335,7 +334,7 @@ function frame(now){
    if(r.bottom>0){seek(hv,.2+hq*9.6);
     heroLines.forEach((el,i)=>{const k=eo(seg(t,.35+i*.14,1.25+i*.14));el.style.transform=`translateY(${(1-k)*108}%)`});
     const out=1-seg(q,.55,.95);his.forEach(el=>el.style.opacity=eo(seg(t,1,1.8))*out);$('.hcopy').style.transform=`translateY(${-seg(q,.5,1)*60}px)`;$('.hcopy h1').style.opacity=out;
-    {const c=Math.min(seg(q,.6,.75),1-seg(q,.93,1));$('#hcap').style.opacity=c;$('#hcap').style.transform=`translateY(${(1-c)*30}px)`}$('#altV').textContent=fmt(Math.round(lerp(2108,2236,sm(hq))/1)) +' m'}}
+    {const c=Math.min(seg(q,.6,.75),1-seg(q,.93,1));$('#hcap').style.opacity=c;$('#hcap').style.transform=`translateY(${(1-c)*30}px)`}}}
   /* story */
   const r=story.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh)),inS=r.top<vh&&r.bottom>0;
   nav.classList.toggle('ink',r.bottom<70);

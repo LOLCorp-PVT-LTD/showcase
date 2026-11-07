@@ -143,7 +143,6 @@ footer{max-width:1240px;margin:0 auto;padding:40px 44px;display:flex;justify-con
         <h1><span class="ln"><span>A house that</span></span><span class="ln"><span>reads the <em>light.</em></span></span></h1></div>
       <div class="facts hi"><div><b>4</b><span>Bedrooms</span></div><div><b>412 m²</b><span>Interior</span></div><div><b>38 m</b><span>Above the sea</span></div></div>
     </div>
-    <div class="cue hi" id="cue">Scroll to walk in<i id="cueI"></i></div>
     <div class="chs">
       <div class="ch"><small>01 · The headland</small><h2>One acre of <em>granite,</em> 38 m up.</h2><p>The house sits on the one flat shelf of rock on the headland, with the Atlantic breaking on three sides below it.</p></div>
       <div class="ch"><small>02 · The terrace</small><h2>Fourteen metres of <em>water</em> on the edge.</h2><p>A heated infinity pool in pale limestone runs along the whole living floor, and its far edge lines up with the horizon.</p></div>
@@ -151,7 +150,6 @@ footer{max-width:1240px;margin:0 auto;padding:40px 44px;display:flex;justify-con
       <div class="ch"><small>04 · The stair</small><h2>Oak treads, <em>striped</em> light.</h2><p>An open oak stair rises past the kitchen. The late sun comes through 412 larch fins and lays stripes across the wall.</p></div>
       <div class="ch"><small>05 · The main bedroom</small><h2>Wake up to the <em>whole</em> horizon.</h2><p>At the end of the 4-metre cantilever, the bed faces a full-width window with nothing but sea beyond it.</p></div>
     </div>
-    <div class="gauge hud"><small id="gLbl">Sunset · 21 June</small><b id="gVal">20:41</b><div class="sub" id="gSub">Sun 6° · WNW</div></div>
     <div class="rail hud" id="rail"><div><i><b></b></i>Headland</div><div><i><b></b></i>Terrace</div><div><i><b></b></i>Living</div><div><i><b></b></i>Stair</div><div><i><b></b></i>Bedroom</div></div>
   </div>
 </section>
@@ -256,13 +254,9 @@ function frame(now){
     heroLines.forEach((el,i)=>{const k=eo(seg(t,.25+i*.14,1.15+i*.14));el.style.transform=`translateY(${(1-k)*106}%)`});
     his.forEach(el=>{const k=eo(seg(t,.9,1.7));el.style.opacity=k*hk});
     $('#hero').style.transform=`translateY(${(1-hk)*-40}px)`;$('#hero').style.opacity=hk;
-    $('#cueI').style.transform=`scaleY(${.35+.65*(.5+.5*Math.sin(t*2.4))})`;
     const hud=seg(q,.04,.08);huds.forEach(e=>e.style.opacity=hud);
     chs.forEach((c,k)=>{const[a,b]=CH[k];const lo=k===0?Math.max(a,10):a;const v=Math.min(seg(f,lo+2,lo+10),k===4?1:1-seg(f,b-8,b-1))*hud;c.style.opacity=v;c.style.transform=`translateY(${(1-v)*22}px)`;c.style.pointerEvents=v>.5?'auto':'none'});
     bars.forEach((b,k)=>{const[a,e]=CH[k];b.style.transform=`scaleX(${seg(f,a,e)})`});
-    // clock: 20:05 at the cliff edge to 21:40 at blue hour
-    const mins=20*60+5+95*(f/(N-1));$('#gVal').textContent=`${Math.floor(mins/60)}:${String(Math.floor(mins%60)).padStart(2,'0')}`;
-    const el=Math.round(lerp(9,-4,f/(N-1)));$('#gSub').textContent=el>0?`Sun ${el}° · WNW`:`Blue hour · lights on`;
   }
   nav.classList.toggle('ink',r.bottom<70);
   // content reveals, counters, plan, parallax

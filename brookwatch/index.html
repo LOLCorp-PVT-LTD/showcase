@@ -152,7 +152,6 @@ footer{max-width:1240px;margin:0 auto;padding:46px 36px;display:flex;justify-con
       <p class="hi">Brookwatch brings river gauges, rain radar and resident alerts into one console, so a duty officer can see the rise and send a targeted warning in under two minutes.</p>
       <div class="hcta hi"><a class="btn" href="#demo">Request a pilot →</a><a class="btn light" href="#story">See a storm night</a></div>
     </div>
-    <div class="gauge" id="hg"><small>River Calder · Elland Bridge</small><b id="hL">1.12 m</b><div class="bar"><i id="hB"></i></div><div class="lv"><span>Normal</span><span>Alert 2.1</span><span>Warning 2.8</span></div></div>
   </div>
 </header>
 
@@ -297,8 +296,7 @@ function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/6
   {const r=hero.getBoundingClientRect();if(r.bottom>0){const q=clamp(-r.top/(r.height-vh));seek(hv,t*.8);
     heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
     const out=1-seg(q,.6,.95);his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*out);$('.hcopy h1').style.opacity=out;
-    const g=back(seg(t,1.6,2.3));$('#hg').style.opacity=clamp(seg(t,1.6,1.9))*out;$('#hg').style.transform=`translateY(${(1-g)*30}px)`;
-    const lv=1.12+q*1.2+Math.sin(t*.8)*.004;$('#hL').textContent=lv.toFixed(2)+' m';$('#hB').style.width=(lv/3.1*100)+'%';$('#hB').style.background=lv>2.1?'#ffb020':''}}
+        }}
   const r=story.getBoundingClientRect();
   if(r.top<vh&&r.bottom>0){const q=clamp(-r.top/(r.height-vh)),C=4,x=q*C,ci=Math.min(C-1,Math.floor(x)),lp=x-ci;
     vids.forEach((v,i)=>{const o=clamp(1-Math.abs(x-.5-i)*1.6+.6);v.style.opacity=o;if(o>.01)seek(v,t*.8+i)});

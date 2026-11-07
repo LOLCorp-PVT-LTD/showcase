@@ -152,7 +152,6 @@ footer{max-width:1240px;margin:0 auto;padding:46px 36px;display:flex;justify-con
       <p class="hi">Fiddlehead matches every plant to your light, tells you when to water, and keeps a journal of every new frond.</p>
       <div class="stores hi"><div class="store">Download on<b>iPhone</b></div><div class="store">Get it on<b>Android</b></div></div>
     </div>
-    <div class="grow hi"><small>Day <span id="day">1</span> of a male fern</small><b id="grH">2.0 cm</b><span>Scroll to watch it unfurl</span></div>
   </div>
 </header>
 
@@ -259,7 +258,7 @@ function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/6
   {const r=hero.getBoundingClientRect();if(r.bottom>0){const q=clamp(-r.top/(r.height-vh));
     // the timelapse is the scroll: it opens a little on arrival, then follows the page with weight
     const target=Math.max(.06*eo(seg(t,.6,2.6)),q);hq+=(target-hq)*(1-Math.exp(-dt*4));seek(hv,hq*(hv.duration||16),false);
-    $('#day').textContent=1+Math.round(hq*20);$('#grH').textContent=(2+hq*14.5).toFixed(1)+' cm';
+    
     heroLines.forEach((el,i)=>{const k=eo(seg(t,.3+i*.15,1.2+i*.15));el.style.transform=`translateY(${(1-k)*108}%)`});
     const out=1-seg(q,.7,1);his.forEach(el=>el.style.opacity=eo(seg(t,.9,1.7))*out);$('.hcopy h1').style.opacity=out}}
   const r=story.getBoundingClientRect();
