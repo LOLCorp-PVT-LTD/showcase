@@ -1,0 +1,11 @@
+name: Notify website
+on: { push: { branches: [main] } }
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsS -X POST -H "Authorization: Bearer ${{ secrets.WEBSITE_DISPATCH_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/LOLCorp-PVT-LTD/lolcorp-animated/dispatches \
+            -d '{"event_type":"showcase-updated"}'
