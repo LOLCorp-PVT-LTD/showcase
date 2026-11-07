@@ -1,0 +1,113 @@
+{
+ "updated": "2026-11-07T11:36:29Z",
+ "items": [
+  {
+   "slug": "wildacre",
+   "title": "Wildacre",
+   "kind": "Rewilding charity · App + website",
+   "blurb": "A magazine you scroll sideways, and an app that shows what crossed your acre at 2 am.",
+   "url": "https://showcase.lolcorp.co.uk/wildacre/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/wildacre.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/wildacre.jpg"
+  },
+  {
+   "slug": "brookwatch",
+   "title": "Brookwatch",
+   "kind": "Council flood warnings · Web app",
+   "blurb": "One storm night: watch the river rise, draw the streets at risk, warn 3,412 people.",
+   "url": "https://showcase.lolcorp.co.uk/brookwatch/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/brookwatch.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/brookwatch.jpg"
+  },
+  {
+   "slug": "hallowfell",
+   "title": "Hallow Fell",
+   "kind": "Observatory · Website",
+   "blurb": "One night from sunset to the aurora, with a real star chart that turns as you scroll.",
+   "url": "https://showcase.lolcorp.co.uk/hallowfell/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/hallowfell.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/hallowfell.jpg"
+  },
+  {
+   "slug": "fiddlehead",
+   "title": "Fiddlehead",
+   "kind": "Plant shop · Mobile app",
+   "blurb": "A real fern unfurls as you scroll, then the app matches plants to your light.",
+   "url": "https://showcase.lolcorp.co.uk/fiddlehead/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/fiddlehead.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/fiddlehead.jpg"
+  },
+  {
+   "slug": "bramble",
+   "title": "Bramble",
+   "kind": "Vet clinic · Web app",
+   "blurb": "A dog's whole surgery day, from check-in to \"he's wagging!\", on one screen.",
+   "url": "https://showcase.lolcorp.co.uk/bramble/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/bramble.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/bramble.jpg"
+  },
+  {
+   "slug": "ironvale",
+   "title": "Ironvale Forge",
+   "kind": "Blacksmith forge · Website",
+   "blurb": "Iron forged across the screen as you scroll, glowing white-hot then cooling to black.",
+   "url": "https://showcase.lolcorp.co.uk/ironvale/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/ironvale.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/ironvale.jpg"
+  },
+  {
+   "slug": "cimalta",
+   "title": "Cimalta",
+   "kind": "Trekking · Mobile app",
+   "blurb": "Book every hut on a Dolomites high route in one tap, then beat the storm to the last one.",
+   "url": "https://showcase.lolcorp.co.uk/cimalta/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/cimalta.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/cimalta.jpg"
+  },
+  {
+   "slug": "pitchside",
+   "title": "Pitchside",
+   "kind": "Sports analytics · Web app",
+   "blurb": "Live match intelligence: a goal broken down, pass by pass.",
+   "url": "https://showcase.lolcorp.co.uk/pitchside/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/pitchside.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/pitchside.jpg"
+  },
+  {
+   "slug": "halden",
+   "title": "Halden House",
+   "kind": "Luxury property · Website",
+   "blurb": "Walk from the cliff edge into the bedroom, all driven by your scroll.",
+   "url": "https://showcase.lolcorp.co.uk/halden/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/halden.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/halden.jpg"
+  },
+  {
+   "slug": "levain",
+   "title": "Levain",
+   "kind": "Bakery · Mobile app",
+   "blurb": "Reserve a warm loaf, then watch it bake live on the oven cam.",
+   "url": "https://showcase.lolcorp.co.uk/levain/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/levain.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/levain.jpg"
+  },
+  {
+   "slug": "haulwise",
+   "title": "Haulwise",
+   "kind": "Fleet management · Web app",
+   "blurb": "A live control room for a UK freight fleet, plus the driver app in the cab.",
+   "url": "https://showcase.lolcorp.co.uk/haulwise/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/haulwise.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/haulwise.jpg"
+  },
+  {
+   "slug": "abyssal",
+   "title": "Abyssal",
+   "kind": "Interactive storytelling · Website",
+   "blurb": "An 11 km dive into the ocean, guided by a hand-animated jellyfish.",
+   "url": "https://showcase.lolcorp.co.uk/abyssal/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/abyssal.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/abyssal.jpg"
+  }
+ ]
+}
