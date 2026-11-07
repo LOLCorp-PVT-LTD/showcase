@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>wildacre — adopt an acre of the Teme valley and watch it come back to life</title>
+<meta name="description" content="Wildacre is a rewilding charity in the Teme valley. Adopt an acre for £4 a month and follow it in the app: camera traps, species counts and the land coming back.">
+<style>
+@font-face{font-family:Bod;src:url(assets/fonts/bodoni-moda-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Bod;src:url(assets/fonts/bodoni-moda-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Bod;src:url(assets/fonts/bodoni-moda-latin-400-italic.woff2) format("woff2");font-style:italic}
+@font-face{font-family:Kar;src:url(assets/fonts/karla-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Kar;src:url(assets/fonts/karla-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Kar;src:url(assets/fonts/karla-latin-700-normal.woff2) format("woff2");font-weight:700}
+:root{--bone:#efe9df;--paper:#f7f3ec;--heather:#3b2a40;--heather2:#56405c;--bracken:#c4622d;--lichen:#9aa58a;--ink:#231a26;--mute:#7b6f7c;--rule:#3b2a4033;--vh:1vh}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bone);color:var(--ink);font-family:Kar,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}a{color:inherit;text-decoration:none}
+.bod{font-family:Bod,serif;font-weight:400}
+/* masthead bar */
+.bar{position:fixed;inset:0 0 auto;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 28px;font-size:12px;letter-spacing:.14em;text-transform:lowercase;pointer-events:none}
+.bar>*{pointer-events:auto}.bar .logo{display:flex;align-items:center;gap:10px;font-family:Bod;font-size:22px;letter-spacing:-.01em}.bar .logo img{width:28px}
+.bar .adopt{padding:10px 16px;border:1px solid var(--ink);border-radius:99px;font-weight:700;letter-spacing:.06em;background:var(--bone)}
+.folio{position:fixed;left:28px;bottom:18px;z-index:30;font-size:11px;letter-spacing:.2em;color:var(--mute);font-variant-numeric:tabular-nums}
+.folio b{color:var(--ink);font-weight:700}
+.ink{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:30;background:var(--rule)}.ink i{position:absolute;left:0;top:0;bottom:0;background:var(--bracken);width:0}
+/* the horizontal magazine */
+#mag{position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.strip{position:absolute;left:0;top:0;height:100%;display:flex;will-change:transform}
+.spread{position:relative;height:100%;flex:none;border-right:1px solid var(--rule)}
+.arch{position:absolute;overflow:hidden;background:var(--heather);clip-path:inset(0 46% 0 46% round 999px 999px 0 0)}
+.arch video,.arch img{position:absolute;left:-8%;top:-4%;width:116%;height:108%;object-fit:cover;will-change:transform}
+.cap{position:absolute;font-size:11px;letter-spacing:.16em;text-transform:lowercase;color:var(--mute);line-height:1.5}
+.cap b{color:var(--ink)}
+/* cover */
+.s-cover{width:100vw;background:var(--bone)}
+.mast{position:absolute;left:3vw;right:3vw;top:10vh;font-family:Bod;font-size:min(23vw,40vh);line-height:.78;letter-spacing:-.045em;white-space:nowrap}
+.mast span{display:inline-block}
+.issue{position:absolute;left:3vw;right:3vw;top:calc(10vh + min(19vw,33vh));display:flex;justify-content:space-between;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:8px 0;font-size:12px;letter-spacing:.14em}
+.s-cover .arch{right:6vw;bottom:0;width:min(34vw,52vh);height:52vh}
+.lines{position:absolute;left:3vw;bottom:8vh;width:46vw;display:grid;gap:22px}
+.lines div{font-family:Bod;font-size:clamp(22px,2.6vw,40px);line-height:1.05;letter-spacing:-.02em}
+.lines div small{display:block;font-family:Kar;font-size:12px;letter-spacing:.16em;color:var(--bracken);margin-bottom:6px;text-transform:lowercase;font-weight:700}
+/* the land */
+.s-land{width:150vw;background:var(--paper)}
+.s-land .arch{left:52vw;top:12vh;width:56vw;height:82vh;border-radius:0}
+.col{position:absolute;font-size:16px;line-height:1.7;color:#3d3240}
+.drop::first-letter{float:left;font-family:Bod;font-size:6.2em;line-height:.8;margin:6px 12px 0 0;color:var(--heather)}
+.hed{position:absolute;font-family:Bod;letter-spacing:-.03em;line-height:.95}
+.hed i{color:var(--bracken)}
+.pull{position:absolute;font-family:Bod;font-style:italic;font-size:clamp(26px,2.6vw,40px);line-height:1.15;color:var(--heather)}
+/* app spread */
+.s-app{width:150vw;background:var(--heather);color:var(--bone)}
+.s-app .hed{left:5vw;top:14vh;font-size:clamp(44px,6vw,96px);width:40vw}
+.s-app .hed i{color:#f0a274}
+.s-app .col{left:5vw;top:52vh;width:30vw;color:#ddd1d9}
+.scr{position:absolute;width:300px;height:620px;border-radius:38px;background:var(--paper);color:var(--ink);overflow:hidden;box-shadow:0 40px 80px #0006;transform-origin:50% 100%}
+.scr .sh{padding:22px 18px 10px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.12em;color:var(--mute)}
+.scr h3{font-family:Bod;font-weight:400;font-size:30px;letter-spacing:-.02em;padding:0 18px;line-height:1}
+.scr .sub{padding:4px 18px 0;font-size:12px;color:var(--mute)}
+.plot{margin:14px 18px 0;height:270px;border-radius:20px;background:#dfe0d2;position:relative;overflow:hidden}
+.plot svg{position:absolute;inset:0;width:100%;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px;padding:12px 18px}.legend span{font-size:11px;padding:5px 9px;border-radius:99px;background:#fff;display:flex;gap:6px;align-items:center}.legend i{width:9px;height:9px;border-radius:50%}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:64px;border-top:1px solid #0001;display:flex;justify-content:space-around;align-items:center;font-size:10px;letter-spacing:.08em;color:var(--mute);background:#fff}
+.tabbar .on{color:var(--bracken);font-weight:700}
+.trap{margin:10px 14px 0;border-radius:18px;overflow:hidden;position:relative;height:150px;background:#111}
+.trap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15) brightness(1.05)}
+.trap .ts{position:absolute;left:10px;bottom:8px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#fff;background:#0008;padding:3px 6px;border-radius:4px}
+.trap .sp{position:absolute;right:10px;top:10px;font-size:11px;font-weight:700;background:#fff;color:var(--ink);padding:4px 9px;border-radius:99px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:190px;margin:18px 18px 0;border-bottom:1px solid #0002}
+.bars div{flex:1;background:var(--lichen);border-radius:6px 6px 0 0;position:relative}.bars div.now{background:var(--bracken)}
+.bars div span{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font-size:10px;color:var(--mute)}
+.bigN{padding:30px 18px 0;font-family:Bod;font-size:64px;letter-spacing:-.04em;line-height:1}.bigN small{display:block;font-family:Kar;font-size:12px;color:var(--mute);letter-spacing:.08em;margin-top:6px}
+.newsp{margin:14px 18px 0;padding:12px;border-radius:16px;background:#fff;display:flex;gap:10px;align-items:center;font-size:12px}.newsp img{width:46px;height:46px;border-radius:12px;object-fit:cover}.newsp b{display:block;font-size:13px}
+/* camera trap */
+.s-trap{width:120vw;background:#15111a;color:var(--bone)}
+.lens{position:absolute;left:8vw;top:50%;width:min(80vh,56vw);height:min(80vh,56vw);margin-top:calc(min(80vh,56vw) / -2);border-radius:50%;overflow:hidden;background:#000}
+.lens video{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;filter:grayscale(1) contrast(1.2) brightness(.95)}
+.lens::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 120px 40px #000}
+.osd{position:absolute;inset:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#fff;z-index:2}
+.osd .tl{position:absolute;left:18%;top:16%}.osd .br{position:absolute;right:18%;bottom:16%;text-align:right}
+.osd .rec{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff3b30;margin-right:6px;vertical-align:1px}
+.s-trap .hed{left:calc(10vw + min(80vh,56vw));top:20vh;font-size:clamp(44px,5.4vw,88px);width:44vw}
+.s-trap .hed i{color:#f0a274}.s-trap .col{left:calc(10vw + min(80vh,56vw));top:56vh;width:30vw;color:#cfc4cd}
+.log{position:absolute;left:calc(10vw + min(80vh,56vw));bottom:12vh;width:40vw;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b9adb8;line-height:2}
+/* water */
+.s-water{width:170vw;background:var(--bone)}
+.num{position:absolute;font-family:Bod;letter-spacing:-.05em;line-height:.85;color:var(--heather)}
+.num small{display:block;font-family:Kar;font-size:12px;letter-spacing:.14em;color:var(--mute);margin-top:12px;line-height:1.5;text-transform:lowercase}
+/* adopt */
+.s-adopt{width:130vw;background:var(--paper)}
+.stamps{position:absolute;left:54vw;top:16vh;display:grid;grid-template-columns:repeat(3,min(20vw,250px));gap:22px}
+.stamp{border:2px solid var(--heather);padding:22px 18px 20px;position:relative;background:var(--paper);transform-origin:50% 0}
+.stamp::before{content:"";position:absolute;inset:6px;border:1px dashed var(--rule)}
+.stamp small{font-size:11px;letter-spacing:.16em;color:var(--bracken);font-weight:700}
+.stamp b{display:block;font-family:Bod;font-weight:400;font-size:46px;letter-spacing:-.03em;margin-top:8px}.stamp b span{font-size:16px;font-family:Kar}
+.stamp p{font-size:13px;line-height:1.5;color:#4d4150;margin-top:10px}
+.stamp.pick{background:var(--heather);color:var(--bone)}.stamp.pick p{color:#ddd1d9}.stamp.pick small{color:#f0a274}
+.adoptbtn{position:absolute;left:54vw;top:calc(16vh + 340px);display:inline-flex;gap:12px;align-items:center;padding:16px 26px;border-radius:99px;background:var(--bracken);color:#fff;font-weight:700;letter-spacing:.04em}
+/* close */
+.s-close{width:110vw;background:var(--heather);color:var(--bone)}
+.s-close .arch{left:50%;bottom:0;width:min(46vw,60vh);height:84vh;margin-left:calc(min(46vw,60vh) / -2)}
+.s-close .hed{left:6vw;top:16vh;font-size:clamp(44px,6vw,96px);width:30vw}
+.s-close .hed i{color:#f0a274}
+.visit{position:absolute;right:6vw;top:18vh;width:24vw;font-size:14px;line-height:1.7;color:#ddd1d9}
+.visit b{display:block;color:var(--bone);font-size:16px;margin-top:16px}
+.foot{position:absolute;left:6vw;right:6vw;bottom:5vh;display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;color:#bfb2bd}
+#pre{position:fixed;inset:0;z-index:99;background:var(--bone);display:grid;place-items:center;font-family:Bod;font-size:44px}
+@media (max-width:760px){
+  .bar{padding:12px 14px}.bar .logo{font-size:18px}.bar .adopt{padding:8px 12px;font-size:11px}
+  .mast{top:12vh;font-size:26vw}.issue{top:calc(12vh + 22vw);font-size:9px;letter-spacing:.08em}
+  .s-cover .arch{right:6vw;width:58vw;height:46vh}.lines{width:40vw;bottom:6vh;gap:14px}.lines div{font-size:17px}
+  .s-land{width:260vw}.s-land .arch{left:100vw;top:14vh;width:150vw;height:74vh}
+  .s-app{width:350vw}#sc1{left:100vw!important;top:13vh!important}#sc2{left:184vw!important;top:17vh!important}#sc3{left:268vw!important;top:11vh!important}.s-app .hed{width:84vw;font-size:42px}.s-app .col{width:84vw;top:44vh;font-size:14px}
+  .s-trap{width:200vw}.lens{left:6vw;width:88vw;height:88vw;margin-top:-44vw}.s-trap .hed,.s-trap .col,.log{left:104vw;width:86vw}.s-trap .hed{font-size:40px;top:16vh}.s-trap .col{top:44vh;font-size:14px}.log{bottom:10vh}
+  .s-water{width:300vw}.s-adopt{width:200vw}.stamps{left:6vw;top:auto;bottom:16vh;grid-template-columns:repeat(3,58vw)}.adoptbtn{left:6vw;top:auto;bottom:6vh}
+  .s-close{width:200vw}.s-close .hed{width:84vw;font-size:42px}.s-close .arch{left:auto;right:10vw;margin:0;width:80vw;height:70vh}.visit{right:auto;left:6vw;top:48vh;width:84vw}
+  .col{font-size:14px}
+  .s-land{width:360vw}.s-land .hed{left:6vw!important;top:12vh!important;width:84vw!important;font-size:40px!important}
+  .s-land .col.drop{left:6vw!important;top:38vh!important;width:84vw!important}.s-land .col:not(.drop){display:none}
+  .s-land .cap:nth-of-type(1){left:100vw!important;top:calc(88vh + 6px)!important}.s-land .arch{height:74vh!important}
+  .s-land .pull{left:258vw!important;top:24vh!important;width:88vw!important;font-size:30px}.s-land .cap:last-of-type{left:258vw!important;top:calc(24vh + 190px)!important}
+  .s-water{width:320vw}.s-water .hed{left:6vw!important;width:84vw!important;font-size:40px!important}.s-water .col{left:6vw!important;top:38vh!important;width:84vw!important}
+  .s-water .arch:nth-of-type(1){left:100vw!important;top:12vh!important;width:80vw!important;height:76vh!important}.s-water .cap{left:100vw!important;top:calc(88vh + 6px)!important}
+  .s-water .num:nth-of-type(1){left:186vw!important;top:12vh!important;font-size:26vw!important}
+  .s-water .arch:nth-of-type(2){left:186vw!important;top:40vh!important;width:44vw!important;height:52vh!important}
+  .s-water .arch:nth-of-type(3){left:236vw!important;top:12vh!important;width:76vw!important;height:58vh!important}
+  .s-water .num:nth-of-type(2){left:236vw!important;top:76vh!important;font-size:16vw!important}
+  .s-adopt .hed{width:84vw!important;font-size:40px!important}.s-adopt .col{top:28vh!important;width:84vw!important}.s-adopt .cap{top:48vh!important;width:84vw!important}
+}
+</style>
+</head>
+<body>
+<div id="pre">wildacre</div>
+<header class="bar"><a class="logo"><img src="src/img/logo.svg" alt="">wildacre</a><a class="adopt" href="#adopt">adopt an acre</a></header>
+<div class="folio" id="folio">p. <b id="pg">01</b> — <span id="pgT">cover</span></div>
+<div class="ink"><i id="inkI"></i></div>
+
+<main id="mag"><div class="stage"><div class="strip" id="strip">
+
+  <section class="spread s-cover" data-t="cover">
+    <h1 class="mast" id="mast"><span>w</span><span>i</span><span>l</span><span>d</span><span>a</span><span>c</span><span>r</span><span>e</span></h1>
+    <div class="issue"><span>no. 01 · autumn</span><span>the teme valley rewilding trust</span><span>adopt an acre from £4</span></div>
+    <figure class="arch" data-arch><video src="media/dawn.mp4" poster="media/dawn.jpg" muted playsinline preload="metadata"></video></figure>
+    <div class="lines">
+      <div><small>this issue</small>612 acres of old farmland, left to itself.</div>
+      <div><small>inside</small>the beavers came back. so did the kingfishers.</div>
+      <div><small>and you</small>own a square of it, on your phone.</div>
+    </div>
+  </section>
+
+  <section class="spread s-land" data-t="the land">
+    <h2 class="hed" style="left:6vw;top:14vh;font-size:clamp(46px,5.6vw,92px);width:40vw">Seven years ago this was <i>wheat.</i></h2>
+    <p class="col drop" style="left:6vw;top:46vh;width:20vw">The Teme valley farm had been ploughed every year since 1947. In 2019 the trust bought it, took the fences down and stopped. No planting, no spraying, no plan except patience. Thorn scrub came first, then jays planting oaks, then the deer.</p>
+    <p class="col" style="left:28vw;top:46vh;width:20vw">Today a herd of 40 red deer keeps the glades open, as wild herbivores would have done. The trust counts everything that returns, and every acre has a guardian who sees it happen.</p>
+    <figure class="arch" data-arch style="border-radius:0"><video src="media/stag.mp4" poster="media/stag.jpg" muted playsinline preload="metadata"></video></figure>
+    <p class="cap" style="left:52vw;top:calc(94vh + 6px)"><b>fig. 1</b> · red deer stag, north glade, 06:40</p>
+    <p class="pull" style="left:112vw;top:22vh;width:30vw">“We didn't plant a single tree. The jays did it for us.”</p>
+    <p class="cap" style="left:112vw;top:calc(22vh + 160px)">— Ellie Marsh, warden</p>
+  </section>
+
+  <section class="spread s-app" data-t="your acre">
+    <h2 class="hed">Your acre, in your <i>pocket.</i></h2>
+    <p class="col">Adopt a numbered acre and the Wildacre app shows you its habitats, its camera trap and every species logged on it. When something new turns up, you're the first to know.</p>
+    <div class="scr" id="sc1" style="left:48vw;top:10vh">
+      <div class="sh"><span>acre 214</span><span>north glade</span></div>
+      <h3>Your acre</h3><div class="sub">Guardian since March · 1 of 612</div>
+      <div class="plot"><svg viewBox="0 0 264 270" id="plotS"></svg></div>
+      <div class="legend"><span><i style="background:#9aa58a"></i>Thorn scrub 41%</span><span><i style="background:#d8c27a"></i>Grassland 33%</span><span><i style="background:#6f8fa3"></i>Wet 9%</span><span><i style="background:#5d6e45"></i>Oak 17%</span></div>
+      <div class="tabbar"><span class="on">acre</span><span>sightings</span><span>species</span><span>visit</span></div>
+    </div>
+    <div class="scr" id="sc2" style="left:80vw;top:22vh">
+      <div class="sh"><span>camera trap</span><span>CT-214</span></div>
+      <h3>Last night</h3><div class="sub">3 visitors on your acre</div>
+      <div class="trap"><video src="media/badgers.mp4" poster="media/badgers.jpg" muted playsinline preload="metadata"></video><span class="ts" id="ts1">02:14:08 · IR</span><span class="sp">badgers ×2</span></div>
+      <div class="trap"><video src="media/fox.mp4" poster="media/fox.jpg" muted playsinline preload="metadata"></video><span class="ts">04:51:33 · IR</span><span class="sp">red fox</span></div>
+      <div class="tabbar"><span>acre</span><span class="on">sightings</span><span>species</span><span>visit</span></div>
+    </div>
+    <div class="scr" id="sc3" style="left:112vw;top:8vh">
+      <div class="sh"><span>species</span><span>acre 214</span></div>
+      <div class="bigN"><span id="spN">0</span><small>species logged on your acre</small></div>
+      <div class="bars" id="bars"><div style="height:10%"><span>'19</span></div><div style="height:22%"><span>'20</span></div><div style="height:34%"><span>'21</span></div><div style="height:47%"><span>'22</span></div><div style="height:61%"><span>'23</span></div><div style="height:74%"><span>'24</span></div><div class="now" style="height:92%"><span>'25</span></div></div>
+      <div class="newsp" id="newsp" style="margin-top:34px"><img src="media/kingfisher.jpg" alt=""><div><b>New on your acre: kingfisher</b>Seen at the beaver pond, 07:12</div></div>
+      <div class="tabbar"><span>acre</span><span>sightings</span><span class="on">species</span><span>visit</span></div>
+    </div>
+  </section>
+
+  <section class="spread s-trap" data-t="after dark">
+    <div class="lens"><video src="media/badgers.mp4" poster="media/badgers.jpg" muted playsinline preload="metadata"></video><div class="osd"><div class="tl"><span class="rec"></span>CT-214 · IR</div><div class="br"><span id="osdT">02:14:08</span><br>8°C · 72% RH</div></div></div>
+    <h2 class="hed">What walks across your acre at <i>2 am.</i></h2>
+    <p class="col">Ninety-one infrared camera traps run every night. In the morning their clips sort themselves by species, and your acre's arrive in the app before breakfast.</p>
+    <div class="log" id="log"><div>02:14 · badger ×2 · CT-214</div><div>03:02 · tawny owl · CT-198</div><div>04:51 · red fox · CT-214</div><div>05:37 · roe deer ×3 · CT-221</div><div>06:05 · hedgehog · CT-207</div></div>
+  </section>
+
+  <section class="spread s-water" data-t="water">
+    <h2 class="hed" style="left:6vw;top:12vh;font-size:clamp(46px,5.6vw,92px);width:36vw">The beavers <i>did</i> the rest.</h2>
+    <p class="col drop" style="left:6vw;top:44vh;width:28vw">Two beaver families were released in 2021. Their dams have flooded a drained field back into a wetland, holding storm water that used to rush down into Tenbury. Kingfishers fish the new pools, and otters have followed the fish.</p>
+    <figure class="arch" data-arch style="left:40vw;top:8vh;width:34vw;height:86vh"><video src="media/beaver.mp4" poster="media/beaver.jpg" muted playsinline preload="metadata"></video></figure>
+    <p class="cap" style="left:40vw;top:calc(94vh + 6px)"><b>fig. 2</b> · beaver at the lower dam</p>
+    <div class="num" style="left:78vw;top:12vh;font-size:min(18vw,30vh)"><span class="cnt" data-to="1.2" data-dec="1">0</span><small>km of new wetland<br>held behind 14 dams</small></div>
+    <figure class="arch" data-arch style="left:104vw;top:36vh;width:26vw;height:58vh"><video src="media/kingfisher.mp4" poster="media/kingfisher.jpg" muted playsinline preload="metadata"></video></figure>
+    <figure class="arch" data-arch style="left:134vw;top:10vh;width:30vw;height:62vh"><video src="media/otter.mp4" poster="media/otter.jpg" muted playsinline preload="metadata"></video></figure>
+    <div class="num" style="left:134vw;top:76vh;font-size:min(9vw,15vh)">+<span class="cnt" data-to="38">0</span><small>kingfisher sightings this year</small></div>
+  </section>
+
+  <section class="spread s-adopt" id="adopt" data-t="adopt">
+    <h2 class="hed" style="left:6vw;top:14vh;font-size:clamp(46px,5.6vw,92px);width:40vw">Adopt an <i>acre.</i></h2>
+    <p class="col" style="left:6vw;top:44vh;width:34vw">Your adoption pays for the fences we take down, the camera traps and the wardens' time. You get a numbered acre, the app, and two guided walks a year on your own patch of the valley.</p>
+    <p class="cap" style="left:6vw;top:66vh;width:34vw">gift aid adds 25% · cancel any time · registered charity no. 1189472</p>
+    <div class="stamps" id="stamps">
+      <div class="stamp"><small>a hedge</small><b>£4<span>/month</span></b><p>A tenth of an acre, the app and camera-trap highlights.</p></div>
+      <div class="stamp pick"><small>an acre</small><b>£12<span>/month</span></b><p>A whole numbered acre, its own camera trap and two walks a year.</p></div>
+      <div class="stamp"><small>a glade</small><b>£40<span>/month</span></b><p>Five acres for a family or a business, with a dawn safari.</p></div>
+    </div>
+    <a class="adoptbtn">adopt acre 215 →</a>
+  </section>
+
+  <section class="spread s-close" data-t="visit">
+    <h2 class="hed">Come and walk <i>your</i> acre.</h2>
+    <figure class="arch" data-arch><video src="media/forest.mp4" poster="media/forest.jpg" muted playsinline preload="metadata"></video></figure>
+    <div class="visit">Open days every second Saturday, April to October, from the barn at Lower Hope Farm.<b>Dawn safaris</b>05:30 in June, with the wardens and the deer.<b>Getting here</b>Tenbury Wells, WR15. Bus 758 stops at the gate.</div>
+    <div class="foot"><span>Wildacre · The Teme Valley Rewilding Trust</span><span>by LOLCorp PVT LTD</span></div>
+  </section>
+
+</div></div></main>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,outE=t=>1-Math.pow(1-t,3);
+let seen=false;try{seen=!!sessionStorage.getItem('wildacre-seen');sessionStorage.setItem('wildacre-seen','1')}catch(e){}
+const pre=$('#pre');if(seen)pre.remove();
+const mag=$('#mag'),strip=$('#strip'),spreads=$$('.spread'),arches=$$('[data-arch]'),vids=$$('video'),letters=$$('#mast span');
+vids.forEach(v=>v.pause());
+/* acre plot: habitat patches growing from the field edges */
+(function(){const s=$('#plotS');let g='<rect width="264" height="270" fill="#e7e4d2"/>';
+  const P=[['#9aa58a','M0 0 L140 0 C120 60 70 90 0 110Z'],['#5d6e45','M264 0 L264 120 C210 110 180 60 190 0Z'],['#6f8fa3','M80 270 C110 220 170 210 210 270Z'],['#d8c27a','M0 140 C60 130 120 150 150 200 C110 240 40 250 0 240Z']];
+  P.forEach(([c,d],i)=>g+=`<path class="hab" d="${d}" fill="${c}" opacity=".9"/>`);
+  for(let i=0;i<26;i++){const x=(i*61)%250+7,y=(i*97)%250+10;g+=`<circle class="tree" cx="${x}" cy="${y}" r="${3+(i%3)}" fill="#3f4d2f"/>`}
+  g+='<rect x="2" y="2" width="260" height="266" fill="none" stroke="#3b2a40" stroke-width="2" stroke-dasharray="6 5"/><circle id="trapDot" cx="150" cy="120" r="6" fill="#c4622d" stroke="#fff" stroke-width="2"/>';s.innerHTML=g})();
+let W=0,trackW=0,x=0,xv=0,t0=null,last=null;
+function layout(){W=innerWidth;trackW=strip.scrollWidth;mag.style.height=(trackW-W+innerHeight)+'px'}
+addEventListener('resize',layout);
+function seek(v,t){if(!v.duration)return;const d=v.duration-.08,tt=((t%d)+d)%d;if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}
+function frame(now){if(t0===null){t0=now;layout()}const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.05,(now-last)/1000);last=now;
+  if(!seen&&pre.isConnected){const k=seg(t,.5,1.1);pre.style.opacity=1-k;if(k>=1)pre.remove()}
+  const vh=innerHeight,r=mag.getBoundingClientRect(),q=clamp(-r.top/(r.height-vh));
+  // the strip has mass: it is pulled toward the scroll position by a critically damped spring, so a flick glides and settles
+  const target=q*(trackW-W);const k=90,c=2*Math.sqrt(k);xv+=(-(x-target)*k-xv*c)*dt;x+=xv*dt;if(Math.abs(x-target)<.05&&Math.abs(xv)<.05)x=target;
+  strip.style.transform=`translate3d(${-x}px,0,0)`;
+  $('#inkI').style.width=(q*100)+'%';
+  // folio follows the spread under the centre line
+  let cur=0;spreads.forEach((s,i)=>{if(s.offsetLeft-x<W*.5)cur=i});$('#pg').textContent=String(cur*2+1).padStart(2,'0');$('#pgT').textContent=spreads[cur].dataset.t;
+  // masthead letters set in like type being placed: each drops on its own spring delay, then drifts apart a hair as the cover leaves
+  letters.forEach((l,i)=>{const p=outE(seg(t,.35+i*.07,1.05+i*.07));l.style.transform=`translateY(${(1-p)*40}%) translateX(${x*.04*(i-3.5)}px)`;l.style.opacity=p});
+  // arches: a slit that opens into an arched window as it travels toward the centre; the footage inside counter-drifts
+  arches.forEach(a=>{const b=a.getBoundingClientRect();const cx=(b.left+b.width/2)/W;const open=ease(clamp((1.12-cx)/.55));
+    const inset=lerp(46,0,open),rad=lerp(999,Math.min(b.width,b.height)*.5,open);const sq=a.style.borderRadius==='0px';
+    a.style.clipPath=`inset(${lerp(18,0,open)}% ${inset}% 0 ${inset}% round ${sq?lerp(999,0,open)+'px '+lerp(999,0,open)+'px 0 0':rad+'px '+rad+'px 0 0'})`;
+    const m=a.querySelector('video');if(m){m.style.transform=`translate3d(${(cx-.5)*-6}%,0,0) scale(${lerp(1.18,1.02,open)})`;if(b.right>-50&&b.left<W+50)seek(m,t*.85)}});
+  // app screens: fanned cards that rise and settle on their own springs as the spread arrives
+  ['#sc1','#sc2','#sc3'].forEach((id,i)=>{const el=$(id),b=el.getBoundingClientRect();const p=clamp((W*1.05-b.left)/(W*.6));const e=1-Math.exp(-5*p)*Math.cos(7*p);el.style.transform=`translateY(${(1-clamp(e))*60+Math.sin(t*.8+i)*4}px) rotate(${[-4,2,-2][i]*(1-p*.6)}deg)`;
+    el.querySelectorAll('video').forEach(v=>{if(b.right>0&&b.left<W)seek(v,t*.9+i)});
+    if(i===0){$$('#plotS .hab').forEach((h,j)=>{h.style.transform=`scale(${lerp(.4,1,ease(seg(p,.2+j*.1,.8+j*.05)))})`;h.style.transformOrigin=['0 0','100% 0','50% 100%','0 50%'][j]});$('#trapDot').setAttribute('r',6+Math.sin(t*4)*2)}
+    if(i===2){$('#spN').textContent=Math.round(184*ease(seg(p,.2,.9)));$$('#bars div').forEach((d,j)=>d.style.transform=`scaleY(${ease(seg(p,.2+j*.06,.6+j*.06))})`);const n=seg(p,.85,1);$('#newsp').style.opacity=n;$('#newsp').style.transform=`translateY(${(1-n)*14}px)`}});
+  $$('#bars div').forEach(d=>d.style.transformOrigin='50% 100%');
+  // camera trap: timestamp runs at trap speed, log lines print as the spread crosses
+  {const s=$('.s-trap'),b=s.getBoundingClientRect(),p=clamp((W-b.left)/(b.width));const secs=2*3600+14*60+8+Math.floor(t*1);$('#osdT').textContent=new Date(secs*1000).toISOString().substr(11,8);
+    $$('#log div').forEach((d,i)=>{const k=seg(p,.35+i*.07,.42+i*.07);d.style.opacity=k;d.style.transform=`translateX(${(1-k)*-12}px)`});
+    $$('.lens video').forEach(v=>{if(b.right>0&&b.left<W)seek(v,t*.9)})}
+  $$('.cnt').forEach(el=>{const b=el.getBoundingClientRect();const p=ease(clamp((W*.95-b.left)/(W*.4)));const v=+el.dataset.to*p;el.textContent=el.dataset.dec?v.toFixed(1):Math.round(v)});
+  // adoption stamps: pressed down one by one like a rubber stamp, with a small rebound
+  $$('.stamp').forEach((s,i)=>{const b=s.getBoundingClientRect();const p=clamp((W*.9-b.left)/(W*.25)-i*.15);const e=p<=0?0:1-Math.exp(-6*p)*Math.cos(10*p);s.style.transform=`scale(${lerp(1.25,1,clamp(e,0,1.05))}) rotate(${[-2,1,-1][i]*(1-clamp(p))}deg)`;s.style.opacity=clamp(p*3)});
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
