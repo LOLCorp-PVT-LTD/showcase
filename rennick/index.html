@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Isla Rennick — landscape photographs of the Scottish Highlands</title>
+<meta name="description" content="Isla Rennick photographs Glencoe, Skye and the west coast in winter light. Prints, commissions and small-group workshops from Fort William.">
+<style>
+@font-face{font-family:Unb;src:url(assets/fonts/unbounded-latin-300-normal.woff2) format("woff2");font-weight:300}
+@font-face{font-family:Unb;src:url(assets/fonts/unbounded-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:Unb;src:url(assets/fonts/unbounded-latin-800-normal.woff2) format("woff2");font-weight:800}
+@font-face{font-family:Frag;src:url(assets/fonts/fragment-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Frag;src:url(assets/fonts/fragment-mono-latin-400-italic.woff2) format("woff2");font-style:italic}
+:root{--table:#f4f1ea;--glow:#fffdf6;--graph:#141312;--base:#1a1714;--amber:#d99a3c;--pencil:#e8551e;--ink:#1d1b19;--mute:#7c766d;--line:#1d1b1922}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--graph);color:var(--ink);font-family:Frag,ui-monospace,monospace;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}a{color:inherit;text-decoration:none}
+.top{position:fixed;inset:0 0 auto;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;font-size:12px;letter-spacing:.06em;color:var(--table);mix-blend-mode:difference}
+.top b{font-family:Unb;font-weight:800;letter-spacing:-.02em;font-size:15px;text-transform:lowercase}
+.top nav{display:flex;gap:22px}
+/* the light table */
+#table{position:relative;height:780vh}
+.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:radial-gradient(120% 90% at 50% 50%,var(--glow) 0%,var(--table) 55%,#d9d3c6 100%)}
+.sheet{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.strip{position:absolute;left:0;height:300px;background:var(--base);box-shadow:0 2px 0 #0003,0 18px 30px #0000001f}
+.strip::before,.strip::after{content:"";position:absolute;left:0;right:0;height:16px;background:repeating-linear-gradient(90deg,transparent 0 14px,#f4f1ea 14px 30px,transparent 30px 44px);opacity:.9}
+.strip::before{top:10px}.strip::after{bottom:10px}
+.edge{position:absolute;top:30px;font-size:13px;color:var(--amber);letter-spacing:.16em;white-space:nowrap}
+.fr{position:absolute;top:50px;width:336px;height:224px;overflow:hidden;background:#000}
+.fr img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.92) contrast(1.03)}
+.num{position:absolute;top:278px;font-size:13px;color:var(--amber);letter-spacing:.1em}
+#marks{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+#marks path{fill:none;stroke:var(--pencil);stroke-linecap:round;stroke-linejoin:round}
+.note{position:absolute;font-family:Frag;font-style:italic;color:var(--pencil);font-size:30px;white-space:nowrap;transform-origin:0 50%}
+/* overlays on the table */
+.cap{position:absolute;left:24px;bottom:24px;max-width:min(560px,80vw);background:var(--table);padding:16px 18px;box-shadow:0 12px 30px #0002;font-size:13px;line-height:1.6;opacity:0}
+.cap .n{font-family:Unb;font-weight:800;font-size:44px;line-height:1;letter-spacing:-.03em;color:var(--pencil)}
+.cap h2{font-family:Unb;font-weight:500;font-size:22px;letter-spacing:-.02em;margin:6px 0 4px}
+.cap .ex{color:var(--mute)}
+.intro{position:absolute;right:24px;top:72px;width:min(340px,70vw);font-size:13px;line-height:1.65;color:var(--ink);background:#f4f1eaee;padding:14px 16px;box-shadow:0 10px 24px #0001}
+.intro h1{font-family:Unb;font-weight:800;font-size:30px;line-height:.95;letter-spacing:-.04em;text-transform:lowercase;margin-bottom:10px}
+.counter{position:absolute;right:24px;bottom:24px;font-size:12px;letter-spacing:.14em;color:var(--mute);font-variant-numeric:tabular-nums}
+.loupe{position:absolute;width:190px;height:190px;border-radius:50%;pointer-events:none;border:6px solid #2a2724;box-shadow:0 20px 40px #0005,inset 0 0 0 2px #fff4;overflow:hidden;opacity:0;z-index:5;background:#000}
+.loupe img{position:absolute;max-width:none}
+/* prints */
+.sec{background:var(--table);padding:120px 24px 60px}
+.wrap{max-width:1320px;margin:0 auto}
+.hd{display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px;border-bottom:1.5px solid var(--ink);padding-bottom:14px}
+.hd h2{font-family:Unb;font-weight:800;font-size:clamp(40px,7vw,104px);letter-spacing:-.05em;line-height:.88;text-transform:lowercase}
+.hd p{font-size:13px;color:var(--mute);max-width:320px;line-height:1.6}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+.filters button{font:inherit;font-size:12px;letter-spacing:.08em;padding:9px 14px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink)}
+.filters button.on{background:var(--ink);color:var(--table)}
+.prints{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative}
+.pr{position:relative;background:#fff;padding:12px 12px 14px;box-shadow:0 8px 20px #0000000f;will-change:transform}
+.pr img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.pr .m{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;font-size:12px}
+.pr .m b{font-family:Unb;font-weight:500;font-size:14px;letter-spacing:-.01em}
+.pr .m span{color:var(--mute)}
+.pr.hid{display:none}
+/* workshops */
+.ws{margin-top:24px}
+.row{display:grid;grid-template-columns:110px 1fr 160px 120px 150px;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font-size:13px}
+.row .d{font-family:Unb;font-weight:300;font-size:30px;letter-spacing:-.03em;line-height:1}.row .d small{display:block;font-family:Frag;font-size:11px;color:var(--mute);letter-spacing:.1em;margin-top:4px}
+.row h3{font-family:Unb;font-weight:500;font-size:18px;letter-spacing:-.02em}.row p{color:var(--mute);margin-top:3px;line-height:1.5}
+.seats{display:flex;gap:4px}.seats i{width:14px;height:14px;border:1.5px solid var(--ink)}.seats i.t{background:var(--ink)}
+.book{justify-self:end;padding:10px 16px;border:1.5px solid var(--pencil);color:var(--pencil);font-size:12px;letter-spacing:.06em}
+.book.full{border-color:var(--line);color:var(--mute)}
+/* commission */
+.com{background:var(--base);color:var(--table);padding:110px 24px 40px}
+.com .grid{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:60px}
+.com h2{font-family:Unb;font-weight:800;font-size:clamp(40px,6vw,88px);letter-spacing:-.05em;line-height:.9;text-transform:lowercase}
+.com h2 span{color:var(--pencil)}
+.com p{font-size:14px;line-height:1.7;color:#cfc8bb;margin-top:20px;max-width:440px}
+.fm{display:grid;gap:2px;font-size:13px}
+.fm div{display:flex;justify-content:space-between;border-bottom:1px solid #ffffff2a;padding:15px 0;color:#a8a095}.fm div b{color:var(--table);font-weight:400}
+.fm a{margin-top:18px;justify-self:start;padding:14px 20px;background:var(--pencil);color:#fff;font-size:13px;letter-spacing:.06em}
+.foot{max-width:1320px;margin:90px auto 0;display:flex;justify-content:space-between;font-size:12px;color:#8a8379;border-top:1px solid #ffffff1f;padding-top:18px}
+#pre{position:fixed;inset:0;z-index:99;background:var(--table);display:grid;place-items:center;font-family:Unb;font-weight:800;font-size:28px;letter-spacing:-.03em}
+@media (max-width:760px){
+  .top{padding:12px 14px}.top nav{gap:12px;font-size:11px}
+  .intro{left:14px;right:14px;top:56px;width:auto;font-size:12px}.intro h1{font-size:24px}
+  .cap{left:14px;right:14px;bottom:14px;max-width:none}.cap .n{font-size:32px}.cap h2{font-size:18px}
+  .counter{display:none}.loupe{display:none}
+  .prints{grid-template-columns:1fr 1fr;gap:10px}.pr{padding:7px 7px 9px}.pr .m{flex-direction:column;gap:2px}
+  .row{grid-template-columns:70px 1fr;gap:6px 12px}.row .seats,.row .pc{grid-column:2}.book{grid-column:2;justify-self:start}
+  .com .grid{grid-template-columns:1fr;gap:30px}.foot{flex-direction:column;gap:6px}
+  .hd{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="pre">rennick</div>
+<header class="top"><b>isla rennick</b><nav><a href="#prints">prints</a><a href="#workshops">workshops</a><a href="#commission">commission</a></nav></header>
+
+<section id="table"><div class="pin" id="pin">
+  <div class="sheet" id="sheet"><svg id="marks"></svg></div>
+  <div class="intro" id="intro"><h1>one winter, twenty-four frames.</h1>Landscape photographs of Glencoe, Skye and the west coast, made between November and March on medium-format film. Scroll the contact sheet; the circled frames are the keepers.</div>
+  <div class="cap" id="cap"><div class="n" id="capN">04</div><h2 id="capT">—</h2><div id="capP"></div><div class="ex" id="capE"></div></div>
+  <div class="counter" id="counter">frame 00 / 24</div>
+  <div class="loupe" id="loupe"><img id="loupeI" alt=""></div>
+</div></section>
+
+<section class="sec" id="prints"><div class="wrap">
+  <div class="hd"><h2>prints</h2><p>Archival pigment on Hahnemühle Photo Rag, signed and numbered. Editions of 25. Framed in Scottish oak in Fort William.</p></div>
+  <div class="filters" id="filters"><button class="on" data-f="all">all · 12</button><button data-f="glencoe">glencoe</button><button data-f="skye">skye</button><button data-f="coast">west coast</button><button data-f="beasts">beasts</button></div>
+  <div class="prints" id="grid"></div>
+</div></section>
+
+<section class="sec" id="workshops" style="padding-top:40px"><div class="wrap">
+  <div class="hd"><h2>workshops</h2><p>Four people, one guide, the right place at first light. All levels; film or digital. Accommodation in Glencoe village is included.</p></div>
+  <div class="ws">
+    <div class="row"><div class="d">16<small>jan · 3 days</small></div><div><h3>Glencoe in snow</h3><p>Buachaille Etive Mòr at dawn, Rannoch Moor at dusk, long exposures on the Etive.</p></div><div class="seats"><i class="t"></i><i class="t"></i><i class="t"></i><i></i></div><div class="pc">£690</div><a class="book">book the last place</a></div>
+    <div class="row"><div class="d">06<small>feb · 4 days</small></div><div><h3>Skye: the Trotternish ridge</h3><p>Quiraing and the Storr at sunrise, Neist Point in a westerly.</p></div><div class="seats"><i class="t"></i><i></i><i></i><i></i></div><div class="pc">£840</div><a class="book">book</a></div>
+    <div class="row"><div class="d">27<small>feb · 1 day</small></div><div><h3>Film for beginners</h3><p>Loading, metering and developing your first roll in the Fort William darkroom.</p></div><div class="seats"><i></i><i></i><i></i><i></i></div><div class="pc">£160</div><a class="book">book</a></div>
+    <div class="row"><div class="d">14<small>mar · 3 days</small></div><div><h3>Highland cattle and wild coast</h3><p>Slow, patient portraits of the beasts, and the coast at Applecross.</p></div><div class="seats"><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i></div><div class="pc">£690</div><a class="book full">waiting list</a></div>
+  </div>
+</div></section>
+
+<section class="com" id="commission"><div class="grid">
+  <div><h2>a place you love, <span>photographed.</span></h2><p>Commissions for hotels, distilleries and private homes: a season-long project on one view, delivered as a series of prints and a licence for your own use. Booking now for winter 2027.</p></div>
+  <div class="fm"><div><span>name</span><b>—</b></div><div><span>the place</span><b>e.g. the view from our lodge</b></div><div><span>use</span><b>prints + website</b></div><div><span>season</span><b>winter ▾</b></div><a>send to isla →</a></div>
+</div>
+<div class="foot"><span>Isla Rennick Photography · Fort William, PH33</span><span>by LOLCorp PVT LTD</span></div></section>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,seg=(q,a,b)=>clamp((q-a)/(b-a));
+const io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+let seen=false;try{seen=!!sessionStorage.getItem('rennick-seen');sessionStorage.setItem('rennick-seen','1')}catch(e){}const pre=$('#pre');if(seen)pre.remove();
+/* the 24 frames */
+const F=[
+['Quiraing road','skye','Trotternish, Skye','08:41 · 21 Nov · f/11 · 1/30s'],['The Three Sisters','glencoe','Glencoe','10:15 · 3 Dec · f/16 · 1/60s'],['River Etive','glencoe','Glen Etive','09:02 · 3 Dec · f/22 · 2s'],['Old Man of Storr','skye','Trotternish, Skye','07:58 · 22 Nov · f/11 · 1/15s'],
+['Neist Point','coast','Glendale, Skye','15:48 · 23 Nov · f/16 · 1/8s'],['Last light, the pass','glencoe','Pass of Glencoe','15:52 · 4 Dec · f/8 · 1/30s'],['Glen Coe from the Devil\'s Staircase','glencoe','Glencoe','11:30 · 5 Dec · f/11 · 1/125s'],['Rannoch weather','glencoe','Rannoch Moor','13:10 · 6 Dec · f/16 · 1/60s'],
+['The Prison','skye','Quiraing, Skye','08:20 · 24 Nov · f/11 · 1/30s'],['Fairy Pools','skye','Glen Brittle, Skye','10:44 · 25 Nov · f/22 · 1s'],['Eilean Donan, blue hour','coast','Dornie','16:21 · 26 Nov · f/8 · 6s'],['Black Rock Cottage','glencoe','Glencoe','09:36 · 7 Dec · f/11 · 1/60s'],
+['Kilt Rock','coast','Staffin, Skye','14:02 · 26 Nov · f/16 · 1/4s'],['First light, Trotternish','skye','Skye','07:44 · 27 Nov · f/11 · 1/8s'],['Quiraing in cloud','skye','Skye','12:15 · 27 Nov · f/8 · 1/125s'],['Neist lighthouse','coast','Glendale, Skye','15:30 · 28 Nov · f/16 · 1/15s'],
+['Sun through the glen','glencoe','Glen Nevis','10:05 · 9 Jan · f/11 · 1/250s'],['Storr at dawn','skye','Trotternish, Skye','07:51 · 29 Nov · f/11 · 1/4s'],['Glencoe, February snow','glencoe','Glencoe','08:12 · 14 Feb · f/16 · 1/125s'],['Lochan na h-Achlaise','glencoe','Rannoch Moor','16:40 · 15 Feb · f/11 · 1/2s'],
+['Loch Ba, steam at dawn','glencoe','Rannoch Moor','07:22 · 2 Mar · f/8 · 1/15s'],['Neist, the long view','coast','Skye','16:05 · 3 Mar · f/22 · 30s'],['Resting','beasts','Applecross','11:20 · 10 Mar · f/4 · 1/500s'],['The old lady of Achiltibuie','beasts','Coigach','12:48 · 11 Mar · f/4 · 1/500s']];
+const KEEP={3:'the one. print it big.',18:'snow held all day — yes',4:'westerly, 40 mph. worth it',23:'she stared me out'};
+const COLS=6,FW=336,FH=224,GAP=28,PADX=70,ROWH=360,SW=COLS*FW+(COLS-1)*GAP+PADX*2,SH=4*ROWH;
+const sheet=$('#sheet');sheet.style.width=SW+'px';sheet.style.height=SH+'px';
+let h='';const pos=[];
+for(let r=0;r<4;r++){h+=`<div class="strip" style="top:${r*ROWH+30}px;width:${SW}px"><div class="edge" style="left:${PADX}px">RENNICK 120 · ROLL ${r+1} · WINTER 25/26</div>`;
+  for(let c=0;c<COLS;c++){const i=r*COLS+c,x=PADX+c*(FW+GAP);pos.push([x+FW/2,r*ROWH+30+50+FH/2]);
+    h+=`<div class="fr" style="left:${x}px"><img src="media/f${String(i+1).padStart(2,'0')}.jpg" alt="${F[i][0]}" data-i="${i}"></div><div class="num" style="left:${x}px">${i+1} ▸ ${i+1}A</div>`}h+='</div>'}
+sheet.insertAdjacentHTML('beforeend',h);
+const svg=$('#marks');svg.setAttribute('width',SW);svg.setAttribute('height',SH);svg.setAttribute('viewBox',`0 0 ${SW} ${SH}`);
+// grease-pencil marks: wobbly ellipse around keepers, crosses on the rejects, all hand-drawn paths
+let seed=11;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+function ring(cx,cy,rx,ry){let d='';const n=60,turn=1.12;for(let k=0;k<=n;k++){const a=-1.9+k/n*Math.PI*2*turn,w=1+(R()-.5)*.05;d+=(k?'L':'M')+(cx+Math.cos(a)*rx*w).toFixed(1)+','+(cy+Math.sin(a)*ry*w).toFixed(1)}return d}
+let mk='';Object.keys(KEEP).forEach(i=>{const[x,y]=pos[i];mk+=`<path class="ring" data-i="${i}" d="${ring(x,y,FW*.62,FH*.68)}" stroke-width="7"/>`});
+const REJ=[0,1,7,9,12,14,16,20];REJ.forEach(i=>{const[x,y]=pos[i];mk+=`<path class="x" d="M${x-40},${y-30} L${x+40},${y+32} M${x+38},${y-34} L${x-36},${y+30}" stroke-width="6"/>`});
+svg.innerHTML=mk;
+Object.entries(KEEP).forEach(([i,t])=>{const[x,y]=pos[i];sheet.insertAdjacentHTML('beforeend',`<div class="note" data-i="${i}" style="left:${x-FW*.55}px;top:${y+FH*.72}px">${t}</div>`)});
+const rings=$$('#marks .ring'),xs=$$('#marks .x'),notes=$$('.note');
+[...rings,...xs].forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.dataset.l=L});
+/* camera stops: the whole sheet, then each keeper in turn, then pull back */
+const STOPS=[null,3,18,4,23,null];
+let cam={x:SW/2,y:SH/2,s:.3},vel={x:0,y:0,s:0},t0=null,last=null,mx=-1,my=-1;
+function target(i){const W=innerWidth,H=innerHeight;if(i===null){const s=Math.min(W/SW,H/SH)*.94;return{x:SW/2,y:SH/2,s}}const[x,y]=pos[i];const s=W<760?Math.min(W*.66/FW,H*.6/FH):Math.min(W*.46/FW,H*.46/FH);return{x,y:y+FH*.15,s}}
+const pin=$('#pin');pin.addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY});pin.addEventListener('pointerleave',()=>{mx=-1});
+const loupe=$('#loupe'),loupeI=$('#loupeI');
+/* prints grid with FLIP re-sort */
+const PR=[3,18,4,23,10,13,1,6,15,19,21,11];const grid=$('#grid');
+grid.innerHTML=PR.map(i=>`<figure class="pr" data-r="${F[i][1]}"><img src="media/f${String(i+1).padStart(2,'0')}.jpg" alt="${F[i][0]}" loading="lazy"><div class="m"><b>${F[i][0]}</b><span>${F[i][1]==='beasts'?'£240':'from £180'}</span></div></figure>`).join('');
+$$('#filters button').forEach(b=>b.onclick=()=>{const f=b.dataset.f;$$('#filters button').forEach(x=>x.classList.toggle('on',x===b));
+  const items=$$('.pr'),first=new Map(items.map(el=>[el,el.getBoundingClientRect()]));
+  items.forEach(el=>el.classList.toggle('hid',!(f==='all'||el.dataset.r===f)));
+  items.forEach(el=>{if(el.classList.contains('hid'))return;const a=first.get(el),z=el.getBoundingClientRect();const wasHid=a.width===0;
+    const dx=a.left-z.left,dy=a.top-z.top;el.animate(wasHid?[{opacity:0,transform:'scale(.85)'},{opacity:1,transform:'none'}]:[{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{duration:620,easing:'cubic-bezier(.2,.9,.25,1.15)'})})});
+function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000,dt=last===null?1/60:Math.min(.05,(now-last)/1000);last=now;
+  if(!seen&&pre.isConnected){const k=seg(t,.4,1);pre.style.opacity=1-k;if(k>=1)pre.remove()}
+  const r=$('#table').getBoundingClientRect(),vh=innerHeight,q=clamp(-r.top/(r.height-vh));
+  const n=STOPS.length-1,x=q*n,i0=Math.min(n-1,Math.floor(x)),lp=x-i0;
+  // dwell on each stop, travel between: the camera flies like it's on a slider, eased
+  const travel=io(seg(lp,.55,1));const A=target(STOPS[i0]),B=target(STOPS[i0+1]);
+  // zoom out a little mid-flight so the move reads as a pan across the sheet, not a cut
+  const mid=Math.sin(travel*Math.PI)*(STOPS[i0]!==null&&STOPS[i0+1]!==null?.45:0);
+  const T={x:lerp(A.x,B.x,travel),y:lerp(A.y,B.y,travel),s:lerp(A.s,B.s,travel)*(1-mid*.5)};
+  for(const k of['x','y','s']){const kk=k==='s'?160:120;vel[k]+=(-(cam[k]-T[k])*kk-vel[k]*2*Math.sqrt(kk))*dt;cam[k]+=vel[k]*dt}
+  const W=innerWidth;sheet.style.transform=`translate(${W/2-cam.x*cam.s}px,${vh/2-cam.y*cam.s}px) scale(${cam.s})`;
+  // pencil: crosses scrawl in during the overview, each keeper's ring draws as the camera arrives
+  xs.forEach((p,j)=>p.style.strokeDashoffset=p.dataset.l*(1-io(seg(q,.03+j*.012,.1+j*.012))));
+  rings.forEach(p=>{const si=STOPS.indexOf(+p.dataset.i);const k=si<0?0:io(seg(x,si-.45+.05,si-.45+.35));p.style.strokeDashoffset=p.dataset.l*(1-k)});
+  notes.forEach(nt=>{const si=STOPS.indexOf(+nt.dataset.i);const k=seg(x,si-.15,si+.05);nt.style.opacity=k;nt.style.transform=`rotate(-3deg) scale(${.9+.1*k})`});
+  // caption card for the frame under the camera
+  const cur=STOPS[Math.round(x)];const dwell=Math.round(x)===i0?1-seg(lp,.5,.62):seg(lp,.92,1);const cap=$('#cap');
+  if(cur!==null&&cur!==undefined){$('#capN').textContent=String(cur+1).padStart(2,'0');$('#capT').textContent=F[cur][0];$('#capP').textContent=F[cur][2];$('#capE').textContent=F[cur][3];cap.style.opacity=dwell;cap.style.transform=`translateY(${(1-dwell)*20}px)`}else cap.style.opacity=0;
+  $('#intro').style.opacity=1-seg(q,.06,.12);
+  $('#counter').textContent=`frame ${cur!=null?String(cur+1).padStart(2,'0'):'—'} / 24`;
+  // loupe: magnifies whatever frame sits under the pointer, at 2.2× the current zoom
+  if(mx>=0&&W>760&&r.top<=0&&r.bottom>=vh){const sx=(mx-(W/2-cam.x*cam.s))/cam.s,sy=(my-(vh/2-cam.y*cam.s))/cam.s;let hit=-1;
+    pos.forEach(([cx,cy],k)=>{if(Math.abs(sx-cx)<FW/2&&Math.abs(sy-cy)<FH/2)hit=k});
+    if(hit>=0){const z=Math.max(cam.s*2.2,1.1);const[cx,cy]=pos[hit];if(loupeI.dataset.i!=hit){loupeI.src=`media/f${String(hit+1).padStart(2,'0')}.jpg`;loupeI.dataset.i=hit}
+      loupeI.style.width=FW*z+'px';loupeI.style.height=FH*z+'px';loupeI.style.left=(95-(sx-(cx-FW/2))*z)+'px';loupeI.style.top=(95-(sy-(cy-FH/2))*z)+'px';
+      loupe.style.left=(mx-95)+'px';loupe.style.top=(my-95)+'px';loupe.style.opacity=1}else loupe.style.opacity=0}else loupe.style.opacity=0;
+  requestAnimationFrame(frame)}
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>

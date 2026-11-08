@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-07T11:36:29Z",
+ "updated": "2026-11-08T12:35:05Z",
  "items": [
+  {
+   "slug": "rennick",
+   "title": "Isla Rennick",
+   "kind": "Photographer · Portfolio",
+   "blurb": "A portfolio that is one big contact sheet: scroll and the camera flies to the circled frames.",
+   "url": "https://showcase.lolcorp.co.uk/rennick/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/rennick.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/rennick.jpg"
+  },
   {
    "slug": "wildacre",
    "title": "Wildacre",
