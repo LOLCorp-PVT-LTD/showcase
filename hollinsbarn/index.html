@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hollins Barn — a candlelit barn for weddings in the Peak District</title>
+<meta name="description" content="Hollins Barn is a restored 1780s stone barn in the Hope Valley for weddings of 40 to 140. See live availability, plan your floor and enquire.">
+<style>
+@font-face{font-family:Glk;src:url(assets/fonts/gloock-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Fig;src:url(assets/fonts/figtree-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:Fig;src:url(assets/fonts/figtree-latin-600-normal.woff2) format("woff2");font-weight:600}
+@font-face{font-family:Fig;src:url(assets/fonts/figtree-latin-800-normal.woff2) format("woff2");font-weight:800}
+:root{--ox:#4a1520;--ox2:#33101a;--cream:#f3e9dc;--paper:#faf5ee;--gold:#d9b36c;--ink:#2a1a1d;--mute:#86717a;--line:#4a15201f;--flap:#1d1416;--flapT:#f6eadb}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);color:var(--ink);font-family:Fig,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}a{color:inherit;text-decoration:none}
+.glk{font-family:Glk,serif;font-weight:400}
+/* top */
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;background:var(--ox);color:var(--cream);font-size:13px;position:sticky;top:0;z-index:30}
+.top .b{display:flex;gap:10px;align-items:center;font-family:Glk;font-size:22px}.top .b img{width:30px}
+.top nav{display:flex;gap:24px;align-items:center}.top .cta{padding:10px 16px;background:var(--gold);color:var(--ox2);font-weight:800;border-radius:3px}
+/* departures board hero */
+.board{background:var(--ox);color:var(--cream);padding:30px 28px 60px}
+.bhead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;border-bottom:1px solid #ffffff2a;padding-bottom:16px}
+.bhead h1{font-family:Glk;font-weight:400;font-size:clamp(40px,6vw,88px);line-height:.95;letter-spacing:-.02em;max-width:900px}
+.bhead h1 b{color:var(--gold);font-weight:400}
+.bhead p{font-size:14px;color:#e3cfc0;max-width:300px;line-height:1.55}
+.cols{display:grid;grid-template-columns:2.2fr 1.2fr 1fr 1.3fr;gap:18px;margin-top:22px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#cfaeb0;font-weight:600}
+.rowF{display:grid;grid-template-columns:2.2fr 1.2fr 1fr 1.3fr;gap:18px;margin-top:10px;align-items:center}
+.flaps{display:flex;gap:3px;flex-wrap:nowrap}
+.fl{position:relative;width:var(--w,30px);height:calc(var(--w,30px)*1.42);perspective:300px;font-family:Fig;font-weight:800;font-size:calc(var(--w,30px)*.92);color:var(--flapT);text-transform:uppercase}
+.fl .h,.fl .flip{position:absolute;inset:0;background:var(--flap);display:flex;justify-content:center;align-items:center;border-radius:3px}
+.fl span{line-height:1;display:block}
+.fl .u{clip-path:inset(0 0 50% 0)}.fl .d{clip-path:inset(50% 0 0 0)}
+.fl .flip{clip-path:inset(0 0 50% 0);transform-origin:50% 50%;background:#241a1c;backface-visibility:hidden}
+.fl::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:#0009}
+.st{font-size:12px;font-weight:800;letter-spacing:.14em;padding:7px 10px;border-radius:3px;text-align:center;justify-self:start}
+.st.ok{background:#2f5d3a;color:#e6f2e6}.st.few{background:var(--gold);color:var(--ox2)}.st.hold{background:#ffffff1a;color:#e3cfc0}
+/* bento */
+.bento{max-width:1360px;margin:0 auto;padding:60px 28px 0;display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:150px;gap:12px}
+.tile{position:relative;overflow:hidden;border-radius:6px;background:var(--ox2);transform-origin:50% 0;perspective:900px}
+.tile video,.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile .lb{position:absolute;left:14px;bottom:12px;color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 10px #0008;z-index:2}
+.tile .lb b{display:block;font-family:Glk;font-weight:400;font-size:24px}
+.tile.txt{background:var(--paper);padding:22px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line)}
+.tile.txt .glk{font-size:34px;line-height:1;color:var(--ox)}.tile.txt p{font-size:13px;color:var(--mute);line-height:1.55}
+.tile.num{background:var(--gold);color:var(--ox2);padding:20px;display:flex;flex-direction:column;justify-content:flex-end}.tile.num b{font-family:Glk;font-weight:400;font-size:64px;line-height:.9}.tile.num span{font-size:12px;font-weight:600;letter-spacing:.06em;margin-top:6px}
+.t1{grid-column:span 3;grid-row:span 3}.t2{grid-column:span 2;grid-row:span 2}.t3{grid-column:span 1;grid-row:span 2}.t4{grid-column:span 1;grid-row:span 1}.t5{grid-column:span 2;grid-row:span 1}.t6{grid-column:span 2;grid-row:span 2}.t7{grid-column:span 2;grid-row:span 2}.t8{grid-column:span 2;grid-row:span 2}
+/* floor planner */
+.plan{max-width:1360px;margin:90px auto 0;padding:0 28px;display:grid;grid-template-columns:1fr 1.3fr;gap:40px;align-items:center}
+.plan h2{font-family:Glk;font-weight:400;font-size:clamp(36px,4.6vw,64px);line-height:1;color:var(--ox)}
+.plan p{font-size:15px;line-height:1.65;color:var(--mute);margin-top:14px;max-width:440px}
+.ctl{margin-top:26px;display:grid;gap:16px;max-width:440px}
+.ctl label{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.ctl input[type=range]{width:100%;accent-color:var(--ox)}
+.seg{display:flex;border:1.5px solid var(--ox);border-radius:4px;overflow:hidden}.seg button{flex:1;padding:10px;font:inherit;font-size:13px;font-weight:600;background:transparent;border:0;color:var(--ox);cursor:pointer}.seg button.on{background:var(--ox);color:var(--cream)}
+.quote{display:flex;justify-content:space-between;align-items:baseline;border-top:1.5px solid var(--ox);padding-top:14px}.quote b{font-family:Glk;font-weight:400;font-size:44px;color:var(--ox);font-variant-numeric:tabular-nums}
+.floor{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:8px;aspect-ratio:16/10;overflow:hidden}
+.floor svg{position:absolute;inset:0;width:100%;height:100%}
+/* dates board */
+.dates{background:var(--ox2);color:var(--cream);margin-top:100px;padding:70px 28px}
+.dates .in{max-width:1360px;margin:0 auto}
+.dates h2{font-family:Glk;font-weight:400;font-size:clamp(36px,4.6vw,64px);line-height:1}
+.dates .cols,.dates .rowF{grid-template-columns:1.6fr 1fr 1fr 1.3fr}
+/* enquiry */
+.enq{max-width:1360px;margin:0 auto;padding:90px 28px 30px;display:grid;grid-template-columns:1fr 1fr;gap:50px}
+.enq h2{font-family:Glk;font-weight:400;font-size:clamp(40px,5vw,72px);line-height:.98;color:var(--ox)}
+.enq h2 b{font-weight:400;color:var(--gold);background:var(--ox);padding:0 .15em}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form div{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:12px 14px;font-size:12px;color:var(--mute)}.form div b{display:block;color:var(--ink);font-size:15px;font-weight:600;margin-top:4px}
+.form .w{grid-column:span 2}.form a{grid-column:span 2;text-align:center;padding:16px;background:var(--ox);color:var(--cream);font-weight:800;border-radius:4px}
+footer{max-width:1360px;margin:0 auto;padding:30px 28px 40px;display:flex;justify-content:space-between;font-size:12px;color:var(--mute);border-top:1px solid var(--line)}
+@media (max-width:760px){
+  .top{padding:12px 14px}.top nav a:not(.cta){display:none}.top .b{font-size:18px}
+  .board{padding:22px 14px 40px}.cols{display:none}.rowF{grid-template-columns:auto auto 1fr;gap:8px 14px;margin-top:14px;padding-bottom:12px;border-bottom:1px solid #ffffff1a}.rowF .c1{grid-column:1/-1}.rowF .st{justify-self:end;font-size:10px;padding:5px 8px}
+  .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:130px;padding:36px 14px 0}.t1{grid-column:span 2;grid-row:span 2}.t2,.t6,.t7,.t8{grid-column:span 2;grid-row:span 2}.t3,.t4{grid-column:span 1;grid-row:span 1}.t5{grid-column:span 2}
+  .plan{grid-template-columns:1fr;gap:24px;margin-top:60px;padding:0 14px}
+  .dates{padding:50px 14px}.dates .rowF{grid-template-columns:auto auto 1fr}
+  .enq{grid-template-columns:1fr;padding:60px 14px 20px}.form{grid-template-columns:1fr}.form .w,.form a{grid-column:auto}
+  footer{flex-direction:column;gap:6px;padding:24px 14px}
+}
+</style>
+</head>
+<body>
+<header class="top"><span class="b"><img src="src/img/logo.svg" alt="">Hollins Barn</span><nav><a href="#barn">The barn</a><a href="#plan">Plan your floor</a><a href="#dates">Dates</a><a class="cta" href="#enquire">Enquire</a></nav></header>
+
+<section class="board" id="hero">
+  <div class="bhead"><h1>Next Saturday free: <b>the barn is yours.</b></h1><p>A restored 1780s stone barn in the Hope Valley, lit by 400 candles. Weddings of 40 to 140, one couple a day.</p></div>
+  <div class="cols"><span>Date</span><span>Season</span><span>Guests</span><span>Status</span></div>
+  <div id="heroRows"></div>
+</section>
+
+<section class="bento" id="barn">
+  <figure class="tile t1"><video src="media/barn.mp4" poster="media/barn.jpg" muted playsinline loop autoplay preload="metadata"></video><figcaption class="lb"><b>The long barn</b>24 m under oak trusses</figcaption></figure>
+  <div class="tile txt t2"><span class="glk">Four hundred candles, lit by hand at dusk.</span><p>The barn has no overhead lights. As the sun drops behind Win Hill, the team light every candle and the fairy lights in the trusses.</p></div>
+  <figure class="tile t3"><video src="media/match.mp4" poster="media/match.jpg" muted playsinline loop autoplay preload="metadata"></video></figure>
+  <div class="tile num t4"><b>140</b><span>seated guests</span></div>
+  <figure class="tile t5"><video src="media/fizz.mp4" poster="media/fizz.jpg" muted playsinline loop autoplay preload="metadata"></video><figcaption class="lb">English fizz from Hope Valley</figcaption></figure>
+  <figure class="tile t6"><video src="media/hydrangea.mp4" poster="media/hydrangea.jpg" muted playsinline loop autoplay preload="metadata"></video><figcaption class="lb"><b>Flowers</b>From our own cutting garden</figcaption></figure>
+  <figure class="tile t7"><video src="media/poppies.mp4" poster="media/poppies.jpg" muted playsinline loop autoplay preload="metadata"></video><figcaption class="lb"><b>The meadow</b>Ceremonies outside, May to September</figcaption></figure>
+  <figure class="tile t8"><video src="media/candles.mp4" poster="media/candles.jpg" muted playsinline loop autoplay preload="metadata"></video><figcaption class="lb"><b>After dark</b>Dancing until midnight</figcaption></figure>
+</section>
+
+<section class="plan" id="plan">
+  <div>
+    <h2>Plan your floor.</h2>
+    <p>Move the slider and the barn lays itself out: round tables of ten, the top table under the east window, and a dance floor that grows as the tables shrink.</p>
+    <div class="ctl">
+      <label><span>Guests</span><span id="gN">80</span></label><input type="range" id="gR" min="40" max="140" step="2" value="80">
+      <div class="seg" id="seg"><button class="on" data-s="sat">Saturday</button><button data-s="fri">Friday</button><button data-s="win">Winter weekday</button></div>
+      <div class="quote"><span>Venue hire from</span><b id="q">£6,400</b></div>
+    </div>
+  </div>
+  <div class="floor"><svg viewBox="0 0 800 500" id="fl"></svg></div>
+</section>
+
+<section class="dates" id="dates"><div class="in">
+  <h2>Saturdays in 2027</h2>
+  <div class="cols" style="margin-top:28px"><span>Date</span><span>Ceremony</span><span>Price</span><span>Status</span></div>
+  <div id="dateRows"></div>
+</div></section>
+
+<section class="enq" id="enquire">
+  <h2>Hold a date <b>for 7 days</b>, free.</h2>
+  <div class="form"><div>Your names<b>—</b></div><div>Email<b>—</b></div><div>Date<b>Sat 12 Jun 2027 ▾</b></div><div>Guests<b>80</b></div><div class="w">Anything we should know<b>—</b></div><a>Hold this date →</a></div>
+</section>
+<footer><span>Hollins Barn · Hollins Farm, Hope Valley, Derbyshire S33</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t;
+const CH=' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·:£,-';
+/* split-flap: each character steps through the alphabet to its target, one flap per tick, with a falling top leaf */
+function flapRow(text,w){const wrap=document.createElement('div');wrap.className='flaps';wrap.style.setProperty('--w',w+'px');
+  [...text.toUpperCase()].forEach(c=>{const d=document.createElement('div');d.className='fl';d.innerHTML='<div class="h u"><span> </span></div><div class="h d"><span> </span></div><div class="flip"><span> </span></div>';d.dataset.t=c;d.dataset.c=' ';wrap.appendChild(d)});return wrap}
+const HERO=[['SAT 12 JUN 2027','SUMMER','120','OK'],['SAT 19 JUN 2027','SUMMER','140','FEW'],['SAT 04 SEP 2027','HARVEST','96','OK'],['SAT 11 DEC 2027','CANDLELIT','70','HOLD']];
+const DATES=[['SAT 15 MAY','MEADOW','£7,200','FEW'],['SAT 12 JUN','MEADOW','£8,400','OK'],['SAT 19 JUN','BARN','£8,400','FEW'],['SAT 07 AUG','MEADOW','£8,400','HOLD'],['SAT 04 SEP','BARN','£7,800','OK'],['SAT 11 DEC','BARN','£5,200','OK']];
+const STL={OK:['ok','AVAILABLE'],FEW:['few','LAST ONE'],HOLD:['hold','ON HOLD']};
+function build(el,rows,widths,mobile){rows.forEach(r=>{const row=document.createElement('div');row.className='rowF';
+  r.slice(0,3).forEach((v,i)=>{const c=document.createElement('div');c.className='c'+(i+1);c.appendChild(flapRow(v,widths[i]));row.appendChild(c)});
+  const s=document.createElement('span');s.className='st '+STL[r[3]][0];s.textContent=STL[r[3]][1];s.style.opacity=0;row.appendChild(s);el.appendChild(row)})}
+const mob=innerWidth<=760;
+build($('#heroRows'),HERO,mob?[18,13,13]:[30,22,22]);build($('#dateRows'),DATES,mob?[18,13,13]:[26,20,20]);
+const flaps=$$('.fl');const groups=[$('#heroRows'),$('#dateRows')];
+function setFace(d,c){d.querySelector('.u span').textContent=c;d.querySelector('.d span').textContent=c}
+/* each group starts flipping when it scrolls into view; characters advance at 26 steps/s with a stagger per position */
+const start=new Map();let t0=null,last=null;
+function frame(now){if(t0===null)t0=now;const t=(now-t0)/1000;last=now;const vh=innerHeight;
+  groups.forEach(g=>{const r=g.getBoundingClientRect();if(!start.has(g)&&r.top<vh*.92)start.set(g,t)});
+  groups.forEach(g=>{if(!start.has(g))return;const st=start.get(g);
+    g.querySelectorAll('.rowF').forEach((row,ri)=>{let all=true;
+      row.querySelectorAll('.fl').forEach((d,ci)=>{const tgt=d.dataset.t;const ti=CH.indexOf(tgt)<0?0:CH.indexOf(tgt);
+        // a few random laps for longer words feel right on a real board
+        const extra=(ci*7+ri*3)%9;const total=ti+extra;const el=(t-st-ri*.18-ci*.035)*26;const step=Math.floor(clamp(el,0,total));
+        const cur=CH[(step-extra+CH.length*4)%CH.length];const show=step>=total?tgt:(step<extra?CH[(step*5+ci)%CH.length]:cur);
+        if(d.dataset.c!==show){d.dataset.c=show;setFace(d,show);d.querySelector('.flip span').textContent=show}
+        const f=el-Math.floor(el);const fl=d.querySelector('.flip');fl.style.transform=step<total?`rotateX(${-f*180}deg)`:'rotateX(-90deg)';fl.style.display=step<total?'flex':'none';
+        if(step<total)all=false});
+      const s=row.querySelector('.st');s.style.opacity=all?1:0;s.style.transform=all?'none':'translateY(6px)';s.style.transition='opacity .4s, transform .4s'})});
+  // bento tiles fall into place like flap cards as they enter
+  $$('.tile').forEach((el,i)=>{const r=el.getBoundingClientRect();const p=clamp((vh*1.02-r.top)/(vh*.35)-(i%3)*.12);const e=p<=0?0:1-Math.exp(-6*p)*Math.cos(8*p);el.style.transform=`rotateX(${(1-clamp(e,0,1.1))*-75}deg)`;el.style.opacity=clamp(p*3)});
+  // floor plan: if the visitor hasn't touched the slider, it eases 60 -> 120 guests as it scrolls into view
+  {const r=$('.floor').getBoundingClientRect();if(!touched&&r.top<vh){const p=clamp((vh*.9-r.top)/(vh*.6));guests=Math.round((60+60*(p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2))/2)*2;$('#gR').value=guests}}
+  drawFloor(t);requestAnimationFrame(frame)}
+/* floor plan: tables of 10 placed on a grid; each table eases to its slot; dance floor fills what's left */
+let guests=80,touched=false,season='sat';const tbl=[];
+const svg=$('#fl');svg.innerHTML=`<rect x="20" y="20" width="760" height="460" rx="6" fill="#f3e9dc" stroke="#4a1520" stroke-width="3"/>
+<g stroke="#4a152022">${Array.from({length:7},(_,i)=>`<line x1="${120+i*100}" y1="20" x2="${120+i*100}" y2="480"/>`).join('')}</g>
+<rect x="40" y="40" width="300" height="34" rx="4" fill="#4a1520"/><text x="190" y="62" text-anchor="middle" fill="#f3e9dc" font-size="14" font-family="Figtree" font-weight="700">TOP TABLE · EAST WINDOW</text>
+<rect id="dance" x="560" y="120" width="190" height="300" rx="8" fill="#d9b36c55" stroke="#d9b36c" stroke-dasharray="6 5"/><text id="danceT" x="655" y="275" text-anchor="middle" fill="#4a1520" font-size="15" font-family="Figtree" font-weight="800">DANCE FLOOR</text>
+<text x="40" y="470" fill="#86717a" font-size="12" font-family="Figtree">bar · west door</text><g id="tables"></g>`;
+const tg=$('#tables');for(let i=0;i<14;i++){const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.innerHTML=`<circle r="34" fill="#faf5ee" stroke="#4a1520" stroke-width="2.5"/>${Array.from({length:10},(_,k)=>`<circle cx="${Math.cos(k/10*6.283)*44}" cy="${Math.sin(k/10*6.283)*44}" r="5" fill="#4a1520"/>`).join('')}<text y="5" text-anchor="middle" font-size="14" font-family="Gloock" fill="#4a1520">${i+1}</text>`;tg.appendChild(g);tbl.push({g,x:400,y:250,s:0,vx:0,vy:0,vs:0})}
+function drawFloor(t){const n=Math.ceil((guests-10)/10);const cols=n>10?4:3,dt=1/60;const W=cols*115;
+  const danceW=lerp(260,120,clamp((n-3)/11));$('#dance').setAttribute('width',danceW);$('#dance').setAttribute('x',770-danceW-20);$('#danceT').setAttribute('x',770-20-danceW/2);
+  tbl.forEach((T,i)=>{const on=i<n;const c=i%cols,r=Math.floor(i/cols);const tx=95+c*(Math.min(115,(560-danceW+90)/cols)),ty=140+r*105,ts=on?(n>10?.82:1):0;
+    for(const [k,v,kk] of [['x',tx,120],['y',ty,120],['s',ts,160]]){T['v'+k]+=(-(T[k]-v)*kk-T['v'+k]*2*Math.sqrt(kk)*.7)*dt;T[k]+=T['v'+k]*dt}
+    T.g.setAttribute('transform',`translate(${T.x} ${T.y}) scale(${Math.max(0,T.s)})`)});
+  $('#gN').textContent=guests;const base={sat:6400,fri:5200,win:3600}[season];$('#q').textContent='£'+(base+Math.max(0,guests-80)*35).toLocaleString('en-GB')}
+$('#gR').addEventListener('input',e=>{touched=true;guests=+e.target.value});
+$$('#seg button').forEach(b=>b.onclick=()=>{season=b.dataset.s;$$('#seg button').forEach(x=>x.classList.toggle('on',x===b))});
+// keep only on-screen videos playing
+const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){const p=v.play();p&&p.catch(()=>{})}else v.pause()}),{threshold:.2});$$('video').forEach(v=>io.observe(v));
+document.fonts.ready.then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
