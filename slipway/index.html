@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slipway · Learn to throw on the wheel</title>
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Sch;src:url(assets/fonts/schibsted-grotesk-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:Sch;src:url(assets/fonts/schibsted-grotesk-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:Sch;src:url(assets/fonts/schibsted-grotesk-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:Sch;src:url(assets/fonts/schibsted-grotesk-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:Spe;src:url(assets/fonts/spectral-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:Spe;src:url(assets/fonts/spectral-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:Spe;src:url(assets/fonts/spectral-latin-400-italic.woff2);font-style:italic}
+:root{--slip:#ece6dc;--paper:#f7f3ec;--clay:#b98a68;--bisque:#e3c9b1;--iron:#4b2e22;--char:#1f1c1a;--mute:#7a6d63;--celadon:#8fae9a;--celD:#3f6b57;--shino:#df8550;--line:#d9cfc2}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--slip)}
+body{font-family:Sch,system-ui,sans-serif;color:var(--char);background:var(--slip);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+/* app bar */
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:18px;padding:12px 22px;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar .lg{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:-.01em}.bar .lg img{width:30px}
+.crumb{font-size:13px;color:var(--mute);display:flex;gap:8px;align-items:center}.crumb b{color:var(--char);font-weight:500}
+.bar .sp{flex:1}
+.prog{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
+.prog .trk{width:150px;height:8px;border-radius:8px;background:var(--line);overflow:hidden}.prog .trk i{display:block;height:100%;width:0;background:var(--celD);border-radius:8px}
+.av{width:34px;height:34px;border-radius:50%;background:var(--iron);color:var(--bisque);display:grid;place-items:center;font-weight:700;font-size:13px}
+/* lesson */
+.lesson{position:relative;height:420vh}
+.stage{position:sticky;top:59px;height:calc(100vh - 59px);display:grid;grid-template-columns:1fr 360px;gap:0}
+.left{position:relative;padding:22px 26px 22px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ltitle{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.ltitle h1{font-family:Spe;font-weight:500;font-size:clamp(28px,3vw,42px);letter-spacing:-.01em;line-height:1}
+.ltitle span{font-size:13px;color:var(--mute)}
+.player{position:relative;flex:1;min-height:0;border-radius:18px;overflow:hidden;background:#2a2421;box-shadow:0 1px 0 #fff8 inset,0 30px 60px -30px #4b2e2288}
+.player video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.player .ttl{position:absolute;left:18px;top:16px;background:#1f1c1acc;color:var(--paper);padding:8px 12px;border-radius:10px;font-size:13px;font-weight:500;backdrop-filter:blur(6px)}
+.player .ttl b{color:var(--celadon);font-weight:700;margin-right:6px}
+.scrub{position:absolute;left:18px;right:250px;bottom:18px;height:34px;display:flex;gap:4px;align-items:flex-end}
+.scrub .sg{flex:1;height:6px;border-radius:6px;background:#ffffff40;position:relative;overflow:hidden}.scrub .sg i{position:absolute;inset:0;width:0;background:var(--paper)}
+.scrub .sg em{position:absolute;bottom:10px;left:0;font-style:normal;font-size:11px;color:#fff;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.75}
+/* the wheel */
+.wheel{position:absolute;right:-30px;bottom:-40px;width:290px;height:290px;filter:drop-shadow(0 20px 30px #0007)}
+.wheel svg{width:100%;height:100%;overflow:visible}
+.wheel .lbl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;text-align:center;font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--iron);pointer-events:none}
+/* steps rail */
+.rail{border-left:1px solid var(--line);background:var(--paper);padding:22px 22px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.rail h3{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:700;margin-bottom:8px}
+.st{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:10px 10px;border-radius:12px;align-items:start;transition:background .3s}
+.st .n{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--mute);background:var(--paper)}
+.st.done .n{background:var(--celD);border-color:var(--celD);color:#fff}
+.st.on{background:var(--slip)}.st.on .n{border-color:var(--iron);color:var(--iron)}
+.st b{display:block;font-size:15px;font-weight:700}.st small{font-size:12px;color:var(--mute)}
+.note{margin-top:auto;border-top:1px solid var(--line);padding-top:16px;min-height:190px}
+.note .who{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--mute);margin-bottom:10px}.note .who i{width:26px;height:26px;border-radius:50%;background:var(--clay);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:700;font-size:11px}
+.note p{font-family:Spe;font-style:italic;font-size:21px;line-height:1.32;color:var(--iron)}
+.note p span{display:inline-block;white-space:pre}
+/* glaze lab */
+.lab{padding:90px 22px 40px;max-width:1340px;margin:0 auto}
+.lhead{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:end;margin-bottom:34px}
+.lhead h2{font-family:Spe;font-weight:400;font-size:clamp(40px,5vw,72px);line-height:.98;letter-spacing:-.015em}
+.lhead h2 em{color:var(--celD)}
+.lhead p{font-size:16px;line-height:1.6;color:var(--mute);max-width:470px}
+.tiles{position:relative;display:grid;grid-template-columns:repeat(8,1fr);gap:14px;padding-bottom:70px}
+.tile{position:relative;cursor:pointer}
+.tile .bq{position:relative;aspect-ratio:3/4;border-radius:10px 10px 14px 14px;overflow:visible}
+.tile .raw,.tile .gz{position:absolute;inset:0;border-radius:inherit}
+.tile .raw{background:radial-gradient(120% 90% at 30% 20%,#efd9c4,#d9b99c 60%,#c8a283);box-shadow:inset 0 -6px 12px #0001}
+.tile .raw::after,.tile .gz::after{content:"";position:absolute;inset:0;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .13 0 0 0 0 .1 0 0 0 9 -6.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.55;mix-blend-mode:multiply}
+.tile .gz{box-shadow:inset 0 2px 2px #fff6,inset 0 -10px 18px #0003}
+.tile .gz .sh{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 30%,#ffffff70 42%,transparent 52%);mix-blend-mode:screen}
+.tile .drip{position:absolute;width:9px;height:12px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;top:0;left:50%;opacity:0}
+.tile .meta{margin-top:12px}.tile .meta b{display:block;font-size:15px}.tile .meta small{font-size:12px;color:var(--mute)}
+.tile.sel .bq{outline:2.5px solid var(--iron);outline-offset:5px}
+.bath{position:absolute;left:-22px;right:-22px;bottom:0;height:60px;background:linear-gradient(#cfd8cf,#b7c6b9);border-top:1px solid #a9b9ab;border-radius:0 0 8px 8px}
+.kit{margin-top:26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:18px 20px;border:1.5px solid var(--iron);border-radius:14px;background:var(--paper)}
+.kit .sw{width:46px;height:46px;border-radius:10px}
+.kit b{font-size:17px}.kit small{display:block;color:var(--mute);font-size:13px}
+.kit .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;background:var(--iron);color:var(--paper);font-weight:700;font-size:14px;border:0;cursor:pointer}
+.btn.lt{background:transparent;color:var(--iron);border:1.5px solid var(--iron)}
+/* week */
+.week{max-width:1340px;margin:60px auto 0;padding:0 22px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.card .ph{aspect-ratio:4/3;position:relative;overflow:hidden}.card .ph img,.card .ph video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .bd{padding:16px 18px 18px}.card .bd b{font-size:16px;display:block}.card .bd p{font-family:Spe;font-style:italic;font-size:17px;color:var(--iron);margin-top:8px;line-height:1.35}
+.card .bd small{display:block;margin-top:10px;font-size:12px;color:var(--mute)}
+.tagt{display:inline-block;margin-bottom:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--celD)}
+.sech{max-width:1340px;margin:100px auto 22px;padding:0 22px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.sech h2{font-family:Spe;font-weight:400;font-size:clamp(34px,4vw,56px);line-height:1}
+.sech p{color:var(--mute);font-size:15px;max-width:420px;line-height:1.55}
+/* courses + faq */
+.join{max-width:1340px;margin:0 auto;padding:0 22px 40px;display:grid;grid-template-columns:1.2fr 1fr;gap:28px}
+.courses{display:grid;gap:12px}
+.course{display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:center;padding:14px;border-radius:14px;background:var(--paper);border:1px solid var(--line)}
+.course img{width:120px;height:86px;object-fit:cover;border-radius:10px}
+.course b{font-size:17px;display:block}.course small{color:var(--mute);font-size:13px}
+.course .pr{text-align:right}.course .pr strong{font-family:Spe;font-size:28px;font-weight:500;display:block}
+.seats{display:flex;gap:3px;margin-top:8px}.seats i{width:10px;height:10px;border-radius:3px;background:var(--celD)}.seats i.t{background:var(--line)}
+.faq{background:var(--iron);color:var(--bisque);border-radius:18px;padding:26px}
+.faq h3{font-family:Spe;font-weight:400;font-size:30px;color:var(--paper);margin-bottom:14px}
+.q{border-top:1px solid #ffffff22;padding:14px 0}.q b{display:flex;justify-content:space-between;color:var(--paper);font-size:15px;cursor:pointer}.q p{font-size:14px;line-height:1.55;max-height:0;overflow:hidden;opacity:.85;transition:max-height .5s cubic-bezier(.2,.8,.2,1),margin .4s}.q.open p{max-height:140px;margin-top:8px}
+footer{max-width:1340px;margin:40px auto 0;padding:24px 22px 36px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:12px;color:var(--mute);gap:10px;flex-wrap:wrap}
+@media (max-width:860px){
+  .bar{padding:10px 14px;gap:10px}.crumb,.prog .trk{display:none}
+  .lesson{height:440vh}.stage{grid-template-columns:1fr;grid-template-rows:auto 1fr;top:55px;height:calc(100vh - 55px)}
+  .left{padding:14px 14px 0;gap:10px}.player{flex:none;aspect-ratio:4/3.4}
+  .scrub{right:18px;bottom:auto;top:56px;height:auto}.scrub .sg em{display:none}
+  .wheel{width:190px;height:190px;right:-34px;bottom:-56px}.wheel .lbl{font-size:10px}
+  .rail{border-left:0;border-top:1px solid var(--line);padding:14px;gap:2px}.rail h3,.st small{display:none}
+  .steps{display:flex;gap:4px}.st{grid-template-columns:1fr;padding:6px 4px;justify-items:center;flex:1}.st b{font-size:11px;text-align:center}
+  .note{margin-top:10px;min-height:0;padding-top:12px}.note p{font-size:18px}
+  .lab{padding:60px 14px 30px}.lhead{grid-template-columns:1fr;gap:14px}
+  .tiles{grid-template-columns:repeat(4,1fr);gap:10px}.bath{left:-14px;right:-14px}
+  .week{grid-template-columns:1fr;padding:0 14px}.sech{padding:0 14px;margin-top:70px}
+  .join{grid-template-columns:1fr;padding:0 14px 30px}.course{grid-template-columns:84px 1fr;gap:12px}.course img{width:84px;height:70px}.course .pr{grid-column:2;text-align:left}.course .pr strong{display:inline;margin-right:10px;font-size:22px}
+  footer{padding:20px 14px 30px;flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){.q p{transition:none}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="lg" href="#"><img src="src/img/logo.svg" alt="">Slipway</a>
+  <div class="crumb">Your first bowl <span>›</span> <b>Lesson 3 · Throwing</b></div>
+  <div class="sp"></div>
+  <div class="prog"><span id="pct">Lesson 3 of 8</span><span class="trk"><i id="ptrk"></i></span></div>
+  <div class="av">MA</div>
+</header>
+
+<section class="lesson" id="lesson">
+  <div class="stage">
+    <div class="left">
+      <div class="ltitle"><h1>Throw a 12 cm breakfast bowl</h1><span>with Ruth Aldane · 500 g of buff stoneware · 26 min</span></div>
+      <div class="player">
+        <video id="lv" src="media/lesson.mp4" poster="media/lesson.jpg" muted playsinline preload="metadata"></video>
+        <div class="ttl" id="ttl"><b>01</b>Centre the clay</div>
+        <div class="scrub" id="scrub"></div>
+        <div class="wheel" id="wheel"><svg viewBox="-150 -150 300 300">
+          <defs>
+            <radialGradient id="pan" r="1"><stop offset=".82" stop-color="#6d665f"/><stop offset=".9" stop-color="#3b3632"/><stop offset="1" stop-color="#2a2522"/></radialGradient>
+            <radialGradient id="head" r="1"><stop offset="0" stop-color="#cfc9c1"/><stop offset=".85" stop-color="#9c958c"/><stop offset="1" stop-color="#76706a"/></radialGradient>
+            <radialGradient id="clay" r="1" cx=".45" cy=".4"><stop offset="0" stop-color="#d7b291"/><stop offset=".7" stop-color="#b98a68"/><stop offset="1" stop-color="#9c6f50"/></radialGradient>
+          </defs>
+          <circle r="148" fill="url(#pan)"/>
+          <g id="spin">
+            <circle r="118" fill="url(#head)"/>
+            <g stroke="#5f5953" stroke-opacity=".35" fill="none">
+              <circle r="110"/><circle r="100"/><circle r="88"/><circle r="74"/>
+            </g>
+            <path d="M-108 6 A108 108 0 0 1 -60 -90" stroke="#b98a68" stroke-width="7" stroke-linecap="round" fill="none" opacity=".55"/>
+            <path d="M84 52 A100 100 0 0 1 30 95" stroke="#b98a68" stroke-width="4" stroke-linecap="round" fill="none" opacity=".45"/>
+            <circle cx="92" cy="-30" r="5" fill="#8c8278"/><circle cx="-40" cy="96" r="5" fill="#8c8278"/>
+            <circle r="62" fill="url(#clay)"/>
+            <g fill="none" stroke="#7d553b" stroke-opacity=".45" stroke-width="2"><path d="M0 -50 A50 50 0 0 1 48 14"/><path d="M-30 30 A42 42 0 0 1 -38 -18"/><path d="M10 34 A36 36 0 0 0 34 -6" stroke-opacity=".3"/></g>
+            <ellipse cx="-18" cy="-24" rx="16" ry="6" fill="#fff" opacity=".22" transform="rotate(-30)"/>
+          </g>
+          <circle r="62" fill="#fff" opacity="0" id="blur"/>
+        </svg><div class="lbl" id="wl">Centre</div></div>
+      </div>
+    </div>
+    <aside class="rail">
+      <h3>Lesson steps</h3>
+      <div class="steps" id="steps"></div>
+      <div class="note"><div class="who"><i>RA</i>Ruth, your tutor</div><p id="note"></p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="lab" id="glaze">
+  <div class="lhead"><h2>Dip a test tile <em>before</em> you dip the bowl.</h2><p>Every kit comes with eight bisque tiles. Dip one in each glaze, fire them with your bowl, and pick the finish you love from the real thing, not a screen.</p></div>
+  <div class="tiles" id="tiles"><div class="bath"></div></div>
+  <div class="kit" id="kit"><span class="sw" id="ksw"></span><div><b id="kname">Celadon</b><small id="kdesc">Glassy sea-green, pools darker in the throwing lines · cone 10</small></div><div class="sp"></div><div><small>500 ml dipping glaze</small><b id="kp">£14.00</b></div><button class="btn">Add to my kit</button></div>
+</section>
+
+<div class="sech"><h2>Your week at the wheel</h2><p>Upload a photo after each session. Ruth replies within a day with one thing to keep and one thing to change.</p></div>
+<section class="week">
+  <div class="card"><div class="ph"><img src="media/hands.jpg" alt="Hands opening a cylinder on the wheel" loading="lazy"></div><div class="bd"><span class="tagt">Mon · Session 6</span><b>Cylinder, 450 g</b><p>“Walls are even to the rim now. Next time, open wider before you pull.”</p><small>Ruth replied in 3 h</small></div></div>
+  <div class="card"><div class="ph"><video src="media/centre.mp4" poster="media/centre.jpg" muted loop playsinline autoplay preload="metadata"></video></div><div class="bd"><span class="tagt">Wed · Session 7</span><b>Centring drill, 5 × 500 g</b><p>“Elbow on your thigh. Let the wheel do the work and the wobble goes.”</p><small>Ruth replied in 40 min</small></div></div>
+  <div class="card"><div class="ph"><img src="media/shelf.jpg" alt="Four bisque bowls on a wooden table" loading="lazy"></div><div class="bd"><span class="tagt">Fri · Kiln day</span><b>Four bowls, bisque fired</b><p>“The second one is the keeper. Glaze it in celadon and let it pool.”</p><small>Glaze firing Sat 14 Nov</small></div></div>
+</section>
+
+<div class="sech" id="join"><h2>Start with clay on your hands</h2><p>Cohorts of twelve, live sessions on Tuesday evenings, and a studio weekend to finish.</p></div>
+<section class="join">
+  <div class="courses">
+    <div class="course"><img src="media/throw.jpg" alt="" loading="lazy"><div><b>Your first bowl</b><small>8 lessons · starts Tue 1 Dec · beginners</small><div class="seats" data-n="12" data-t="9"></div></div><div class="pr"><strong>£189</strong><button class="btn">Join cohort</button></div></div>
+    <div class="course"><img src="media/teapot.jpg" alt="" loading="lazy"><div><b>Lids, spouts and teapots</b><small>10 lessons · starts Tue 12 Jan · improvers</small><div class="seats" data-n="12" data-t="4"></div></div><div class="pr"><strong>£240</strong><button class="btn lt">Join cohort</button></div></div>
+    <div class="course"><img src="media/studio.jpg" alt="" loading="lazy"><div><b>Studio weekend, Stoke-on-Trent</b><small>2 days · 6–7 Feb · wheels, kiln and lunch</small><div class="seats" data-n="12" data-t="11"></div></div><div class="pr"><strong>£295</strong><button class="btn lt">Book</button></div></div>
+  </div>
+  <div class="faq">
+    <h3>Before you start</h3>
+    <div class="q open"><b>Do I need my own wheel? <span>−</span></b><p>No. Lessons 1–4 are hand-building. From lesson 5 we lend a tabletop wheel for £15 a month, delivered with 10 kg of clay.</p></div>
+    <div class="q"><b>Where do my pots get fired? <span>+</span></b><p>Post them in our padded box to the Stoke studio. We bisque and glaze-fire every Friday and send them back within ten days.</p></div>
+    <div class="q"><b>What if I miss a live session? <span>+</span></b><p>Every session is recorded and broken into steps, so you can scrub straight to the bit you need.</p></div>
+    <div class="q"><b>Is clay messy at home? <span>+</span></b><p>Less than you think. The kit has a splash pan, a slop bucket and a guide to setting up on a kitchen table.</p></div>
+  </div>
+</section>
+<footer><span>Slipway Pottery School · Stoke-on-Trent ST1</span><span>by LOLCorp PVT LTD</span></footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+try{sessionStorage['slipway-seen']='1'}catch(e){}
+const STEPS=[
+ ['Centre','Cone up, cone down, then press in','Brace your left elbow on your thigh and lean in. Centred clay feels still under your palms, even at full speed.'],
+ ['Pull the walls','Three pulls, thumb to knuckle','Pinch at the base and lift slowly. One wheel turn for every centimetre you rise, never faster.'],
+ ['Rib and compress','Firm the floor so it never cracks','Drag the rib from the centre out while the wheel spins. You are pressing the floor, not shaping it.'],
+ ['Trim the foot','Leather-hard, bowl upside down','Wait until the bowl feels like cold cheese. Take thin ribbons off the foot until it rings when you tap it.'],
+ ['Finish','Sponge, sign, dry slowly','Wipe the rim with a damp sponge and sign the foot. Dry it under plastic for two days so it dries evenly.']];
+const SEG=4,TOT=20;
+// build rail + scrub
+const steps=$('#steps');STEPS.forEach((s,i)=>{steps.insertAdjacentHTML('beforeend',`<div class="st" data-i="${i}"><span class="n">${i+1}</span><div><b>${s[0]}</b><small>${s[1]}</small></div></div>`);$('#scrub').insertAdjacentHTML('beforeend',`<div class="sg"><i></i><em>${s[0]}</em></div>`)});
+// tutor note: words spiral in like clay thrown off the wheel
+function setNote(i){const p=$('#note');p.innerHTML=STEPS[i][2].split(' ').map(w=>`<span>${w} </span>`).join('');p.dataset.t0=String(now);}
+// glaze tiles
+const GL=[['Celadon','#8fae9a','#6e9480','Glassy sea-green, pools darker in the throwing lines · cone 10','£14.00'],['Tenmoku','#3a2018','#1c0f0b','Iron black that breaks to rust on the rim · cone 10','£14.00'],['Shino','#e6a173','#c9784a','Orange flashing with a fat, buttery surface · cone 10','£16.00'],['Chun blue','#9db4d2','#7590b6','Milky opal blue, cloudy where it runs thick · cone 6','£15.00'],['Wood ash','#b9b07a','#8a8350','Speckled olive that runs into drips · cone 10','£13.00'],['Iron red','#9a3a24','#6a2414','Deep persimmon over dark clay · cone 10','£17.00'],['Satin white','#efece4','#d7d1c6','Soft eggshell white for everyday bowls · cone 6','£12.00'],['Oribe','#3d7d5d','#235740','Dark copper green, glassy where it pools · cone 6','£15.00']];
+const tiles=$('#tiles');
+GL.forEach((g,i)=>{tiles.insertAdjacentHTML('beforeend',`<div class="tile${i?'':' sel'}" data-i="${i}"><div class="bq"><div class="raw"></div><div class="gz" style="background:radial-gradient(120% 80% at 30% 15%,${g[1]},${g[2]})"><div class="sh"></div></div><span class="drip" style="background:${g[2]}"></span><span class="drip" style="background:${g[2]}"></span></div><div class="meta"><b>${g[0]}</b><small>${g[3].split('·')[1].trim()}</small></div></div>`)});
+const tileSt=$$('.tile').map(el=>({el,gz:el.querySelector('.gz'),drips:[...el.querySelectorAll('.drip')],lv:0,v:0,dip:null,dr:[]}));
+function pick(i){$$('.tile').forEach(t=>t.classList.toggle('sel',+t.dataset.i===i));const g=GL[i];$('#ksw').style.background=`radial-gradient(circle at 30% 30%,${g[1]},${g[2]})`;$('#kname').textContent=g[0];$('#kdesc').textContent=g[3];$('#kp').textContent=g[4]}
+pick(0);tiles.addEventListener('click',e=>{const t=e.target.closest('.tile');if(t)pick(+t.dataset.i)});
+$$('.q').forEach(q=>q.querySelector('b').addEventListener('click',()=>{const o=q.classList.toggle('open');q.querySelector('span').textContent=o?'−':'+'}));
+$$('.seats').forEach(s=>{const n=+s.dataset.n,t=+s.dataset.t;s.innerHTML=Array.from({length:n},(_,i)=>`<i class="${i<t?'t':''}"></i>`).join('')+'';s.insertAdjacentHTML('afterend',`<small style="display:block;margin-top:4px">${n-t} of ${n} seats left</small>`)});
+
+/* physics state */
+const vid=$('#lv');let pos=0,vel=0,ang=0,last=null,now=0,curStep=-1;
+const K=26,C=2*Math.sqrt(K)*.82; // slightly under-damped: heavy wheel, slow to start and stop
+function frame(ts){now=ts/1000;const dt=last===null?1/60:Math.min(.05,now-last);last=now;const vh=innerHeight;
+  // lesson scroll -> target time on the lesson clip
+  const L=$('#lesson'),r=L.getBoundingClientRect();const p=clamp(-r.top/(L.offsetHeight-vh));const tgt=p*(TOT-.05);
+  if(reduce){pos=tgt;vel=0}else{const a=K*(tgt-pos)-C*vel;vel+=a*dt;pos+=vel*dt}
+  pos=clamp(pos,0,TOT-.04);
+  if(vid.readyState>=1&&Math.abs(vid.currentTime-pos)>.02){try{vid.currentTime=pos}catch(e){}}
+  // the wheel always turns (a real wheel never stops mid-lesson) plus the scrub drives it
+  const omega=2.4+vel*3.2;ang+=omega*dt;$('#spin').setAttribute('transform',`rotate(${(ang*180/Math.PI)%360})`);
+  $('#blur').setAttribute('opacity',clamp(Math.abs(vel)*.05,0,.18));
+  const si=Math.min(4,Math.floor(pos/SEG));
+  if(si!==curStep){curStep=si;$('#ttl').innerHTML=`<b>0${si+1}</b>${STEPS[si][0]}`;$('#wl').textContent=STEPS[si][0].split(' ')[0];setNote(si);$$('.st').forEach((el,k)=>{el.classList.toggle('on',k===si);el.classList.toggle('done',k<si)})}
+  $$('.scrub .sg i').forEach((el,k)=>el.style.width=clamp((pos-k*SEG)/SEG)*100+'%');
+  $('#ptrk').style.width=(25+p*12.5)+'%';
+  // spiral-in words: each word starts out on an arc and spins down to its place
+  const nt=+$('#note').dataset.t0||0;$('#note').querySelectorAll('span').forEach((w,k)=>{const q=clamp((now-nt-k*.045)/.7);const e=reduce?1:1-Math.pow(1-q,3);const ph=(1-e)*Math.PI*1.4,rad=(1-e)*70;w.style.transform=`translate(${Math.cos(ph)*rad-rad}px,${Math.sin(ph)*rad}px) rotate(${(1-e)*-120}deg)`;w.style.opacity=e});
+  // glaze dipping: level eases on a spring; meniscus wobbles; drips fall with gravity after the tile comes out
+  const T=tiles.getBoundingClientRect();const gp=clamp((vh*.88-T.top)/(vh*.75));
+  tileSt.forEach((s,i)=>{const tg=clamp((gp-i*.07)/.36);const tgtL=reduce?tg:tg;const a=90*(tgtL-s.lv)-2*Math.sqrt(90)*.55*s.v;s.v+=a*dt;s.lv+=s.v*dt;
+    const L2=clamp(s.lv,0,1.02);const w=Math.sin(now*7+i)*Math.min(.03,Math.abs(s.v)*.05)*100;
+    const top=100-L2*100;const pts=[];for(let x=0;x<=100;x+=10){pts.push(`${x}% ${clamp(top+Math.sin(x/100*Math.PI*2+now*5+i)*w*.6+(x<10||x>90?-1.5*Math.min(1,L2*8):0),0,100)}%`)}
+    s.gz.style.clipPath=L2<=.001?'inset(100% 0 0 0)':`polygon(${pts.join(',')},100% 100%,0% 100%)`;
+    if(s.lv>.98&&!s.dip){s.dip=now}
+    s.drips.forEach((d,k)=>{if(!s.dip||reduce){d.style.opacity=0;return}const t0=s.dip+.35+k*.9;const tt=now-t0;if(tt<0){d.style.opacity=0;return}
+      const hang=clamp(tt/.5);const fall=Math.max(0,tt-.5);const y=(d.parentElement.offsetHeight-4)+hang*6+0.5*2400*fall*fall;
+      d.style.left=(30+k*38)+'%';d.style.opacity=fall>.0&&y>d.parentElement.offsetHeight+70?0:1;d.style.transform=`translate(-50%,${y}px) scaleY(${1+hang*.3+Math.min(.6,fall*4)})`});
+  });
+  requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

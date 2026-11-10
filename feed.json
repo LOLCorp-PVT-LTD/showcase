@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-09T10:21:52Z",
+ "updated": "2026-11-10T10:20:10Z",
  "items": [
+  {
+   "slug": "slipway",
+   "title": "Slipway",
+   "kind": "Pottery school · Learning app",
+   "blurb": "A lesson you scrub with a pottery wheel that has real weight, and glaze tiles you dip.",
+   "url": "https://showcase.lolcorp.co.uk/slipway/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/slipway.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/slipway.jpg"
+  },
   {
    "slug": "hollinsbarn",
    "title": "Hollins Barn",
