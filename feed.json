@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-10T10:20:10Z",
+ "updated": "2026-11-11T10:20:50Z",
  "items": [
+  {
+   "slug": "stillwater",
+   "title": "Stillwater",
+   "kind": "Meditation &amp; retreats · Mobile app",
+   "blurb": "A meditation app dealt like a hand of cards, where every out-breath ripples across the lake.",
+   "url": "https://showcase.lolcorp.co.uk/stillwater/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/stillwater.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/stillwater.jpg"
+  },
   {
    "slug": "slipway",
    "title": "Slipway",
