@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-11T10:20:50Z",
+ "updated": "2026-11-12T10:27:07Z",
  "items": [
+  {
+   "slug": "sillage",
+   "title": "Sillage",
+   "kind": "Perfumery · Website",
+   "blurb": "A perfume shop that bottles English weather: colour blooms into the footage like ink, and the notes evaporate as you scroll.",
+   "url": "https://showcase.lolcorp.co.uk/sillage/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/sillage.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/sillage.jpg"
+  },
   {
    "slug": "stillwater",
    "title": "Stillwater",

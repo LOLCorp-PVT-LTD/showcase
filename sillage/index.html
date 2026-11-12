@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sillage · perfumery, Walcot Street, Bath</title>
+<meta name="description" content="Sillage is a small perfumery on Walcot Street, Bath, bottling English weather: rain on ivy, a wet rose, lavender at dusk and a moss path.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Mar;src:url(assets/fonts/marcellus-latin-400-normal.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Han;src:url(assets/fonts/hanken-grotesk-latin-300-normal.woff2) format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:Han;src:url(assets/fonts/hanken-grotesk-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Han;src:url(assets/fonts/hanken-grotesk-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+:root{--stone:#dedbd3;--paper:#ece9e2;--ink:#17181c;--soft:#55565c;--madder:#c3304b;--moss:#56633a;--rain:#5f7f8c;--lav:#7b6aa8;--line:#17181c33}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--stone);color:var(--ink);font:400 17px/1.55 Han,system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mar{font-family:Mar,serif;font-weight:400}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 22px 15px 18px;border:1px solid var(--ink);background:var(--paper);font-weight:600;font-size:15px;letter-spacing:.02em;text-decoration:none;box-shadow:5px 5px 0 var(--madder);transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s cubic-bezier(.2,.8,.2,1)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--madder)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--madder)}
+.btn svg{width:12px;height:22px}
+.lnk{font-weight:600;font-size:15px;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+#trail{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:30}
+#pre{position:fixed;inset:0;z-index:100;background:var(--ink);pointer-events:none}
+#pre b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:400 28px Mar,serif;color:var(--paper);letter-spacing:.3em}
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:30px;padding:16px 4vw;background:linear-gradient(var(--stone) 60%,transparent);transition:background .3s}
+nav.dark{background:linear-gradient(#17181cee 60%,transparent);color:var(--paper)}
+nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:400 22px Mar,serif;letter-spacing:.04em}
+nav .brand img{width:30px;height:30px}
+nav .links{display:flex;gap:26px;margin-left:auto;font-size:14px;font-weight:600}
+nav .links a{text-decoration:none}
+nav .bag{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;border:1px solid currentColor;padding:8px 12px}
+nav .bag i{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;background:var(--madder);color:#fff;font-size:12px}
+/* cover */
+#cover{min-height:100vh;display:grid;grid-template-columns:repeat(12,1fr);gap:0 2vw;padding:110px 4vw 60px;align-items:center;position:relative}
+#cover .entry{grid-column:1/8;position:relative;z-index:2}
+#cover .where{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);display:flex;gap:18px}
+#cover h1{font:400 clamp(96px,15.5vw,250px)/.86 Mar,serif;letter-spacing:-.02em;margin:18px 0 22px;margin-left:-.05em;padding-bottom:.2em}
+#cover .pron{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:18px;color:var(--soft);padding-bottom:18px;border-bottom:1px solid var(--ink);max-width:640px}
+#cover .pron em{font-style:italic;font-weight:300}
+#cover ol{list-style:none;counter-reset:d;max-width:640px;margin-top:22px}
+#cover ol li{counter-increment:d;display:grid;grid-template-columns:42px 1fr;font-size:20px;line-height:1.45;margin-bottom:14px;font-weight:300}
+#cover ol li::before{content:counter(d) ".";font-family:Mar;font-size:22px;color:var(--madder)}
+#cover ol b{font-weight:600}
+#cover .acts{display:flex;flex-wrap:wrap;align-items:center;gap:22px 30px;margin-top:30px}
+#cover .win{grid-column:8/13;height:min(74vh,640px);position:relative}
+#cover .win video,#cover .win .clip{position:absolute;inset:0;width:100%;height:100%}
+#cover .win .clip{overflow:hidden}
+#cover .win video{object-fit:cover;object-position:62% 55%;filter:saturate(1.1) contrast(1.05)}
+#cover .win figcaption{position:absolute;right:0;bottom:-34px;font-size:13px;color:var(--soft)}
+/* forecast */
+#forecast{height:520vh;position:relative;background:var(--ink);color:var(--paper)}
+#forecast .stage{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:78px 0 0}
+#forecast header{display:flex;align-items:baseline;gap:24px;padding:0 4vw 16px}
+#forecast header h2{font:400 clamp(34px,4vw,58px)/1 Mar,serif}
+#forecast header p{color:#ece9e2aa;font-size:16px;max-width:420px}
+#forecast header .wk{margin-left:auto;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#ece9e2aa}
+.cols{flex:1;display:flex;gap:2px;min-height:0}
+.col{flex:1 1 0;position:relative;overflow:hidden;min-width:0;cursor:pointer;background:#000}
+.col video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.col .grey{position:absolute;inset:0;backdrop-filter:grayscale(1) brightness(.62) contrast(1.05);-webkit-backdrop-filter:grayscale(1) brightness(.62)}
+.col .shade{position:absolute;inset:0;background:linear-gradient(90deg,#000000b0,#0000 62%),linear-gradient(0deg,#000a,#0000 45%)}
+.col .tag{position:absolute;left:50%;bottom:28px;transform:translateX(-50%) rotate(180deg);writing-mode:vertical-rl;white-space:nowrap;display:flex;align-items:center;gap:16px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.col .tag svg{width:44px;height:44px;transform:rotate(90deg)}
+.col .tag b{font:400 30px Mar,serif;letter-spacing:.02em;text-transform:none}
+.col .body{position:absolute;left:4vw;bottom:5vh;width:min(560px,80%);pointer-events:none}
+.col .fx{display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600;letter-spacing:.06em}
+.col .fx svg{width:54px;height:54px}
+.col h3{font:400 clamp(54px,6.6vw,104px)/.92 Mar,serif;margin:12px 0 14px;letter-spacing:-.01em}
+.col .story{font-size:19px;font-weight:300;max-width:440px;color:#f3f0ea}
+.pyr{display:grid;grid-template-columns:70px 1fr;gap:8px 0;margin:20px 0 22px;border-top:1px solid #ece9e255;padding-top:14px;font-size:15px}
+.pyr dt{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#ece9e299;padding-top:2px}
+.col .buy{display:flex;align-items:center;gap:22px;pointer-events:auto}
+.col .buy span{font:400 22px Mar,serif}
+.col .btn{background:transparent;color:var(--paper);border-color:var(--paper)}
+/* dry-down */
+#dry{height:340vh;position:relative}
+#dry .stage{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr auto;gap:0 4vw;padding:96px 4vw 40px}
+#dry h2{grid-column:1/3;display:flex;align-items:baseline;gap:30px;flex-wrap:wrap}
+#dry h2 b{font:400 clamp(40px,5.4vw,84px)/1 Mar,serif}
+#dry h2 span{font-size:17px;font-weight:300;max-width:460px;color:var(--soft)}
+#dry .tabs{grid-column:1/3;display:flex;gap:0;margin:22px 0 10px;border:1px solid var(--ink);width:max-content;max-width:100%}
+#dry .tabs button{padding:10px 18px;font-size:14px;font-weight:600;border-right:1px solid var(--ink)}
+#dry .tabs button:last-child{border-right:0}
+#dry .tabs button.on{background:var(--ink);color:var(--paper)}
+.notes{align-self:center}
+.tier{display:grid;grid-template-columns:90px 1fr;align-items:baseline;padding:16px 0;border-top:1px solid var(--line)}
+.tier small{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+.tier .w{display:flex;flex-wrap:wrap;gap:0 28px}
+.tier .w span{font:400 clamp(30px,3.5vw,54px)/1.1 Mar,serif;display:inline-block;will-change:transform,opacity,filter}
+.clock{align-self:center}
+.clock .read{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.clock .read b{font:400 clamp(44px,5vw,76px)/1 Mar,serif;font-variant-numeric:tabular-nums}
+.clock .read span{font-size:15px;color:var(--soft)}
+.clock svg{width:100%;height:auto;display:block;overflow:visible}
+.clock .now{font-size:16px;margin-top:10px}
+.clock .now b{color:var(--madder)}
+#dry .foot{grid-column:1/3;font-size:13px;color:var(--soft);border-top:1px solid var(--line);padding-top:12px}
+/* room */
+#room{display:grid;grid-template-columns:7fr 5fr;gap:4vw;padding:120px 4vw;align-items:start;background:var(--paper)}
+#room>*,#set>*,#visit>*,#cover>*{min-width:0}
+.blotimg{position:relative;aspect-ratio:4/3.1}
+.blotimg .clip{position:absolute;inset:0;overflow:hidden}
+.blotimg img{width:100%;height:100%;object-fit:cover;display:block}
+.blotimg figcaption{font-size:13px;color:var(--soft);margin-top:12px}
+#room h2,#set h2,#visit h2{font:400 clamp(40px,4.6vw,70px)/1 Mar,serif;margin-bottom:18px}
+#room .lede{font-size:19px;font-weight:300;max-width:520px}
+.steps{list-style:none;margin:26px 0;display:grid;gap:14px}
+.steps li{display:grid;grid-template-columns:56px 1fr;font-size:16px}
+.steps li b{font:400 34px/1 Mar,serif;color:var(--madder)}
+.book{border:1px solid var(--ink);background:var(--stone);padding:22px;margin-top:10px}
+.book h4{font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px}
+.dates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dates button{border:1px solid var(--ink);padding:10px 8px;text-align:left;background:var(--paper);transition:background .2s,color .2s}
+.dates button b{display:block;font:400 20px Mar,serif}
+.dates button small{font-size:12px;color:var(--soft)}
+.dates button.on{background:var(--ink);color:var(--paper)}
+.dates button.on small{color:#ece9e2aa}
+.dates button[disabled]{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px;flex-wrap:wrap}
+.step{display:flex;align-items:center;border:1px solid var(--ink)}
+.step button{width:40px;height:40px;font-size:20px}
+.step output{width:44px;text-align:center;font:400 22px Mar,serif}
+.total{font:400 26px Mar,serif}
+.ok{margin-top:14px;font-size:15px;color:var(--moss);font-weight:600;min-height:22px}
+/* set */
+#set{padding:120px 4vw;display:grid;grid-template-columns:5fr 7fr;gap:4vw;align-items:center}
+#set p.lede{font-size:19px;font-weight:300;max-width:440px}
+#set .note{font-size:14px;color:var(--soft);margin-top:14px}
+.rack{display:flex;gap:3vw;justify-content:center;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid var(--ink)}
+.vial{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13px;font-weight:600;padding:8px}
+.vial svg{width:58px;height:170px;transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+.vial:hover svg{transform:translateY(-6px) rotate(-3deg)}
+.vial.on svg{opacity:.25}
+.box{margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr) auto;gap:12px;align-items:end;background:var(--ink);color:var(--paper);padding:20px 22px}
+.slot{height:150px;border:1px dashed #ece9e255;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:visible}
+.slot svg{width:44px;height:130px;position:absolute;bottom:8px;left:50%;margin-left:-22px}
+.slot small{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ece9e299}
+.box .pay{display:flex;flex-direction:column;gap:12px;align-items:flex-end;padding-left:8px}
+.box .pay b{font:400 30px Mar,serif}
+.box .btn{background:var(--paper);color:var(--ink)}
+/* visit */
+#visit{display:grid;grid-template-columns:5fr 7fr;gap:4vw;padding:120px 4vw 100px;background:var(--paper)}
+.hours{width:100%;border-collapse:collapse;margin:20px 0 28px;font-size:16px}
+.hours td{padding:9px 0;border-top:1px solid var(--line)}
+.hours td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.hours tr.today td{font-weight:600;color:var(--madder)}
+details{border-top:1px solid var(--line);padding:14px 0}
+details summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details summary::after{content:"+";font-family:Mar;font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin-top:8px;font-weight:300;max-width:560px}
+.news{display:flex;margin-top:30px;border:1px solid var(--ink);max-width:520px}
+.news input{flex:1;border:0;background:transparent;padding:14px 16px;font:inherit;min-width:0}
+.news button{background:var(--ink);color:var(--paper);padding:0 20px;font-weight:600}
+footer{background:var(--ink);color:var(--paper);padding:60px 4vw 40px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;font-size:14px}
+footer .big{font:400 clamp(60px,10vw,150px)/.9 Mar,serif;grid-column:1/4;letter-spacing:-.02em;opacity:.9}
+footer small{color:#ece9e299}
+@media (max-width:860px){
+ nav .links{display:none}nav .bag{margin-left:auto}
+ #cover{display:block;padding-top:96px}
+ #cover h1{font-size:28vw}
+ #cover ol li{font-size:17px;grid-template-columns:34px 1fr}
+ #cover .win{height:52vh;margin-top:34px}
+ #forecast header{flex-wrap:wrap;gap:6px 16px}#forecast header .wk{display:none}#forecast header p{font-size:14px}
+ .cols{flex-direction:column}
+ .col .tag{writing-mode:horizontal-tb;transform:none;left:18px;bottom:auto;top:50%;margin-top:-22px;gap:12px}
+ .col .tag svg{transform:none;width:36px;height:36px}.col .tag b{font-size:24px}
+ .col .body{left:18px;right:18px;width:auto;bottom:18px}
+ .col h3{font-size:46px;margin:6px 0 8px}.col .story{font-size:15px}
+ .pyr{margin:12px 0 14px;font-size:13px;grid-template-columns:58px 1fr;gap:4px 0;padding-top:10px}
+ .col .fx svg{width:38px;height:38px}
+ #dry .stage{grid-template-columns:1fr;grid-template-rows:auto auto auto auto;align-content:start;padding:84px 18px 24px}
+ #dry h2,#dry .tabs,#dry .foot{grid-column:1}#dry h2 span{font-size:14px}#dry .foot{display:none}
+ #dry .tabs{margin:12px 0 4px}#dry .tabs button{padding:8px 9px;font-size:12px}
+ .tier{grid-template-columns:62px 1fr;padding:9px 0}.tier .w span{font-size:30px}.tier .w{gap:0 16px}
+ .clock .read b{font-size:42px}
+ #room,#set,#visit{grid-template-columns:1fr;padding:80px 18px}
+ .dates{grid-template-columns:repeat(2,1fr)}
+ .rack{gap:8px}.vial svg{width:46px;height:140px}
+ .box{grid-template-columns:repeat(3,1fr)}.box .pay{grid-column:1/4;flex-direction:row;justify-content:space-between;align-items:center;padding:0}
+ .slot{height:120px}.slot svg{height:104px}
+ footer{grid-template-columns:1fr}footer .big{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){#trail{display:none}}
+</style>
+</head>
+<body>
+<div id="pre"><b>sillage</b></div>
+<canvas id="trail"></canvas>
+<nav id="nav">
+  <a class="brand" href="#cover"><img src="src/img/logo.svg" alt="">sillage</a>
+  <div class="links"><a href="#forecast">The forecast</a><a href="#dry">Dry-down</a><a href="#room">Blending room</a><a href="#visit">Visit</a></div>
+  <a class="bag" href="#set">Sample set <i id="bagN">0</i></a>
+</nav>
+
+<section id="cover">
+  <div class="entry">
+    <div class="where"><span>14 Walcot Street, Bath</span><span>Since 2019</span></div>
+    <h1>sillage</h1>
+    <div class="pron"><span>/siˈjɑːʒ/</span><em>noun</em><span>from the French for the wake of a boat</span></div>
+    <ol>
+      <li><span>The trail a perfume leaves in the air after the person wearing it has walked past.</span></li>
+      <li><span>A small perfumery in Bath that bottles <b>English weather</b>: rain on ivy, a rose after a shower, lavender at dusk and a wet moss path. Blended by hand, upstairs from the shop.</span></li>
+    </ol>
+    <div class="acts">
+      <a class="btn" href="#set"><svg viewBox="0 0 12 22"><path d="M3 1h6M4 1v4L1 8v11a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V8L8 5V1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.6 13c2-1 4 1 6 0s3-1 3-.5V19a2 2 0 0 1-2 2H3a2 2 0 0 1-1.4-1z" fill="#c3304b"/></svg>Three vials for £18</a>
+      <a class="lnk" href="#room">Book the blending room</a>
+    </div>
+  </div>
+  <figure class="win"><div class="clip" id="inkClip"><video id="ink" src="media/ink.mp4" poster="media/ink.jpg" muted loop playsinline autoplay preload="metadata"></video></div><figcaption>A drop of rose absolute, meeting water.</figcaption></figure>
+</section>
+
+<section id="forecast">
+  <div class="stage">
+    <header><h2>The forecast</h2><p>Four scents for an English week, each made from one kind of weather.</p><span class="wk">Week of 16 November</span></header>
+    <div class="cols" id="cols"></div>
+  </div>
+</section>
+
+<section id="dry">
+  <div class="stage">
+    <h2><b>Eight hours on skin</b><span>Perfume doesn't smell the same all day. Light top notes leave first, the heart takes over, and the base is what's left by evening.</span></h2>
+    <div class="tabs" id="tabs"></div>
+    <div class="notes" id="notes"></div>
+    <div class="clock">
+      <div class="read"><b id="hrs">0 min</b><span>after spraying</span></div>
+      <svg viewBox="0 0 1000 300" id="chart"></svg>
+      <p class="now" id="now"></p>
+    </div>
+    <p class="foot">Curves show how strongly each layer comes through, measured on blotter strips in the studio at 21°C.</p>
+  </div>
+</section>
+
+<section id="room">
+  <figure class="blotimg" data-seed="2"><div class="clip"><img src="media/room.jpg" alt="Perfume raw materials on a workbench: rose petals, resins, dried herbs and glass beakers" loading="lazy"></div><figcaption>The blending room bench: rose, benzoin, orris root and cedar shavings.</figcaption></figure>
+  <div>
+    <h2>The blending room</h2>
+    <p class="lede">Two and a half hours upstairs with our perfumer, Ines. You smell the raw materials, build an accord on blotter strips, and leave with 30 ml of your own scent. We keep your formula on file, so you can reorder it.</p>
+    <ol class="steps">
+      <li><b>i</b><span>Smell 24 raw materials, from bergamot to labdanum, and choose the six you like best.</span></li>
+      <li><b>ii</b><span>Weigh them drop by drop on the bench scales. We'll help with the ratios.</span></li>
+      <li><b>iii</b><span>Bottle and name it. It needs two weeks to settle, so we post it to you.</span></li>
+    </ol>
+    <div class="book">
+      <h4>Saturdays, 10:30 to 13:00 · £85 a seat</h4>
+      <div class="dates" id="dates"></div>
+      <div class="row">
+        <div class="step"><button id="minus" aria-label="Fewer seats">–</button><output id="seats">2</output><button id="plus" aria-label="More seats">+</button></div>
+        <span class="total" id="total">£170</span>
+        <button class="btn" id="reserve">Reserve 2 seats</button>
+      </div>
+      <p class="ok" id="ok"></p>
+    </div>
+  </div>
+</section>
+
+<section id="set">
+  <div>
+    <h2>The sample set</h2>
+    <p class="lede">Choose three of the four scents in 2 ml vials, wear each one for a day, then decide. The £18 comes off your first full bottle.</p>
+    <p class="note">Posted in a card box that fits through a letterbox. Free UK delivery.</p>
+  </div>
+  <div>
+    <div class="rack" id="rack"></div>
+    <div class="box" id="box"><div class="slot"><small>vial 1</small></div><div class="slot"><small>vial 2</small></div><div class="slot"><small>vial 3</small></div><div class="pay"><b id="setPrice">£18</b><button class="btn" id="checkout">Choose 3 vials</button></div></div>
+  </div>
+</section>
+
+<section id="visit">
+  <div>
+    <h2>Visit the shop</h2>
+    <p>14 Walcot Street, Bath BA1 5BG. Ten minutes' walk from the station, opposite the old corn market.</p>
+    <table class="hours" id="hours">
+      <tr><td>Monday</td><td>Closed</td></tr><tr><td>Tuesday to Friday</td><td>10:00–18:00</td></tr><tr><td>Saturday</td><td>10:00–18:00</td></tr><tr><td>Sunday</td><td>11:00–16:00</td></tr>
+    </table>
+    <details open><summary>How long does a bottle last?</summary><p>About eight months at three sprays a day. Kept out of the sun, an unopened bottle is good for five years.</p></details>
+    <details><summary>Are the scents vegan?</summary><p>Yes. We use synthetic musks and ambrette seed instead of animal materials, and nothing is tested on animals.</p></details>
+    <details><summary>Can I return a bottle?</summary><p>Unopened bottles within 30 days. If you've opened one and it isn't right, bring it in and we'll help you swap it.</p></details>
+    <details><summary>Do you make wedding scents?</summary><p>Yes. Book two blending-room sessions and we'll make a private formula with a run of 20 to 200 bottles.</p></details>
+    <form class="news" id="news"><input type="email" placeholder="Your email" aria-label="Email" required><button>Get the weekly forecast</button></form>
+    <p class="ok" id="newsOk"></p>
+  </div>
+  <figure class="blotimg" data-seed="5"><div class="clip"><img src="media/bath.jpg" alt="Bath: Georgian stone buildings and Pulteney Bridge over the river" loading="lazy"></div><figcaption>Bath, a short walk downhill from the shop.</figcaption></figure>
+</section>
+
+<footer>
+  <div class="big">sillage</div>
+  <div>Sillage Perfumery · 14 Walcot Street, Bath BA1 5BG<br><small>Hand-blended in small batches. Every bottle is numbered.</small></div>
+  <div>hello@sillage.example<br>01225 000 214</div>
+  <div><small>by LOLCorp PVT LTD</small></div>
+</footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const CAP=navigator.webdriver===true;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S=[
+ {id:'rain',name:'After Rain',day:'Mon',fx:'Light rain · 11°C · wind SW 9 mph',col:'#5f7f8c',price:118,story:'The first ten minutes of rain on warm stone, and the ivy that grows over Walcot Street.',top:['bergamot','ivy leaf'],heart:['petrichor accord','violet leaf'],base:['vetiver','ambrette seed'],tau:[.5,2.4,9]},
+ {id:'rose',name:'Rose, Wet',day:'Tue',fx:'Showers clearing · 13°C',col:'#c3304b',price:124,story:'A garden rose just after a shower, its petals still holding the water.',top:['pink pepper','rain accord'],heart:['Damask rose','geranium'],base:['patchouli','white musk'],tau:[.4,3,10]},
+ {id:'lavender',name:'Lavender Hour',day:'Wed',fx:'Clear dusk · 9°C · sunset 16:21',col:'#7b6aa8',price:112,story:'Lavender rows at the end of the day, with the warm earth cooling underneath.',top:['lavender','clary sage'],heart:['orris','cut hay'],base:['tonka bean','cedarwood'],tau:[.6,2.2,11]},
+ {id:'moss',name:'Moss Path',day:'Thu',fx:'Morning mist · 7°C',col:'#56633a',price:128,story:'A wet wood first thing: moss, fern and cold air coming off the stream.',top:['juniper','cold-air accord'],heart:['oakmoss','fern'],base:['cedar','labdanum'],tau:[.45,2.8,12]}
+];
+/* weather glyphs, drawn in code and animated on the clock */
+function glyph(i){const p='<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">';
+ if(i===0)return p+'<path d="M18 36a9 9 0 0 1 1-18 12 12 0 0 1 23-2 9 9 0 0 1 4 18H18" /><g class="drops"><path d="M22 40v6"/><path d="M32 40v6"/><path d="M42 40v6"/></g></svg>';
+ if(i===1)return p+'<path d="M32 50V34M32 42c-5 0-8-3-9-6M32 34c-8 0-11-6-11-11 3 2 6 1 8-2 2 4 4 4 6 0 2 3 5 4 8 2 0 5-3 11-11 11" /><circle class="drip" cx="40" cy="30" r="2" fill="currentColor"/></svg>';
+ if(i===2)return p+'<path d="M8 44h48"/><g class="sun"><circle cx="32" cy="44" r="10"/></g><path d="M14 54v-8M20 54v-10M26 54v-7M38 54v-7M44 54v-10M50 54v-8" class="stems"/></svg>';
+ return p+'<g class="tree"><path d="M32 54V30"/><path d="M32 12c-10 0-15 8-13 16 1 4 6 6 13 6s12-2 13-6c2-8-3-16-13-16z"/></g><path d="M8 50c8-2 12 2 20 0M36 52c8-2 12 2 20 0" opacity=".6"/></svg>';}
+/* build forecast columns */
+const cols=$('#cols');
+S.forEach((s,i)=>{const c=document.createElement('article');c.className='col';c.dataset.i=i;
+ c.innerHTML=`<video src="media/${s.id}.mp4" poster="media/${s.id}.jpg" muted loop playsinline autoplay preload="metadata"></video><div class="grey"></div><div class="shade"></div>
+ <div class="tag"><span class="g">${glyph(i)}</span>${s.day}<b>${s.name}</b></div>
+ <div class="body"><div class="fx"><span class="g">${glyph(i)}</span>${s.day} · ${s.fx}</div><h3>${s.name}</h3><p class="story">${s.story}</p>
+ <dl class="pyr"><dt>Top</dt><dd>${s.top.join(', ')}</dd><dt>Heart</dt><dd>${s.heart.join(', ')}</dd><dt>Base</dt><dd>${s.base.join(', ')}</dd></dl>
+ <div class="buy"><span>50 ml · £${s.price}</span><button class="btn add" data-i="${i}">Add a vial to your set</button></div></div>`;
+ cols.appendChild(c)});
+const C=$$('.col').map(el=>({el,grey:el.querySelector('.grey'),tag:el.querySelector('.tag'),body:el.querySelector('.body'),w:1,v:0,b:0,seed:+el.dataset.i*1.7+.4}));
+C[0].w=4.2;
+/* dry-down */
+let dryI=0,dryUser=false;const tabs=$('#tabs');
+S.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.name;b.onclick=()=>{dryI=i;dryUser=true;buildDry()};tabs.appendChild(b)});
+const tierNames=['top','heart','base'];let words=[];
+const amp=(k,t,tau)=>k===0?Math.exp(-t/tau[0]):k===1?.9*(1-Math.exp(-t/.35))*Math.exp(-t/tau[1]):.62*(1-Math.exp(-t/1.1))*Math.exp(-t/tau[2]);
+function buildDry(){const s=S[dryI];$$('#tabs button').forEach((b,i)=>b.classList.toggle('on',i===dryI));
+ $('#notes').innerHTML=tierNames.map(n=>`<div class="tier"><small>${n}</small><div class="w">${s[n].map(w=>`<span>${w}</span>`).join('')}</div></div>`).join('');
+ words=$$('#notes .tier').map((r,k)=>[...r.querySelectorAll('span')].map((el,j)=>({el,k,j,last:1})));
+ let g='';for(let x=0;x<=8;x++)g+=`<line x1="${x*125}" x2="${x*125}" y1="20" y2="250" stroke="#17181c" stroke-opacity=".12"/><text x="${x*125}" y="278" font-size="17" text-anchor="middle" fill="#55565c" font-family="Han">${x}h</text>`;
+ const fills=['#17181c','#c3304b','#56633a'];
+ for(let k=0;k<3;k++){let d='M0 250';for(let x=0;x<=200;x++){const t=x/25;d+=` L${x*5} ${250-230*amp(k,t,s.tau)}`}g+=`<path d="${d} L1000 250Z" fill="${fills[k]}" fill-opacity=".12"/><path d="${d.replace('M0 250 L','M')}" fill="none" stroke="${fills[k]}" stroke-width="2.5"/>`;}
+ g+=`<line id="ph" x1="0" x2="0" y1="10" y2="250" stroke="#17181c" stroke-width="2"/><circle id="pd" r="7" fill="#c3304b" stroke="#ece9e2" stroke-width="3"/>`;
+ $('#chart').innerHTML=g;}
+buildDry();
+/* blending room booking */
+const D=[['14 Nov',0],['21 Nov',3],['28 Nov',6],['5 Dec',2],['12 Dec',8],['19 Dec',5]];let di=2,seats=2;
+$('#dates').innerHTML=D.map(([d,n],i)=>`<button data-i="${i}" ${n?'':'disabled'}><b>${d}</b><small>${n?n+' of 8 seats left':'Full'}</small></button>`).join('');
+function book(){$$('#dates button').forEach((b,i)=>b.classList.toggle('on',i===di));seats=clamp(seats,1,Math.min(4,D[di][1]));$('#seats').textContent=seats;$('#total').textContent='£'+seats*85;$('#reserve').textContent=`Reserve ${seats} seat${seats>1?'s':''}`}
+$('#dates').onclick=e=>{const b=e.target.closest('button');if(b&&!b.disabled){di=+b.dataset.i;$('#ok').textContent='';book()}};
+$('#minus').onclick=()=>{seats--;book()};$('#plus').onclick=()=>{seats++;book()};
+$('#reserve').onclick=()=>{$('#ok').textContent=`Held: ${seats} seat${seats>1?'s':''} on Saturday ${D[di][0]}. Ines will email you a smell questionnaire.`};
+book();
+/* sample set */
+const vial=(c,h=170)=>`<svg viewBox="0 0 58 170"><rect x="19" y="4" width="20" height="20" rx="2" fill="#17181c"/><path d="M17 26h24v130a12 12 0 0 1-24 0z" fill="#ffffff55" stroke="#17181c" stroke-width="1.6"/><path d="M18.6 70c6-3 14 3 21 0v86a10.4 10.4 0 0 1-21 0z" fill="${c}"/><path d="M22 34v110" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".7"/></svg>`;
+$('#rack').innerHTML=S.map((s,i)=>`<button class="vial" data-i="${i}">${vial(s.col)}<span>${s.name}</span></button>`).join('');
+let chosen=[];const slots=$$('.slot').map(el=>({el,y:0,v:0,i:-1}));
+function setSet(){slots.forEach((s,k)=>{const want=chosen[k]??-1;if(want!==s.i){s.i=want;s.el.querySelector('svg')?.remove();if(want>=0){s.el.insertAdjacentHTML('beforeend',vial(S[want].col));s.y=-260;s.v=0}}});
+ $$('.vial').forEach((v,i)=>v.classList.toggle('on',chosen.includes(i)));$('#bagN').textContent=chosen.length;
+ $('#checkout').textContent=chosen.length<3?`Choose ${3-chosen.length} more`:'Order the set'}
+function toggle(i){const k=chosen.indexOf(i);if(k>=0)chosen.splice(k,1);else if(chosen.length<3)chosen.push(i);else{chosen.shift();chosen.push(i)}setSet()}
+$('#rack').onclick=e=>{const b=e.target.closest('.vial');if(b)toggle(+b.dataset.i)};
+cols.addEventListener('click',e=>{const a=e.target.closest('.add');if(a){e.stopPropagation();if(!chosen.includes(+a.dataset.i))toggle(+a.dataset.i);a.textContent='In your set ✓';return}
+ const c=e.target.closest('.col');if(c){const f=$('#forecast');scrollTo({top:f.offsetTop+(+c.dataset.i+.5)/4*(f.offsetHeight-innerHeight),behavior:'smooth'})}});
+$('#checkout').onclick=()=>{if(chosen.length===3)$('#checkout').textContent='Added to basket ✓'};
+$('#news').onsubmit=e=>{e.preventDefault();$('#newsOk').textContent='Thanks. The forecast arrives on Monday mornings.'};
+const day=new Date().getDay();$$('#hours tr')[day===1?0:day===0?3:day===6?2:1].classList.add('today');
+setSet();
+/* blot path: an ink drop spreading in water. radius grows with the square root of time (diffusion), edge wobbles with a few sine modes */
+function blot(cx,cy,r,seed,t){let d='';const n=64;for(let k=0;k<=n;k++){const a=k/n*Math.PI*2;const w=1+.085*Math.sin(a*3+seed+t*.55)+.05*Math.sin(a*5-seed*2+t*.9)+.03*Math.sin(a*11+seed*5-t*.4);const rr=Math.max(0,r*w);d+=(k?'L':'M')+(cx+rr*Math.cos(a)).toFixed(1)+' '+(cy+rr*Math.sin(a)).toFixed(1)}return d+'Z'}
+/* sillage trail: buoyant, drag-damped particles with Brownian spread, emitted by the pointer (or by an unseen passer-by when idle) */
+const cv=$('#trail'),cx=cv.getContext('2d');let W=0,H=0;function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}rs();addEventListener('resize',rs);
+const spr={};function sprite(c){if(spr[c])return spr[c];const o=document.createElement('canvas');o.width=o.height=64;const g=o.getContext('2d');const gr=g.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,c);gr.addColorStop(1,c+'00');g.fillStyle=gr;g.fillRect(0,0,64,64);return spr[c]=o}
+const P=[];let px=-1,py=-1,lastMove=-9e9,pvx=0,pvy=0;
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+function emit(x,y,vx,vy,n,c){for(let k=0;k<n&&P.length<700;k++)P.push({x:x+gauss()*4,y:y+gauss()*4,vx:vx*.35+gauss()*12,vy:vy*.35+gauss()*12,a:0,c})}
+addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const now=performance.now();if(px>=0){const dx=e.clientX-px,dy=e.clientY-py,dist=Math.hypot(dx,dy);const n=Math.min(6,Math.ceil(dist/14));for(let k=0;k<n;k++)emit(px+dx*k/n,py+dy*k/n,dx*20,dy*20,1,scentCol)}px=e.clientX;py=e.clientY;lastMove=now},{passive:true});
+let scentCol='#c3304b';
+/* preloader */
+let seen=false;try{seen=sessionStorage.getItem('sillage-seen')==='1';sessionStorage.setItem('sillage-seen','1')}catch(e){}
+const pre=$('#pre');if(seen||reduce)pre.remove();
+/* videos: in capture, seek them on the virtual clock */
+const vids=$$('video');if(CAP)vids.forEach(v=>{v.removeAttribute('autoplay');v.pause()});
+const ink=$('#ink'),inkClip=$('#inkClip');const blots=$$('.blotimg').map(f=>({f,clip:f.querySelector('.clip'),seed:+f.dataset.seed,t0:-1}));
+const fc=$('#forecast'),dry=$('#dry'),nav=$('#nav');
+let T0=null,last=0,act=0,dt_hrs=0,dv=0,lastAct=-1;
+function frame(now){if(T0===null){T0=now;last=now}const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-T0)/1000;
+ const sy=scrollY,vh=innerHeight,vw=innerWidth,mob=vw<=860;
+ if(pre.isConnected){const p=clamp((t-.25)/1.4);if(p>=1)pre.remove();else{const r=Math.hypot(vw,vh)*.62*Math.sqrt(p);pre.style.clipPath=`path(evenodd,"M0 0H${vw}V${vh}H0Z ${blot(vw/2,vh/2,r,1,t)}")`;pre.querySelector('b').style.opacity=1-p*2}}
+ /* hero ink window blooms open, then keeps breathing */
+ {const w=inkClip.offsetWidth,h=inkClip.offsetHeight;const p=clamp((t-(seen?0:.9))/2.6);const r=Math.min(w,h)*.5*(.06+.86*Math.sqrt(p))*(1+.015*Math.sin(t*.8));inkClip.style.clipPath=`path("${blot(w/2,h/2,r,3,t)}")`}
+ /* forecast: which day is active */
+ const fTop=fc.offsetTop,fH=fc.offsetHeight-vh;const fp=clamp((sy-fTop)/fH);act=Math.min(3,Math.floor(fp*4));
+ if(act!==lastAct){lastAct=act;if(!dryUser){dryI=act;buildDry()}}
+ scentCol=S[sy>fTop-vh*.5&&sy<dry.offsetTop+dry.offsetHeight?(sy<dry.offsetTop?act:dryI):1].col;
+ nav.classList.toggle('dark',sy>fTop-60&&sy<fTop+fc.offsetHeight-60);
+ const inF=sy>fTop-vh&&sy<fTop+fc.offsetHeight;
+ if(inF)C.forEach((c,i)=>{const on=i===act;const k=90,cc=2*.78*Math.sqrt(k);const tgt=on?(mob?6.5:4.6):1;c.v+=(k*(tgt-c.w)-cc*c.v)*dt;c.w+=c.v*dt;c.el.style.flexGrow=c.w.toFixed(3);
+  c.b=clamp(c.b+(on?dt/1.9:-dt/.7));const ew=c.el.offsetWidth,eh=c.el.offsetHeight;const R=Math.hypot(ew,eh)*1.1*Math.sqrt(c.b);
+  c.grey.style.clipPath=c.b>=1?'inset(50%)':`path(evenodd,"M0 0H${ew}V${eh}H0Z ${blot(mob?ew*.25:ew*.3,eh*.62,R,c.seed,t)}")`;
+  const show=clamp((c.w-(mob?2.6:2))/1.8);c.body.style.opacity=show;c.body.style.transform=`translateY(${(1-show)*30}px)`;c.tag.style.opacity=1-clamp((c.w-1.25)/.8);
+  /* glyph life: raindrops fall at terminal velocity, a drip swells then drops, the sun sinks, the tree sways */
+  c.el.querySelectorAll('.g').forEach(g=>{if(i===0)g.querySelectorAll('.drops path').forEach((d,j)=>{const y=((t*26+j*7)%14);d.setAttribute('transform',`translate(0 ${y-2})`);d.setAttribute('opacity',(1-y/14).toFixed(2))});
+   if(i===1){const ph=(t+.0)%2.4;const dr=g.querySelector('.drip');const yy=ph<1.8?0:.5*900*(ph-1.8)**2/30;dr.setAttribute('r',(1.2+Math.min(1.8,ph)*0.8).toFixed(2));dr.setAttribute('cy',(30+yy).toFixed(1));dr.setAttribute('opacity',ph<1.8?1:1-(ph-1.8)/.6)}
+   if(i===2){g.querySelector('.sun').setAttribute('transform',`translate(0 ${(Math.sin(t*.5)*3+2).toFixed(2)})`);g.querySelector('.stems').setAttribute('transform',`skewX(${(Math.sin(t*1.7)*5).toFixed(2)})`)}
+   if(i===3)g.querySelector('.tree').setAttribute('transform',`rotate(${(Math.sin(t*1.1)*3+Math.sin(t*2.3)*1).toFixed(2)} 32 54)`)})});
+ /* dry-down: scroll is hours on skin */
+ const dTop=dry.offsetTop,dH=dry.offsetHeight-vh;const tgtH=clamp((sy-dTop)/dH)*8;{const k=40,cc=2*Math.sqrt(k);dv+=(k*(tgtH-dt_hrs)-cc*dv)*dt;dt_hrs+=dv*dt}
+ if(sy>dTop-vh&&sy<dTop+dry.offsetHeight){const s=S[dryI];const hh=Math.max(0,dt_hrs);const m=Math.round(hh*60);$('#hrs').textContent=m<60?m+' min':Math.floor(m/60)+' h '+String(m%60).padStart(2,'0');
+  const x=hh/8*1000;$('#ph')?.setAttribute('x1',x);$('#ph')?.setAttribute('x2',x);let best=0,bv=-1;
+  for(let k=0;k<3;k++){const a=amp(k,hh,s.tau);if(a>bv){bv=a;best=k}}$('#pd')?.setAttribute('cx',x);$('#pd')?.setAttribute('cy',250-230*bv);
+  $('#now').innerHTML=`Right now you mostly smell the <b>${tierNames[best]} notes</b>: ${s[tierNames[best]].join(' and ')}.`;
+  words.flat().forEach(wd=>{const a=amp(wd.k,hh*(1+.12*wd.j),s.tau);const I=clamp(a/(wd.k===0?1:wd.k===1?.78:.5));
+   wd.el.style.opacity=(.08+.92*I).toFixed(3);wd.el.style.letterSpacing=((1-I)*.32).toFixed(3)+'em';wd.el.style.transform=`translateY(${(-(1-I)*18).toFixed(1)}px)`;wd.el.style.filter=`blur(${((1-I)*3.2).toFixed(2)}px)`;
+   /* evaporation: a fading word gives off a little vapour */
+   if(I<wd.last-.0004&&I>.04&&Math.random()<.5){const r=wd.el.getBoundingClientRect();emit(r.left+Math.random()*r.width,r.top+r.height*.4,0,-40,1,s.col)}wd.last=I})}
+ /* blot reveals for photos */
+ blots.forEach(b=>{const r=b.f.getBoundingClientRect();if(b.t0<0&&r.top<vh*.8)b.t0=t;const p=b.t0<0?0:clamp((t-b.t0)/2.2);const w=b.clip.offsetWidth,h=b.clip.offsetHeight;
+  b.clip.style.clipPath=p>=1?'none':`path("${blot(w*.5,h*.5,Math.hypot(w,h)*.6*Math.sqrt(p),b.seed,t)}")`});
+ /* vials drop into the foam slots with a small bounce */
+ slots.forEach(s=>{if(s.i<0)return;const k=260,cc=2*.38*Math.sqrt(k);s.v+=(k*(0-s.y)-cc*s.v)*dt;s.y+=s.v*dt;const sv=s.el.querySelector('svg');if(sv)sv.style.transform=`translateY(${s.y.toFixed(1)}px) rotate(${(s.y*.03).toFixed(2)}deg)`});
+ /* videos on the virtual clock during capture */
+ if(CAP)vids.forEach((v,i)=>{const r=v.getBoundingClientRect();if(r.bottom>0&&r.top<vh&&v.duration){v.currentTime=(t*.9+i*1.3)%(v.duration-.1)}});
+ /* trail */
+ if(!reduce){const idle=now-lastMove>1400;
+  if(idle||CAP){const wx=vw*(.5+.36*Math.sin(t*.42)+.08*Math.sin(t*1.1)),wy=vh*(.58+.22*Math.sin(t*.57+1.2));const vx=vw*.36*.42*Math.cos(t*.42),vy=vh*.22*.57*Math.cos(t*.57+1.2);emit(wx,wy,vx,vy,mob?1:2,scentCol)}
+  cx.clearRect(0,0,W,H);const D2=110;
+  for(let k=P.length-1;k>=0;k--){const q=P[k];q.a+=dt;if(q.a>3.6){P.splice(k,1);continue}
+   q.vx+=(-1.7*q.vx+8)*dt;q.vy+=(-1.7*q.vy-16)*dt;q.x+=q.vx*dt+gauss()*Math.sqrt(2*D2*dt);q.y+=q.vy*dt+gauss()*Math.sqrt(2*D2*dt);
+   const r=5+Math.sqrt(4*D2*q.a)*.55;const al=(mob?.12:.18)*Math.exp(-q.a/1.3)*clamp(q.a/.12);cx.globalAlpha=al;cx.drawImage(sprite(q.c),q.x-r,q.y-r,r*2,r*2)}
+  cx.globalAlpha=1}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
