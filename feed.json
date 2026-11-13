@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-12T10:27:07Z",
+ "updated": "2026-11-13T15:06:32Z",
  "items": [
+  {
+   "slug": "tapehouse",
+   "title": "Tapehouse",
+   "kind": "Podcast studio · Web app",
+   "blurb": "A podcast editor where you delete words from the transcript and the tape is cut and spliced to match.",
+   "url": "https://showcase.lolcorp.co.uk/tapehouse/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/tapehouse.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/tapehouse.jpg"
+  },
   {
    "slug": "sillage",
    "title": "Sillage",
