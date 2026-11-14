@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cloudline · a cliff house above the clouds, Val Varaita</title>
+<meta name="description" content="Cloudline is a three-bedroom glass and stone house on a cliff edge at 1,240 m in Val Varaita, Piedmont. Stay in any season.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Bellefair;src:url(assets/fonts/bellefair-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Jost;src:url(assets/fonts/jost-latin-300-normal.woff2) format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:Jost;src:url(assets/fonts/jost-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Jost;src:url(assets/fonts/jost-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+:root{--lime:#f1ece4;--lime2:#e6dfd3;--slate:#23262b;--slate2:#2f333a;--stone:#8b8680;--apricot:#e9935a;--apricot2:#c8703c;--hair:#23262b26;--sea:#7f93a8}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--lime);color:var(--slate);font-family:Jost,system-ui,sans-serif;font-weight:300;font-size:17px;line-height:1.55;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.bf{font-family:Bellefair,Georgia,serif;font-weight:400}
+/* ticket-stub button: notched ends */
+.stub{--n:7px;display:inline-flex;align-items:center;gap:.7em;padding:.85em 1.5em;font-weight:500;font-size:13px;letter-spacing:.14em;text-transform:uppercase;background:var(--apricot);color:#22160e;
+ -webkit-mask:radial-gradient(circle var(--n) at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--n) at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;
+ mask:radial-gradient(circle var(--n) at 0 50%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle var(--n) at 100% 50%,#0000 98%,#000) right/51% 100% no-repeat;transition:background .25s}
+.stub:hover{background:#f2a774}.stub i{font-style:normal;border-left:1px dashed #22160e66;padding-left:.8em}
+.stub.ghost{background:#f1ece4e6}
+/* ---------- nav ---------- */
+#nav{position:fixed;inset:0 0 auto;z-index:30;display:flex;align-items:center;gap:28px;padding:22px 40px;color:var(--lime);transition:color .4s,background .4s}
+#nav.solid{color:var(--slate);background:#f1ece4ee;backdrop-filter:blur(10px);padding-top:14px;padding-bottom:14px;border-bottom:1px solid var(--hair)}
+#nav .brand{display:flex;align-items:center;gap:12px;font-size:26px;letter-spacing:.02em}
+#nav .brand img{width:34px;height:34px}
+#nav ul{display:flex;gap:26px;list-style:none;margin-left:auto;font-size:14px;letter-spacing:.06em}
+#nav ul a{opacity:.85}#nav ul a:hover{opacity:1}
+#nav .stub{font-size:12px;padding:.75em 1.3em}
+/* ---------- hero ---------- */
+#hero{position:relative;height:620vh;background:#14161a}
+#stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#gl,#fx{position:absolute;inset:0;width:100%;height:100%;display:block}
+#fx{pointer-events:none}
+#shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0b0c0f8c 0,#0b0c0f00 22%,#0b0c0f00 52%,#0b0c0fa6 100%)}
+#copy{position:absolute;left:40px;bottom:46px;width:min(58vw,820px);color:var(--lime);z-index:3}
+#word{font-family:Bellefair,Georgia,serif;font-size:clamp(84px,13.4vw,210px);line-height:.8;letter-spacing:-.01em;height:.92em;white-space:nowrap;position:relative}
+#word span{display:inline-block;will-change:transform}
+#sub{max-width:520px;margin-top:22px;font-size:19px;line-height:1.5;text-shadow:0 1px 18px #0007}
+#facts{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+#facts b{font-weight:500}
+#copy .stub{margin-top:26px}
+#flyers{position:absolute;inset:0;pointer-events:none;z-index:4;color:var(--lime);font-family:Bellefair,Georgia,serif}
+#flyers span{position:absolute;left:0;top:0;line-height:.8;will-change:transform,opacity}
+#dial{position:absolute;right:-300px;top:50%;width:640px;height:640px;margin-top:-320px;z-index:2;color:var(--lime);pointer-events:none}
+#dial svg{width:100%;height:100%;overflow:visible}
+#ring text{font-family:Jost;font-size:15px;letter-spacing:.18em;fill:currentColor}
+#dial .ptr{position:absolute;left:-22px;top:50%;width:0;height:0;margin-top:-7px;border:7px solid transparent;border-left:11px solid var(--apricot)}
+#dial .now{display:none;position:absolute;left:-150px;top:50%;transform:translateY(-50%);font-size:12px;letter-spacing:.2em;text-transform:uppercase;text-align:right;width:118px;opacity:.9}
+/* ---------- house (camera over one photo) ---------- */
+#house{position:relative;height:460vh;background:var(--lime)}
+#house .wrap{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+#house .text{position:relative;padding:96px 48px 30px 40px;display:flex;flex-direction:column}
+#house h2{font-size:clamp(38px,3.7vw,58px);line-height:.98;letter-spacing:-.005em}
+#house .lede{margin-top:18px;max-width:440px;color:#3c4048}
+#stops{list-style:none;margin-top:22px;border-top:1px solid var(--hair);counter-reset:s}
+#stops li{position:relative;padding:11px 0 11px 46px;border-bottom:1px solid var(--hair);color:#23262b80}
+#stops li::before{content:attr(data-n);position:absolute;left:0;top:14px;font-size:12px;letter-spacing:.14em;font-weight:500}
+#stops li b{display:block;font-family:Bellefair,Georgia,serif;font-weight:400;font-size:23px;line-height:1.1;color:inherit}
+#stops li p{display:none;font-size:15px;color:#3c4048}
+#stops li.on{color:var(--slate)}#stops li.on p{display:block;margin-top:6px}
+#stops li.on::before{color:var(--apricot2)}
+#lens{position:relative;overflow:hidden;background:#1b1d21}
+#plate{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#plate img{display:block;width:100%;height:100%}
+.pin{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:#f1ece4;color:#23262b;font-size:11px;font-weight:500;display:grid;place-items:center;box-shadow:0 4px 20px #0006;transition:background .3s,color .3s}
+.pin::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1px solid #f1ece4aa;opacity:0}
+.pin.on{background:var(--apricot);color:#22160e}.pin.on::after{animation:ring 2.2s ease-out infinite}
+@keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+#spec{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:auto;padding-bottom:4px;border-top:1px solid var(--hair);padding-top:16px}
+#spec div{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#23262b99}
+#spec b{display:block;font-family:Bellefair,Georgia,serif;font-weight:400;font-size:30px;letter-spacing:0;text-transform:none;color:var(--slate)}
+/* ---------- year ---------- */
+#year{background:var(--slate);color:var(--lime);padding:120px 40px 110px}
+#year .head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end}
+#year h2{font-size:clamp(44px,4.6vw,74px);line-height:.98}
+#year .head p{color:#f1ece4b3;max-width:470px}
+#cal{margin-top:60px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}
+.mo{display:flex;flex-direction:column;align-items:stretch;cursor:default}
+.mo .bar{height:240px;display:flex;align-items:flex-end;border-bottom:1px solid #f1ece433}
+.mo .bar i{display:block;width:100%;height:var(--h);transform-origin:bottom;background:linear-gradient(#f1ece4f2,#f1ece433);border-radius:2px 2px 0 0;position:relative}
+.mo .bar i::before{content:attr(data-n);position:absolute;top:-24px;left:0;right:0;text-align:center;font-size:13px;color:#f1ece4cc}
+.mo .band{height:4px;margin-top:10px}
+.mo .m{margin-top:10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;text-align:center}
+.mo .r{text-align:center;font-family:Bellefair,Georgia,serif;font-size:21px}
+.mo:hover .bar i{background:linear-gradient(#e9935a,#e9935a44)}
+#year .key{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:34px;font-size:13px;color:#f1ece4b3}
+#year .key span::before{content:"";display:inline-block;width:18px;height:4px;margin-right:8px;vertical-align:middle;background:var(--c)}
+/* ---------- rooms ---------- */
+#rooms{padding:120px 40px}
+#rooms .head{display:flex;justify-content:space-between;align-items:end;gap:30px}
+#rooms h2{font-size:clamp(44px,4.6vw,74px);line-height:.98;max-width:12ch}
+#rooms .head p{max-width:420px;color:#3c4048}
+#rlist{margin-top:54px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.room .ph{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;background:#ccc}
+.room .ph div{position:absolute;inset:0;background-size:var(--z);background-position:var(--p);transition:opacity .9s}
+.room .ph div+div{opacity:0}
+.room:hover .ph div+div{opacity:1}
+.room h3{margin-top:16px;font-size:26px;line-height:1.1}
+.room p{font-size:15px;color:#3c4048;margin-top:6px}
+.room small{display:block;margin-top:10px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--apricot2)}
+/* ---------- stay ---------- */
+#stay{background:var(--lime2);padding:120px 40px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:60px}
+#stay h2{font-size:clamp(44px,4.6vw,74px);line-height:.98}
+#stay .intro p{margin-top:18px;color:#3c4048;max-width:420px}
+#stay ul.inc{list-style:none;margin-top:26px;font-size:15px}
+#stay ul.inc li{padding:9px 0;border-bottom:1px solid var(--hair)}
+#book{background:var(--lime);border:1px solid var(--hair);padding:30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:30px}
+#book .mhead{display:flex;justify-content:space-between;align-items:center;font-family:Bellefair,Georgia,serif;font-size:26px}
+#book .mhead button{font-family:Jost;font-size:20px;width:34px;height:34px;border:1px solid var(--hair);border-radius:50%}
+#grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin-top:14px;text-align:center}
+#grid .dw{font-size:11px;letter-spacing:.12em;color:#23262b80;padding:6px 0}
+#grid button{aspect-ratio:1;font-size:14px;border-radius:2px;position:relative}
+#grid button:hover{background:#23262b12}
+#grid button.in{background:#e9935a33}
+#grid button.a,#grid button.b{background:var(--apricot);color:#22160e;font-weight:500}
+#grid button.x{color:#23262b40;text-decoration:line-through;pointer-events:none}
+#grid button.o{visibility:hidden}
+#sum .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--hair);font-size:15px}
+#sum .row b{font-weight:500}
+#sum .tot{font-family:Bellefair,Georgia,serif;font-size:34px;display:flex;justify-content:space-between;align-items:baseline;padding:16px 0 4px}
+#sum .tot small{font-family:Jost;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.step{display:flex;align-items:center;gap:12px}
+.step button{width:30px;height:30px;border:1px solid var(--hair);border-radius:50%;font-size:17px}
+#sum .stub{width:100%;justify-content:center;margin-top:18px}
+#ok{margin-top:12px;font-size:14px;min-height:1.5em;color:#2f6b45}
+/* ---------- getting here ---------- */
+#here{padding:120px 40px 90px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:60px}
+#here h2{font-size:clamp(40px,4vw,62px);line-height:1}
+#route{list-style:none;margin-top:30px;position:relative}
+#route::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:1px;background:repeating-linear-gradient(var(--stone) 0 5px,transparent 5px 10px)}
+#route li{position:relative;padding:0 0 22px 34px}
+#route li::before{content:"";position:absolute;left:2px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--lime);border:2px solid var(--apricot)}
+#route li b{font-weight:500}
+details{border-bottom:1px solid var(--hair);padding:18px 0}
+details:first-of-type{border-top:1px solid var(--hair)}
+summary{list-style:none;cursor:pointer;font-family:Bellefair,Georgia,serif;font-size:24px;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:Jost;font-weight:300}
+details[open] summary::after{content:"–"}
+details p{margin-top:10px;color:#3c4048;font-size:16px}
+footer{background:var(--slate);color:#f1ece4b3;padding:56px 40px 40px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;font-size:14px}
+footer .bf{font-size:34px;color:var(--lime)}
+footer b{display:block;color:var(--lime);font-weight:500;margin-bottom:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+footer .credit{grid-column:1/-1;border-top:1px solid #f1ece41f;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+/* ---------- phone ---------- */
+@media (max-width:820px){
+ #nav{padding:16px 18px}#nav ul{display:none}#nav .stub{margin-left:auto}
+ #nav .brand{font-size:22px}#nav .brand img{width:28px;height:28px}
+ #copy{left:18px;right:18px;width:auto;bottom:118px}
+ #word{font-size:17vw}
+ #sub{font-size:16px;margin-top:16px}
+ #facts{font-size:11px;gap:4px 12px}
+ #copy .stub{display:none}
+ #dial{right:auto;left:50%;top:auto;bottom:-470px;margin:0 0 0 -310px;width:620px;height:620px}
+ #dial .ptr{left:50%;top:-20px;margin:0 0 0 -7px;border:7px solid transparent;border-top:11px solid var(--apricot)}
+ #dial .now{display:none}
+ #house .wrap{grid-template-columns:1fr;grid-template-rows:46vh 1fr}
+ #lens{grid-row:1}
+ #house .text{grid-row:2;padding:22px 18px 18px}
+ #house h2{font-size:34px}#house .lede{font-size:15px;margin-top:10px}
+ #stops{margin-top:14px}#stops li{padding:10px 0 10px 38px}#stops li b{font-size:21px}#stops li::before{top:13px}
+ #stops li:not(.on){display:none}
+ #spec{grid-template-columns:repeat(4,minmax(0,1fr))}#spec b{font-size:22px}#spec div{font-size:10px;letter-spacing:.06em}
+ #year,#rooms,#stay,#here{padding:80px 18px}
+ #year .head,#here,#stay{grid-template-columns:1fr;gap:26px}
+ #cal{grid-template-columns:repeat(6,minmax(0,1fr));row-gap:28px}
+ .mo .bar{height:130px}.mo .r{font-size:17px}
+ #rooms .head{flex-direction:column;align-items:flex-start}
+ #rlist{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+ .room h3{font-size:21px}
+ #book{grid-template-columns:1fr;padding:18px}
+ footer{grid-template-columns:1fr;padding:44px 18px 30px}
+}
+@media (prefers-reduced-motion:reduce){.pin.on::after{animation:none}}
+</style>
+</head>
+<body>
+<nav id="nav">
+ <a class="brand bf" href="#hero"><img src="src/img/logo.svg" alt="">Cloudline</a>
+ <ul><li><a href="#house">The house</a></li><li><a href="#year">Through the year</a></li><li><a href="#rooms">Rooms</a></li><li><a href="#here">Getting here</a></li></ul>
+ <a class="stub" href="#stay">Check dates</a>
+</nav>
+
+<section id="hero" aria-label="Cloudline through the seasons">
+ <div id="stage">
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div id="shade"></div>
+  <div id="dial" aria-hidden="true">
+   <div class="ptr"></div><div class="now" id="now">April</div>
+   <svg viewBox="-320 -320 640 640"><g id="ring"></g></svg>
+  </div>
+  <div id="copy">
+   <h1 id="word" aria-live="polite"></h1>
+   <p id="sub"></p>
+   <p id="facts"></p>
+   <a class="stub ghost" href="#stay">See the dates <i>→</i></a>
+  </div>
+  <div id="flyers"></div>
+ </div>
+</section>
+
+<section id="house" aria-label="The house">
+ <div class="wrap">
+  <div class="text">
+   <h2 class="bf">A house held off the cliff.</h2>
+   <p class="lede">Two concrete floors cantilever six metres past the rock, with glass on three sides. Below the terrace, the valley fills with cloud most autumn mornings.</p>
+   <ol id="stops">
+    <li class="on" data-n="01"><b>The approach</b><p>Lit limestone steps from the parking terrace, cut into the slope so the house appears only at the last turn.</p></li>
+    <li data-n="02"><b>The cloud room</b><p>The main bedroom upstairs: a king bed facing east, blackout linen and a balcony that runs the length of the glass.</p></li>
+    <li data-n="03"><b>The long room</b><p>Kitchen, a ten-seat oak table and a sunken sofa under one ceiling. The wood stove heats both floors in January.</p></li>
+    <li data-n="04"><b>The ledge</b><p>140 m² of terrace over a 300 m drop, with a glass edge, two loungers and the best sunrise in Val Varaita.</p></li>
+    <li data-n="05"><b>The stair</b><p>Warm light under every tread, timed to come on twenty minutes before sunset.</p></li>
+   </ol>
+   <div id="spec"><div><b>3</b>bedrooms</div><div><b>6</b>guests</div><div><b>1,240</b>metres</div><div><b>2</b>nights min.</div></div>
+  </div>
+  <div id="lens">
+   <div id="plate">
+    <img src="media/dusk.webp" alt="Cloudline at dusk: a two-storey glass and stone house on a cliff edge above a sea of cloud" width="1672" height="941">
+    <span class="pin on" style="left:31.6%;top:66%">01</span>
+    <span class="pin" style="left:51%;top:37%">02</span>
+    <span class="pin" style="left:51.6%;top:56%">03</span>
+    <span class="pin" style="left:75%;top:63%">04</span>
+    <span class="pin" style="left:30%;top:72.5%">05</span>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="year" aria-label="Through the year">
+ <div class="head">
+  <h2 class="bf">Every month is a different house.</h2>
+  <p>The bars count the mornings the valley filled with cloud last year, from our own log at 07:00. October and November are the surest; July is the warmest and the busiest. The rate underneath is per night for the whole house.</p>
+ </div>
+ <div id="cal"></div>
+ <div class="key"><span style="--c:#f2a2bd">Spring · almond blossom</span><span style="--c:#8cc63f">Summer · long evenings</span><span style="--c:#e8611f">Autumn · cloud seas</span><span style="--c:#dfe8f2">Winter · snow to the door</span></div>
+</section>
+
+<section id="rooms" aria-label="Rooms">
+ <div class="head">
+  <h2 class="bf">Four rooms, four views.</h2>
+  <p>Every room faces the valley. Hover a room to see it in another season.</p>
+ </div>
+ <div id="rlist">
+  <article class="room"><div class="ph"><div style="background-image:url(media/summer.webp);--z:430%;--p:51% 30%"></div><div style="background-image:url(media/winter.webp);--z:430%;--p:51% 30%"></div></div><h3 class="bf">The cloud room</h3><p>King bed, en-suite with a rain shower, east balcony.</p><small>Sleeps 2</small></article>
+  <article class="room"><div class="ph"><div style="background-image:url(media/dusk.webp);--z:400%;--p:54% 56%"></div><div style="background-image:url(media/autumn.webp);--z:400%;--p:54% 56%"></div></div><h3 class="bf">The long room</h3><p>Open kitchen, oak table for ten, wood stove, record player.</p><small>Ground floor</small></article>
+  <article class="room"><div class="ph"><div style="background-image:url(media/spring.webp);--z:380%;--p:84% 64%"></div><div style="background-image:url(media/dusk.webp);--z:380%;--p:84% 64%"></div></div><h3 class="bf">The ledge</h3><p>140 m² terrace, glass edge, loungers, outdoor shower.</p><small>West and south</small></article>
+  <article class="room"><div class="ph"><div style="background-image:url(media/autumn.webp);--z:360%;--p:26% 64%"></div><div style="background-image:url(media/winter.webp);--z:360%;--p:26% 64%"></div></div><h3 class="bf">The garden rooms</h3><p>Two twin rooms off the stair, each with its own door to the slope.</p><small>Sleeps 4</small></article>
+ </div>
+</section>
+
+<section id="stay" aria-label="Book a stay">
+ <div class="intro">
+  <h2 class="bf">Hold your dates.</h2>
+  <p>Pick your nights and we'll hold them for 48 hours while you decide. No payment until you confirm.</p>
+  <ul class="inc"><li>Whole house, up to 6 guests</li><li>Linen, towels and firewood included</li><li>Snow chains and a lift from the village Dec–Feb</li><li>Check-in 16:00 · check-out 10:30</li></ul>
+ </div>
+ <div id="book">
+  <div>
+   <div class="mhead"><button id="prev" aria-label="Previous month">‹</button><span id="mlabel">December 2026</span><button id="next" aria-label="Next month">›</button></div>
+   <div id="grid"></div>
+  </div>
+  <div id="sum">
+   <div class="row"><span>Arrive</span><b id="sa">—</b></div>
+   <div class="row"><span>Leave</span><b id="sb">—</b></div>
+   <div class="row"><span>Guests</span><span class="step"><button id="gm" aria-label="Fewer guests">−</button><b id="gn">4</b><button id="gp" aria-label="More guests">+</button></span></div>
+   <div class="row"><span id="sn">— nights</span><b id="sr">—</b></div>
+   <div class="row"><span>Cleaning</span><b>€90</b></div>
+   <div class="row"><span>Tourist tax</span><b id="st">—</b></div>
+   <div class="tot"><small>Total</small><span id="stot">—</span></div>
+   <button class="stub" id="hold">Hold these dates <i>48 h</i></button>
+   <p id="ok" role="status"></p>
+  </div>
+ </div>
+</section>
+
+<section id="here" aria-label="Getting here">
+ <div>
+  <h2 class="bf">Getting here.</h2>
+  <ol id="route">
+   <li><b>Turin airport</b> · hire a car, 1 h 35 by the A6 and the valley road</li>
+   <li><b>Sampeyre</b> · last shop and fuel; we leave bread and milk in the house</li>
+   <li><b>Borgata Colle</b> · 4 km of gravel road, fine in any car from March to November</li>
+   <li><b>Cloudline</b> · park on the upper terrace and follow the lit stair down</li>
+  </ol>
+ </div>
+ <div>
+  <details open><summary>Is the drive safe in winter?</summary><p>From December to February we collect you from Sampeyre in a 4×4 whenever there's snow on the road. Chains are in the house if you'd rather drive.</p></details>
+  <details><summary>When do the cloud seas happen?</summary><p>On still, clear nights after rain. October and November give the most; we text guests the evening before when it looks likely.</p></details>
+  <details><summary>Can we bring a dog?</summary><p>One well-behaved dog is welcome for €25 a stay. The terrace edge is glass, so it's safe for dogs and children.</p></details>
+  <details><summary>Is there Wi-Fi?</summary><p>Fibre to the house at 300 Mbps, and a desk in the long room facing the window. Phones get one bar on the terrace.</p></details>
+ </div>
+</section>
+
+<footer>
+ <div><div class="bf">Cloudline</div><p style="margin-top:10px;max-width:340px">Borgata Colle 14, 12020 Sampeyre (CN), Piedmont, Italy. A house above the cloud line, open all year.</p></div>
+ <div><b>Write to us</b>stay@cloudline.it<br>+39 0175 977 214</div>
+ <div><b>Office hours</b>Mon–Sat 09:00–18:00<br>Replies within a day</div>
+ <div class="credit"><span>© 2026 Cloudline</span><span>by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+(()=>{
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+try{sessionStorage.setItem('cloudline-seen','1')}catch(e){}
+const $=s=>document.querySelector(s);
+const clamp=(v,a=0,b=1)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+/* ---------------- scenes ---------------- */
+const S=[
+ {key:'spring',word:'spring',img:'media/spring.webp',m:3.5,sub:'The almond tree by the glass flowers first, in late March. Most mornings open on a sea of cloud.',facts:['Mar – May','11–17 °C','9 cloud mornings a month','from <b>€340</b> a night'],edge:[1,.72,.84],type:'blossom'},
+ {key:'summer',word:'summer',img:'media/summer.webp',m:6.4,sub:'Swim at the lake in the morning, then eat on the ledge. Light until half past nine.',facts:['Jun – Aug','19–26 °C','dry, still nights','from <b>€480</b> a night'],edge:[1,.92,.55],type:'leaf'},
+ {key:'dusk',word:'late summer',img:'media/dusk.webp',m:7.7,sub:'The stair lights come on twenty minutes before sunset. The valley goes quiet under you.',facts:['Aug – Sep','sunset 20:40','fireflies on the slope','from <b>€450</b> a night'],edge:[1,.75,.45],type:'firefly'},
+ {key:'autumn',word:'autumn',img:'media/autumn.webp',m:9.6,sub:'The maples turn in a week. October and November give the surest cloud seas of the year.',facts:['Sep – Nov','8–15 °C','14 cloud mornings a month','from <b>€320</b> a night'],edge:[1,.55,.22],type:'maple'},
+ {key:'winter',word:'winter',img:'media/winter.webp',m:12.6,sub:'Snow to the door and the stove lit when you arrive. We fetch you from the village in the 4×4.',facts:['Dec – Feb','−6–3 °C','snow most weeks','from <b>€360</b> a night'],edge:[.85,.93,1],type:'snow'}
+];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+/* ---------------- WebGL: organic bloom transition ---------------- */
+const gl=$('#gl').getContext('webgl',{preserveDrawingBuffer:true,antialias:false,premultipliedAlpha:false});
+let prog,uni={},tex=[],texReady=0;
+const VS=`attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0,1);}`;
+const FS=`precision highp float;varying vec2 v;
+uniform sampler2D A,B;uniform float t,time,ca,zoom;uniform vec2 seed,par;uniform vec3 edge;
+float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float s=0.,a=.5;for(int i=0;i<5;i++){s+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return s;}
+vec2 cover(vec2 u){float ia=1672./941.;vec2 s=ca>ia?vec2(1.,ia/ca):vec2(ca/ia,1.);vec2 c=vec2(.5);
+ if(ca<ia){c.x=clamp(ca<.8?.3:.5,s.x*.5,1.-s.x*.5);}
+ return c+(u-.5)*s/zoom+par;}
+void main(){
+ vec2 u=cover(v);
+ vec2 q=vec2(v.x*ca,v.y);
+ // domain-warped distance from three seeds near the middle: an uneven, branching bloom
+ vec2 w=vec2(fbm(q*1.7+seed*9.+time*.04),fbm(q*1.7-seed*5.+3.1-time*.03));
+ vec2 c0=vec2(ca*(.5+seed.x*.12),.52+seed.y*.1);
+ vec2 c1=c0+vec2(ca*.13,-.11)*(seed.x>0.?1.:-1.);
+ vec2 c2=c0+vec2(-ca*.17,.14);
+ float d0=length((q-c0)*vec2(1.,1.25));
+ float d1=length((q-c1)*vec2(1.2,1.))+.16;
+ float d2=length((q-c2)*vec2(1.,1.3))+.27;
+ float d=min(d0,min(d1,d2));
+ d+=(w.x-.5)*.62+(fbm(q*5.3+w*2.)-.5)*.16;
+ float ang=atan(q.y-c0.y,q.x-c0.x);
+ d*=1.+.22*sin(ang*3.+seed.x*7.)+.1*sin(ang*7.-seed.y*5.);
+ float R=t*(ca*.95+.9)-.12;
+ float m=smoothstep(R+.035,R-.035,d);
+ float e=exp(-abs(d-R)*28.)*step(.001,t)*step(t,.999);
+ vec2 g=normalize(vec2(dFdx(d),dFdy(d))+1e-5);
+ vec4 a=texture2D(A,u);vec4 b=texture2D(B,u+g*e*.012);
+ vec3 col=mix(a.rgb,b.rgb,m);
+ col+=edge*e*.42;col=mix(col,col*vec3(1.04,1.02,.98),e*.5);
+ gl_FragColor=vec4(col,1.);}`;
+function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(s));return s}
+if(gl){
+ gl.getExtension('OES_standard_derivatives');
+ prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,'#extension GL_OES_standard_derivatives : enable\n'+FS));gl.linkProgram(prog);gl.useProgram(prog);
+ const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+ const l=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);
+ ['A','B','t','time','ca','zoom','seed','par','edge'].forEach(k=>uni[k]=gl.getUniformLocation(prog,k));
+ gl.uniform1i(uni.A,0);gl.uniform1i(uni.B,1);
+ S.forEach((s,i)=>{const im=new Image();im.onload=()=>{const tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);tex[i]=tx;texReady++};im.src=s.img});
+}
+const SEEDS=[[.3,-.4],[-.5,.2],[.6,.5],[-.2,-.6],[.4,.3]];
+
+/* ---------------- particle sprites ---------------- */
+function spr(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);return c}
+const SP={blossom:[],petal:[],leaf:[],maple:[],snow:[],fly:null};
+['#f7c3d3','#f4a9c0','#fbd6e1'].forEach((col,k)=>{
+ SP.blossom.push(spr(48,48,(x)=>{x.translate(24,24);for(let i=0;i<5;i++){x.save();x.rotate(i*Math.PI*2/5);const g=x.createLinearGradient(0,-2,0,-20);g.addColorStop(0,'#e98aa8');g.addColorStop(.35,col);g.addColorStop(1,'#fff3f7');x.fillStyle=g;
+  x.beginPath();x.moveTo(0,-2);x.bezierCurveTo(-9,-8,-9,-18,-3,-21);x.lineTo(0,-18.5);x.lineTo(3,-21);x.bezierCurveTo(9,-18,9,-8,0,-2);x.fill();x.restore()}
+  x.fillStyle='#b9416b';x.beginPath();x.arc(0,0,3.2,0,7);x.fill();x.fillStyle='#f6d36b';for(let i=0;i<7;i++){const a=i/7*6.28;x.beginPath();x.arc(Math.cos(a)*4.6,Math.sin(a)*4.6,.9,0,7);x.fill()}}));
+ SP.petal.push(spr(24,30,(x)=>{const g=x.createLinearGradient(0,28,0,2);g.addColorStop(0,'#e48aa6');g.addColorStop(.4,col);g.addColorStop(1,'#fff1f5');x.fillStyle=g;x.beginPath();x.moveTo(12,28);x.bezierCurveTo(1,20,1,6,8,2);x.lineTo(12,6);x.lineTo(16,2);x.bezierCurveTo(23,6,23,20,12,28);x.fill()}));
+});
+['#6fae3a','#8cc63f','#4f8f2a','#a3cf4f'].forEach(col=>SP.leaf.push(spr(30,46,(x)=>{const g=x.createLinearGradient(0,0,30,46);g.addColorStop(0,col);g.addColorStop(1,'#2f5d1a');x.fillStyle=g;x.beginPath();x.moveTo(15,44);x.bezierCurveTo(-2,30,2,8,15,1);x.bezierCurveTo(28,8,32,30,15,44);x.fill();x.strokeStyle='#e9f5c880';x.lineWidth=1;x.beginPath();x.moveTo(15,44);x.lineTo(15,5);for(let i=0;i<4;i++){x.moveTo(15,36-i*8);x.lineTo(7,30-i*8);x.moveTo(15,36-i*8);x.lineTo(23,30-i*8)}x.stroke()})));
+const MP=[[50,72],[38,82],[40,68],[18,72],[24,60],[6,48],[20,44],[12,26],[30,32],[34,16],[44,28],[50,6],[56,28],[66,16],[70,32],[88,26],[80,44],[94,48],[76,60],[82,72],[60,68],[62,82]];
+[['#e8501f','#9e2a10'],['#f28a1b','#b4520c'],['#f5b82e','#c4781a'],['#c8341b','#7a1a0c'],['#e46a1c','#a33a0e']].forEach(([a,b])=>SP.maple.push(spr(50,52,(x)=>{x.scale(.5,.5);const g=x.createRadialGradient(50,60,4,50,50,60);g.addColorStop(0,a);g.addColorStop(1,b);x.fillStyle=g;x.beginPath();MP.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();x.fill();
+ x.strokeStyle='#ffe3a855';x.lineWidth=1.6;x.beginPath();x.moveTo(50,72);x.lineTo(50,12);x.moveTo(50,62);x.lineTo(20,44);x.moveTo(50,62);x.lineTo(80,44);x.moveTo(50,70);x.lineTo(28,70);x.moveTo(50,70);x.lineTo(72,70);x.stroke();x.strokeStyle=b;x.lineWidth=2.5;x.beginPath();x.moveTo(50,72);x.lineTo(51,98);x.stroke()})));
+[0,1].forEach(k=>SP.snow.push(spr(32,32,(x)=>{const g=x.createRadialGradient(16,16,0,16,16,16);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(k?.25:.45,'rgba(250,252,255,.85)');g.addColorStop(1,'rgba(240,246,255,0)');x.fillStyle=g;x.fillRect(0,0,32,32)})));
+SP.fly=spr(48,48,(x)=>{const g=x.createRadialGradient(24,24,0,24,24,24);g.addColorStop(0,'rgba(255,250,200,1)');g.addColorStop(.12,'rgba(255,226,120,.95)');g.addColorStop(.4,'rgba(255,190,70,.25)');g.addColorStop(1,'rgba(255,170,40,0)');x.fillStyle=g;x.fillRect(0,0,48,48)});
+
+/* ---------------- particle physics ---------------- */
+const fx=$('#fx'),cx=fx.getContext('2d');let W=0,H=0,DPR=1;
+const P=[];const acc=[0,0,0,0,0];
+const RATE={blossom:22,leaf:9,firefly:7,maple:20,snow:120};
+const R=Math.random;
+function spawn(si){const t=S[si].type,z=.55+R()*.9,p={t,si,z,x:R()*W*1.1-W*.05,y:R()<.5?-40:R()*H*.9,vx:0,vy:0,ph:R()*6.28,sp:(R()-.5)*2,age:0,a:1,k:0};
+ if(t==='blossom'){p.k=R()<.32?'b':'p';p.img=(p.k==='b'?SP.blossom:SP.petal)[R()*3|0];p.vt=34+28*z;p.w=2.4+R()*1.6;p.sw=36+R()*30;p.s=(p.k==='b'?.55:.62)*z}
+ else if(t==='leaf'){p.img=SP.leaf[R()*4|0];p.vt=55+40*z;p.w=2.2+R()*1.2;p.sw=50+R()*30;p.s=.62*z}
+ else if(t==='maple'){p.img=SP.maple[R()*5|0];p.vt=62+42*z;p.w=1.8+R()*1.3;p.sw=60+R()*40;p.s=.72*z}
+ else if(t==='snow'){p.img=SP.snow[R()<.7?0:1];p.vt=38+80*z*z;p.s=(.22+.42*z*z);p.sw=10+R()*14}
+ else if(t==='firefly'){p.img=SP.fly;p.x=R()*W;p.y=H*(.45+R()*.5);p.life=5+R()*5;p.s=.35+.4*z;p.hx=p.x;p.hy=p.y}
+ p.fi=p.y>0;P.push(p)}
+let mouse={x:-999,y:-999,vx:0,vy:0,t:0};
+addEventListener('pointermove',e=>{const r=fx.getBoundingClientRect();const nx=e.clientX-r.left,ny=e.clientY-r.top;mouse.vx=nx-mouse.x;mouse.vy=ny-mouse.y;mouse.x=nx;mouse.y=ny},{passive:true});
+function wind(t,si){const base=[16,9,4,34,12][si];return base+22*(.6*Math.sin(t*.31)+.4*Math.sin(t*.83+2.1))+11*Math.sin(t*1.7+.5)}
+function stepParticles(dt,t,weights,scrollV){
+ const wmix=weights.reduce((s,w,i)=>s+w*wind(t,i),0)+clamp(scrollV*.05,-60,60);
+ const cap=W<700?110:240;
+ weights.forEach((w,i)=>{if(w<.02||RM)return;acc[i]+=RATE[S[i].type]*w*dt*(W<700?.55:1);while(acc[i]>=1){acc[i]--;if(P.length<cap)spawn(i)}});
+ const mv=Math.hypot(mouse.vx,mouse.vy)/Math.max(dt,.001);mouse.vx*=.8;mouse.vy*=.8;
+ for(let i=P.length-1;i>=0;i--){const p=P[i];p.age+=dt;
+  // a season that has gone lets its particles go too
+  if(p.t!=='firefly'&&weights[p.si]<.05){p.out=(p.out||0)+dt;if(p.out>1.3){P.splice(i,1);continue}}
+  if(p.t==='firefly'){p.ph+=dt*(1.2+p.sp*.4);p.hx+=Math.cos(p.ph*.7+p.sp)*14*dt+wmix*.05*dt;p.hy+=Math.sin(p.ph*.9)*10*dt-4*dt;
+   p.vx+=(p.hx-p.x)*2*dt;p.vy+=(p.hy-p.y)*2*dt;p.vx*=.96;p.vy*=.96;p.x+=p.vx*dt*30;p.y+=p.vy*dt*30;
+   const blink=Math.pow(Math.max(0,Math.sin(p.age*2.1+p.ph*3)),3);p.a=blink*clamp(p.age/1)*clamp((p.life-p.age)/1.2)*weights[p.si]*1.4+.05*weights[p.si];
+   if(p.age>p.life){P.splice(i,1)}continue}
+  // flutter: a leaf swings like a pendulum, slowing its fall when broadside to the air
+  p.ph+=dt*(p.w||1.2);
+  let tvx,tvy;
+  if(p.t==='snow'){tvx=wmix*(.5+.5*p.z)+p.sw*Math.sin(t*.9+p.ph*3);tvy=p.vt;p.vx+=(R()-.5)*60*dt}
+  else{const s=Math.sin(p.ph);tvx=wmix*(.55+.45*p.z)+p.sw*Math.cos(p.ph);tvy=p.vt*(.42+.58*s*s)}
+  const kd=Math.min(1,2.6*dt);p.vx+=(tvx-p.vx)*kd;p.vy+=(tvy-p.vy)*kd;
+  const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.hypot(dx,dy);
+  if(d<140&&d>1){const f=(1-d/140)*(220+Math.min(mv,2500)*.5)*dt;p.vx+=dx/d*f;p.vy+=dy/d*f*.7}
+  p.x+=p.vx*dt;p.y+=p.vy*dt;
+  if(p.y>H+60||p.x<-120||p.x>W+120)P.splice(i,1)}
+}
+function drawParticles(){cx.setTransform(DPR,0,0,DPR,0,0);cx.clearRect(0,0,W,H);
+ P.sort((a,b)=>a.z-b.z);
+ for(const p of P){const im=p.img,w=im.width*p.s,h=im.height*p.s;
+  const fa=(p.fi?clamp(p.age/.6):1)*(p.out?clamp(1-p.out/1.3):1);
+  if(p.t==='snow'){cx.globalAlpha=(.55+.45*p.z)*fa;cx.setTransform(DPR,0,0,DPR,p.x*DPR,p.y*DPR);cx.drawImage(im,-w/2,-h/2,w,h);continue}
+  if(p.t==='firefly'){cx.globalAlpha=clamp(p.a);cx.globalCompositeOperation='lighter';cx.setTransform(DPR,0,0,DPR,p.x*DPR,p.y*DPR);cx.drawImage(im,-w/2,-h/2,w,h);cx.globalCompositeOperation='source-over';continue}
+  const rot=p.sp*p.age*.9+.65*Math.sin(p.ph)+(p.t==='maple'?.4:0),flip=Math.cos(p.ph*.5+p.sp*2),fx2=Math.sign(flip)*Math.max(.12,Math.abs(flip));
+  const c=Math.cos(rot),s=Math.sin(rot);cx.globalAlpha=(.78+.22*p.z)*fa;
+  cx.setTransform(c*fx2*DPR,s*fx2*DPR,-s*DPR,c*DPR,p.x*DPR,p.y*DPR);cx.drawImage(im,-w/2,-h/2,w,h)}
+ cx.globalAlpha=1;cx.setTransform(1,0,0,1,0,0)}
+
+/* ---------------- year dial ---------------- */
+const ring=$('#ring');{let h='';const cols=['#dfe8f2','#dfe8f2','#f2a2bd','#f2a2bd','#f2a2bd','#8cc63f','#8cc63f','#8cc63f','#e8611f','#e8611f','#e8611f','#dfe8f2'];
+ for(let j=0;j<12;j++){const a0=j*30*Math.PI/180,a1=(j+1)*30*Math.PI/180-.02;const r=292;
+  h+=`<path d="M${(Math.cos(a0)*r).toFixed(1)} ${(Math.sin(a0)*r).toFixed(1)}A${r} ${r} 0 0 1 ${(Math.cos(a1)*r).toFixed(1)} ${(Math.sin(a1)*r).toFixed(1)}" stroke="${cols[j]}" stroke-width="4" fill="none" opacity=".9"/>`;
+  const am=(j*30+15);h+=`<text transform="rotate(${am}) translate(246 0) rotate(180)" text-anchor="end" dominant-baseline="middle">${MONTHS[j].slice(0,3).toUpperCase()}</text>`}
+ for(let k=0;k<72;k++){const a=k*5*Math.PI/180,r1=k%6===0?270:276;h+=`<line x1="${(Math.cos(a)*r1).toFixed(1)}" y1="${(Math.sin(a)*r1).toFixed(1)}" x2="${(Math.cos(a)*282).toFixed(1)}" y2="${(Math.sin(a)*282).toFixed(1)}" stroke="currentColor" stroke-opacity="${k%6===0?.8:.35}"/>`}
+ h+=`<circle r="300" fill="none" stroke="currentColor" stroke-opacity=".25"/>`;ring.innerHTML=h}
+// labels sit at angle (j*30+15) measured from +x; the pointer is at 180° (left) on desktop, 270° (top) on phones
+// month labels: text placed on the left side (translate -246) so a label reads level when its month is under the pointer
+
+/* ---------------- kinetic season word ---------------- */
+const word=$('#word'),fly=$('#flyers'),sub=$('#sub'),facts=$('#facts'),now=$('#now');
+let shown=-1;const letters=[];const flyers=[];
+function setScene(i,t){if(i===shown)return;
+ const sr=$('#stage').getBoundingClientRect();
+ // old letters let go and ride the wind, like the leaves
+ [...word.children].forEach(el=>{const r=el.getBoundingClientRect();const f=document.createElement('span');f.textContent=el.textContent;f.style.fontSize=getComputedStyle(word).fontSize;fly.appendChild(f);
+  flyers.push({el:f,x:r.left-sr.left,y:r.top-sr.top,vx:30+R()*80,vy:-20-R()*60,rot:0,vr:(R()-.5)*3,age:0})});
+ word.innerHTML='';letters.length=0;
+ [...S[i].word].forEach((ch,k)=>{const s=document.createElement('span');s.textContent=ch===' '?' ':ch;word.appendChild(s);letters.push({el:s,y:-1.1,v:0,delay:shown<0?k*.06:.1+k*.05,t0:t,o:0})});
+ sub.textContent=S[i].sub;facts.innerHTML=S[i].facts.map(f=>`<span>${f}</span>`).join('');shown=i}
+function stepWord(dt,t){
+ const fs=parseFloat(getComputedStyle(word).fontSize)||100;
+ letters.forEach(L=>{const lt=t-L.t0-L.delay;if(lt<0){L.el.style.opacity=0;return}
+  // spring k 140, ζ 0.5: letters drop in and bounce once
+  const k=140,c=2*.5*Math.sqrt(k);const a=-k*L.y-c*L.v;L.v+=a*dt;L.y+=L.v*dt;L.o=Math.min(1,L.o+dt*5);
+  L.el.style.opacity=L.o;L.el.style.transform=RM?'none':`translateY(${(L.y*fs*.6).toFixed(1)}px) rotate(${(L.y*-8).toFixed(1)}deg)`});
+ for(let i=flyers.length-1;i>=0;i--){const f=flyers[i];f.age+=dt;f.vy+=1500*dt;f.vx+=(wind(t,shown<0?0:shown)*2-f.vx)*dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.rot+=f.vr*dt;
+  f.el.style.transform=`translate(${f.x.toFixed(1)}px,${f.y.toFixed(1)}px) rotate(${f.rot.toFixed(2)}rad)`;f.el.style.opacity=clamp(1-f.age/.5);
+  if(f.age>.55){f.el.remove();flyers.splice(i,1)}}}
+
+/* ---------------- house camera ---------------- */
+const house=$('#house'),lens=$('#lens'),plate=$('#plate'),stops=[...document.querySelectorAll('#stops li')],pins=[...document.querySelectorAll('.pin')];
+const CAM=[[.5,.55,1.0],[.51,.37,2.0],[.52,.55,1.85],[.73,.6,1.75],[.31,.69,1.9]];
+let cam={x:.5,y:.55,z:1,vx:0,vy:0,vz:0},stopI=0;
+function stepHouse(dt){const r=house.getBoundingClientRect();const span=house.offsetHeight-innerHeight;const f=clamp(-r.top/span);
+ const idx=Math.min(4,Math.floor(f*5.0));if(idx!==stopI){stops[stopI].classList.remove('on');pins[stopI].classList.remove('on');stopI=idx;stops[idx].classList.add('on');pins[idx].classList.add('on')}
+ const tg=CAM[idx];
+ // heavy camera: spring k 26, ζ 0.92
+ const k=26,c=2*.92*Math.sqrt(k);
+ ['x','y','z'].forEach((a,j)=>{const v='v'+a;cam[v]+=(-k*(cam[a]-tg[j])-c*cam[v])*dt;cam[a]+=cam[v]*dt});
+ const LW=lens.clientWidth,LH=lens.clientHeight,ia=1672/941;
+ let pw=LW,ph=LW/ia;if(ph<LH){ph=LH;pw=LH*ia}
+ pw*=cam.z;ph*=cam.z;
+ let tx=LW/2-cam.x*pw,ty=LH/2-cam.y*ph;tx=clamp(tx,LW-pw,0);ty=clamp(ty,LH-ph,0);
+ plate.style.width=pw+'px';plate.style.height=ph+'px';plate.style.transform=`translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0)`}
+
+/* ---------------- year calendar ---------------- */
+const CL=[6,7,9,10,8,5,4,5,9,13,14,8],RT=[360,360,340,390,410,480,540,540,450,430,320,420],BC=['#dfe8f2','#dfe8f2','#f2a2bd','#f2a2bd','#f2a2bd','#8cc63f','#8cc63f','#8cc63f','#e8611f','#e8611f','#e8611f','#dfe8f2'];
+const cal=$('#cal');cal.innerHTML=CL.map((n,i)=>`<div class="mo"><div class="bar"><i data-n="${n}" style="--h:${(n/14*100).toFixed(1)}%"></i></div><div class="band" style="background:${BC[i]}"></div><div class="m">${MONTHS[i].slice(0,3)}</div><div class="r">€${RT[i]}</div></div>`).join('');
+const bars=[...cal.querySelectorAll('i')].map((el,i)=>({el,s:0,v:0,i}));
+function stepBars(dt,t){const r=cal.getBoundingClientRect();const on=r.top<innerHeight*.85;
+ bars.forEach(b=>{const tg=on?1:0;const k=90,c=2*.62*Math.sqrt(k);if(on&&!b.t0)b.t0=t;if(on&&t-b.t0<b.i*.06)return;b.v+=(-k*(b.s-tg)-c*b.v)*dt;b.s+=b.v*dt;b.el.style.transform=`scaleY(${Math.max(0,b.s).toFixed(3)})`})}
+
+/* ---------------- booking ---------------- */
+const book={y:2026,m:11,a:new Date(2026,11,18),b:new Date(2026,11,22),g:4};
+const booked=[[2026,11,24],[2026,11,25],[2026,11,26],[2026,11,27],[2026,11,31],[2027,0,1],[2027,0,2],[2027,0,9],[2027,0,10],[2027,1,13],[2027,1,14]];
+const isBooked=d=>booked.some(([y,m,dd])=>d.getFullYear()===y&&d.getMonth()===m&&d.getDate()===dd);
+const rate=d=>RT[d.getMonth()]+(d.getDay()===5||d.getDay()===6?40:0);
+const fmt=d=>d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+function renderCal(){const g=$('#grid');const first=new Date(book.y,book.m,1),off=(first.getDay()+6)%7,days=new Date(book.y,book.m+1,0).getDate();
+ let h=['Mo','Tu','We','Th','Fr','Sa','Su'].map(d=>`<span class="dw">${d}</span>`).join('');for(let i=0;i<off;i++)h+='<button class="o" tabindex="-1"></button>';
+ for(let d=1;d<=days;d++){const dt=new Date(book.y,book.m,d);let c='';if(isBooked(dt))c='x';else if(book.a&&+dt===+book.a)c='a';else if(book.b&&+dt===+book.b)c='b';else if(book.a&&book.b&&dt>book.a&&dt<book.b)c='in';h+=`<button class="${c}" data-d="${d}">${d}</button>`}
+ g.innerHTML=h;$('#mlabel').textContent=first.toLocaleDateString('en-GB',{month:'long',year:'numeric'});summary()}
+function summary(){$('#gn').textContent=book.g;if(!book.a){['sa','sb','sr','st','stot'].forEach(i=>$('#'+i).textContent='—');$('#sn').textContent='— nights';return}
+ $('#sa').textContent=fmt(book.a);if(!book.b){['sb','sr','st','stot'].forEach(i=>$('#'+i).textContent='—');$('#sn').textContent='Pick a leaving day';return}
+ $('#sb').textContent=fmt(book.b);let n=0,sum=0;for(let d=new Date(book.a);d<book.b;d.setDate(d.getDate()+1)){n++;sum+=rate(d)}
+ const tax=Math.min(n,5)*book.g*2.5;$('#sn').textContent=`${n} night${n>1?'s':''}`;$('#sr').textContent='€'+sum.toLocaleString('en-GB');$('#st').textContent='€'+tax.toFixed(2).replace('.00','');$('#stot').textContent='€'+(sum+90+tax).toLocaleString('en-GB',{maximumFractionDigits:2})}
+$('#grid').addEventListener('click',e=>{const d=e.target.dataset.d;if(!d)return;const dt=new Date(book.y,book.m,+d);
+ if(!book.a||book.b||dt<=book.a){book.a=dt;book.b=null}else{let ok=true;for(let x=new Date(book.a);x<dt;x.setDate(x.getDate()+1))if(isBooked(x))ok=false;if(ok)book.b=dt;else{book.a=dt;book.b=null}}$('#ok').textContent='';renderCal()});
+$('#prev').onclick=()=>{book.m--;if(book.m<0){book.m=11;book.y--}renderCal()};$('#next').onclick=()=>{book.m++;if(book.m>11){book.m=0;book.y++}renderCal()};
+$('#gm').onclick=()=>{book.g=Math.max(1,book.g-1);summary()};$('#gp').onclick=()=>{book.g=Math.min(6,book.g+1);summary()};
+$('#hold').onclick=()=>{if(!book.b){$('#ok').textContent='Pick an arrival and a leaving day first.';return}$('#ok').textContent=`Held until ${fmt(new Date(Date.now()+864e5*2))}. We've sent the details to your inbox.`};
+renderCal();
+
+/* ---------------- main loop ---------------- */
+const hero=$('#hero'),nav=$('#nav');
+let last=performance.now(),T0=last,sv={x:0,v:0},lastY=scrollY,scrollV=0;
+function resize(){DPR=Math.min(devicePixelRatio||1,2);const r=$('#stage').getBoundingClientRect();W=r.width;H=r.height;
+ fx.width=W*DPR;fx.height=H*DPR;const g=$('#gl');g.width=W*Math.min(DPR,1.5);g.height=H*Math.min(DPR,1.5);if(gl)gl.viewport(0,0,g.width,g.height)}
+addEventListener('resize',resize);resize();
+function frame(now_){const dt=Math.min(.05,Math.max(.001,(now_-last)/1000));last=now_;const t=(now_-T0)/1000;
+ const y=scrollY;scrollV+=((y-lastY)/dt-scrollV)*Math.min(1,dt*6);lastY=y;
+ const span=hero.offsetHeight-innerHeight;const target=clamp(y/span)*4;
+ // the year turns with weight: spring k 30, ζ 1
+ const k=30,c=2*Math.sqrt(k);sv.v+=(-k*(sv.x-target)-c*sv.v)*dt;sv.x+=sv.v*dt;const s=clamp(sv.x,0,4);
+ let i=Math.min(3,Math.floor(s)),f=s-i;let tr=ease(clamp((f-.18)/.7));
+ let A=i,B=i+1;
+ // opening bloom: winter gives way to spring as the page loads
+ const intro=clamp((t-.25)/2.6);if(s<.02&&intro<1){A=4;B=0;tr=ease(intro)}
+ const weights=[0,0,0,0,0];weights[A]+=1-tr;weights[B]+=tr;if(A===4&&B===0){weights[4]=0;weights[0]=tr}
+ const dom=tr<.5?A:B;setScene(dom,t);
+ // dial
+ const m=lerp(S[A].m,S[B].m+(A===4&&B===0?12:0),tr)%12.0001;
+ const mobile=innerWidth<=820;const ptr=mobile?270:180;
+ ring.setAttribute('transform',`rotate(${(ptr-(A===4&&B===0?lerp(S[4].m,S[0].m+12,tr):m)*30).toFixed(2)})`);
+ now.textContent=MONTHS[Math.floor(((A===4&&B===0?lerp(S[4].m,S[0].m+12,tr):m))%12)];
+ if(gl&&texReady===5){gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex[A]);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,tex[B]);
+  const g=$('#gl');gl.uniform1f(uni.t,RM?(tr>.5?1:0):tr);gl.uniform1f(uni.time,t);gl.uniform1f(uni.ca,g.width/g.height);
+  gl.uniform1f(uni.zoom,1.06+.05*Math.sin(t*.12)+.03*s/4);gl.uniform2f(uni.par,(mouse.x/W-.5)*-.008||0,0);
+  const sd=SEEDS[(A===4&&B===0)?4:i];gl.uniform2f(uni.seed,sd[0],sd[1]);gl.uniform3fv(uni.edge,S[B].edge);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+ if(y<hero.offsetHeight){stepParticles(dt,t,weights,scrollV);drawParticles()}
+ stepWord(dt,t);stepHouse(dt);stepBars(dt,t);
+ nav.classList.toggle('solid',y>span+40);
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
