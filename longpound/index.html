@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Longpound Boats · narrowboat hire on the Kennet &amp; Avon, Bradford-on-Avon</title>
+<meta name="description" content="Hire a narrowboat for a short break or a week from Bradford-on-Avon. No licence needed: we show you how to work your first lock.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Literata;src:url(assets/fonts/literata-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Literata;src:url(assets/fonts/literata-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Literata;src:url(assets/fonts/literata-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Literata;src:url(assets/fonts/literata-latin-600-italic.woff2) format('woff2');font-weight:600;font-style:italic;font-display:swap}
+@font-face{font-family:RHM;src:url(assets/fonts/red-hat-mono-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:RHM;src:url(assets/fonts/red-hat-mono-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:Alfa;src:url(assets/fonts/alfa-slab-one-latin-400-normal.woff2) format('woff2');font-display:swap}
+:root{--paper:#f2ead8;--paper2:#e8dec7;--ink:#1d2b3a;--green:#1f4a38;--green2:#163829;--red:#b5332b;--brass:#c4973f;--water:#4f7f9a;--line:#1d2b3a33}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:Literata,Georgia,serif;font-size:18px;line-height:1.55;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:RHM,ui-monospace,monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+/* signwriter wordmark: slab letters with a red drop shade, like a boat's cabin side */
+.sign{font-family:Alfa,Georgia,serif;letter-spacing:.04em;color:var(--green);text-shadow:2px 2px 0 var(--red)}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:RHM,monospace;font-weight:500;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:13px 20px;border:1.5px solid var(--ink);background:var(--paper);box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn.g{background:var(--green);color:var(--paper);border-color:var(--green2);box-shadow:4px 4px 0 var(--brass)}
+nav{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:30px;padding:16px 40px;background:#f2ead8f0;border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+nav .brand{display:flex;align-items:center;gap:12px;font-size:26px}
+nav .brand img{width:34px;height:34px}
+nav ul{list-style:none;display:flex;gap:26px;margin-left:auto}
+nav .btn{padding:10px 16px;font-size:12px}
+/* ---------- hero: drawing No. 1 ---------- */
+#lock{position:relative;height:560vh}
+#stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,38fr) minmax(0,62fr);grid-template-rows:minmax(0,53fr) minmax(0,47fr);padding-top:66px;
+ background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:40px 40px;background-position:-1px -1px}
+#stage::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 40%,#f2ead800 40%,#f2ead8 95%);pointer-events:none}
+#intro{position:relative;padding:26px 30px 0 40px;display:flex;flex-direction:column;z-index:2}
+#intro h1{font-weight:600;font-size:clamp(34px,3.3vw,50px);line-height:1.04;letter-spacing:-.01em}
+#intro h1 em{font-weight:400;color:var(--red)}
+#steps{list-style:none;margin-top:20px;border-top:1.5px solid var(--ink)}
+#steps li{display:grid;grid-template-columns:38px 1fr;gap:4px 10px;padding:9px 0;border-bottom:1px solid var(--line);color:#1d2b3a73}
+#steps li i{font-style:normal;font-family:RHM,monospace;font-size:13px;padding-top:4px}
+#steps li b{font-weight:600;font-size:19px;line-height:1.25}
+#steps li p{grid-column:2;display:none;font-size:15px;line-height:1.45;color:#2c3a48}
+#steps li.on{color:var(--ink)}#steps li.on i{color:var(--red)}#steps li.on p{display:block}
+#film{position:relative;margin:26px 40px 14px 0;border:1.5px solid var(--ink);box-shadow:6px 6px 0 var(--green);overflow:hidden;background:#222;z-index:2}
+#film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#film figcaption{position:absolute;left:0;bottom:0;padding:7px 12px;background:var(--paper);border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink);font-family:RHM,monospace;font-size:12px;letter-spacing:.06em}
+#draw{grid-column:1/-1;position:relative;z-index:1}
+#dcv{position:absolute;inset:0;width:100%;height:100%}
+#tb{position:absolute;right:40px;bottom:16px;display:grid;grid-template-columns:auto auto;border:1.5px solid var(--ink);background:var(--paper);font-family:RHM,monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+#tb span{padding:5px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+#tb span:nth-child(2n){border-right:0}#tb .t{grid-column:1/-1;font-family:Literata,serif;text-transform:none;font-size:15px;letter-spacing:0;font-weight:600}
+/* ---------- fleet as plans ---------- */
+section.pad{padding:110px 40px}
+.kick{font-family:RHM,monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+h2{font-weight:600;font-size:clamp(38px,4vw,62px);line-height:1.04;letter-spacing:-.01em}
+h2 em{font-weight:400}
+#fleet .head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end}
+#fleet .head p{max-width:470px}
+.boat{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:34px;padding:40px 0;border-bottom:1.5px solid var(--ink)}
+.boat:first-of-type{margin-top:54px;border-top:1.5px solid var(--ink)}
+.boat h3{font-family:Alfa,Georgia,serif;font-weight:400;font-size:40px;color:var(--green);text-shadow:2px 2px 0 var(--red);letter-spacing:.03em;line-height:1}
+.boat .facts{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px}
+.boat .ph{margin-top:16px;aspect-ratio:16/9;background-size:cover;background-position:center;border:1.5px solid var(--ink)}
+.boat .price{display:flex;gap:26px;margin-top:16px}
+.boat .price div{font-family:RHM,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.boat .price b{display:block;font-family:Literata,serif;font-weight:600;font-size:26px;letter-spacing:0;text-transform:none}
+.plan{position:relative;align-self:center}
+.plan svg{width:100%;height:auto;display:block;overflow:visible}
+.plan .room{fill:#f2ead8;stroke:var(--ink);stroke-width:1.5;transition:fill .25s}
+.plan .room:hover,.plan .room.hl{fill:#c4973f55}
+.plan text{font-family:RHM,monospace;font-size:12px;letter-spacing:.05em;fill:var(--ink);pointer-events:none;text-transform:uppercase}
+.plan .note{margin-top:14px;font-size:15px;min-height:1.6em;color:#2c3a48}
+/* ---------- route planner ---------- */
+#route{background:var(--green);color:var(--paper)}
+#route .kick{color:var(--brass)}
+#route .grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:50px;margin-top:40px}
+#route .ctl{display:flex;flex-direction:column;gap:22px}
+.seg{display:flex;border:1.5px solid var(--paper)}
+.seg button{flex:1;padding:12px 8px;font-family:RHM,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid #f2ead855}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--paper);color:var(--green)}
+#answer{font-size:24px;line-height:1.35}
+#answer b{color:var(--brass);font-weight:600}
+#aerial{position:relative;aspect-ratio:16/8;border:1.5px solid var(--paper);overflow:hidden}
+#aerial video{width:100%;height:100%;object-fit:cover;display:block}
+#line{margin-top:26px;position:relative}
+#line svg{width:100%;height:auto;display:block;overflow:visible}
+#line text{font-family:RHM,monospace;font-size:14px;letter-spacing:.04em;fill:#f2ead8;text-transform:uppercase}
+/* ---------- booking ---------- */
+#book .grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:50px;margin-top:40px}
+form{border:1.5px solid var(--ink);box-shadow:8px 8px 0 var(--green);background:#f7f1e3;padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:18px 22px}
+label{display:flex;flex-direction:column;gap:6px;font-family:RHM,monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+input,select{font:inherit;font-family:Literata,serif;font-size:17px;text-transform:none;letter-spacing:0;padding:10px 12px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:0}
+form .full{grid-column:1/-1}
+#quote{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;border-top:1.5px dashed var(--ink);padding-top:16px}
+#quote b{font-size:34px;font-weight:600}
+#sent{grid-column:1/-1;font-size:15px;color:var(--green);min-height:1.4em}
+details{border-bottom:1px solid var(--line);padding:16px 0}details:first-of-type{border-top:1.5px solid var(--ink)}
+summary{list-style:none;cursor:pointer;font-weight:600;font-size:20px;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";font-family:RHM,monospace}
+details[open] summary::after{content:"−"}
+details p{margin-top:8px;font-size:16px;color:#2c3a48}
+footer{background:var(--ink);color:#f2ead8bf;padding:54px 40px 36px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;font-size:15px}
+footer .sign{font-size:30px;color:var(--paper)}
+footer b{display:block;color:var(--paper);font-family:RHM,monospace;font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+footer .credit{grid-column:1/-1;border-top:1px solid #f2ead82e;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:RHM,monospace;font-size:12px;letter-spacing:.06em}
+@media (max-width:820px){
+ nav{padding:12px 18px}nav ul{display:none}nav .btn{margin-left:auto}nav .brand{font-size:22px}nav .brand img{width:28px;height:28px}
+ #tb{display:none!important}
+ #stage{grid-template-columns:1fr;grid-template-rows:auto minmax(0,22fr) minmax(0,48fr);padding-top:58px;background-size:28px 28px}
+ #intro{padding:14px 18px 0;order:1}
+ #intro h1{font-size:28px}
+ #steps{margin-top:12px}#steps li:not(.on){display:none}
+ #film{order:2;margin:12px 18px 6px}
+ #draw{order:3}
+ #tb{right:12px;bottom:8px;font-size:9px}#tb .t{font-size:12px}
+ section.pad{padding:76px 18px}
+ #fleet .head,#route .grid,#book .grid{grid-template-columns:1fr;gap:24px}
+ .boat{grid-template-columns:1fr;gap:18px}
+ .boat h3{font-size:32px}
+ form{grid-template-columns:1fr;padding:20px}
+ footer{grid-template-columns:1fr;padding:44px 18px 28px}
+}
+</style>
+</head>
+<body>
+<nav>
+ <a class="brand sign" href="#lock"><img src="src/img/logo.svg" alt="">Longpound</a>
+ <ul class="mono"><li><a href="#fleet">The boats</a></li><li><a href="#route">How far</a></li><li><a href="#book">Prices</a></li><li><a href="#faq">Questions</a></li></ul>
+ <a class="btn g" href="#book">Hold a boat</a>
+</nav>
+
+<section id="lock" aria-label="How to work a lock">
+ <div id="stage">
+  <div id="intro">
+   <p class="kick">Narrowboat hire · Bradford-on-Avon wharf</p>
+   <h1>No licence. No experience. <em>We'll teach you the locks.</em></h1>
+   <ol id="steps">
+    <li class="on"><i>01</i><b>Bring her in</b><p>Steer into the empty chamber at walking pace and step off with the centre line. Our boats are 7 ft wide; the lock is 14, so two can share.</p></li>
+    <li><i>02</i><b>Close the bottom gates</b><p>Lean on the balance beam and walk it round. The gates seal themselves once water pushes from above.</p></li>
+    <li><i>03</i><b>Wind up the top paddles</b><p>Fit the windlass and give it about ten turns. Water pours in fast at first, then slows as the levels close.</p></li>
+    <li><i>04</i><b>Open the top gates</b><p>When the levels match, the gates swing easily. If they won't move, the water isn't level yet.</p></li>
+    <li><i>05</i><b>Cruise out at 4 mph</b><p>Close the gates and drop the paddles behind you. That was a 2.4 m rise, and it took about eight minutes.</p></li>
+   </ol>
+  </div>
+  <figure id="film">
+   <video id="lockvid" src="media/lock.mp4" poster="media/lock.jpg" muted loop playsinline autoplay preload="metadata"></video>
+   <figcaption>Water through the top gate paddles, filling a lock</figcaption>
+  </figure>
+  <div id="draw">
+   <canvas id="dcv" aria-label="Side elevation of a canal lock: a narrowboat rises as the chamber fills"></canvas>
+   <div id="tb" aria-hidden="true"><span class="t">Working a broad lock</span><span>Drg. 01</span><span>Scale 1:120</span><span>Longpound Boats</span><span>For first crews</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="fleet" class="pad" aria-label="The boats">
+ <div class="head">
+  <div><p class="kick">The fleet · three boats</p><h2>Built for the Kennet &amp; Avon, <em>drawn to scale.</em></h2></div>
+  <p>Each boat has a full kitchen, a proper shower, central heating and a stove. Hover a room on the plan to see what's in it.</p>
+ </div>
+ <article class="boat" data-b="0">
+  <div><h3>Kingfisher</h3><div class="facts mono"><span>45 ft</span><span>Sleeps 2–4</span><span>1 cabin + dinette</span></div><div class="ph" style="background-image:url(media/summer.jpg)"></div>
+   <div class="price"><div>Short break<b>£895</b></div><div>Week<b>£1,390</b></div></div></div>
+  <div class="plan"></div>
+ </article>
+ <article class="boat" data-b="1">
+  <div><h3>Heron</h3><div class="facts mono"><span>58 ft</span><span>Sleeps 4–6</span><span>2 cabins + dinette</span></div><div class="ph" style="background-image:url(media/moorings.jpg)"></div>
+   <div class="price"><div>Short break<b>£1,120</b></div><div>Week<b>£1,790</b></div></div></div>
+  <div class="plan"></div>
+ </article>
+ <article class="boat" data-b="2">
+  <div><h3>Moorhen</h3><div class="facts mono"><span>66 ft</span><span>Sleeps 6–8</span><span>3 cabins + dinette</span></div><div class="ph" style="background-image:url(media/autumn.jpg)"></div>
+   <div class="price"><div>Short break<b>£1,290</b></div><div>Week<b>£2,060</b></div></div></div>
+  <div class="plan"></div>
+ </article>
+</section>
+
+<section id="route" class="pad" aria-label="How far you will get">
+ <p class="kick">Route planner</p>
+ <h2>How far will you get?</h2>
+ <div class="grid">
+  <div class="ctl">
+   <div class="seg" id="nights"><button data-n="3" class="on">3 nights</button><button data-n="4">4 nights</button><button data-n="7">A week</button></div>
+   <div class="seg" id="dir"><button data-d="w" class="on">West to Bath</button><button data-d="e">East to Devizes</button></div>
+   <p id="answer"></p>
+   <p class="mono" style="opacity:.75">We plan on 3 mph, 15 min a lock and about 4½ hours at the tiller a day.</p>
+  </div>
+  <div>
+   <div id="aerial"><video id="airvid" src="media/aerial.mp4" poster="media/aerial.jpg" muted loop playsinline autoplay preload="metadata"></video></div>
+   <div id="line"><svg viewBox="0 0 760 120" id="lsvg" role="img" aria-label="Schematic of the canal from Bath to Devizes"></svg></div>
+  </div>
+ </div>
+</section>
+
+<section id="book" class="pad" aria-label="Prices and booking">
+ <div class="grid">
+  <div>
+   <p class="kick">Prices · 2027 season</p>
+   <h2>Hold a boat for a week, <em>free.</em></h2>
+   <p style="margin-top:16px;max-width:430px">Short breaks start on a Friday, midweek breaks on a Monday, weeks on either. We hold your dates for seven days while you sort out the crew.</p>
+   <div id="faq" style="margin-top:34px">
+    <details open><summary>Do I need a licence?</summary><p>No. Your hire includes the canal licence and an hour's handover on the water, including your first lock with one of us.</p></details>
+    <details><summary>Can we bring the dog?</summary><p>Up to two dogs for £45 a trip. There's a towel by the door for muddy towpaths.</p></details>
+    <details><summary>How hard are the locks?</summary><p>A windlass, a bit of shoulder and about ten minutes each. The Caen Hill flight is 29 locks in two miles: plan a whole day.</p></details>
+    <details><summary>Where do we park?</summary><p>Free parking at the wharf for the length of your hire, two minutes from Bradford-on-Avon station.</p></details>
+   </div>
+  </div>
+  <form id="f" onsubmit="return false">
+   <label class="full">Boat<select id="fb"><option value="0">Kingfisher · 45 ft · sleeps 2–4</option><option value="1" selected>Heron · 58 ft · sleeps 4–6</option><option value="2">Moorhen · 66 ft · sleeps 6–8</option></select></label>
+   <label>Break<select id="fn"><option value="3">Short break · 3 nights (Fri)</option><option value="4">Midweek · 4 nights (Mon)</option><option value="7" selected>A week · 7 nights</option></select></label>
+   <label>Start date<input id="fd" type="date" value="2027-05-14"></label>
+   <label>Crew<select id="fc"><option>2</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></label>
+   <label>Dogs<select id="fg"><option value="0">None</option><option value="1">One</option><option value="2">Two</option></select></label>
+   <label class="full">Email<input type="email" placeholder="you@example.com"></label>
+   <div id="quote"><span class="mono">Your price</span><b id="qp">£1,790</b></div>
+   <button class="btn g full" id="fs" style="justify-content:center">Hold these dates for 7 days</button>
+   <p id="sent" role="status"></p>
+  </form>
+ </div>
+</section>
+
+<footer>
+ <div><div class="sign">Longpound</div><p style="margin-top:10px;max-width:360px">The Wharf, Frome Road, Bradford-on-Avon, Wiltshire BA15 1LE. Boats out Friday and Monday from 2 pm.</p></div>
+ <div><b>Call the wharf</b>01225 865 330<br>boats@longpound.co.uk</div>
+ <div><b>Open</b>Every day, March to November<br>09:00–17:30</div>
+ <div class="credit"><span>© 2027 Longpound Boats</span><span>by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+(()=>{
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,CAP=navigator.webdriver;
+try{sessionStorage.setItem('longpound-seen','1')}catch(e){}
+const $=s=>document.querySelector(s),clamp=(v,a=0,b=1)=>v<a?a:v>b?b:v,lerp=(a,b,t)=>a+(b-a)*t;
+const sm=t=>t*t*(3-2*t);
+/* ---------------- the lock drawing ---------------- */
+const cv=$('#dcv'),cx=cv.getContext('2d');let W=0,H=0,DPR=1;
+function size(){DPR=Math.min(devicePixelRatio||1,2);const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR}
+addEventListener('resize',size);
+const N=96;const wh=new Float32Array(N),wv=new Float32Array(N);
+const S={ph:0,pv:0,bx:0,bv:0,by:0,byv:0,pitch:0,pv2:0,inited:false,smoke:[],foam:[],stepI:-1};
+// geometry (in drawing units: fraction of width / height)
+function geo(){const m=W<700;const g={};g.L=W*(m?.2:.27);g.R=W*(m?.8:.71);g.low=H*.62;g.up=H*.34;g.bedLow=H*.86;g.bedUp=H*.58;g.cope=H*.24;g.boatLen=(g.R-g.L)*.8;g.m=m;return g}
+// scroll → phases
+function phases(p){return{
+ enter:sm(clamp(p/.17)),bot:sm(clamp((p-.19)/.12)),pad:sm(clamp((p-.33)/.05))*(1-sm(clamp((p-.6)/.05))),
+ fill:clamp((p-.35)/.25),top:sm(clamp((p-.64)/.12)),exit:sm(clamp((p-.78)/.2))}}
+// Torricelli: the inflow rate falls with the square root of the head, so the level rises fast then slows
+const level=f=>1-Math.pow(1-f,2);
+function hullPath(x0,y,len,h){// bow at right, counter stern at left
+ cx.beginPath();cx.moveTo(x0,y-h);cx.lineTo(x0+len-len*.07,y-h);cx.quadraticCurveTo(x0+len+len*.01,y-h,x0+len,y-h*.15);cx.quadraticCurveTo(x0+len-len*.02,y+h*.15,x0+len-len*.1,y+h*.15);
+ cx.lineTo(x0+len*.05,y+h*.15);cx.quadraticCurveTo(x0-len*.015,y,x0,y-h);cx.closePath()}
+function boat(x,y,len,pitch,t,g){
+ const h=len*.055,ch=len*.07;cx.save();cx.translate(x+len/2,y);cx.rotate(pitch);cx.translate(-len/2,0);
+ // cabin
+ cx.fillStyle='#1f4a38';cx.strokeStyle='#1d2b3a';cx.lineWidth=1.3;
+ cx.beginPath();cx.rect(len*.1,-h-ch,len*.74,ch);cx.fill();cx.stroke();
+ cx.fillStyle='#b5332b';cx.fillRect(len*.1,-h-ch,len*.74,ch*.18);cx.strokeRect(len*.1,-h-ch,len*.74,ch*.18);
+ // roof line + coping colour band
+ cx.fillStyle='#c4973f';cx.fillRect(len*.1,-h-ch*.1,len*.74,ch*.1);
+ // windows and portholes
+ cx.fillStyle='#f2ead8';for(let i=0;i<7;i++){const wx=len*(.17+i*.088);if(i%3===2){cx.beginPath();cx.arc(wx+len*.02,-h-ch*.5,ch*.16,0,7);cx.fill();cx.stroke()}else{cx.fillRect(wx,-h-ch*.7,len*.045,ch*.38);cx.strokeRect(wx,-h-ch*.7,len*.045,ch*.38)}}
+ // doors
+ cx.fillStyle='#b5332b';cx.fillRect(len*.115,-h-ch*.82,len*.03,ch*.72);cx.strokeRect(len*.115,-h-ch*.82,len*.03,ch*.72);
+ // hull
+ hullPath(0,0,len,h);cx.fillStyle='#16202a';cx.fill();cx.stroke();
+ cx.strokeStyle='#c4973f';cx.lineWidth=1;cx.beginPath();cx.moveTo(len*.04,-h*.55);cx.lineTo(len*.93,-h*.55);cx.stroke();
+ // tiller and rudder at the stern
+ cx.strokeStyle='#1d2b3a';cx.lineWidth=2;cx.beginPath();cx.moveTo(len*.02,-h);cx.lineTo(len*.02,-h-ch*.55);cx.lineTo(len*.13,-h-ch*.9);cx.stroke();
+ cx.fillStyle='#1d2b3a';cx.fillRect(-len*.03,-h*.2,len*.03,h*1.1);
+ // chimney
+ cx.fillStyle='#1d2b3a';cx.fillRect(len*.72,-h-ch-ch*.42,len*.014,ch*.42);cx.fillStyle='#c4973f';cx.fillRect(len*.716,-h-ch-ch*.46,len*.022,ch*.06);
+ cx.restore();
+ // return chimney top in world space
+ const lx=len*.727-len/2,ly=-h-ch-ch*.46;return{x:x+len/2+lx*Math.cos(pitch)-ly*Math.sin(pitch),y:y+lx*Math.sin(pitch)+ly*Math.cos(pitch)}}
+function hatch(x,y,w,h,step,col){cx.save();cx.beginPath();cx.rect(x,y,w,h);cx.clip();cx.strokeStyle=col;cx.lineWidth=1;cx.beginPath();for(let i=-h;i<w;i+=step){cx.moveTo(x+i,y+h);cx.lineTo(x+i+h,y)}cx.stroke();cx.restore()}
+function dim(x,y1,y2,label){cx.strokeStyle='#b5332b';cx.fillStyle='#b5332b';cx.lineWidth=1;cx.beginPath();cx.moveTo(x,y1);cx.lineTo(x,y2);cx.stroke();
+ [[y1,1],[y2,-1]].forEach(([y,s])=>{cx.beginPath();cx.moveTo(x,y);cx.lineTo(x-4,y+7*s);cx.lineTo(x+4,y+7*s);cx.closePath();cx.fill()});
+ cx.font='500 11px RHM, monospace';cx.textAlign='left';cx.fillText(label,x+8,(y1+y2)/2+4)}
+function label(x,y,txt,al='left'){cx.font='500 11px RHM, monospace';cx.fillStyle='#1d2b3a';cx.textAlign=al;cx.fillText(txt.toUpperCase(),x,y)}
+function draw(dt,t,p){
+ const g=geo();const P=phases(p);
+ // heavy boat: spring on x (k 5, ζ 0.95)
+ const bxT=lerp(lerp(-g.boatLen*.75,g.L+(g.R-g.L-g.boatLen)/2,P.enter),W+g.boatLen*.1,P.exit);
+ if(!S.inited){S.bx=bxT;S.inited=true}
+ const k=5,c=2*.95*Math.sqrt(k);const prevBx=S.bx;S.bv+=(-k*(S.bx-bxT)-c*S.bv)*dt;S.bx+=S.bv*dt;const speed=(S.bx-prevBx)/Math.max(dt,1e-3);
+ const lev=level(P.fill);const wl=lerp(g.low,g.up,lev);const flow=P.pad*(1-lev);
+ // chamber surface waves: damped wave equation, driven by the paddle jet and the boat's wash
+ const sub=3;for(let s=0;s<sub;s++){const h=dt/sub;
+  for(let i=0;i<N;i++){const l=wh[i>0?i-1:0],r=wh[i<N-1?i+1:N-1];wv[i]+=(900*(l+r-2*wh[i])-3.2*wv[i]-6*wh[i])*h}
+  for(let i=0;i<N;i++)wh[i]=clamp(wh[i]+wv[i]*h,-9,9)}
+ for(let i=N-10;i<N;i++)wv[i]+=(Math.random()-.5)*flow*420*dt;
+ const bi=Math.floor(clamp((S.bx+g.boatLen-g.L)/(g.R-g.L))*(N-1));if(Math.abs(speed)>4){const sp2=clamp(speed,-120,120);wv[bi]-=sp2*.5*dt;wv[Math.max(0,bi-3)]+=sp2*.3*dt}
+ const sx=i=>g.L+(g.R-g.L)*i/(N-1);
+ const surf=x=>{if(x<g.L)return g.low+Math.sin(x*.05+t*1.4)*1.2;if(x>g.R)return g.up+Math.sin(x*.05+t*1.1)*1.2;const f=(x-g.L)/(g.R-g.L)*(N-1),i=Math.floor(f);return wl+lerp(wh[i],wh[Math.min(N-1,i+1)],f-i)};
+ // boat floats: buoyancy spring (k 30, ζ 0.35) to the surface under its middle, pitch from the slope
+ const bmid=S.bx+g.boatLen/2,yT=(surf(bmid-g.boatLen*.3)+surf(bmid+g.boatLen*.3))/2+g.boatLen*.02;
+ if(!S.by)S.by=yT;const kb=30,cb=2*.35*Math.sqrt(kb);S.byv+=(-kb*(S.by-yT)-cb*S.byv)*dt;S.by+=S.byv*dt;
+ const pT=Math.atan2(surf(bmid+g.boatLen*.3)-surf(bmid-g.boatLen*.3),g.boatLen*.6)*.8;S.pv2+=(-24*(S.pitch-pT)-2*.4*Math.sqrt(24)*S.pv2)*dt;S.pitch+=S.pv2*dt;
+ // ---------- paint ----------
+ cx.setTransform(DPR,0,0,DPR,0,0);cx.clearRect(0,0,W,H);
+ // water bodies
+ const wg=cx.createLinearGradient(0,g.up,0,g.bedLow);wg.addColorStop(0,'#6f9cb5');wg.addColorStop(1,'#2f5a73');cx.fillStyle=wg;
+ cx.beginPath();cx.moveTo(0,g.bedLow);for(let x=0;x<=g.L;x+=6)cx.lineTo(x,surf(x));cx.lineTo(g.L,g.bedLow);cx.closePath();cx.globalAlpha=.75;cx.fill();
+ cx.beginPath();cx.moveTo(g.L,g.bedLow);for(let i=0;i<N;i++)cx.lineTo(sx(i),wl+wh[i]);cx.lineTo(g.R,g.bedLow);cx.closePath();cx.fill();
+ cx.beginPath();cx.moveTo(g.R,g.bedUp);for(let x=g.R;x<=W;x+=6)cx.lineTo(x,surf(x));cx.lineTo(W,g.bedUp);cx.closePath();cx.fill();cx.globalAlpha=1;
+ // water hatch lines (drawing convention for water in section)
+ cx.strokeStyle='#f2ead855';cx.lineWidth=1;for(let y=Math.ceil(g.up/9)*9;y<g.bedLow;y+=9){cx.beginPath();[[0,g.L,g.low],[g.L,g.R,wl],[g.R,W,g.up]].forEach(([a,b,top])=>{if(y>top+4&&y<(a>=g.R?g.bedUp:g.bedLow)){cx.moveTo(a+6,y);cx.lineTo(b-6,y)}});cx.stroke()}
+ // surface lines
+ cx.strokeStyle='#1d2b3a';cx.lineWidth=1.4;cx.beginPath();for(let x=0;x<=g.L;x+=6)x?cx.lineTo(x,surf(x)):cx.moveTo(x,surf(x));cx.stroke();
+ cx.beginPath();for(let i=0;i<N;i++)i?cx.lineTo(sx(i),wl+wh[i]):cx.moveTo(sx(i),wl+wh[i]);cx.stroke();
+ cx.beginPath();for(let x=g.R;x<=W;x+=6)x>g.R?cx.lineTo(x,surf(x)):cx.moveTo(x,surf(x));cx.stroke();
+ // masonry: bed, walls, sill
+ cx.fillStyle='#e8dec7';cx.strokeStyle='#1d2b3a';cx.lineWidth=1.6;
+ cx.beginPath();cx.moveTo(0,g.bedLow);cx.lineTo(g.R,g.bedLow);cx.lineTo(g.R,g.bedUp);cx.lineTo(W,g.bedUp);cx.lineTo(W,H);cx.lineTo(0,H);cx.closePath();cx.fill();cx.stroke();
+ hatch(0,g.bedLow+1,g.R,H-g.bedLow,10,'#1d2b3a55');hatch(g.R,g.bedUp+1,W-g.R,H-g.bedUp,10,'#1d2b3a55');
+ // lock wall behind (coping line) and towpath
+ cx.strokeStyle='#1d2b3a';cx.lineWidth=1;cx.setLineDash([6,4]);cx.beginPath();cx.moveTo(g.L-20,g.cope);cx.lineTo(g.R+20,g.cope);cx.stroke();cx.setLineDash([]);
+ cx.fillStyle='#e8dec7';cx.fillRect(g.L-26,g.cope,10,g.bedLow-g.cope);cx.strokeRect(g.L-26,g.cope,10,g.bedLow-g.cope);
+ // gates: a closed gate is a solid leaf in section; an open one swings into its recess (dashed), its balance beam foreshortens as it turns
+ function gate(x,top,bot,open,beamDir){const a=open*Math.PI*.46;cx.lineWidth=1.6;cx.strokeStyle='#1d2b3a';
+  cx.globalAlpha=1-open*.8;cx.fillStyle='#5a3b26';cx.fillRect(x-5,top,10,bot-top);cx.strokeRect(x-5,top,10,bot-top);
+  cx.globalAlpha=1;for(let y=top+14;y<bot-4;y+=16){cx.beginPath();cx.moveTo(x-5,y);cx.lineTo(x+5,y);cx.stroke()}
+  cx.setLineDash([3,3]);cx.strokeRect(x-14,top,8,bot-top);cx.setLineDash([]);
+  const bl=(g.m?60:120)*Math.cos(a);cx.lineWidth=5;cx.strokeStyle='#f2ead8';cx.beginPath();cx.moveTo(x,top-6);cx.lineTo(x+beamDir*bl,top-6);cx.stroke();
+  cx.lineWidth=1.4;cx.strokeStyle='#1d2b3a';cx.strokeRect(Math.min(x,x+beamDir*bl),top-9,Math.abs(bl),6);
+  cx.fillStyle='#1d2b3a';cx.fillRect(x+beamDir*bl-(beamDir>0?0:6),top-11,6,10)}
+ gate(g.L,g.cope,g.bedLow,1-P.bot,-1);gate(g.R,g.cope,g.bedUp,P.top,1);
+ // paddle gear on the top gate (rack rises as it is wound)
+ cx.fillStyle='#1d2b3a';const rack=P.pad*18;cx.fillRect(g.R+10,g.cope-30-rack,5,24);cx.fillRect(g.R+6,g.cope-8,14,6);
+ cx.strokeStyle='#c4973f';cx.lineWidth=2;cx.beginPath();cx.arc(g.R+13,g.cope-12,7,t*P.pad*6,t*P.pad*6+4.5);cx.stroke();
+ // the jet through the open paddle: foam particles thrown into the chamber
+ if(flow>.02&&!RM){for(let n=0;n<Math.ceil(flow*5);n++)S.foam.push({x:g.R-6,y:g.bedUp+(g.bedLow-g.bedUp)*.25*Math.random()+ (wl>g.bedUp?0:0),vx:-(160+Math.random()*120)*(.5+flow),vy:-30+Math.random()*40,a:1,r:1+Math.random()*2.5})}
+ for(let i=S.foam.length-1;i>=0;i--){const f=S.foam[i];f.vy+=220*dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.vx*=.985;const s=surf(f.x);if(f.y>s){f.y=s;f.vy*=-.25;f.a-=dt*1.4}f.a-=dt*.5;if(f.a<=0||f.x<g.L)S.foam.splice(i,1)}
+ cx.fillStyle='#ffffff';for(const f of S.foam){cx.globalAlpha=clamp(f.a)*.85;cx.beginPath();cx.arc(f.x,f.y,f.r,0,7);cx.fill()}cx.globalAlpha=1;
+ // boat
+ const chim=boat(S.bx,S.by,g.boatLen,S.pitch,t,g);
+ // stove smoke: buoyant puffs drift with the breeze and lag behind the boat
+ if(!RM&&Math.random()<dt*7)S.smoke.push({x:chim.x,y:chim.y,vx:speed*.2-6,vy:-14-Math.random()*8,r:3,a:.5});
+ for(let i=S.smoke.length-1;i>=0;i--){const s=S.smoke[i];s.vx+=(-10-s.vx)*dt*.6;s.vy*=1-dt*.3;s.x+=s.vx*dt+Math.sin(t*2+i)*.2;s.y+=s.vy*dt;s.r+=dt*6;s.a-=dt*.14;if(s.a<=0)S.smoke.splice(i,1)}
+ for(const s of S.smoke){cx.globalAlpha=s.a;cx.fillStyle='#8b8f94';cx.beginPath();cx.arc(s.x,s.y,s.r,0,7);cx.fill()}cx.globalAlpha=1;
+ // dimensions and labels
+ const dx=g.R+(g.m?14:40);dim(dx+ (g.m?0:0),g.up,g.low,g.m?'2.4 m':'rise 2.4 m');
+ if(!g.m){const lvl=(lev*2.4).toFixed(2);cx.strokeStyle='#b5332b';cx.setLineDash([2,3]);cx.beginPath();cx.moveTo(g.L,wl);cx.lineTo(g.L-34,wl);cx.stroke();cx.setLineDash([]);cx.fillStyle='#b5332b';cx.font='500 11px RHM, monospace';cx.textAlign='right';cx.fillText('+'+lvl+' m',g.L-38,wl+4);
+  label(14,g.low-10,'lower pound');label(W-14,g.up-10,'upper pound','right');label(g.L+8,g.bedLow+18,'chamber floor');label(g.R+8,g.cope-38,'paddle gear')}
+ return P}
+/* ---------------- steps + film ---------------- */
+const lock=$('#lock'),steps=[...document.querySelectorAll('#steps li')];
+const lv=$('#lockvid'),av=$('#airvid');if(CAP){lv.pause();av.pause()}
+function stepFor(P){return P.exit>.05?4:P.top>.05?3:P.pad>.05||P.fill>.02?2:P.bot>.05?1:0}
+/* ---------------- fleet plans ---------------- */
+const ROOMS=[
+ [['Bow well',.06],['Saloon · stove, sofa bed',.27],['Galley',.17],['Shower room',.11],['Double cabin',.23],['Engine &amp; stern',.16]],
+ [['Bow well',.05],['Saloon · stove, sofa bed',.2],['Dinette',.1],['Galley',.14],['Shower room',.09],['Twin cabin',.13],['Double cabin',.15],['Engine &amp; stern',.14]],
+ [['Bow well',.05],['Saloon · stove',.16],['Dinette · sleeps 2',.1],['Galley',.12],['Shower',.07],['Twin cabin',.12],['WC',.05],['Double cabin',.13],['Engine &amp; stern',.2]]];
+const NOTES={'Bow well':'Seats for four at the front, under the stars.','Galley':'Four-ring hob, oven, fridge, full crockery for the crew.','Shower room':'Hot shower, flushing loo, heated towel rail.','Shower':'Hot shower and basin.','WC':'A second loo, so mornings stay civil.','Double cabin':'A 4 ft 6 double with drawers and a porthole.','Twin cabin':'Two singles that make up a double.','Engine &amp; stern':'Quiet 43 hp diesel; the tiller and a seat for the steerer.','Dinette':'Table for six that folds into a double bed.','Dinette · sleeps 2':'Table for eight; folds into a double bed.'};
+const LEN=[45,58,66];
+document.querySelectorAll('.boat').forEach(el=>{const b=+el.dataset.b,len=LEN[b],wpx=720*len/66,h=84,x0=(760-wpx)/2+20;
+ let s=`<svg viewBox="0 0 760 170" aria-label="${len} ft plan">`;let x=x0;
+ s+=`<path d="M${x0-4} ${30} H${x0+wpx-36} Q${x0+wpx+8} ${30+h/2} ${x0+wpx-36} ${30+h} H${x0-4} Q${x0-14} ${30+h/2} ${x0-4} ${30}Z" fill="#16202a" />`;
+ ROOMS[b].forEach(([n,f],i)=>{const w=f*(wpx-30);const nm=n.replace('&amp;','&');s+=`<rect class="room" data-n="${n}" x="${x.toFixed(1)}" y="${36}" width="${(w-3).toFixed(1)}" height="${h-12}"/>`;
+  const lab=nm.split(' · ')[0];s+=w>30?`<text x="${(x+w/2-1.5).toFixed(1)}" y="${30+h/2+4}" text-anchor="middle">${lab.length*7.6>w-8?lab.slice(0,Math.max(2,Math.floor((w-10)/7.6)))+'.':lab}</text>`:'';x+=w});
+ s+=`<line x1="${x0}" y1="140" x2="${x0+wpx}" y2="140" stroke="#b5332b"/><line x1="${x0}" y1="134" x2="${x0}" y2="146" stroke="#b5332b"/><line x1="${x0+wpx}" y1="134" x2="${x0+wpx}" y2="146" stroke="#b5332b"/><text x="${x0+wpx/2}" y="162" text-anchor="middle" style="fill:#b5332b">${len} ft · ${(len*.3048).toFixed(1)} m · beam 6 ft 10</text>`;
+ s+='</svg><p class="note">Hover a room on the plan.</p>';const pl=el.querySelector('.plan');pl.innerHTML=s;
+ pl.querySelectorAll('.room').forEach(r=>r.addEventListener('mouseenter',()=>{pl.querySelectorAll('.room').forEach(q=>q.classList.remove('hl'));r.classList.add('hl');const n=r.dataset.n;pl.querySelector('.note').innerHTML=`<b>${n}.</b> ${NOTES[n]||'Lined in oak, with reading lights and plenty of hooks.'}`}))});
+/* ---------------- route planner ---------------- */
+const STOPS=[['Bath · River Avon',-10.5,7],['Bath Top Lock',-9.5,1],['Bathampton',-7.5,1],['Dundas Aqueduct',-4.5,1],['Avoncliff Aqueduct',-1.5,1],['Bradford-on-Avon',0,0],['Hilperton',2.5,1],['Semington',4.5,3],['Seend',7,8],['Foxhangers',9,9],['Devizes Wharf',11.5,38]];
+const lsvg=$('#lsvg');const X=m=>380+m/11.5*340;
+{let s=`<line x1="${X(-10.5)}" y1="60" x2="${X(11.5)}" y2="60" stroke="#f2ead8" stroke-width="3"/>`;
+ // lock ticks: Caen Hill's 29 in two miles
+ [[-10.4,6],[-9.5,1],[-0.3,1],[3.9,2],[5.4,5],[8.8,2],[9.6,16],[10.6,10]].forEach(([m,n])=>{for(let i=0;i<n;i++){const xx=X(m+(i-(n-1)/2)*Math.min(.11,1.6/n));s+=`<line x1="${xx.toFixed(1)}" y1="53" x2="${xx.toFixed(1)}" y2="67" stroke="#c4973f" stroke-width="1.4"/>`}});
+ STOPS.forEach(([n,m],i)=>{const base=m===0;s+=`<circle cx="${X(m)}" cy="60" r="${base?7:4.5}" fill="${base?'#b5332b':'#1f4a38'}" stroke="#f2ead8" stroke-width="2"/><text x="${X(m)}" y="${i%2?98:32}" text-anchor="middle">${n.split(' · ')[0].replace(' Aqueduct',' Aq.').replace('Bradford-on-Avon','Bradford').replace('Bath Top Lock','Bath Top').replace('Devizes Wharf','Devizes')}</text>`});
+ s+=`<g id="mk"><path d="M-14 -6 h22 l6 6 l-6 6 h-22z" fill="#c4973f" stroke="#16202a" stroke-width="1.5"/></g><path id="trail" d="" stroke="#c4973f" stroke-width="5" fill="none" opacity=".55"/>`;lsvg.innerHTML=s}
+let rp={n:3,d:'w'},mk={x:X(0),v:0,tx:X(0)};
+function plan(){const hrs=rp.n*4.5;const side=STOPS.filter(s=>rp.d==='w'?s[1]<0:s[1]>0).sort((a,b)=>Math.abs(a[1])-Math.abs(b[1]));
+ let best=null,cum=0;side.forEach(s=>{cum+=s[2];const rt=2*(Math.abs(s[1])/3+cum*.25);if(rt<=hrs)best={s,locks:cum,rt}});
+ if(!best){$('#answer').textContent='Pick a longer break.';return}
+ const mi=Math.abs(best.s[1])*2;$('#answer').innerHTML=`In ${rp.n===7?'a week':rp.n+' nights'} you'll reach <b>${best.s[0]}</b> and back: ${mi} miles, ${best.locks*2} locks, about ${Math.round(best.rt)} hours at the tiller.`;
+ mk.tx=X(best.s[1])}
+$('#nights').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#nights .on').classList.remove('on');b.classList.add('on');rp.n=+b.dataset.n;plan()});
+$('#dir').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#dir .on').classList.remove('on');b.classList.add('on');rp.d=b.dataset.d;plan()});
+plan();
+/* ---------------- booking quote ---------------- */
+const PR=[[895,985,1390],[1120,1230,1790],[1290,1420,2060]];
+function quote(){const b=+$('#fb').value,n=+$('#fn').value;const base=PR[b][n===3?0:n===4?1:2];const d=new Date($('#fd').value);const m=d.getMonth();const peak=m>=6&&m<=7?1.18:m<=2||m>=9?.86:1;
+ const tot=Math.round(base*peak/5)*5+(+$('#fg').value?45:0);$('#qp').textContent='£'+tot.toLocaleString('en-GB')}
+['#fb','#fn','#fd','#fg'].forEach(s=>$(s).addEventListener('change',quote));quote();
+$('#fs').addEventListener('click',()=>{const d=new Date($('#fd').value);$('#sent').textContent=`${$('#fb').selectedOptions[0].text.split(' · ')[0]} is held for you until ${new Date(Date.now()+6048e5).toLocaleDateString('en-GB',{day:'numeric',month:'long'})}. We'll email the handover details.`});
+/* ---------------- loop ---------------- */
+size();let last=performance.now(),T0=last,sp={x:0,v:0};
+function frame(now){const dt=Math.min(.05,Math.max(.001,(now-last)/1000));last=now;const t=(now-T0)/1000;
+ const span=lock.offsetHeight-innerHeight;const target=clamp(scrollY/span);
+ // the whole sequence follows the scroll on a spring (k 18, ζ 1) so the gates and water carry weight
+ const k=18,c=2*Math.sqrt(k);sp.v+=(-k*(sp.x-target)-c*sp.v)*dt;sp.x+=sp.v*dt;
+ if(scrollY<lock.offsetHeight){const P=draw(dt,t,clamp(sp.x));const si=stepFor(P);if(si!==S.stepI){steps.forEach((l,i)=>l.classList.toggle('on',i===si));S.stepI=si}
+  if(CAP&&lv.duration){const tt=(t*1)%lv.duration;if(Math.abs(lv.currentTime-tt)>.05)lv.currentTime=tt}}
+ const r=$('#aerial').getBoundingClientRect();if(CAP&&av.duration&&r.top<innerHeight&&r.bottom>0){const tt=t%av.duration;if(Math.abs(av.currentTime-tt)>.05)av.currentTime=tt}
+ // the planner's boat marker moves on a heavy spring (k 14, ζ 0.8)
+ const km=14,cm=2*.8*Math.sqrt(km);mk.v+=(-km*(mk.x-mk.tx)-cm*mk.v)*dt;mk.x+=mk.v*dt;
+ const dir=Math.sign(mk.tx-X(0))||1;$('#mk').setAttribute('transform',`translate(${mk.x.toFixed(1)} 60) scale(${dir} 1) rotate(${(mk.v*.04).toFixed(2)})`);
+ $('#trail').setAttribute('d',`M${X(0)} 60 H${mk.x.toFixed(1)}`);
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

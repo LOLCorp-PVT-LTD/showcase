@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-14T02:07:45Z",
+ "updated": "2026-11-16T10:21:16Z",
  "items": [
+  {
+   "slug": "longpound",
+   "title": "Longpound Boats",
+   "kind": "Narrowboat hire · Website",
+   "blurb": "A narrowboat hire site where scrolling works a canal lock: the gates close, the water rises and the boat lifts 2.4 m.",
+   "url": "https://showcase.lolcorp.co.uk/longpound/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/longpound.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/longpound.jpg"
+  },
   {
    "slug": "cloudline",
    "title": "Cloudline",
