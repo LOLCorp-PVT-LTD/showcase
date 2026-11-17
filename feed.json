@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-16T10:21:16Z",
+ "updated": "2026-11-17T05:51:05Z",
  "items": [
+  {
+   "slug": "millbrook",
+   "title": "Millbrook Dental",
+   "kind": "Village dentist · Website",
+   "blurb": "A village dentist where the practice sign swings in the breeze and a check-up plays out minute by minute as you scroll.",
+   "url": "https://showcase.lolcorp.co.uk/millbrook/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/millbrook.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/millbrook.jpg"
+  },
   {
    "slug": "longpound",
    "title": "Longpound Boats",
