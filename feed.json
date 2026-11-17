@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-17T05:51:05Z",
+ "updated": "2026-11-17T10:17:46Z",
  "items": [
+  {
+   "slug": "quoin",
+   "title": "Quoin Press",
+   "kind": "Letterpress print shop · Website",
+   "blurb": "A letterpress shop where scrolling runs a print job: type drops, a roller inks it, the press comes down and out comes the poster.",
+   "url": "https://showcase.lolcorp.co.uk/quoin/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/quoin.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/quoin.jpg"
+  },
   {
    "slug": "millbrook",
    "title": "Millbrook Dental",

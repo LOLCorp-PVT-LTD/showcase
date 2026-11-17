@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quoin Press · letterpress printers, Catherine Hill, Frome</title>
+<meta name="description" content="Quoin Press is a letterpress print shop on Catherine Hill in Frome: wedding stationery, business cards, posters and bookplates printed by hand on presses from 1854 to 1962.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Abril;src:url(assets/fonts/abril-fatface-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Bebas;src:url(assets/fonts/bebas-neue-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Bitter;src:url(assets/fonts/bitter-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Bitter;src:url(assets/fonts/bitter-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Bitter;src:url(assets/fonts/bitter-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+:root{--paper:#f3efe6;--paper2:#e9e2d2;--black:#1b1a17;--steel:#2a2a27;--red:#e2452f;--blue:#2b45b5;--wood:#a0703f;--line:#1b1a1726}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--black);font-family:Bitter,Georgia,serif;font-size:18px;line-height:1.6;overflow-x:hidden}
+a{color:inherit}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.bb{font-family:Bebas,Impact,sans-serif;letter-spacing:.04em;font-weight:400}
+h2{font-family:Abril,Georgia,serif;font-weight:400;font-size:clamp(52px,6.4vw,104px);line-height:.95;letter-spacing:-.005em}
+h2 .r{color:var(--red)}h2 .b{color:var(--blue)}
+.kick{font-family:Bebas,sans-serif;font-size:22px;letter-spacing:.14em;color:var(--red)}
+.px{padding-left:56px;padding-right:56px}
+/* "printed" buttons: a slab with a hard two-colour misregistration shadow */
+.btn{display:inline-flex;align-items:center;gap:12px;font-family:Bebas,sans-serif;font-size:24px;letter-spacing:.08em;padding:12px 26px 10px;background:var(--black);color:var(--paper);text-decoration:none;box-shadow:3px 3px 0 var(--red),-2px -2px 0 var(--blue);transition:box-shadow .15s,transform .15s}
+.btn:hover{box-shadow:5px 5px 0 var(--red),-3px -3px 0 var(--blue)}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--red),-1px -1px 0 var(--blue)}
+.btn.ghost{background:transparent;color:var(--black);outline:2px solid var(--black)}
+nav{position:fixed;inset:0 0 auto;z-index:30;display:flex;align-items:center;gap:30px;padding:16px 56px;transition:background .3s,color .3s}
+nav.solid{background:#f3efe6f2;box-shadow:0 1px 0 var(--line);color:var(--black)}
+nav:not(.solid){color:var(--paper)}
+nav .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:Abril,serif;font-size:28px;white-space:nowrap}
+nav .brand img{width:36px;height:36px}
+nav ul{list-style:none;display:flex;gap:28px;margin-left:auto;font-family:Bebas,sans-serif;font-size:21px;letter-spacing:.08em}
+nav ul a{text-decoration:none}
+nav .btn{font-size:20px;padding:9px 18px 7px}
+nav:not(.solid) .btn{background:var(--paper);color:var(--black)}
+/* ---------- hero: the print run ---------- */
+#run{position:relative;height:480vh;background:#121210}
+#stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#pcv{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hcopy{position:absolute;left:56px;bottom:44px;color:var(--paper);max-width:520px;z-index:2;pointer-events:none}
+#hcopy p{font-size:19px;color:#f3efe6d0;margin-top:10px}
+#hcopy .kick{color:#ff8a72}
+#phase{position:absolute;right:56px;bottom:44px;z-index:2;display:flex;gap:8px;font-family:Bebas,sans-serif;font-size:20px;letter-spacing:.1em;color:#f3efe666}
+#phase span{padding:6px 12px;border:1.5px solid #f3efe633}
+#phase span.on{color:var(--black);background:var(--paper);border-color:var(--paper)}
+/* ---------- intro ---------- */
+#since{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:70px;padding:150px 56px 130px;align-items:center}
+#since .ph{position:relative}
+#since .ph img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:contrast(1.04)}
+#since .ph::after{content:"";position:absolute;inset:14px -14px -14px 14px;border:3px solid var(--red);z-index:-1}
+#since p{font-size:20px;margin-top:22px;max-width:560px}
+#since .stamp{display:inline-block;margin-top:26px;font-family:Bebas,sans-serif;font-size:22px;letter-spacing:.12em;border:3px solid var(--blue);color:var(--blue);padding:8px 16px 5px;transform:rotate(-3deg)}
+/* ---------- what we print ---------- */
+#work{padding:40px 56px 140px}
+#work .head{display:flex;justify-content:space-between;align-items:end;gap:40px}
+#work .head p{max-width:440px;font-size:19px}
+#jobs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px;margin-top:60px}
+.job{grid-column:span 2;background:#fff;border:2px solid var(--black)}
+.job.w{grid-column:span 3}
+.job .im{height:260px;background-size:cover;background-position:center;border-bottom:2px solid var(--black)}
+.job .tx{padding:22px 24px 24px}
+.job h3{font-family:Abril,serif;font-weight:400;font-size:32px;line-height:1.05}
+.job p{font-size:16px;margin-top:8px}
+.job .from{display:flex;justify-content:space-between;margin-top:16px;font-family:Bebas,sans-serif;font-size:22px;letter-spacing:.06em;border-top:2px dashed var(--black);padding-top:12px}
+/* ---------- card builder ---------- */
+#build{background:var(--paper2);padding:140px 56px}
+#build .grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:70px;align-items:center}
+.opt{margin-top:26px}
+.opt h4{font-family:Bebas,sans-serif;font-weight:400;font-size:22px;letter-spacing:.12em}
+.sw{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.sw button{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border:2px solid var(--black);background:#fff;font-size:15px}
+.sw button i{width:28px;height:28px;border:1.5px solid #0003;display:block}
+.sw button.on{background:var(--black);color:var(--paper)}
+#cardwrap{position:relative;height:520px;display:grid;place-items:center;perspective:1400px}
+#card{width:540px;height:300px;position:relative;transform-style:preserve-3d;box-shadow:0 30px 60px -20px #0006;transition:background .4s}
+#card .face{position:absolute;inset:0;padding:38px 42px;display:flex;flex-direction:column;justify-content:space-between}
+#card .nm{font-family:Abril,serif;font-size:44px;line-height:1}
+#card .ro{font-family:Bebas,sans-serif;font-size:22px;letter-spacing:.12em;margin-top:8px}
+#card .ct{font-size:15px;line-height:1.5}
+#card .ink{transition:color .4s;text-shadow:0 1px 0 #ffffff55,0 -1px 0 #00000030}
+#card .edge{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 0 var(--red);transition:box-shadow .4s}
+#price{display:flex;justify-content:space-between;align-items:baseline;margin-top:30px;border-top:2px solid var(--black);padding-top:16px}
+#price b{font-family:Abril,serif;font-weight:400;font-size:46px}
+/* ---------- presses ---------- */
+#presses{padding:140px 56px;background:var(--black);color:var(--paper)}
+#presses .kick{color:#ff8a72}
+#plist{margin-top:60px;border-top:2px solid #f3efe655}
+.press{display:grid;grid-template-columns:120px minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:30px;padding:34px 0;border-bottom:2px solid #f3efe622;align-items:start}
+.press .yr{font-family:Bebas,sans-serif;font-size:56px;line-height:.9;color:var(--red)}
+.press h3{font-family:Abril,serif;font-weight:400;font-size:40px;line-height:1}
+.press h3 small{display:block;font-family:Bebas,sans-serif;font-size:20px;letter-spacing:.1em;color:#f3efe699;margin-top:8px}
+.press p{font-size:17px;color:#f3efe6cc}
+.press dl{font-size:15px}.press dt{font-family:Bebas,sans-serif;letter-spacing:.1em;color:#f3efe688;font-size:17px}.press dd{margin-bottom:8px}
+/* ---------- process ---------- */
+#process{padding:140px 56px}
+#steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-top:60px;counter-reset:s}
+.st{position:relative;padding:30px 24px 0 0;border-top:6px solid var(--black)}
+.st::before{counter-increment:s;content:counter(s);position:absolute;top:-34px;left:0;font-family:Abril,serif;font-size:30px;background:var(--paper);padding-right:10px}
+.st .d{font-family:Bebas,sans-serif;font-size:22px;letter-spacing:.1em;color:var(--red)}
+.st h3{font-family:Abril,serif;font-weight:400;font-size:30px;line-height:1.05;margin-top:4px}
+.st p{font-size:16px;margin-top:8px}
+/* ---------- workshops ---------- */
+#learn{padding:40px 56px 140px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:60px}
+#learn .ph{margin-top:30px;height:420px;background:url(media/stick.jpg) center/cover}
+.ws{display:grid;grid-template-columns:110px 1fr auto;gap:20px;align-items:center;padding:24px 0;border-bottom:2px solid var(--black)}
+.ws:first-child{border-top:6px solid var(--black)}
+.ws .dt{font-family:Bebas,sans-serif;font-size:26px;line-height:1;letter-spacing:.04em}
+.ws .dt b{display:block;font-family:Abril,serif;font-weight:400;font-size:48px;letter-spacing:0}
+.ws h3{font-family:Abril,serif;font-weight:400;font-size:28px;line-height:1.1}
+.ws p{font-size:15px}
+.ws .seats{display:flex;gap:4px;margin-top:8px}.ws .seats i{width:14px;height:14px;border:2px solid var(--black)}.ws .seats i.t{background:var(--black)}
+.ws .btn{font-size:20px;padding:9px 18px 7px}
+/* ---------- type cases ---------- */
+#cases{padding:0 0 140px}
+#cases .head{padding:0 56px;display:flex;justify-content:space-between;align-items:end;gap:30px}
+#mosaic{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:150px;gap:14px;margin:50px 56px 0}
+#mosaic figure{position:relative;overflow:hidden;background:#222}
+#mosaic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s}
+#mosaic figure:hover img{transform:scale(1.05)}
+#mosaic figcaption{position:absolute;left:0;bottom:0;background:var(--paper);font-family:Bebas,sans-serif;font-size:18px;letter-spacing:.1em;padding:6px 12px 3px}
+/* ---------- words ---------- */
+#words{padding:140px 56px;background:var(--paper2)}
+#qs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:56px}
+.q{background:var(--paper);border:2px solid var(--black);padding:30px 30px 26px;position:relative}
+.q::before{content:"“";position:absolute;top:-30px;left:20px;font-family:Abril,serif;font-size:100px;line-height:1;color:var(--red)}
+.q p{font-size:19px;font-style:italic}
+.q cite{display:block;margin-top:16px;font-style:normal;font-family:Bebas,sans-serif;font-size:21px;letter-spacing:.1em}
+/* ---------- quote ---------- */
+#quote{padding:140px 56px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:70px}
+form{border:2px solid var(--black);background:#fff;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:18px 22px;box-shadow:10px 10px 0 var(--blue)}
+label{display:flex;flex-direction:column;gap:6px;font-family:Bebas,sans-serif;font-size:19px;letter-spacing:.1em}
+input,select,textarea{font:inherit;font-family:Bitter,serif;font-size:17px;letter-spacing:0;padding:11px 13px;border:2px solid var(--black);background:var(--paper);color:var(--black);border-radius:0}
+.full{grid-column:1/-1}
+#est{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;border-top:2px dashed var(--black);padding-top:14px}
+#est b{font-family:Abril,serif;font-weight:400;font-size:42px}
+#sent{grid-column:1/-1;color:#24663f;min-height:1.5em;font-size:16px}
+/* ---------- visit ---------- */
+#visit{padding:40px 56px 140px;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:60px}
+.hrs .r{display:flex;justify-content:space-between;padding:10px 0;border-bottom:2px dashed var(--line);font-size:17px}
+details{border-bottom:2px solid var(--black);padding:20px 0}details:first-of-type{border-top:6px solid var(--black)}
+summary{list-style:none;cursor:pointer;font-family:Abril,serif;font-size:26px;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";font-family:Bebas,sans-serif}details[open] summary::after{content:"−"}
+details p{margin-top:10px;font-size:17px}
+footer{background:var(--black);color:#f3efe6c0;padding:90px 56px 40px}
+footer .big{font-family:Abril,serif;font-size:clamp(60px,11vw,180px);line-height:.85;color:var(--paper)}
+footer .big span{color:var(--red)}
+footer .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;margin-top:60px;font-size:15px}
+footer b{display:block;font-family:Bebas,sans-serif;font-weight:400;font-size:20px;letter-spacing:.12em;color:var(--paper);margin-bottom:8px}
+footer .credit{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid #f3efe626;margin-top:50px;padding-top:22px;font-size:14px}
+@media (max-width:860px){
+ .px,#since,#work,#build,#presses,#process,#learn,#words,#quote,#visit,footer{padding-left:18px;padding-right:18px}
+ nav{padding:12px 18px}nav ul{display:none}nav .btn{margin-left:auto}nav .brand{font-size:22px}nav .brand img{width:30px;height:30px}
+ #hcopy{left:18px;right:18px;bottom:96px}#phase{left:18px;right:auto;bottom:30px;font-size:16px}#phase span{padding:4px 8px}
+ #since,#build .grid,#learn,#quote,#visit{grid-template-columns:1fr;gap:34px}
+ #since{padding-top:90px;padding-bottom:80px}
+ #work .head,#cases .head{flex-direction:column;align-items:flex-start}#cases .head{padding:0 18px}
+ #jobs{grid-template-columns:1fr}.job,.job.w{grid-column:span 1}
+ #build,#presses,#process,#words,#quote{padding-top:90px;padding-bottom:90px}
+ #cardwrap{height:240px;display:flex;align-items:center;justify-content:center}#card{flex:none}
+ .press{grid-template-columns:1fr;gap:10px}
+ #steps{grid-template-columns:1fr;gap:44px}
+ .ws{grid-template-columns:80px 1fr}.ws .btn{grid-column:1/-1;justify-content:center}
+ #mosaic{margin:30px 12px 0;grid-auto-rows:110px;gap:8px}#mosaic figure{grid-column:span 6!important}
+ #qs{grid-template-columns:1fr;gap:40px}
+ form{grid-template-columns:1fr;padding:22px}
+ footer .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+<nav id="nav">
+ <a class="brand" href="#run"><img src="src/img/logo.svg" alt="">Quoin Press</a>
+ <ul><li><a href="#work">What we print</a></li><li><a href="#build">Build a card</a></li><li><a href="#presses">The presses</a></li><li><a href="#learn">Workshops</a></li></ul>
+ <a class="btn" href="#quote">Get a quote</a>
+</nav>
+
+<section id="run" aria-label="A print run, from type to paper">
+ <div id="stage">
+  <canvas id="pcv" aria-label="Wood type blocks drop into a chase, are inked by a roller and printed onto paper"></canvas>
+  <div id="hcopy"><p class="kick">Letterpress printers · Catherine Hill, Frome</p><p>Every job here is set in real type, inked by roller and pressed into thick cotton paper, one sheet at a time.</p></div>
+  <div id="phase" aria-hidden="true"><span class="on">1 · Set</span><span>2 · Ink</span><span>3 · Press</span><span>4 · Proof</span></div>
+ </div>
+</section>
+
+<section id="since" aria-label="About the shop">
+ <div class="ph"><img src="media/chase.jpg" alt="Wood type locked up in a chase on the press bed"></div>
+ <div><p class="kick">Since 1987</p><h2>Type you can <span class="r">feel</span> with your thumb.</h2>
+  <p>Quoin Press started in a lean-to behind the cheese shop with one hand press and four cases of type. Thirty-nine years on we're at No. 31 Catherine Hill, with three presses, 214 founts of wood and metal type, and a window you can watch us through.</p>
+  <p>Letterpress pushes the ink into the paper, so every letter leaves a shallow bite you can run a finger across. Nothing digital looks like it.</p>
+  <span class="stamp">Printed by hand · Frome · Somerset</span></div>
+</section>
+
+<section id="work" aria-label="What we print">
+ <div class="head"><div><p class="kick">What we print</p><h2>From one <span class="b">bookplate</span> to 500 invitations.</h2></div><p>Prices include setting, one ink colour and 600 gsm cotton paper. Proofs are emailed within three working days.</p></div>
+ <div id="jobs">
+  <article class="job w"><div class="im" style="background-image:url(media/love.jpg)"></div><div class="tx"><h3>Wedding stationery</h3><p>Invitations, RSVP cards and orders of service, set in your choice of 40 metal founts.</p><div class="from"><span>50 invitation suites</span><span>from £420</span></div></div></article>
+  <article class="job w"><div class="im" style="background-image:url(media/blocks.jpg)"></div><div class="tx"><h3>Business cards</h3><p>Thick, two-colour, and with painted edges if you like. Build yours below.</p><div class="from"><span>250 cards</span><span>from £185</span></div></div></article>
+  <article class="job"><div class="im" style="background-image:url(media/woodclose.jpg)"></div><div class="tx"><h3>Posters</h3><p>Big wood type, A2 or A1, for gigs, fêtes and front rooms.</p><div class="from"><span>25 posters</span><span>from £240</span></div></div></article>
+  <article class="job"><div class="im" style="background-image:url(media/cliche.jpg)"></div><div class="tx"><h3>Bookplates</h3><p>Your name and a motif from a hand-cut block, gummed and ready to stick.</p><div class="from"><span>100 plates</span><span>from £95</span></div></div></article>
+  <article class="job"><div class="im" style="background-image:url(media/colours.jpg)"></div><div class="tx"><h3>Greeting cards</h3><p>Short runs for shops and makers, with envelopes in five colours.</p><div class="from"><span>100 cards</span><span>from £160</span></div></div></article>
+ </div>
+</section>
+
+<section id="build" aria-label="Build a business card">
+ <div class="grid">
+  <div><p class="kick">Build a card</p><h2>Pick a paper. <span class="r">Pick an ink.</span></h2>
+   <div class="opt"><h4>Paper · 600 gsm cotton</h4><div class="sw" id="paper"><button class="on" data-v="#fbf8f1" data-p="0"><i style="background:#fbf8f1"></i>Bright white</button><button data-v="#efe6d3" data-p="0"><i style="background:#efe6d3"></i>Natural</button><button data-v="#cdb48f" data-p="12"><i style="background:#cdb48f"></i>Kraft</button><button data-v="#1d1d1f" data-p="20"><i style="background:#1d1d1f"></i>Black</button></div></div>
+   <div class="opt"><h4>Ink</h4><div class="sw" id="ink"><button class="on" data-v="#e2452f"><i style="background:#e2452f"></i>Vermilion</button><button data-v="#2b45b5"><i style="background:#2b45b5"></i>Ultramarine</button><button data-v="#1b1a17"><i style="background:#1b1a17"></i>Press black</button><button data-v="#c9a24b" data-p="30"><i style="background:#c9a24b"></i>Gold foil</button></div></div>
+   <div class="opt"><h4>Edges</h4><div class="sw" id="edge"><button class="on" data-v="0">Plain</button><button data-v="1" data-p="45">Painted to match</button></div></div>
+   <div id="price"><span class="bb" style="font-size:22px">250 cards, set and printed</span><b id="pv">£185</b></div>
+  </div>
+  <div id="cardwrap"><div id="card"><div class="face"><div><div class="nm ink">Ellen Hartley</div><div class="ro ink">Bookbinder · Frome</div></div><div class="ct ink">07700 900 418<br>ellen@hartleybindery.co.uk<br>The Old Dairy, Vallis Way</div></div><div class="edge"></div></div></div>
+ </div>
+</section>
+
+<section id="presses" aria-label="The presses">
+ <p class="kick">The presses</p><h2>Three machines, <span class="r">108 years apart.</span></h2>
+ <div id="plist">
+  <div class="press"><div class="yr">1854</div><h3>The Albion<small>Iron hand press · Bristol made</small></h3><p>Our oldest, and still the best for big wood-type posters. One pull of the bar, one sheet, about forty an hour.</p><dl><dt>Bed</dt><dd>20 × 30 in</dd><dt>Best for</dt><dd>Posters, broadsides</dd></dl></div>
+  <div class="press"><div class="yr">1931</div><h3>Vandy<small>Cylinder proof press</small></h3><p>A rolling cylinder takes an even impression across the whole forme. Proofs, short runs and anything with fine metal type.</p><dl><dt>Bed</dt><dd>15 × 20 in</dd><dt>Best for</dt><dd>Proofs, bookplates</dd></dl></div>
+  <div class="press"><div class="yr">1962</div><h3>Mabel<small>Automatic platen press</small></h3><p>Feeds, inks and prints by herself at up to 3,000 sheets an hour, with a deep, crisp bite. Most cards and invitations go through Mabel.</p><dl><dt>Bed</dt><dd>10 × 15 in</dd><dt>Best for</dt><dd>Cards, invitations</dd></dl></div>
+ </div>
+</section>
+
+<section id="process" aria-label="How a job runs">
+ <p class="kick">How a job runs</p><h2>Ten working days, <span class="b">door to door.</span></h2>
+ <div id="steps">
+  <div class="st"><div class="d">Day 1</div><h3>We talk</h3><p>Wording, quantities, paper and ink. Bring examples you love.</p></div>
+  <div class="st"><div class="d">Day 2–3</div><h3>We set and proof</h3><p>Type set by hand, a proof pulled on Vandy, photographed and emailed.</p></div>
+  <div class="st"><div class="d">Day 4</div><h3>You approve</h3><p>Changes are free until you say yes. After that, the type is locked up.</p></div>
+  <div class="st"><div class="d">Day 5–8</div><h3>We print</h3><p>One colour per pass, drying overnight between colours.</p></div>
+  <div class="st"><div class="d">Day 9–10</div><h3>Trim and post</h3><p>Guillotined, edge-painted if ordered, wrapped in glassine and sent.</p></div>
+ </div>
+</section>
+
+<section id="learn" aria-label="Workshops">
+ <div><p class="kick">Workshops</p><h2>Set your own <span class="r">name</span> in lead.</h2><p style="margin-top:20px;font-size:19px">Small groups of four, Saturdays in the shop. Tea, aprons and all the type you can carry.</p><div class="ph" role="img" aria-label="A composing stick with lead type"></div></div>
+ <div id="wlist"></div>
+</section>
+
+<section id="cases" aria-label="The type cases">
+ <div class="head"><div><p class="kick">The type cases</p><h2>214 founts, <span class="b">all upside down.</span></h2></div><p style="max-width:420px">Type reads backwards on the press, which is why printers mind their p's and q's.</p></div>
+ <div id="mosaic">
+  <figure style="grid-column:span 7;grid-row:span 3"><img src="media/woodpile.jpg" alt="A pile of wood type letters" loading="lazy"><figcaption>Wood type, 1890s</figcaption></figure>
+  <figure style="grid-column:span 5;grid-row:span 2"><img src="media/drawer.jpg" alt="A type case drawer pulled open" loading="lazy"><figcaption>Case No. 114</figcaption></figure>
+  <figure style="grid-column:span 5;grid-row:span 1"><img src="media/leadrows.jpg" alt="Rows of lead type" loading="lazy"><figcaption>10 pt Caslon</figcaption></figure>
+  <figure style="grid-column:span 4;grid-row:span 2"><img src="media/mirrored.jpg" alt="Mirrored wood type in a row" loading="lazy"><figcaption>Mirrored, as it prints</figcaption></figure>
+  <figure style="grid-column:span 4;grid-row:span 2"><img src="media/case.jpg" alt="A composing stick resting on a case of lead type" loading="lazy"><figcaption>The composing stick</figcaption></figure>
+  <figure style="grid-column:span 4;grid-row:span 2"><img src="media/plate.jpg" alt="A forme of type on the press" loading="lazy"><figcaption>Locked up</figcaption></figure>
+ </div>
+</section>
+
+<section id="words" aria-label="What customers say">
+ <p class="kick">From the guest book</p><h2>Things people <span class="r">wrote back.</span></h2>
+ <div id="qs">
+  <div class="q"><p>Our invitations arrived and three guests rang just to say they'd stroked them. Worth every penny.</p><cite>Hannah &amp; Joe · married in Mells</cite></div>
+  <div class="q"><p>I handed my card to a client and she said “oh, it's printed printed.” That's the whole point.</p><cite>Ellen · bookbinder</cite></div>
+  <div class="q"><p>The Saturday workshop is the best four hours I've spent in Frome. I set my daughter's name in 24 pt wood type.</p><cite>Raj · workshop, March</cite></div>
+ </div>
+</section>
+
+<section id="quote" aria-label="Get a quote">
+ <div><p class="kick">Get a quote</p><h2>A price in <span class="b">one minute.</span></h2><p style="margin-top:20px;font-size:19px;max-width:460px">This gives you our standard price. We'll confirm it with your proof, and it never goes up after that.</p>
+  <div class="hrs" style="margin-top:34px"><div class="r"><span>Setup per colour</span><span>£45</span></div><div class="r"><span>Extra colour, per 100</span><span>£22</span></div><div class="r"><span>Edge painting, per 100</span><span>£18</span></div><div class="r"><span>Proof changes</span><span>Free</span></div></div></div>
+ <form onsubmit="return false">
+  <label class="full">What are we printing?<select id="qj"><option value="0">Business cards (85 × 55 mm)</option><option value="1" selected>Wedding invitations (A6)</option><option value="2">Posters (A2)</option><option value="3">Bookplates (90 × 120 mm)</option></select></label>
+  <label>Quantity<input id="qn" type="number" min="25" step="25" value="100"></label>
+  <label>Ink colours<select id="qc"><option>1</option><option selected>2</option><option>3</option></select></label>
+  <label>Edges<select id="qe"><option value="0">Plain</option><option value="1">Painted</option></select></label>
+  <label>Needed by<input type="date" value="2027-04-24"></label>
+  <label class="full">Your email<input type="email" placeholder="you@example.com"></label>
+  <div id="est"><span class="bb" style="font-size:22px">Standard price</span><b id="qp">£0</b></div>
+  <button class="btn full" id="qs2" style="justify-content:center">Send for a proof</button>
+  <p id="sent" role="status"></p>
+ </form>
+</section>
+
+<section id="visit" aria-label="Visit">
+ <div><p class="kick">Visit the shop</p><h2>31 Catherine Hill, <span class="r">Frome.</span></h2>
+  <div class="hrs" style="margin-top:34px"><div class="r"><span>Tuesday – Friday</span><span>10.00 – 5.00</span></div><div class="r"><span>Saturday</span><span>10.00 – 4.00 · workshops from 10</span></div><div class="r"><span>Frome Independent market Sunday</span><span>10.00 – 3.00</span></div><div class="r"><span>Monday</span><span>Printing, door shut</span></div></div>
+  <p style="margin-top:22px;font-size:17px">Ten minutes' walk from Frome station, at the top of the cobbles. Free parking in Cork Street after 6 pm and on Sundays.</p></div>
+ <div>
+  <details open><summary>Can you match a colour?</summary><p>Yes. We mix every ink by hand, so send us a Pantone number or a swatch and we'll match it on the press.</p></details>
+  <details><summary>Can you print my own artwork?</summary><p>Yes. We make a photopolymer plate from your file (vector or 600 dpi), so logos and drawings print with the same bite as type.</p></details>
+  <details><summary>Is letterpress more expensive?</summary><p>For small runs, a little. For 250 business cards it's about the price of a good meal out, and people keep them.</p></details>
+  <details><summary>Do you post?</summary><p>Across the UK by tracked post, flat-packed between boards. Collect for free from the shop.</p></details>
+ </div>
+</section>
+
+<footer>
+ <div class="big">Mind your <span>p's</span><br>&amp; q's.</div>
+ <div class="cols"><div><b>Quoin Press</b>31 Catherine Hill<br>Frome, Somerset BA11 1BY</div><div><b>Say hello</b>01373 460 552<br>print@quoinpress.co.uk</div><div><b>Workshops</b>Saturdays, 10–2<br>£85 a person</div><div><b>Follow the press</b>New prints every Friday</div></div>
+ <div class="credit"><span>© 2027 Quoin Press · Printed by hand since 1987</span><span>by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+(()=>{
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+try{sessionStorage.setItem('quoin-seen','1')}catch(e){}
+const $=s=>document.querySelector(s),clamp=(v,a=0,b=1)=>v<a?a:v>b?b:v,lerp=(a,b,t)=>a+(b-a)*t,sm=t=>t*t*(3-2*t);
+
+/* ---------------- the print run ---------------- */
+const cv=$('#pcv'),cx=cv.getContext('2d');let W=0,H=0,DPR=1;
+const LINES=['PRINTED','BY HAND'];
+let blocks=[];
+function layout(){DPR=Math.min(devicePixelRatio||1,2);const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;
+ const m=W<700;const bw=Math.min(m?44:124,(W*.84)/7.6),bh=bw*1.32,gap=bw*.06;
+ const keep=blocks;blocks=[];
+ LINES.forEach((ln,li)=>{const n=ln.length;const tw=n*bw+(n-1)*gap;const x0=(W-tw)/2;const y=H*(m?.28:.2)+li*(bh+gap*3);
+  [...ln].forEach((ch,i)=>{const old=keep[blocks.length];blocks.push({ch,x:x0+i*(bw+gap),ty:y,w:bw,h:bh,y:old?old.y:-bh-Math.random()*H*.6,vy:old?old.vy:0,rest:old?old.rest:false,delay:(li*7+i)*.07,ink:old?old.ink:0,face:ch===' '?null:ch,grain:Math.random()*1000})})})}
+addEventListener('resize',layout);
+// wood grain texture for the blocks
+const grain=document.createElement('canvas');grain.width=256;grain.height=256;{const g=grain.getContext('2d');g.fillStyle='#b07b45';g.fillRect(0,0,256,256);for(let i=0;i<90;i++){g.strokeStyle=`rgba(${80+Math.random()*40},${45+Math.random()*25},20,${.18+Math.random()*.25})`;g.lineWidth=.6+Math.random()*1.6;g.beginPath();let y=Math.random()*256;g.moveTo(0,y);for(let x=0;x<=256;x+=16){y+=(Math.random()-.5)*3;g.lineTo(x,y+Math.sin(x*.05+i)*2)}g.stroke()}}
+// paper fibre texture
+const fib=document.createElement('canvas');fib.width=256;fib.height=256;{const g=fib.getContext('2d');g.fillStyle='#f6f1e4';g.fillRect(0,0,256,256);for(let i=0;i<1400;i++){g.fillStyle=`rgba(120,100,70,${Math.random()*.07})`;g.fillRect(Math.random()*256,Math.random()*256,Math.random()*2+.4,Math.random()*.8+.2)}}
+const S={sx:0,sv:0,t0:0,inkL:[],paper:0,rollX:-200,rollV:0,rollA:0,ph:-1};
+function drawBlock(b,t,inkCol){cx.save();cx.translate(b.x,b.y);
+ // block body with side shading (we see the type from slightly above)
+ const pat=cx.createPattern(grain,'repeat');cx.fillStyle=pat;cx.fillRect(0,0,b.w,b.h);
+ const sh=cx.createLinearGradient(0,0,b.w,0);sh.addColorStop(0,'#0000');sh.addColorStop(.85,'#0000');sh.addColorStop(1,'#00000055');cx.fillStyle=sh;cx.fillRect(0,0,b.w,b.h);
+ cx.strokeStyle='#4a2e14';cx.lineWidth=1.2;cx.strokeRect(.5,.5,b.w-1,b.h-1);
+ if(b.face){// the raised letter, mirrored as real type is
+  cx.save();cx.translate(b.w/2,b.h*.56);cx.scale(-1,1);cx.font=`${(b.h*.86).toFixed(0)}px Bebas, Impact, sans-serif`;cx.textAlign='center';cx.textBaseline='middle';
+  cx.fillStyle='#5a3a1c';cx.fillText(b.face,2,3);
+  cx.fillStyle=b.ink>0?mix('#8d6236',inkCol,clamp(b.ink)):'#8d6236';cx.fillText(b.face,0,0);
+  if(b.ink>0){cx.globalAlpha=.25*clamp(b.ink);cx.fillStyle='#fff';cx.fillText(b.face,-1,-1.5);cx.globalAlpha=1}
+  cx.restore()}
+ cx.restore()}
+function hex(c){return[parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)]}
+function mix(a,b,t){const A=hex(a),B=hex(b);return`rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')})`}
+function frame(dt,t,p){
+ const m=W<700;
+ // phases (scroll): 0–.18 set (drop), .18–.5 ink, .5–.76 press, .76–1 proof
+ const set=1,inkP=sm(clamp((p-.16)/.3)),press=clamp((p-.5)/.26),proof=sm(clamp((p-.74)/.2));
+ const ph=p<.16?0:p<.5?1:p<.76?2:3;if(ph!==S.ph){[...document.querySelectorAll('#phase span')].forEach((s,i)=>s.classList.toggle('on',i===ph));S.ph=ph}
+ cx.setTransform(DPR,0,0,DPR,0,0);
+ // the press bed: dark steel with a little sheen
+ const bg=cx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#1d1d1b');bg.addColorStop(1,'#0e0e0d');cx.fillStyle=bg;cx.fillRect(0,0,W,H);
+ const fx=blocks[0].x-blocks[0].w*.5,fy=blocks[0].ty-blocks[0].h*.4,fw=W-2*fx,fh=(blocks[blocks.length-1].ty+blocks[0].h*1.4)-fy;
+ cx.fillStyle='#2b2b29';cx.fillRect(fx-26,fy-26,fw+52,fh+52);cx.strokeStyle='#4a4a46';cx.lineWidth=3;cx.strokeRect(fx-26,fy-26,fw+52,fh+52);// the chase
+ cx.fillStyle='#3a2a1c';cx.fillRect(fx-12,fy-12,fw+24,fh+24);// furniture
+ // quoins: the wedges that lock the type in
+ cx.fillStyle='#8a8a84';for(let i=0;i<2;i++){cx.fillRect(fx+fw*.3+i*fw*.3,fy+fh+2,40,10)}
+ // blocks drop under gravity with a woody bounce (restitution 0.22) and come to rest
+ const inkCol='#e2452f';
+ blocks.forEach(b=>{if(!b.rest){if(t>b.delay+.2||RM){b.vy+=2600*dt;b.y+=b.vy*dt;if(b.y>=b.ty){b.y=b.ty;if(Math.abs(b.vy)<160||RM){b.vy=0;b.rest=true}else b.vy*=-.22}}}
+  b.ink=Math.max(b.ink,0)});
+ // the ink roller rolls across the forme twice; its angle follows the distance travelled (ω = v / r)
+ const rr=m?20:34;const passes=inkP*2;const along=passes<=1?passes:2-passes;const rx=lerp(fx-rr*3,fx+fw+rr*3,along);
+ const km=40,cm=2*.9*Math.sqrt(km);S.rollV+=(-km*(S.rollX-rx)-cm*S.rollV)*dt;S.rollX+=S.rollV*dt;S.rollA+=S.rollV*dt/rr;
+ blocks.forEach(b=>{if(inkP>0&&inkP<1&&b.face&&Math.abs(S.rollX-(b.x+b.w/2))<b.w*.7)b.ink=Math.min(1,b.ink+dt*2.6)});
+ if(inkP<=0)blocks.forEach(b=>b.ink=Math.max(0,b.ink-dt*2));
+ blocks.forEach(b=>{if(b.y>-b.h)drawBlock(b,t,inkCol)});
+ // roller and its frame
+ if(inkP>0&&inkP<1){const ry=fy+fh/2;cx.save();cx.translate(S.rollX,ry);
+  cx.fillStyle='#111';cx.fillRect(-rr*.25,-fh/2-40,rr*.5,fh+80);
+  const rg=cx.createLinearGradient(-rr,0,rr,0);rg.addColorStop(0,'#5a1810');rg.addColorStop(.45,'#e2452f');rg.addColorStop(.6,'#ff8a72');rg.addColorStop(1,'#5a1810');cx.fillStyle=rg;cx.fillRect(-rr,-fh/2-20,rr*2,fh+40);
+  cx.strokeStyle='#0004';cx.lineWidth=2;for(let k=0;k<6;k++){const yy=((S.rollA*rr+k*fh/6)%(fh+40))-fh/2-20;cx.beginPath();cx.moveTo(-rr,yy);cx.lineTo(rr,yy);cx.stroke()}
+  cx.restore()}
+ // the platen brings the paper down: shadow grows, then lifts with the print
+ if(press>0){const close=press<.5?sm(press*2):1-sm((press-.5)*2);
+  const pad=40,px=fx-pad,py=fy-pad,pw=fw+pad*2,phh=fh+pad*2;
+  cx.save();cx.globalAlpha=.45*close;cx.fillStyle='#000';cx.fillRect(px+20*(1-close),py+30*(1-close),pw,phh);cx.restore();
+  cx.save();const lift=(1-close);cx.translate(0,-lift*H*.9+ (press>.5?0:0));cx.globalAlpha=press>.5?1:clamp(close*1.4);
+  cx.fillStyle=cx.createPattern(fib,'repeat');cx.fillRect(px,py,pw,phh);
+  // the impression appears once the sheet has touched the inked type
+  if(press>.5){blocks.forEach(b=>{if(!b.face)return;cx.save();cx.translate(b.x+b.w/2,b.y+b.h*.56);cx.font=`${(b.h*.86).toFixed(0)}px Bebas, Impact, sans-serif`;cx.textAlign='center';cx.textBaseline='middle';
+   cx.fillStyle='#00000018';cx.fillText(b.face,1,2);// deboss shadow
+   cx.fillStyle='#e2452f';cx.globalAlpha=.92;cx.fillText(b.face,0,0);
+   cx.globalCompositeOperation='destination-out';cx.globalAlpha=.14;for(let k=0;k<26;k++){const n=Math.sin(b.grain+k*12.9898)*43758.5453;cx.fillRect((n%1)*b.w-b.w/2,((n*7)%1)*b.h*.8-b.h*.4,2,1.2)}cx.restore()})}
+  cx.restore()}
+ // proof: the printed sheet comes towards you as a finished poster
+ if(proof>0){const sc=lerp(1,m?1.02:1.08,proof);const pad=40;cx.save();cx.translate(W/2,H/2);cx.rotate(-.02*proof);cx.scale(sc,sc);cx.translate(-W/2,-H/2);
+  cx.fillStyle='#0008';cx.fillRect(fx-pad+12,fy-pad+16,fw+pad*2,fh+pad*2);
+  cx.fillStyle=cx.createPattern(fib,'repeat');cx.fillRect(fx-pad,fy-pad,fw+pad*2,fh+pad*2);
+  blocks.forEach(b=>{if(!b.face)return;cx.save();cx.translate(b.x+b.w/2,b.ty+b.h*.56);cx.font=`${(b.h*.86).toFixed(0)}px Bebas, Impact, sans-serif`;cx.textAlign='center';cx.textBaseline='middle';cx.fillStyle='#00000018';cx.fillText(b.face,1,2);cx.fillStyle=b.ch.match(/[BYHAND]/)&&LINES[1].includes(b.ch)&&b.ty>blocks[0].ty?'#2b45b5':'#e2452f';cx.globalAlpha=.94;cx.fillText(b.face,0,0);cx.restore()});
+  cx.font=`${m?11:15}px Bebas, sans-serif`;cx.fillStyle='#1b1a17';cx.textAlign='left';cx.globalAlpha=proof;cx.fillText('QUOIN PRESS · FROME · PROOF No. 1',fx-pad+18,fy+fh+pad-14);cx.textAlign='right';cx.fillText('MABEL, 1962',fx+fw+pad-18,fy+fh+pad-14);
+  cx.restore()}
+}
+/* ---------------- card builder ---------------- */
+const card=$('#card');let cardSt={paper:'#fbf8f1',ink:'#e2452f',edge:0,pp:0,ip:0,ep:0};
+function paint(){card.style.background=cardSt.paper;card.querySelectorAll('.ink').forEach(e=>e.style.color=cardSt.ink===cardSt.paper?'#888':cardSt.ink);
+ card.querySelector('.edge').style.boxShadow=cardSt.edge?`inset 0 0 0 7px ${cardSt.ink}`:'inset 0 0 0 0 transparent';
+ $('#pv').textContent='£'+(185+cardSt.pp+cardSt.ip+cardSt.ep)}
+['paper','ink','edge'].forEach(k=>$('#'+k).addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#'+k+' .on').classList.remove('on');b.classList.add('on');
+ if(k==='edge'){cardSt.edge=+b.dataset.v;cardSt.ep=+(b.dataset.p||0)}else{cardSt[k]=b.dataset.v;cardSt[k==='paper'?'pp':'ip']=+(b.dataset.p||0)}paint()}));
+paint();
+// the card tilts towards the pointer on a spring (k 60, ζ 0.7), and idles with a slow sway
+const cw=$('#cardwrap');let tilt={x:0,y:0,vx:0,vy:0,tx:0,ty:0};
+cw.addEventListener('pointermove',e=>{const r=cw.getBoundingClientRect();tilt.tx=((e.clientY-r.top)/r.height-.5)*-16;tilt.ty=((e.clientX-r.left)/r.width-.5)*22});
+cw.addEventListener('pointerleave',()=>{tilt.tx=0;tilt.ty=0});
+/* ---------------- workshops ---------------- */
+const WS=[['Sat','6','Mar','Set your name','Hand-set and print ten bookmarks with your name in wood type.',3],['Sat','20','Mar','Two-colour posters','Lock up a poster in big wood type and print it in two colours.',1],['Sat','3','Apr','Wedding invitations','Design and print a sample invitation with metal type.',4],['Sat','17','Apr','Bookplates and linocut','Cut a small block and print your own bookplates.',2]];
+$('#wlist').innerHTML=WS.map(([d,n,mo,t,p,taken])=>`<div class="ws"><div class="dt">${d}<b>${n}</b>${mo}</div><div><h3>${t}</h3><p>${p}</p><div class="seats">${[0,1,2,3].map(i=>`<i class="${i<taken?'t':''}"></i>`).join('')}</div></div><button class="btn">${taken>=4?'Full · waitlist':`Book · ${4-taken} left`}</button></div>`).join('');
+/* ---------------- quote ---------------- */
+const BASE=[[100,.62],[100,2.1],[25,6.8],[100,.55]];
+function q(){const j=+$('#qj').value,n=Math.max(25,+$('#qn').value||25),c=+$('#qc').value,e=+$('#qe').value;const per=BASE[j][1]*(n>=250?.85:1);
+ const tot=45*c+n*per+(c-1)*22*n/100+(e?18*n/100:0);$('#qp').textContent='£'+Math.round(tot/5)*5}
+['#qj','#qn','#qc','#qe'].forEach(s=>$(s).addEventListener('input',q));q();
+$('#qs2').addEventListener('click',()=>{$('#sent').textContent='Thank you. We\'ll set a proof and email it within three working days.'});
+/* ---------------- loop ---------------- */
+layout();const run=$('#run'),nav=$('#nav');let last=performance.now(),T0=last,sp={x:0,v:0};
+document.fonts&&document.fonts.ready.then(()=>{});
+function loop(now){const dt=Math.min(.05,Math.max(.001,(now-last)/1000));last=now;const t=(now-T0)/1000;
+ const span=run.offsetHeight-innerHeight;const target=clamp(scrollY/span);
+ // the whole run follows the scroll on a spring (k 22, ζ 1): the roller and platen carry weight
+ const k=22,c=2*Math.sqrt(k);sp.v+=(-k*(sp.x-target)-c*sp.v)*dt;sp.x+=sp.v*dt;
+ if(scrollY<run.offsetHeight)frame(dt,t,clamp(sp.x));
+ nav.classList.toggle('solid',scrollY>span+innerHeight*.6);
+ const kt=60,ct=2*.7*Math.sqrt(kt);tilt.vx+=(-kt*(tilt.x-tilt.tx-Math.sin(t*.6)*2)-ct*tilt.vx)*dt;tilt.vy+=(-kt*(tilt.y-tilt.ty-Math.sin(t*.45)*3)-ct*tilt.vy)*dt;tilt.x+=tilt.vx*dt;tilt.y+=tilt.vy*dt;
+ card.style.transform=`rotateX(${tilt.x.toFixed(2)}deg) rotateY(${tilt.y.toFixed(2)}deg)`+(innerWidth<=860?' scale(.6)':'');
+ requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
