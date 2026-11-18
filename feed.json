@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-17T10:17:46Z",
+ "updated": "2026-11-18T10:27:26Z",
  "items": [
+  {
+   "slug": "tillwind",
+   "title": "Tillwind",
+   "kind": "Community wind co-op · Web app",
+   "blurb": "A community wind share offer where real turbine footage follows a storm day: blades speed up with the wind, then feather and park at 25 m/s.",
+   "url": "https://showcase.lolcorp.co.uk/tillwind/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/tillwind.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/tillwind.jpg"
+  },
   {
    "slug": "quoin",
    "title": "Quoin Press",
