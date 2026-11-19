@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Saltings · a Friday letter from the north Norfolk coast</title>
+<meta name="description" content="The Saltings is a weekly letter of field notes from the salt marshes of north Norfolk: what's about, the tides, and where to stand to see it.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Crimson;src:url(assets/fonts/crimson-pro-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Crimson;src:url(assets/fonts/crimson-pro-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Crimson;src:url(assets/fonts/crimson-pro-latin-400-italic.woff2) format('woff2');font-style:italic;font-display:swap}
+@font-face{font-family:Caveat;src:url(assets/fonts/caveat-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Caveat;src:url(assets/fonts/caveat-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:DMMono;src:url(assets/fonts/dm-mono-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:DMMono;src:url(assets/fonts/dm-mono-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+:root{--desk:#3d4632;--desk2:#2f3627;--buff:#efe7d4;--paper:#f6f1e4;--ink:#2c2a26;--mute:#6c675c;--lav:#8a78b2;--tide:#4f7f95;--samph:#7f9a3e;--tape:#e9dcae;--line:#2c2a2622;--pad:clamp(18px,4.5vw,72px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--paper)}
+body{font-family:Crimson,Georgia,serif;font-size:21px;line-height:1.55;color:var(--ink);background:var(--paper);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+.mono{font-family:DMMono,ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.hand{font-family:Caveat,cursive}
+.h{font-weight:600;font-size:clamp(54px,6.4vw,100px);line-height:.98;letter-spacing:-.015em}
+.h em{font-weight:400;font-style:italic;color:var(--lav)}
+.scrib{display:block;width:min(420px,70%);height:22px;margin:10px 0 0;overflow:visible}
+.scrib path{fill:none;stroke:var(--lav);stroke-width:3;stroke-linecap:round}
+.btn{display:inline-flex;align-items:center;gap:10px;font:500 14px/1 DMMono;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:15px 20px;border-radius:999px;background:var(--ink);color:var(--paper);border:0;cursor:pointer;box-shadow:0 1px 0 #fff3 inset}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn:hover{transform:translateY(-1px)}
+/* masthead */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;height:62px;display:flex;align-items:center;gap:26px;padding:0 var(--pad);color:var(--buff);transition:background .3s}
+#top.light{background:#f6f1e4;color:var(--ink);box-shadow:0 1px 0 var(--line)}
+#top .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+#top .brand img{width:30px;height:30px}
+#top .brand b{font:600 26px/1 Crimson;letter-spacing:-.01em}
+#top nav{display:flex;gap:22px;margin-left:auto}
+#top nav a{text-decoration:none;font:400 13px/1 DMMono;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+#top .btn{padding:11px 16px;background:var(--buff);color:var(--ink)}
+#top.light .btn{background:var(--ink);color:var(--paper)}
+@media(max-width:900px){#top nav{display:none}#top .btn{margin-left:auto}}
+/* the notebook (pinned) */
+#book{position:relative;height:620vh;background:radial-gradient(120% 90% at 50% 40%,#4a553d,var(--desk) 55%,var(--desk2));color:var(--buff)}
+#book .stage{position:sticky;top:0;height:100vh;overflow:hidden}
+#book canvas{position:absolute;inset:0;width:100%;height:100%}
+#book .mast{position:absolute;left:var(--pad);top:84px;max-width:min(300px,24vw);z-index:2}
+#book .mast h1{font:600 clamp(36px,3.4vw,54px)/.98 Crimson;letter-spacing:-.015em}
+#book .mast h1 em{font-weight:400;color:#c9bde6}
+#book .mast p{font-size:18px;margin-top:14px;color:#e6dfcbdd}
+#book .issue{position:absolute;right:var(--pad);top:88px;text-align:right;z-index:2}
+#book .issue b{display:block;font:600 22px/1.2 Crimson}
+#book .sub{position:absolute;left:var(--pad);bottom:34px;z-index:2;display:flex;gap:10px;align-items:center}
+#book .sub input{font:400 18px/1 Crimson;padding:13px 18px;border-radius:999px;border:1.5px solid #efe7d466;background:#0000;color:var(--buff);width:250px}
+#book .sub input::placeholder{color:#efe7d499}
+#book .sub .btn{background:var(--buff);color:var(--ink)}
+#book .hint{position:absolute;right:var(--pad);bottom:40px;z-index:2;max-width:260px;text-align:right;font-size:26px;line-height:1.1;color:#e9dcae}
+@media(max-width:900px){#book .mast{top:76px;max-width:none;right:var(--pad)}#book .mast h1{font-size:34px}#book .mast p{display:none}#book .issue{display:none}#book .sub input{width:170px}#book .hint{display:none}}
+/* sections */
+.sec{padding:clamp(90px,11vw,160px) var(--pad);position:relative}
+.kick{display:flex;gap:14px;align-items:center;margin-bottom:22px;color:var(--mute)}
+.kick i{width:36px;height:1.5px;background:var(--mute)}
+/* this week's letter: single column with margin notes */
+.letter{display:grid;grid-template-columns:1fr minmax(0,700px) 1fr;column-gap:48px}
+.letter>*{grid-column:2}
+.letter .dek{font-size:clamp(23px,2vw,28px);font-style:italic;color:var(--mute);margin:26px 0 40px;line-height:1.4}
+.letter p{margin-bottom:22px;position:relative}
+.letter p.drop::first-letter{float:left;font:600 108px/.8 Crimson;margin:8px 12px 0 0;color:var(--desk)}
+.letter .note{position:absolute;left:calc(100% + 44px);top:4px;width:230px;font:400 25px/1.1 Caveat;color:var(--lav);transform:rotate(-2deg)}
+.letter .note::before{content:"";position:absolute;left:-36px;top:14px;width:28px;height:1.5px;background:var(--lav)}
+.letter .bleed{grid-column:1/-1;margin:56px calc(var(--pad)*-1);position:relative;height:clamp(320px,52vw,700px);overflow:hidden}
+.letter .bleed img{width:100%;height:118%;object-fit:cover;will-change:transform}
+.letter .bleed figcaption{position:absolute;left:var(--pad);bottom:18px;color:#fff;text-shadow:0 1px 10px #0009}
+.letter blockquote{font:400 italic clamp(34px,3.2vw,46px)/1.15 Crimson;margin:40px 0 48px;padding-left:28px;border-left:3px solid var(--lav)}
+.letter .sign{font:400 38px/1 Caveat;margin-top:30px}
+@media(max-width:1100px){.letter{grid-template-columns:1fr}.letter>*{grid-column:1}.letter .note{position:static;display:block;width:auto;margin-top:6px;transform:none}.letter .note::before{display:none}}
+/* sightings board */
+#about{background:var(--buff)}
+.board{margin-top:46px;border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:2.2fr .9fr .9fr 1.2fr 3fr;gap:20px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.row.hd{font:500 12px/1 DMMono;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:14px 0}
+.row b{font:600 24px/1.1 Crimson}
+.row b small{display:block;font:400 italic 16px/1.2 Crimson;color:var(--mute)}
+.row .n{font:500 22px/1 DMMono}
+.row .n.lw{color:var(--mute)}
+.row svg{width:100%;height:30px;overflow:visible}
+.row .hand{font-size:24px;line-height:1.1;color:var(--mute)}
+@media(max-width:900px){.row{grid-template-columns:1.6fr .8fr .8fr;}.row>:nth-child(4),.row>:nth-child(5){display:none}}
+/* tides */
+#tides{background:var(--desk);color:var(--buff)}
+#tides .kick{color:#c9c2ad}#tides .kick i{background:#c9c2ad}
+.tidebox{margin-top:46px;position:relative}
+#tidec{width:100%;height:420px;cursor:crosshair}
+.tidekey{display:flex;gap:30px;flex-wrap:wrap;margin-top:18px;color:#d8d1bc;font-size:18px}
+.tidekey span{display:flex;align-items:center;gap:10px}
+.tidekey i{width:18px;height:10px;border-radius:2px}
+.tideread{position:absolute;pointer-events:none;background:var(--buff);color:var(--ink);padding:10px 14px;border-radius:10px;font:400 17px/1.3 Crimson;box-shadow:0 10px 30px #0004;opacity:0;white-space:nowrap}
+.tideread b{font:500 14px/1 DMMono;display:block;margin-bottom:4px;letter-spacing:.04em}
+.tidetips{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:56px}
+.tidetips div{border-top:1px solid #efe7d455;padding-top:16px}
+.tidetips h3{font:600 26px/1.2 Crimson;margin-bottom:8px}
+.tidetips p{font-size:18px;color:#d8d1bc}
+@media(max-width:900px){.tidetips{grid-template-columns:1fr}}
+/* marsh map */
+.mapwrap{display:grid;grid-template-columns:3fr 2fr;gap:56px;margin-top:46px;align-items:start}
+.map{position:relative;background:var(--buff);border-radius:6px;box-shadow:0 30px 60px #2c2a2622;overflow:hidden}
+.map svg{width:100%;height:auto}
+.spot{cursor:pointer}
+.spots{display:flex;flex-direction:column;gap:6px}
+.spots button{all:unset;cursor:pointer;display:grid;grid-template-columns:44px 1fr;gap:14px;padding:16px 18px;border-radius:12px;align-items:start}
+.spots button.on{background:var(--buff)}
+.spots button i{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:500 14px/1 DMMono;font-style:normal}
+.spots button.on i{background:var(--lav)}
+.spots h3{font:600 23px/1.2 Crimson}
+.spots p{font-size:17px;color:var(--mute);margin-top:2px}
+@media(max-width:900px){.mapwrap{grid-template-columns:1fr}}
+/* archive */
+#archive{background:var(--buff)}
+.arch{columns:3 300px;column-gap:26px;margin-top:46px}
+.arch article{break-inside:avoid;margin-bottom:26px;background:var(--paper);padding:14px 14px 20px;box-shadow:0 1px 0 #2c2a2614,0 18px 40px -18px #2c2a2655;position:relative}
+.arch article::before{content:"";position:absolute;left:50%;top:-10px;width:86px;height:24px;margin-left:-43px;background:#e9dcaecc;transform:rotate(var(--r,-3deg));box-shadow:0 1px 2px #0001}
+.arch img{width:100%;object-fit:cover}
+.arch small{display:block;margin-top:14px;color:var(--mute)}
+.arch h3{font:600 26px/1.15 Crimson;margin:6px 0 4px}
+.arch p{font-size:18px;color:var(--mute)}
+/* writers */
+.writers{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:50px}
+.writer{display:grid;grid-template-columns:120px 1fr;gap:28px}
+.writer .mono{line-height:1.6}
+.writer .ini{width:120px;height:120px;border-radius:50%;background:var(--desk);color:var(--buff);display:grid;place-items:center;font:400 54px/1 Caveat}
+.writer h3{font:600 32px/1.1 Crimson}
+.writer p{margin-top:10px;color:var(--mute);font-size:19px}
+@media(max-width:900px){.writers{grid-template-columns:1fr}.writer{grid-template-columns:1fr}}
+/* membership: notebook tabs */
+#join{background:var(--paper)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:70px;align-items:end}
+.tier{position:relative;background:var(--buff);padding:40px 32px 34px;border-radius:0 0 14px 14px}
+.tier .tab{position:absolute;left:24px;top:-38px;height:38px;padding:0 20px;border-radius:12px 12px 0 0;background:inherit;display:flex;align-items:center;font:500 13px/1 DMMono;letter-spacing:.08em;text-transform:uppercase}
+.tier.mid{background:var(--desk);color:var(--buff);padding-top:60px}
+.tier.mid .btn{background:var(--buff);color:var(--ink)}
+.tier h3{font:600 34px/1.1 Crimson}
+.tier .pr{font:600 64px/1 Crimson;margin:16px 0 4px;letter-spacing:-.02em}
+.tier .pr small{font:400 20px/1 Crimson;letter-spacing:0;opacity:.75}
+.tier ul{list-style:none;margin:20px 0 28px}
+.tier li{padding:9px 0 9px 28px;border-top:1px solid #2c2a261c;position:relative;font-size:19px}
+.tier.mid li{border-color:#efe7d42a}
+.tier li::before{content:"✓";position:absolute;left:0;font:600 22px/1.2 Caveat;color:var(--lav)}
+.tier.mid li::before{color:#c9bde6}
+@media(max-width:900px){.tiers{grid-template-columns:1fr;gap:70px}}
+/* readers' letters */
+.cards{display:flex;gap:30px;margin-top:60px;flex-wrap:wrap;justify-content:center}
+.card{width:360px;background:#fbf8ef;padding:26px 28px 24px;box-shadow:0 22px 40px -20px #2c2a2666;position:relative;background-image:linear-gradient(90deg,transparent 62%,#2c2a2618 62%,#2c2a2618 calc(62% + 1px),transparent calc(62% + 1px))}
+.card p{font:400 27px/1.15 Caveat;width:58%}
+.card .st{position:absolute;right:22px;top:20px;width:66px;height:80px;border:2px dashed #8a78b2aa;display:grid;place-items:center;font:500 11px/1.3 DMMono;text-align:center;color:var(--lav);transform:rotate(4deg)}
+.card .ad{position:absolute;right:26px;bottom:24px;width:31%;font:400 22px/1.3 Caveat;color:var(--mute)}
+/* faq */
+.faq{max-width:900px;margin-top:40px}
+details{border-top:1.5px solid var(--ink)}
+details:last-child{border-bottom:1.5px solid var(--ink)}
+summary{list-style:none;cursor:pointer;padding:22px 0;font:600 26px/1.25 Crimson;display:flex;justify-content:space-between;gap:20px}
+summary::after{content:"+";font:400 40px/.7 Caveat;color:var(--lav)}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:24px;color:var(--mute);max-width:760px}
+/* footer */
+footer{background:var(--desk2);color:var(--buff);padding:120px var(--pad) 34px;overflow:hidden}
+.fsub{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
+.fsub h2{font:600 clamp(52px,6vw,92px)/.98 Crimson;letter-spacing:-.015em}
+.fsub h2 em{font-weight:400;color:#c9bde6}
+.fsub form{display:flex;gap:12px;flex-wrap:wrap}
+.fsub input{flex:1;min-width:220px;font:400 21px/1 Crimson;padding:17px 22px;border-radius:999px;border:1.5px solid #efe7d466;background:transparent;color:var(--buff)}
+.fsub .btn{background:var(--buff);color:var(--ink)}
+.giant{font:600 clamp(110px,21vw,340px)/.8 Crimson;letter-spacing:-.04em;margin-top:110px;white-space:nowrap;color:#efe7d4}
+.giant em{font-weight:400;color:#c9bde6}
+.fine{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-top:34px;padding-top:20px;border-top:1px solid #efe7d42e;font-size:16px;color:#c9c2ad}
+@media(max-width:900px){.fsub{grid-template-columns:1fr}}
+[data-w]{opacity:0}
+@media(prefers-reduced-motion:reduce){[data-w]{opacity:1!important;transform:none!important;filter:none!important}}
+</style>
+</head>
+<body>
+<header id="top">
+  <a class="brand" href="#book"><img src="src/img/logo.svg" alt=""><b>The Saltings</b></a>
+  <nav><a href="#letter">This week</a><a href="#about">What's about</a><a href="#tides">Tides</a><a href="#marsh">The marsh</a><a href="#archive">Archive</a></nav>
+  <a class="btn" href="#join">Subscribe</a>
+</header>
+
+<section id="book" aria-label="This season's field notebook">
+  <div class="stage">
+    <canvas id="nb" role="img" aria-label="A field notebook. Scrolling turns its pages: the cover, then four weeks of notes with taped-in photographs of geese, avocets and curlews."></canvas>
+    <div class="mast"><h1>Field notes from <em>the salt marsh,</em> every Friday.</h1><p>What's about, when the tide's right, and where to stand on the north Norfolk coast. Written in a notebook in the warden's hut, then typed up for 6,800 readers.</p></div>
+    <div class="issue mono"><b>Issue 47</b>Friday 20 November 2026</div>
+    <form class="sub" onsubmit="event.preventDefault();this.querySelector('button').textContent='See you Friday'"><input type="email" placeholder="your email" aria-label="Email address" required><button class="btn" type="submit">Get the letter</button></form>
+    <p class="hint hand">turn the pages ↓ the birds are in them</p>
+  </div>
+</section>
+
+<section class="sec" id="letter">
+  <div class="letter">
+    <div class="kick mono" data-w><i></i>Issue 47 · this week's letter</div>
+    <h2 class="h" data-w>Nine thousand geese and <em>one quiet curlew.</em></h2>
+    <svg class="scrib" viewBox="0 0 420 22" data-s><path d="M3 14C60 6 120 18 190 11S320 4 417 12"/></svg>
+    <p class="dek" data-w>The pink-feet have found the beet tops, the tides go big on Monday, and someone left the sluice gate open again.</p>
+    <p class="drop" data-w>They came in over the hut at ten past seven on Tuesday, wave after wave of them, low enough to hear the wingbeats under the calling. By the time the kettle boiled the first skeins were already down on the stubble behind the sea wall, and by nine the field was more goose than field. I counted in blocks of a hundred and gave up at 9,000.<span class="note">9,140 by Mary's count. She's better at it than me.</span></p>
+    <p data-w>Pink-footed geese spend the summer in Iceland and Greenland and come here because the sugar beet harvest leaves the tops lying in the fields. They roost on the mudflats at night, safe from foxes, and fly inland at first light to feed. If you want to see it, be on the sea wall at Brinham Staithe twenty minutes before sunrise, which this week is about 07:20, and face the sea.</p>
+    <figure class="bleed" data-p><img src="media/marsh.jpg" alt="Salt marsh creeks and grasses under a wide sky" loading="lazy"><figcaption class="mono">The saltings at Brinham Staithe, low water</figcaption></figure>
+    <p data-w>Out on the marsh it has been a curlew week. There is a bird that feeds in the creek below the second hide every falling tide, always alone, working the soft mud with that ridiculous bill. On Wednesday afternoon it stopped feeding, stood up straight and gave the long bubbling call, just once. Nothing answered. Then it went back to work.<span class="note">curlews are red-listed now. 50% fewer since 1995.</span></p>
+    <blockquote data-w>Nothing answered. Then it went back to work.</blockquote>
+    <p data-w>Monday brings the biggest tide of the month, 7.1 metres at 08:52, with a north-westerly behind it. The whole marsh will flood up to the sea wall, and everything that usually hides in the creeks (redshank, little egrets, the odd water rail) gets pushed out into the open. Stand at the end of the boardwalk an hour before high water and wait. Please don't walk out onto the marsh: the creeks fill from behind you faster than you can walk.<span class="note">tide table below ↓</span></p>
+    <p data-w>And whoever left the sluice gate open on Sunday: the scrape drained by half a metre overnight, and the avocets moved on to Titchwell. Close it behind you.</p>
+    <p class="sign" data-w>Until Friday, Jem & Mary</p>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <div class="kick mono" data-w><i></i>What's about · week 47</div>
+  <h2 class="h" data-w>The count, <em>written up.</em></h2>
+  <svg class="scrib" viewBox="0 0 420 22" data-s><path d="M3 12C80 18 150 6 230 12S360 18 417 9"/></svg>
+  <div class="board" id="board"></div>
+</section>
+
+<section class="sec" id="tides">
+  <div class="kick mono" data-w><i></i>Tides & light · Fri 20 – Thu 26 Nov</div>
+  <h2 class="h" data-w>Plan your week <em>around the water.</em></h2>
+  <svg class="scrib" viewBox="0 0 420 22" data-s style="--x:1"><path d="M3 10C70 4 160 20 250 10S370 6 417 13" style="stroke:#c9bde6"/></svg>
+  <div class="tidebox"><canvas id="tidec" aria-label="Tide heights at Brinham Staithe for the coming week, with daylight shaded"></canvas><div class="tideread" id="tread"></div></div>
+  <div class="tidekey"><span><i style="background:#8fb6c6"></i>Tide height (m above chart datum)</span><span><i style="background:#efe7d433"></i>Daylight</span><span><i style="background:#c9bde6"></i>Best birding: high water in daylight above 6.5 m</span></div>
+  <div class="tidetips">
+    <div data-w><h3>Big tides push birds out</h3><p>On spring tides over 6.5 m the marsh floods and waders roost along the sea wall, close enough to count without a scope.</p></div>
+    <div data-w><h3>Low water feeds them</h3><p>Two hours either side of low water the mud is open and busy. Bring a scope and stand at the end of the boardwalk.</p></div>
+    <div data-w><h3>Dawn and dusk for geese</h3><p>Pink-feet leave the roost about 20 minutes before sunrise and come back at dusk. The tide doesn't matter to them.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="marsh">
+  <div class="kick mono" data-w><i></i>Where to stand</div>
+  <h2 class="h" data-w>The marsh, <em>walked for you.</em></h2>
+  <svg class="scrib" viewBox="0 0 420 22" data-s><path d="M3 13C90 7 170 17 260 9S380 15 417 10"/></svg>
+  <div class="mapwrap">
+    <div class="map" data-w><svg id="map" viewBox="0 0 760 520"></svg></div>
+    <div class="spots" id="spots"></div>
+  </div>
+</section>
+
+<section class="sec" id="archive">
+  <div class="kick mono" data-w><i></i>From the archive</div>
+  <h2 class="h" data-w>Forty-six Fridays <em>so far this year.</em></h2>
+  <svg class="scrib" viewBox="0 0 420 22" data-s><path d="M3 11C70 17 150 5 240 12S350 17 417 8"/></svg>
+  <div class="arch">
+    <article data-w style="--r:-4deg"><img src="media/lapwing.jpg" alt="A lapwing with its crest standing on short grass" loading="lazy"><small class="mono">No. 12 · 20 Mar</small><h3>The peewits are back on the grazing marsh</h3><p>Lapwings tumbling over the fields, and why the cattle matter to them.</p></article>
+    <article data-w style="--r:3deg"><img src="media/oystercatcher.jpg" alt="An oystercatcher with an orange bill walking on grass" loading="lazy"><small class="mono">No. 9 · 27 Feb</small><h3>Oystercatchers don't eat oysters</h3><p>Cockles, mussels and the odd worm, and how they open a shell in four seconds.</p></article>
+    <article data-w style="--r:-2deg"><img src="media/seal.jpg" alt="A grey seal pup lying on sand" loading="lazy" style="aspect-ratio:4/3"><small class="mono">No. 46 · 13 Nov</small><h3>The first seal pups on the point</h3><p>Where to watch from, and the 50-metre rule.</p></article>
+    <article data-w style="--r:2deg"><img src="media/redshank.jpg" alt="A redshank standing among green plants" loading="lazy"><small class="mono">No. 21 · 22 May</small><h3>Redshank: the sentinel of the marsh</h3><p>Every bird on the marsh listens to its alarm call. So should you.</p></article>
+    <article data-w style="--r:-3deg"><img src="media/lavender.jpg" alt="Sea lavender flowering on a salt marsh at sunset" loading="lazy"><small class="mono">No. 31 · 31 Jul</small><h3>When the marsh turns purple</h3><p>Sea lavender, sea aster and the bees that come for them.</p></article>
+    <article data-w style="--r:4deg"><img src="media/harrier.jpg" alt="A marsh harrier flying low over reeds" loading="lazy"><small class="mono">No. 17 · 24 Apr</small><h3>Sky-dancing harriers</h3><p>The food pass, and the year marsh harriers bred here again.</p></article>
+    <article data-w style="--r:-2deg"><img src="media/egret.jpg" alt="A little egret wading at the water's edge" loading="lazy"><small class="mono">No. 38 · 18 Sep</small><h3>Little egrets, no longer rare</h3><p>In 1990 one would have made the news. Now there are 40 on the creek.</p></article>
+    <article data-w style="--r:3deg"><img src="media/hut.jpg" alt="A small red hut on a sandy salt marsh" loading="lazy"><small class="mono">No. 1 · 2 Jan</small><h3>A letter from the hut</h3><p>Why we started writing this down, and what's in the kettle.</p></article>
+    <article data-w style="--r:-4deg"><img src="media/estuary.jpg" alt="Small boats on a muddy creek at low tide" loading="lazy"><small class="mono">No. 26 · 26 Jun</small><h3>Low water at the staithe</h3><p>The creek empties, the boats lean over and the mud comes alive.</p></article>
+  </div>
+</section>
+
+<section class="sec" id="writers">
+  <div class="kick mono" data-w><i></i>Who writes it</div>
+  <h2 class="h" data-w>Two wardens, <em>one kettle.</em></h2>
+  <div class="writers">
+    <div class="writer" data-w><div class="ini">J</div><div><h3>Jem Blyth</h3><div class="mono" style="color:var(--mute)">Warden · 19 winters on the marsh</div><p>Grew up in the staithe, left for twenty years and came back to count birds for a living. Writes the letter on Thursday nights and swears at the tide tables.</p></div></div>
+    <div class="writer" data-w><div class="ini">M</div><div><h3>Mary Okafor</h3><div class="mono" style="color:var(--mute)">Assistant warden · bird ringer</div><p>Came for a summer survey in 2018 and stayed. Does the counts, the photographs and the ringing, and corrects Jem's numbers in the margin.</p></div></div>
+  </div>
+</section>
+
+<section class="sec" id="join">
+  <div class="kick mono" data-w><i></i>Subscribe</div>
+  <h2 class="h" data-w>Free on Fridays. <em>Kinder if you chip in.</em></h2>
+  <svg class="scrib" viewBox="0 0 420 22" data-s><path d="M3 12C80 6 160 18 250 11S360 6 417 12"/></svg>
+  <div class="tiers">
+    <div class="tier" data-w><span class="tab">Reader</span><h3>The letter</h3><div class="pr">Free</div><ul><li>Every Friday at 7 am</li><li>What's about and where</li><li>The week's tides and light</li></ul><a class="btn ghost" href="#footer">Sign up</a></div>
+    <div class="tier mid" data-w><span class="tab">Supporter</span><h3>The letter, and more</h3><div class="pr">£4 <small>a month</small></div><ul><li>Everything in the free letter</li><li>Dawn recordings from the hut, every week</li><li>The printed almanac each January</li><li>A guided walk at the spring tide</li><li>£1 a month goes to wardening the marsh</li></ul><a class="btn" href="#footer">Become a supporter</a></div>
+    <div class="tier" data-w><span class="tab">Patron</span><h3>Adopt a hide</h3><div class="pr">£60 <small>a year</small></div><ul><li>Everything a supporter gets</li><li>Your name on a hide for a year</li><li>A day out with the ringing team</li></ul><a class="btn ghost" href="#footer">Become a patron</a></div>
+  </div>
+  <div class="cards">
+    <div class="card" data-w><div class="st">Holt<br>2nd<br>class</div><p>Read it every Friday on the 07:45 to Norwich. Best ten minutes of my week.</p><div class="ad">to Jem & Mary, the warden's hut</div></div>
+    <div class="card" data-w style="transform:rotate(-1.5deg)"><div class="st">Leeds<br>1st<br>class</div><p>We booked our February week around your tide table. Saw the water rail!</p><div class="ad">to the Saltings, Brinham Staithe</div></div>
+    <div class="card" data-w style="transform:rotate(1.2deg)"><div class="st">Ely<br>2nd<br>class</div><p>My dad is 91 and can't get out to the marsh now. You bring it to him.</p><div class="ad">to whoever counts the geese</div></div>
+  </div>
+</section>
+
+<section class="sec" id="faq" style="background:var(--buff)">
+  <div class="kick mono" data-w><i></i>Questions</div>
+  <h2 class="h" data-w>Before you <em>pull your boots on.</em></h2>
+  <div class="faq">
+    <details data-w><summary>Do I need a telescope?</summary><p>Binoculars are enough for most of what we write about. A scope helps on the mudflats at low water. We keep a spare in the hut on open days.</p></details>
+    <details data-w><summary>Is the marsh open all year?</summary><p>The sea wall path and the boardwalk are open every day, dawn to dusk. The hides close for a fortnight in March for repairs. Dogs on short leads, please.</p></details>
+    <details data-w><summary>Can I send you a sighting?</summary><p>Yes, and please do. Reply to the letter with what, how many, where and when. We check before we print, so a photo helps.</p></details>
+    <details data-w><summary>Where does the supporters' money go?</summary><p>Writing and posting the letter, the almanac, and £1 of every £4 to the marsh's wardening fund, which pays for the hides, the boardwalk and the sluice we keep asking you to close.</p></details>
+    <details data-w><summary>Can I stop any time?</summary><p>Yes. Every letter has an unsubscribe link at the bottom, and supporters can cancel from their account in two clicks.</p></details>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="fsub"><h2>See you on <em>the sea wall.</em></h2><form onsubmit="event.preventDefault();this.querySelector('button').textContent='See you Friday'"><input type="email" placeholder="your email" aria-label="Email address" required><button class="btn" type="submit">Get the Friday letter</button></form></div>
+  <div class="giant">The <em>Saltings</em></div>
+  <div class="fine"><span>The Warden's Hut, Brinham Staithe, Norfolk · a Friday letter since 2019 · 6,800 readers</span><span>Site by LOLCorp PVT LTD</span></div>
+</footer>
+
+<video id="vSkein" src="media/skein.mp4" muted playsinline loop preload="auto" style="display:none"></video>
+<video id="vField" src="media/field.mp4" muted playsinline loop preload="auto" style="display:none"></video>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,k)=>a+(b-a)*k,ss=(a,b,x)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,CAP=typeof window.__tick==='function';
+try{sessionStorage.setItem('saltings-seen','1')}catch(e){}
+const IMG={};['avocet','curlew'].forEach(k=>{const i=new Image();i.src='media/'+k+'.jpg';i.onload=()=>{dirty=true};IMG[k]=i});
+const VID={skein:$('#vSkein'),field:$('#vField')};
+if(!CAP&&!RM)Object.values(VID).forEach(v=>v.play().catch(()=>{}));
+let dirty=true;
+
+/* ---------- page painting (logical page 500 x 660) ---------- */
+const PW=500,PH=660;
+let seed=1;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const grain=(()=>{const c=document.createElement('canvas');c.width=c.height=160;const x=c.getContext('2d');const d=x.createImageData(160,160);seed=9;for(let i=0;i<d.data.length;i+=4){const v=200+rnd()*55;d.data[i]=v;d.data[i+1]=v*.97;d.data[i+2]=v*.9;d.data[i+3]=18}x.putImageData(d,0,0);return c})();
+function paper(c,tint='#efe7d4',ruled=true){c.fillStyle=tint;c.fillRect(0,0,PW,PH);c.fillStyle=c.createPattern(grain,'repeat');c.fillRect(0,0,PW,PH);
+ if(ruled){c.strokeStyle='#7d9bb055';c.lineWidth=1;for(let y=96;y<PH-30;y+=26){c.beginPath();c.moveTo(24,y);c.lineTo(PW-20,y);c.stroke()}c.strokeStyle='#c98a8a55';c.beginPath();c.moveTo(62,20);c.lineTo(62,PH-14);c.stroke()}}
+function hand(c,txt,x,y,size=27,col='#2c2a26',w=380,lh=1.02,rot=0){c.save();c.translate(x,y);c.rotate(rot);c.fillStyle=col;c.font=`400 ${size}px Caveat`;let line='',yy=0;txt.split(' ').forEach(wd=>{const t=line?line+' '+wd:wd;if(c.measureText(t).width>w&&line){c.fillText(line,0,yy);line=wd;yy+=size*lh}else line=t});c.fillText(line,0,yy);c.restore();return y+yy+size*lh}
+function pencil(c,pts,col='#3a3832',wd=1.6){seed=pts.length*7+3;c.strokeStyle=col;c.lineWidth=wd;c.lineCap='round';c.lineJoin='round';for(let pass=0;pass<2;pass++){c.globalAlpha=pass?.35:.8;c.beginPath();pts.forEach((p,i)=>{const j=pass?(rnd()-.5)*1.6:0;i?c.lineTo(p[0]+j,p[1]+j):c.moveTo(p[0]+j,p[1]+j)});c.stroke()}c.globalAlpha=1}
+function tape(c,x,y,w,rot){c.save();c.translate(x,y);c.rotate(rot);c.fillStyle='#e9dcaecc';c.fillRect(-w/2,-11,w,22);c.fillStyle='#ffffff22';c.fillRect(-w/2,-11,w,5);c.restore()}
+function photo(c,src,x,y,w,h,rot,cover=true){c.save();c.translate(x+w/2,y+h/2);c.rotate(rot);c.shadowColor='#0004';c.shadowBlur=10;c.shadowOffsetY=4;c.fillStyle='#fbfaf6';c.fillRect(-w/2-8,-h/2-8,w+16,h+16);c.shadowColor='transparent';
+ if(src&&(src.videoWidth||src.naturalWidth)){const sw=src.videoWidth||src.naturalWidth,sh=src.videoHeight||src.naturalHeight,k=Math.max(w/sw,h/sh),dw=sw*k,dh=sh*k;c.beginPath();c.rect(-w/2,-h/2,w,h);c.clip();c.drawImage(src,-dw/2,-dh/2,dw,dh)}else{c.fillStyle='#cfd6d0';c.fillRect(-w/2,-h/2,w,h)}c.restore();tape(c,x+w*.18,y-2,70,-.2+rot);tape(c,x+w*.84,y-2,64,.25+rot)}
+function header(c,a,b){c.fillStyle='#2c2a26';c.font='600 21px Crimson';c.fillText(a,76,56);c.font='400 13px DMMono';c.fillStyle='#6c675c';c.fillText(b,76,78)}
+const PAGES=[
+ {front(c){c.fillStyle='#3d4632';c.fillRect(0,0,PW,PH);c.fillStyle=c.createPattern(grain,'repeat');c.globalAlpha=.9;c.fillRect(0,0,PW,PH);c.globalAlpha=1;
+   c.fillStyle='#ffffff10';for(let y=0;y<PH;y+=3){c.fillRect(0,y,PW,1)}
+   c.fillStyle='#e9e0c8';c.fillRect(90,170,320,190);c.strokeStyle='#3d463288';c.lineWidth=1.5;c.strokeRect(100,180,300,170);
+   c.fillStyle='#2c2a26';c.textAlign='center';c.font='600 46px Crimson';c.fillText('THE SALTINGS',250,248);c.font='400 14px DMMono';c.fillText('FIELD NOTES · NORTH NORFOLK',250,280);c.font='400 34px Caveat';c.fillText('Autumn 2026 · book 7',250,328);c.textAlign='left';
+   c.fillStyle='#1d2318';c.fillRect(PW-48,0,16,PH);c.fillStyle='#ffffff14';c.fillRect(PW-48,0,3,PH);
+   c.fillStyle='#00000030';c.fillRect(0,0,10,PH)},
+  back(c){paper(c,'#e7dcc2',false);c.strokeStyle='#8a78b255';for(let i=0;i<14;i++){c.beginPath();for(let x=0;x<=PW;x+=10){const y=40+i*46+Math.sin(x*.02+i)*8+Math.sin(x*.05+i*2)*4;x?c.lineTo(x,y):c.moveTo(x,y)}c.stroke()}
+   c.fillStyle='#efe7d4';c.fillRect(70,180,360,260);c.strokeStyle='#2c2a2640';c.strokeRect(70,180,360,260);
+   hand(c,'If found, please return to the warden\'s hut, Brinham Staithe.',96,232,30,'#2c2a26',310);hand(c,'Reward: tea, and a look through the scope.',96,330,30,'#4f7f95',310);hand(c,'— J.B.',300,410,30)}},
+ {video:'skein',front(c,live){paper(c);header(c,'Fri 30 Oct · week 44','HW 06:48  6.9 m · wind NW 4');photo(c,live?VID.skein:null,84,108,346,212,-.025);
+   let y=hand(c,'PINK-FEET IN! First big skein over the hut at 07:12. About 2,400 birds, calling like a pub at closing time.',76,376,29,'#2c2a26',370);
+   y=hand(c,'came in off the sea in long wavering Vs, then dropped onto the stubble.',76,y+8,27,'#4f7f95',370);
+   pencil(c,[[300,610],[320,598],[340,606]]);pencil(c,[[350,600],[372,588],[394,598]]);pencil(c,[[402,612],[420,602],[438,610]])},
+  back(c){paper(c);header(c,'Tally · week 44','counts from the sea wall, 07:00–09:00');
+   const rows=[['Pink-footed goose','2,400'],['Brent goose','340'],['Wigeon','610'],['Golden plover','1,150'],['Lapwing','220'],['Curlew','38'],['Redshank','64'],['Little egret','11']];
+   rows.forEach(([n,v],i)=>{const y=128+i*52;hand(c,n,76,y,28);hand(c,v,330,y,28,'#4f7f95');seed=i+3;for(let g=0;g<Math.min(3,1+i%3);g++){const gx=420+g*0;}
+    const x0=76;c.save();for(let k=0;k<4;k++)pencil(c,[[200+k*9,y-20],[202+k*9,y+2]],'#3a3832',1.4);pencil(c,[[195,y-4],[236,y-16]],'#3a3832',1.4);c.restore()});
+   hand(c,'Mary got 2,460 for the pinks. Using hers.',76,560,26,'#8a78b2',380,1,-.02)}},
+ {front(c){paper(c);header(c,'Fri 6 Nov · week 45','HW 11:20  5.8 m · wind SW 2');photo(c,IMG.avocet,84,108,346,224,.02);
+   let y=hand(c,'Avocets still on the scrape: 61. Late for them, most have gone to the estuaries by now.',76,388,29,'#2c2a26',370);
+   hand(c,'sweeping their heads side to side like they\'re mowing the water',76,y+8,27,'#4f7f95',360)},
+  back(c){paper(c);header(c,'Tides, mid-Nov','springs on the 16th, neaps on the 23rd');
+   c.strokeStyle='#4f7f95';c.lineWidth=2;c.beginPath();for(let x=0;x<=380;x+=2){const t=x/380*3;const h=3.6+2.6*Math.cos(2*Math.PI*t/0.5175)*(0.75+0.25*Math.cos(2*Math.PI*t/14.77*2))+.0;const y=380-h*36;x?c.lineTo(76+x,y):c.moveTo(76+x,y)}c.stroke();
+   pencil(c,[[76,380],[456,380]]);pencil(c,[[76,120],[76,380]]);hand(c,'7 m',30,138,24,'#6c675c');hand(c,'0',44,384,24,'#6c675c');
+   hand(c,'big tides early in the week: the marsh floods to the wall and the redshank come out',76,440,27,'#2c2a26',380);hand(c,'don\'t walk the creeks on a spring!',76,560,30,'#8a78b2',380,1,-.03)}},
+ {front(c){paper(c);header(c,'Fri 13 Nov · week 46','HW 06:02  7.0 m · wind N 3');photo(c,IMG.curlew,84,108,346,224,-.018);
+   let y=hand(c,'Curlew in the creek below hide 2, every falling tide. Always alone.',76,388,29,'#2c2a26',370);
+   hand(c,'stood up straight at 15:40 and gave the bubbling call. Once. Nothing answered.',76,y+8,27,'#4f7f95',360)},
+  back(c){paper(c);header(c,'The marsh, roughly','not to scale. creeks move.');
+   c.strokeStyle='#4f7f95';c.lineWidth=2.4;const cr=(pts)=>{c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.stroke()};
+   cr([[80,560],[140,500],[130,440],[200,380],[190,300],[260,240],[300,140],[360,110]]);cr([[200,380],[280,400],[330,360],[420,380]]);cr([[190,300],[110,260],[90,200]]);
+   pencil(c,[[70,600],[450,600]],'#3d4632',3);hand(c,'sea wall',360,630,24,'#6c675c');
+   [[150,470,'hide 1'],[300,380,'hide 2'],[390,180,'the point']].forEach(([x,y,n])=>{c.fillStyle='#8a78b2';c.beginPath();c.arc(x,y,7,0,7);c.fill();hand(c,n,x+12,y+8,25,'#2c2a26')});
+   hand(c,'curlew here →',200,350,24,'#8a78b2',200,1,-.1)}},
+ {video:'field',front(c,live){paper(c);header(c,'Fri 20 Nov · week 47','HW 08:52  7.1 m (Mon) · wind NW 5');photo(c,live?VID.field:null,84,108,346,212,.022);
+   let y=hand(c,'9,000+ pink-feet on the beet tops behind the wall. Gave up counting at nine thousand.',76,376,29,'#2c2a26',370);
+   y=hand(c,'Mary: 9,140',300,y+2,28,'#8a78b2',200,1,-.04);hand(c,'full letter typed up below ↓',76,y+40,30,'#4f7f95',370)},
+  back(c){paper(c,'#e7dcc2',false);hand(c,'That\'s the week.',90,300,44,'#2c2a26');hand(c,'Close the sluice gate behind you.',90,360,32,'#4f7f95',330);hand(c,'— J & M',300,440,34)}}
+];
+const N=PAGES.length;
+// cached canvases for static sides; video sides re-painted each frame
+function mk(){const c=document.createElement('canvas');return c}
+const SIDES=PAGES.map(p=>({f:mk(),b:mk()}));let RES=0;
+function paint(force){const r=Math.min(2,devicePixelRatio||1)*Math.max(1,PH_px/PH);if(force||Math.abs(r-RES)>.05){RES=r;SIDES.forEach(s=>{[s.f,s.b].forEach(c=>{c.width=Math.round(PW*r);c.height=Math.round(PH*r)})});force=true}
+ SIDES.forEach((s,i)=>{const P=PAGES[i];if(force){[[s.f,P.front],[s.b,P.back]].forEach(([c,fn])=>{const x=c.getContext('2d');x.setTransform(RES,0,0,RES,0,0);fn(x,false)})}
+  if(P.video){const x=s.f.getContext('2d');x.setTransform(RES,0,0,RES,0,0);P.front(x,true)}})}
+
+/* ---------- the notebook ---------- */
+const cv=$('#nb'),cx=cv.getContext('2d');let PH_px=600;
+const book={q:0,v:0};
+function draw(t){const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1),w=Math.round(r.width*d),h=Math.round(r.height*d);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+ const mob=r.width<700;const maxH=mob?r.height*.5:r.height-150,maxW=r.width*(mob?.9:.54);const s=Math.min(maxH/PH,maxW/(2*PW));PH_px=PH*s;
+ const k=Math.floor(book.q),p=book.q-k,closed=book.q<.5;
+ // closed book sits centred; it slides left as the cover opens (the spine stays put relative to the open spread)
+ const shift=lerp(-PW*.5,0,ss(0,1,book.q));
+ const cxp=r.width*(mob?.5:.58)+shift*s,cyp=mob?r.height*.62:r.height*.55;
+ cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,w,h);cx.setTransform(d*s,0,0,d*s,d*cxp,d*(cyp-PH*s/2));
+ // drop shadow of the book on the desk
+ cx.save();cx.shadowColor='#0007';cx.shadowBlur=60;cx.shadowOffsetY=26;cx.fillStyle='#1d2318';const lw=book.q>=1?PW:0;cx.fillRect(-lw-6,-6,lw+PW+12,PH+12);cx.restore();
+ // back board edges
+ cx.fillStyle='#2b3224';cx.fillRect(-(book.q>=1?PW+8:0),-8,(book.q>=1?PW+8:0)+PW+8,PH+16);
+ // page block thickness
+ for(let i=0;i<4;i++){cx.fillStyle=i%2?'#d9cfb6':'#e8dfc8';cx.fillRect(PW-2+i*1.5,4+i,2,PH-8-i*2);if(book.q>=1)cx.fillRect(-PW-i*1.5,4+i,2,PH-8-i*2)}
+ const leftImg=k>0?SIDES[Math.min(k,N)-1].b:null,under=k+1<N?SIDES[k+1].f:null;
+ if(leftImg)cx.drawImage(leftImg,-PW,0,PW,PH);
+ if(under)cx.drawImage(under,0,0,PW,PH);else if(k<N){cx.fillStyle='#e7dcc2';cx.fillRect(0,0,PW,PH)}
+ if(book.q>=N-1e-4){cx.fillStyle='#e7dcc2';cx.fillRect(0,0,PW,PH)}
+ // spine gutter shading
+ if(book.q>=1){const g=cx.createLinearGradient(-40,0,40,0);g.addColorStop(0,'#0000');g.addColorStop(.45,'#0000002a');g.addColorStop(.5,'#00000044');g.addColorStop(.55,'#0000002a');g.addColorStop(1,'#0000');cx.fillStyle=g;cx.fillRect(-40,0,80,PH)}
+ if(k<N){const S=SIDES[k],front=S.f,back=S.b;
+  if(p<.0015){cx.drawImage(front,0,0,PW,PH)}
+  else{// corner travels on an arc, lifted more when the page moves fast (air pushes the free edge)
+   const isCover=k===0,lift=(isCover?.04:.16)+(isCover?0:Math.min(.22,Math.abs(book.v)*.08));
+   let Cx=PW*Math.cos(Math.PI*p),Cy=PH-Math.sin(Math.PI*p)*PH*lift;
+   // paper can't stretch: corner stays within W of the spine foot and within the diagonal of the spine head
+   let dx=Cx,dy=Cy-PH,dd=Math.hypot(dx,dy);if(dd>PW){Cx=dx/dd*PW;Cy=PH+dy/dd*PW}
+   const D=Math.hypot(PW,PH);dd=Math.hypot(Cx,Cy);if(dd>D){Cx=Cx/dd*D;Cy=Cy/dd*D}
+   const Ox=PW,Oy=PH,Mx=(Ox+Cx)/2,My=(Oy+Cy)/2;let nx=Ox-Cx,ny=Oy-Cy;const nl=Math.hypot(nx,ny)||1;nx/=nl;ny/=nl;// n points to the corner side
+   const L=4000,tx=-ny,ty=nx;
+   const half=(sg)=>{cx.beginPath();cx.moveTo(Mx+tx*L,My+ty*L);cx.lineTo(Mx-tx*L,My-ty*L);cx.lineTo(Mx-tx*L+sg*nx*L,My-ty*L+sg*ny*L);cx.lineTo(Mx+tx*L+sg*nx*L,My+ty*L+sg*ny*L);cx.closePath()};
+   // shadow the flap casts on the page beneath
+   cx.save();half(-1);cx.clip();const sh=cx.createLinearGradient(Mx,My,Mx-nx*70,My-ny*70);sh.addColorStop(0,'#00000038');sh.addColorStop(1,'#0000');
+   cx.save();cx.beginPath();cx.rect(0,0,PW,PH);cx.clip();cx.fillStyle=sh;cx.fillRect(-PW,0,PW*2,PH);cx.restore();
+   // the part of this page still lying flat
+   cx.beginPath();cx.rect(0,0,PW,PH);cx.clip();cx.drawImage(front,0,0,PW,PH);cx.restore();
+   // the flap: reflected across the fold, showing the back of the page
+   cx.save();cx.transform(1-2*nx*nx,-2*nx*ny,-2*nx*ny,1-2*ny*ny,2*(Mx*nx+My*ny)*nx,2*(Mx*nx+My*ny)*ny);
+   half(1);cx.clip();cx.beginPath();cx.rect(0,0,PW,PH);cx.clip();
+   cx.save();cx.shadowColor='#0005';cx.shadowBlur=24;cx.translate(PW,0);cx.scale(-1,1);cx.drawImage(back,0,0,PW,PH);cx.restore();
+   // curl shading: bright crest a little off the fold, darker at the fold itself
+   const g=cx.createLinearGradient(Mx,My,Mx+nx*160,My+ny*160);g.addColorStop(0,'#0000004a');g.addColorStop(.12,'#ffffff30');g.addColorStop(.35,'#00000010');g.addColorStop(1,'#0000');cx.fillStyle=g;cx.fillRect(-PW,-PH,PW*3,PH*3);cx.restore();
+   // fold edge line
+   cx.save();cx.beginPath();cx.rect(-PW,0,PW*2,PH);cx.clip();cx.strokeStyle='#ffffff40';cx.lineWidth=1;cx.beginPath();cx.moveTo(Mx+tx*L,My+ty*L);cx.lineTo(Mx-tx*L,My-ty*L);cx.stroke();cx.restore()}}
+ // thumb-index tabs on the right edge of the block
+ const labels=['cover','wk 44','wk 45','wk 46','wk 47'];labels.forEach((lb,i)=>{const on=Math.round(book.q)===i||(i===N-1&&book.q>N-.5);const y=40+i*64;cx.fillStyle=on?'#8a78b2':'#c9bfa6';cx.beginPath();cx.roundRect(PW+4,y,on?40:30,52,[0,8,8,0]);cx.fill();
+  cx.save();cx.translate(PW+(on?27:22),y+26);cx.rotate(Math.PI/2);cx.fillStyle=on?'#fff':'#2c2a26';cx.font='500 11px DMMono';cx.textAlign='center';cx.fillText(lb.toUpperCase(),0,4);cx.restore()})}
+
+/* ---------- sightings board ---------- */
+const BIRDS=[['Pink-footed goose','Anser brachyrhynchus','9,140','2,460','geese on the beet tops behind the wall at dawn',[1,2,5,9,24,40,91]],
+ ['Brent goose','Branta bernicla','520','340','grazing the green on the staithe at high water',[2,3,3,4,3,5,5]],
+ ['Wigeon','Mareca penelope','880','610','whistling all night on the flooded marsh',[3,4,5,6,6,8,9]],
+ ['Golden plover','Pluvialis apricaria','1,600','1,150','the big flock wheels over the fields at noon',[4,6,7,8,10,11,16]],
+ ['Lapwing','Vanellus vanellus','310','220','on the grazing marsh with the cattle',[2,2,3,2,2,3,3]],
+ ['Curlew','Numenius arquata','41','38','one bird calling below hide 2 on falling tides',[4,4,3,4,4,4,4]],
+ ['Redshank','Tringa totanus','92','64','pushed onto the sea wall by Monday\'s spring tide',[5,6,5,6,6,7,9]],
+ ['Avocet','Recurvirostra avosetta','4','61','gone to Titchwell after the scrape drained',[7,7,6,6,6,6,1]],
+ ['Little egret','Egretta garzetta','14','11','in the creek by the staithe at low water',[1,1,1,1,1,1,1]],
+ ['Marsh harrier','Circus aeruginosus','3','3','quartering the reedbed most afternoons',[1,1,1,1,1,1,1]]];
+$('#board').innerHTML='<div class="row hd"><span>Species</span><span>This week</span><span>Last week</span><span>Six weeks</span><span>Where and when</span></div>'+BIRDS.map((b,i)=>`<div class="row" data-w><b>${b[0]}<small>${b[1]}</small></b><span class="n">${b[2]}</span><span class="n lw">${b[3]}</span><svg viewBox="0 0 120 30" preserveAspectRatio="none"><path data-spark="${i}" d="" fill="none" stroke="#8a78b2" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><span class="hand">${b[4]}</span></div>`).join('');
+const sparks=$$('[data-spark]').map(p=>{const b=BIRDS[+p.dataset.spark][5],mx=Math.max(...b),mn=Math.min(...b);const d=b.map((v,i)=>(i?'L':'M')+(i*20)+' '+(27-(mx===mn?.5:(v-mn)/(mx-mn))*24).toFixed(1)).join(' ');p.setAttribute('d',d);const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return{p,L,t0:-1}});
+
+/* ---------- tides: M2 + S2 + N2 harmonic model for a week ---------- */
+const T0=Date.UTC(2026,10,20,0,0);// Fri 20 Nov 00:00
+function tideH(hr){const t=hr;return 3.85+2.6*Math.cos(2*Math.PI*(t-8.87)/12.4206)+.62*Math.cos(2*Math.PI*(t-8.9-24*3.2*0)/12)*Math.cos(2*Math.PI*(t+48)/354.4)+.42*Math.cos(2*Math.PI*(t-1.6)/12.6583)}
+// daylight: sunrise ~07:20, sunset ~15:55 (late November, 52.9°N), drifting a minute a day
+const SUN=d=>[7.33+d*.025,15.92-d*.012];
+const tc=$('#tidec');let tideT0=-1,tideHover=null;
+tc.addEventListener('pointermove',e=>{const r=tc.getBoundingClientRect();tideHover=(e.clientX-r.left)/r.width});tc.addEventListener('pointerleave',()=>{tideHover=null});
+function drawTide(t){const r=tc.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const d=Math.min(2,devicePixelRatio||1),w=Math.round(r.width*d),h=Math.round(r.height*d);if(tc.width!==w||tc.height!==h){tc.width=w;tc.height=h}
+ const c=tc.getContext('2d');c.clearRect(0,0,w,h);if(tideT0<0&&r.top<innerHeight*.75)tideT0=t;const el=tideT0<0?0:t-tideT0;
+ const top=30*d,bot=h-40*d,X=hr=>hr/168*w,Y=m=>bot-(m/8)*(bot-top);
+ for(let day=0;day<7;day++){const[a,b]=SUN(day);c.fillStyle='#efe7d414';c.fillRect(X(day*24+a),top,X(b-a),bot-top);c.fillStyle='#d8d1bc';c.font=`500 ${12*d}px DMMono`;c.fillText(['FRI','SAT','SUN','MON','TUE','WED','THU'][day]+' '+(20+day),X(day*24)+6*d,h-14*d);c.strokeStyle='#efe7d422';c.beginPath();c.moveTo(X(day*24),top);c.lineTo(X(day*24),bot);c.stroke()}
+ c.fillStyle='#d8d1bc';[0,2,4,6,8].forEach(m=>{c.fillText(m+' m',4*d,Y(m)-4*d);c.strokeStyle='#efe7d418';c.beginPath();c.moveTo(0,Y(m));c.lineTo(w,Y(m));c.stroke()});
+ // water rises in from the left like a flood tide, with a small travelling wave on the surface
+ const reach=168*clamp(1-Math.pow(1-clamp(el/2.6),3));
+ c.beginPath();c.moveTo(0,bot);for(let hr=0;hr<=reach;hr+=.25){c.lineTo(X(hr),Y(tideH(hr))+Math.sin(hr*1.7+t*3)*1.2*d)}c.lineTo(X(reach),bot);c.closePath();const g=c.createLinearGradient(0,top,0,bot);g.addColorStop(0,'#8fb6c6aa');g.addColorStop(1,'#4f7f9522');c.fillStyle=g;c.fill();
+ c.beginPath();for(let hr=0;hr<=reach;hr+=.25){const y=Y(tideH(hr));hr?c.lineTo(X(hr),y):c.moveTo(X(hr),y)}c.strokeStyle='#cfe3ea';c.lineWidth=2*d;c.stroke();
+ // mark daylight high waters over 6.5 m
+ for(let hr=1;hr<reach;hr+=.25){const a=tideH(hr-.25),b=tideH(hr),n=tideH(hr+.25);if(b>a&&b>=n&&b>6.5){const day=Math.floor(hr/24),[sr,ssn]=SUN(day),hh=hr-day*24;if(hh>sr&&hh<ssn){c.fillStyle='#c9bde6';c.beginPath();c.arc(X(hr),Y(b),7*d,0,7);c.fill();c.fillStyle='#efe7d4';c.font=`600 ${15*d}px Crimson`;c.fillText(b.toFixed(1)+' m',X(hr)-14*d,Y(b)-14*d)}}}
+ const tr=$('#tread');if(tideHover!==null){const hr=tideHover*168,day=Math.floor(hr/24),hh=hr-day*24,m=tideH(hr),rising=tideH(hr+.1)>m;c.strokeStyle='#efe7d4';c.lineWidth=1*d;c.beginPath();c.moveTo(X(hr),top);c.lineTo(X(hr),bot);c.stroke();c.fillStyle='#efe7d4';c.beginPath();c.arc(X(hr),Y(m),5*d,0,7);c.fill();
+  tr.style.opacity=1;tr.style.left=clamp(tideHover*r.width+14,0,r.width-200)+'px';tr.style.top=(Y(m)/d-70)+'px';tr.innerHTML=`<b>${['Fri','Sat','Sun','Mon','Tue','Wed','Thu'][day]} ${String(Math.floor(hh)).padStart(2,'0')}:${String(Math.floor((hh%1)*60)).padStart(2,'0')}</b>${m.toFixed(1)} m and ${rising?'rising':'falling'}`}else tr.style.opacity=0}
+
+/* ---------- marsh map with hotspots ---------- */
+const SPOTS=[[150,380,'The sea wall','Two miles of grassy bank. Geese at dawn behind it, waders on the seaward side at high water.'],[318,300,'Hide 1, the scrape','Avocets in spring and autumn, ruff and spotted redshank on passage. Keep the sluice gate shut.'],[440,226,'Hide 2, the creek','The curlew\'s creek. Best on a falling tide, mid-afternoon, with the light behind you.'],[600,150,'The point','Seals pup here from November. Stay 50 metres back and behind the rope.'],[560,360,'The boardwalk end','Where to stand on a spring tide. Redshank and egrets pushed in close.']];
+(()=>{const s=$('#map');let marsh='';seed=4;for(let i=0;i<220;i++){const x=60+rnd()*640,y=120+rnd()*300;marsh+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)}l2 -7l2 7" stroke="#7f9a3e" stroke-opacity=".45" fill="none" stroke-width="1.2"/>`}
+ s.innerHTML=`<rect width="760" height="520" fill="#efe7d4"/><path d="M0 0H760V90Q640 120 560 92Q470 60 380 100Q260 140 160 96Q80 70 0 98Z" fill="#a9c6d2"/><text x="40" y="44" font-family="DMMono" font-size="12" letter-spacing="3" fill="#4f7f95">NORTH SEA</text>
+ <path d="M0 98Q80 70 160 96Q260 140 380 100Q470 60 560 92Q640 120 760 90V440H0Z" fill="#dfe3c4"/>${marsh}
+ <g fill="none" stroke="#7fa7b8" stroke-width="5" stroke-linecap="round"><path d="M90 440Q120 380 180 360Q250 330 300 290Q360 250 420 230Q500 200 560 130"/><path d="M300 290Q330 330 420 340Q500 350 560 360"/><path d="M180 360Q150 300 120 250Q100 200 130 150"/></g>
+ <path d="M0 440H760" stroke="#3d4632" stroke-width="9"/><text x="620" y="468" font-family="Caveat" font-size="24" fill="#3d4632">sea wall</text>
+ <rect x="0" y="446" width="760" height="74" fill="#c9cf9e"/><text x="40" y="496" font-family="Caveat" font-size="24" fill="#3d4632">beet fields (geese at dawn)</text>
+ <path d="M520 440L560 360" stroke="#8a6b44" stroke-width="5" stroke-dasharray="3 4"/><text x="570" y="410" font-family="Caveat" font-size="22" fill="#5a4a33">boardwalk</text>
+ ${SPOTS.map(([x,y],i)=>`<g class="spot" data-i="${i}" transform="translate(${x} ${y})"><circle r="22" fill="#8a78b2" opacity="0" class="halo"/><circle r="15" fill="#2c2a26"/><text y="5" text-anchor="middle" font-family="DMMono" font-size="13" fill="#f6f1e4">${i+1}</text></g>`).join('')}
+ <g transform="translate(700 150)"><circle r="20" fill="none" stroke="#2c2a26"/><path d="M0-15L5 3H-5Z" fill="#8a78b2"/><text y="34" text-anchor="middle" font-family="DMMono" font-size="11">N</text></g>`;
+ $('#spots').innerHTML=SPOTS.map((sp,i)=>`<button data-i="${i}" class="${i?'':'on'}"><i>${i+1}</i><div><h3>${sp[2]}</h3><p>${sp[3]}</p></div></button>`).join('');
+ const pick=i=>{spot=i;spotT=now;$$('#spots button').forEach(b=>b.classList.toggle('on',+b.dataset.i===i))};
+ $$('#spots button').forEach(b=>{b.addEventListener('click',()=>{pick(+b.dataset.i);auto=false})});$$('.spot').forEach(g=>g.addEventListener('click',()=>{pick(+g.dataset.i);auto=false}))})();
+let spot=0,spotT=0,auto=true,autoT=0;
+
+/* ---------- "written in" reveals: text rises out of a soft blur, scribbles draw like pencil ---------- */
+const WS=$$('[data-w]').map(el=>({el,t0:-1}));const SC=$$('[data-s] path').map(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return{p,L,t0:-1}});
+const PAR=$$('[data-p] img');
+
+/* ---------- loop ---------- */
+let now=performance.now(),t0=now,last=now;let fontsOK=false;document.fonts.ready.then(()=>{fontsOK=true;dirty=true});
+function frame(ts){const dt=Math.min(.05,Math.max(0,(ts-last)/1000));last=ts;now=ts;const t=(ts-t0)/1000,vh=innerHeight;
+ // notebook: scroll target with flat dwell on each spread, page on a spring
+ const br=$('#book').getBoundingClientRect(),span=$('#book').offsetHeight-vh,f=clamp(-br.top/span);
+ if(br.bottom>0&&br.top<vh){const raw=f*N*1.02,k=Math.floor(raw),fr=raw-k;const tgt=clamp(k+ss(.18,.82,fr),0,N);
+  if(RM){book.q=tgt;book.v=0}else{const K=34,C=2*.92*Math.sqrt(K);book.v+=(K*(tgt-book.q)-C*book.v)*dt;book.q=clamp(book.q+book.v*dt,0,N)}
+  if(CAP)Object.values(VID).forEach(v=>{if(v.duration){if(!v.paused)v.pause();const tt=(t*.9)%(v.duration-.1);if(Math.abs(v.currentTime-tt)>.03)v.currentTime=tt}});
+  paint(dirty);dirty=false;draw(t)}
+ $('#top').classList.toggle('light',br.bottom<64);
+ // reveals
+ WS.forEach(g=>{if(g.done)return;if(g.t0<0){const r=g.el.getBoundingClientRect();if(r.top<vh*.98&&r.bottom>0)g.t0=t;else return}
+  const lt=t-g.t0,k=1-Math.pow(1-clamp(lt/.6),3);g.el.style.opacity=k.toFixed(3);g.el.style.transform=`translateY(${((1-k)*18).toFixed(1)}px)`;g.el.style.filter=k<1?`blur(${((1-k)*6).toFixed(2)}px)`:'none';if(lt>.65){g.el.style.filter='none';g.el.style.transform='none';g.done=true}});
+ SC.forEach(s=>{if(s.t0<0){const r=s.p.getBoundingClientRect();if(r.top<vh*.88)s.t0=t;else return}const k=clamp((t-s.t0-.25)/.9);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;s.p.style.strokeDashoffset=(s.L*(1-e)).toFixed(1)});
+ sparks.forEach((s,i)=>{if(s.t0<0){const r=s.p.getBoundingClientRect();if(r.top<vh*.9&&r.top>-50)s.t0=t+i*.06;else return}const k=clamp((t-s.t0)/1.1);s.p.style.strokeDashoffset=(s.L*(1-(1-Math.pow(1-k,3)))).toFixed(1)});
+ PAR.forEach(im=>{const r=im.parentNode.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;const k=(r.top+r.height/2-vh/2)/vh;im.style.transform=`translateY(${(-8+k*-10).toFixed(2)}%)`});
+ drawTide(t);
+ // map: auto-tour the five spots while nobody has clicked; halo pulses like a ripple on water
+ const mr=$('#map').getBoundingClientRect();if(mr.bottom>0&&mr.top<vh){if(auto){if(!autoT)autoT=t;if(t-autoT>2.4){autoT=t;spot=(spot+1)%SPOTS.length;spotT=now;$$('#spots button').forEach(b=>b.classList.toggle('on',+b.dataset.i===spot))}}
+  $$('.spot').forEach((g,i)=>{const h=g.querySelector('.halo');if(i===spot){const lt=((now-spotT)/1000)%1.6;h.setAttribute('r',(15+lt*22).toFixed(1));h.setAttribute('opacity',(.7*(1-lt/1.6)).toFixed(2));g.firstElementChild.nextElementSibling.setAttribute('fill','#8a78b2')}else{h.setAttribute('opacity',0);g.firstElementChild.nextElementSibling.setAttribute('fill','#2c2a26')}})}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

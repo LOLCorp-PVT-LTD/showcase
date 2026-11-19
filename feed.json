@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-18T10:27:26Z",
+ "updated": "2026-11-19T10:25:37Z",
  "items": [
+  {
+   "slug": "saltings",
+   "title": "The Saltings",
+   "kind": "Birdwatching newsletter · Website",
+   "blurb": "A Friday letter from the Norfolk salt marshes where scrolling turns the pages of a field notebook, with real geese flying in the taped-in photos.",
+   "url": "https://showcase.lolcorp.co.uk/saltings/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/saltings.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/saltings.jpg"
+  },
   {
    "slug": "tillwind",
    "title": "Tillwind",
