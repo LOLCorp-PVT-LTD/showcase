@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-19T10:25:37Z",
+ "updated": "2026-11-21T10:23:40Z",
  "items": [
+  {
+   "slug": "lidolist",
+   "title": "The Lido List",
+   "kind": "Lido directory · Website",
+   "blurb": "A directory of Britain's open-air pools whose hero is the pool itself: the name painted on the tiles wobbles under real wave physics, and scrolling swims a length.",
+   "url": "https://showcase.lolcorp.co.uk/lidolist/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/lidolist.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/lidolist.jpg"
+  },
   {
    "slug": "saltings",
    "title": "The Saltings",
