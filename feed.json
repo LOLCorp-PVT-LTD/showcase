@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-21T10:23:40Z",
+ "updated": "2026-11-22T10:25:14Z",
  "items": [
+  {
+   "slug": "grafter",
+   "title": "Grafter",
+   "kind": "Trades jobs platform · Web app",
+   "blurb": "A jobs app for UK tradespeople where skills are liquid: when a job lands, the matching trades flow into it and merge.",
+   "url": "https://showcase.lolcorp.co.uk/grafter/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/grafter.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/grafter.jpg"
+  },
   {
    "slug": "lidolist",
    "title": "The Lido List",

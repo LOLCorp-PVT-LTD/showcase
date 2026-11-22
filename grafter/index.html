@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grafter · work for the trades, matched in minutes</title>
+<meta name="description" content="Grafter matches electricians, joiners, plasterers and every other trade with local jobs at fair day rates. Free for tradespeople.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Any;src:url(assets/fonts/anybody-latin-800-normal.woff2) format('woff2');font-weight:800;font-display:swap}
+@font-face{font-family:Any;src:url(assets/fonts/anybody-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Rub;src:url(assets/fonts/rubik-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Rub;src:url(assets/fonts/rubik-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:JB;src:url(assets/fonts/jetbrains-mono-latin-400-normal.woff2) format('woff2');font-display:swap}
+:root{--g:#17181a;--g2:#232528;--g3:#2f3236;--con:#e4e1da;--con2:#d3cfc6;--vis:#ecf542;--blue:#3557e8;--mute:#8a8d91;--ink:#17181a;--pad:clamp(18px,4.5vw,72px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--g)}
+body{font-family:Rub,system-ui,sans-serif;font-size:19px;line-height:1.55;color:var(--ink);background:var(--con);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+.any{font-family:Any,Impact,sans-serif;font-weight:800;letter-spacing:-.02em;line-height:.9;text-transform:uppercase}
+.mono{font-family:JB,ui-monospace,monospace;font-size:13px;letter-spacing:.04em}
+.h{font-size:clamp(56px,7.4vw,120px);margin-bottom:24px}
+.h b{color:var(--blue);font-weight:800}
+.lede{font-size:clamp(20px,1.6vw,23px);max-width:680px}
+/* buttons: chunky slabs with a hazard-tape edge on hover */
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 17px/1 Any;text-transform:uppercase;letter-spacing:.01em;text-decoration:none;padding:17px 24px;border-radius:10px;background:var(--vis);color:var(--g);border:0;cursor:pointer;box-shadow:0 4px 0 #b9c12a}
+.btn.dark{background:var(--g);color:var(--con);box-shadow:0 4px 0 #000}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b9c12a}
+.tape{height:14px;background:repeating-linear-gradient(-45deg,var(--vis) 0 18px,var(--g) 18px 36px)}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;height:66px;display:flex;align-items:center;gap:26px;padding:0 var(--pad);background:#17181aee;color:var(--con);backdrop-filter:blur(8px)}
+#top .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+#top .brand img{width:34px;height:34px}
+#top .brand b{font:800 26px/1 Any;text-transform:uppercase;letter-spacing:-.02em}
+#top nav{display:flex;gap:24px;margin-left:auto;font-weight:500;font-size:15px}
+#top nav a{text-decoration:none;opacity:.8}
+#top .btn{padding:12px 16px;font-size:14px}
+@media(max-width:900px){#top nav{display:none}#top .btn{margin-left:auto}}
+/* hero: the liquid match */
+#match{position:relative;height:420vh;background:var(--g);color:var(--con)}
+#match .stage{position:sticky;top:0;height:100vh;overflow:hidden;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:48px 48px}
+#goo{position:absolute;inset:0;width:100%;height:100%}
+#match h1{position:absolute;left:var(--pad);top:96px;font-size:clamp(46px,6.2vw,104px);max-width:9.5em;z-index:3;pointer-events:none}
+#match h1 b{color:var(--vis);font-weight:800}
+#match .sub{position:absolute;left:var(--pad);bottom:34px;z-index:3;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+#match .sub p{max-width:420px;font-size:17px;color:#c9cbcd}
+.lbl{position:absolute;z-index:2;transform:translate(-50%,-50%);font:500 13px/1 JB;color:var(--g);white-space:nowrap;pointer-events:none;letter-spacing:.02em}
+.job{position:absolute;z-index:4;width:300px;background:var(--con);color:var(--g);border-radius:16px;padding:16px 18px;box-shadow:0 20px 50px #0008;transform:translate(-50%,-50%);pointer-events:none}
+.job small{font:400 12px/1 JB;color:#5a5d61;display:block;margin-bottom:6px}
+.job h3{font:800 24px/1 Any;text-transform:uppercase;letter-spacing:-.02em}
+.job .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.job .row span{font-size:13px;font-weight:500;padding:5px 9px;border-radius:6px;background:var(--con2)}
+.job .row span.r{background:var(--vis)}
+.job .m{margin-top:12px;padding-top:10px;border-top:1px dashed #17181a44;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.job .m b{font:800 22px/1 Any}
+.steps{position:absolute;right:var(--pad);top:104px;z-index:3;display:flex;flex-direction:column;gap:8px;text-align:right}
+.steps span{font:400 13px/1 JB;color:#6b6e72}
+.steps span.on{color:var(--vis)}
+@media(max-width:900px){#match h1{top:84px;font-size:40px}.steps{display:none}.job{width:250px}#match .sub p{display:none}}
+/* sections */
+.sec{padding:clamp(90px,10vw,150px) var(--pad);position:relative}
+.kick{display:inline-block;margin-bottom:20px;padding:7px 12px;border-radius:6px;background:var(--g);color:var(--vis)}
+/* live board: the web app */
+#board{background:var(--con)}
+.app{margin-top:50px;border-radius:18px;background:#fff;border:2px solid var(--g);overflow:hidden;box-shadow:0 30px 70px #17181a33}
+.app .bar{display:flex;align-items:center;gap:16px;padding:12px 18px;background:var(--g);color:var(--con)}
+.app .bar img{width:24px;height:24px}
+.app .bar b{font:800 18px/1 Any;text-transform:uppercase}
+.app .bar .srch{flex:1;max-width:420px;margin-left:20px;background:var(--g3);border-radius:8px;padding:9px 12px;font-size:14px;color:#b3b6b9}
+.app .bar .me{margin-left:auto;width:30px;height:30px;border-radius:50%;background:var(--vis);color:var(--g);display:grid;place-items:center;font:800 12px/1 Any}
+.app .body{display:grid;grid-template-columns:230px 1fr 360px;min-height:560px}
+.app .side{border-right:2px solid var(--con);padding:18px;display:flex;flex-direction:column;gap:18px;font-size:14px}
+.app .side h6{font:400 11px/1 JB;text-transform:uppercase;color:#6b6e72;margin-bottom:8px;letter-spacing:.06em}
+.app .chk{display:flex;align-items:center;gap:9px;padding:4px 0}
+.app .chk i{width:16px;height:16px;border-radius:4px;border:2px solid var(--g)}
+.app .chk i.on{background:var(--g);box-shadow:inset 0 0 0 3px #fff}
+.app .rng{height:6px;border-radius:3px;background:var(--con);position:relative;margin-top:14px}
+.app .rng i{position:absolute;left:0;top:0;bottom:0;width:40%;background:var(--g);border-radius:3px}
+.app .rng b{position:absolute;left:40%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--vis);border:2px solid var(--g)}
+.app .list{padding:8px 0;overflow:hidden;position:relative}
+.app .jr{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--con)}
+.app .jr .ic{width:44px;height:44px;border-radius:10px;background:var(--con);display:grid;place-items:center;font:800 15px/1 Any}
+.app .jr h4{font-weight:500;font-size:16px}
+.app .jr p{font-size:13px;color:#6b6e72}
+.app .jr .rt{text-align:right}
+.app .jr .rt b{font:800 20px/1 Any;display:block}
+.app .jr .rt small{font:400 11px/1 JB;color:#6b6e72}
+.app .jr.new{background:#ecf54233}
+.app .jr.sel{background:#3557e810;box-shadow:inset 4px 0 0 var(--blue)}
+.app .det{border-left:2px solid var(--con);padding:20px;display:flex;flex-direction:column;gap:14px}
+.app .det h3{font:800 28px/1 Any;text-transform:uppercase;letter-spacing:-.02em}
+.app .det .kv{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.app .det .kv div{background:var(--con);border-radius:10px;padding:10px 12px}
+.app .det .kv small{font:400 11px/1 JB;color:#6b6e72;display:block;margin-bottom:5px}
+.app .det .kv b{font:800 20px/1 Any}
+.app .det svg{border-radius:10px;width:100%;height:150px}
+.toast{position:absolute;right:16px;bottom:16px;background:var(--g);color:var(--con);padding:12px 16px;border-radius:10px;font-size:14px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px #0005;opacity:0}
+.toast i{width:10px;height:10px;border-radius:50%;background:var(--vis)}
+@media(max-width:1000px){.app .body{grid-template-columns:1fr}.app .side,.app .det{display:none}}
+/* trades bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:220px;gap:14px;margin-top:50px}
+.tr{position:relative;border-radius:18px;overflow:hidden;background:var(--g)}
+.tr img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.tr:hover img{transform:scale(1.05)}
+.tr div{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;color:#fff;text-shadow:0 1px 12px #000a}
+.tr h3{font:800 28px/1 Any;text-transform:uppercase;letter-spacing:-.02em}
+.tr span{font:400 13px/1.3 JB;text-align:right;background:var(--vis);color:var(--g);padding:6px 8px;border-radius:6px;text-shadow:none}
+.tr.a{grid-column:span 3;grid-row:span 2}.tr.b{grid-column:span 3}.tr.c{grid-column:span 2}.tr.d{grid-column:span 1}.tr.e{grid-column:span 2}.tr.f{grid-column:span 2}.tr.g{grid-column:span 2}
+@media(max-width:900px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.tr h3{font-size:19px}.tr span{display:none}.tr{grid-column:span 1!important;grid-row:span 1!important}}
+/* video band */
+.band{position:relative;height:clamp(320px,48vw,620px);overflow:hidden;background:var(--g)}
+.band video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.band p{position:absolute;left:var(--pad);bottom:34px;font:800 clamp(40px,5.6vw,92px)/.9 Any;text-transform:uppercase;letter-spacing:-.02em;color:#fff;max-width:880px;text-shadow:0 2px 30px #0008}
+.band p b{color:var(--vis)}
+/* for trades: phones */
+#trades{background:var(--g);color:var(--con)}
+#trades .kick{background:var(--vis);color:var(--g)}
+#trades .h b{color:var(--vis)}
+.phones{display:flex;gap:40px;justify-content:center;margin-top:60px;flex-wrap:wrap}
+.pf{width:290px;height:600px;border-radius:40px;background:#000;padding:12px;box-shadow:0 30px 70px #000a}
+.pf .sc{width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--con);color:var(--g);font-size:13px;position:relative}
+.pf:nth-child(2){transform:translateY(50px)}
+.pf .sb{display:flex;justify-content:space-between;padding:12px 18px 4px;font-weight:500;font-size:11px}
+.pf .hd{padding:6px 18px 12px}
+.pf .hd b{font:800 26px/1 Any;text-transform:uppercase;display:block}
+.pf .hd span{font:400 11px/1 JB;color:#5a5d61}
+.card{margin:8px 14px;border-radius:14px;padding:14px;color:var(--con);position:relative;overflow:hidden;height:118px}
+.card b{font:800 18px/1 Any;text-transform:uppercase;display:block}
+.card small{font:400 11px/1.4 JB;opacity:.8;display:block;margin-top:6px}
+.card i{position:absolute;right:12px;bottom:12px;font:400 11px/1 JB;font-style:normal;background:#fff3;padding:4px 7px;border-radius:5px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:10px 14px}
+.cal span{aspect-ratio:1;border-radius:7px;background:#fff;display:grid;place-items:center;font-weight:500;font-size:12px}
+.cal span.b{background:var(--g);color:var(--con)}.cal span.f{background:var(--vis)}
+.pay{margin:10px 14px;background:#fff;border-radius:14px;padding:14px}
+.pay .big{font:800 44px/1 Any;margin:6px 0}
+.li{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--con)}
+.li b{font-weight:500}
+/* day rates */
+.rates{margin-top:50px;display:grid;grid-template-columns:1fr;gap:4px}
+.rr{display:grid;grid-template-columns:200px 1fr 90px;gap:18px;align-items:center;padding:10px 0;border-bottom:1px solid #17181a22}
+.rr h4{font:800 20px/1 Any;text-transform:uppercase;letter-spacing:-.01em}
+.rr .bars{position:relative;height:30px}
+.rr .bars i{position:absolute;top:0;height:100%;border-radius:6px;background:var(--g);width:0}
+.rr .bars i.lo{background:var(--con2)}
+.rr .bars em{position:absolute;top:50%;transform:translateY(-50%);font:400 12px/1 JB;font-style:normal;color:var(--con);padding-left:10px;white-space:nowrap}
+.rr b{font:800 24px/1 Any;text-align:right}
+.rkey{display:flex;gap:20px;margin-top:16px;font-size:15px;color:#5a5d61}
+.rkey i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+@media(max-width:800px){.rr{grid-template-columns:110px 1fr 70px}.rr h4{font-size:15px}}
+/* towns */
+.towns{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+.town{background:#fff;border:2px solid var(--g);border-radius:16px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:6px}
+.town h3{font:800 26px/1 Any;text-transform:uppercase;letter-spacing:-.02em}
+.town .n{font:800 46px/1 Any;color:var(--blue)}
+.town small{font:400 12px/1.3 JB;color:#5a5d61}
+.town .bar{height:8px;border-radius:4px;background:var(--con);position:relative;overflow:hidden;margin-top:6px}
+.town .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--vis);width:0}
+@media(max-width:900px){.towns{grid-template-columns:repeat(2,minmax(0,1fr))}.town h3{font-size:19px}.town .n{font-size:34px}}
+/* firms */
+#firms{background:var(--con2)}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px}
+.flow div{background:var(--con);border-radius:18px;padding:26px;border:2px solid var(--g);position:relative}
+.flow b{font:800 70px/1 Any;color:var(--blue)}
+.flow h3{font:800 26px/1 Any;text-transform:uppercase;margin:10px 0 8px;letter-spacing:-.02em}
+.flow p{font-size:17px;color:#3c3f43}
+.price{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:40px}
+.pc{border-radius:18px;padding:28px;background:#fff;border:2px solid var(--g)}
+.pc.hi{background:var(--g);color:var(--con)}
+.pc h4{font:400 12px/1 JB;text-transform:uppercase;letter-spacing:.06em;color:#6b6e72}
+.pc .p{font:800 60px/1 Any;margin:12px 0 4px}
+.pc .p small{font:500 18px/1 Rub}
+.pc ul{list-style:none;margin:16px 0 24px}
+.pc li{padding:8px 0;border-top:1px solid #17181a1f;font-size:16px}
+.pc.hi li{border-color:#ffffff1f}
+@media(max-width:900px){.flow,.price{grid-template-columns:1fr}}
+/* quotes */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px}
+.q{border-radius:18px;padding:26px;background:var(--g);color:var(--con)}
+.q p{font-size:20px;line-height:1.4}
+.q .who{display:flex;gap:12px;align-items:center;margin-top:18px}
+.q .who i{width:42px;height:42px;border-radius:50%;background:var(--vis);color:var(--g);display:grid;place-items:center;font:800 15px/1 Any;font-style:normal}
+.q .who small{font:400 12px/1.4 JB;color:#a7aaad}
+@media(max-width:900px){.quotes{grid-template-columns:1fr}}
+/* apprentices */
+.appr{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:20px}
+.appr img{border-radius:22px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.appr ul{list-style:none;margin-top:24px}
+.appr li{padding:14px 0;border-top:2px solid var(--g);display:flex;justify-content:space-between;gap:20px;font-size:18px}
+.appr li b{font:800 22px/1 Any}
+@media(max-width:900px){.appr{grid-template-columns:1fr}}
+details{border-top:2px solid var(--g)}
+details:last-child{border-bottom:2px solid var(--g)}
+summary{list-style:none;cursor:pointer;padding:22px 0;font:800 24px/1.1 Any;text-transform:uppercase;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:20px}
+summary::after{content:"+";color:var(--blue)}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:22px;color:#3c3f43;max-width:780px}
+footer{background:var(--g);color:var(--con);padding:0 0 34px;overflow:hidden}
+.fin{padding:100px var(--pad) 0;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:end}
+.fin h2{font-size:clamp(56px,7vw,116px)}
+.fin h2 b{color:var(--vis);font-weight:800}
+.fin form{display:grid;gap:12px}
+.fin .seg{display:flex;gap:8px}
+.fin .seg span{flex:1;text-align:center;padding:14px;border-radius:10px;border:2px solid #e4e1da44;font-weight:500}
+.fin .seg span.on{background:var(--vis);color:var(--g);border-color:var(--vis)}
+.fin input{font:500 18px/1 Rub;padding:16px;border-radius:10px;border:2px solid #e4e1da44;background:transparent;color:var(--con)}
+.giant{font:800 clamp(110px,22vw,360px)/.8 Any;text-transform:uppercase;letter-spacing:-.05em;padding:90px var(--pad) 0;white-space:nowrap}
+.giant b{color:var(--vis);font-weight:800}
+.fine{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;margin:30px var(--pad) 0;padding-top:20px;border-top:1px solid #e4e1da22;font-size:15px;color:#8a8d91}
+@media(max-width:900px){.fin{grid-template-columns:1fr}}
+[data-r]{opacity:0}
+@media(prefers-reduced-motion:reduce){[data-r]{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<header id="top">
+  <a class="brand" href="#match"><img src="src/img/logo.svg" alt=""><b>Grafter</b></a>
+  <nav><a href="#board">Live jobs</a><a href="#trades">For trades</a><a href="#rates">Day rates</a><a href="#firms">For firms</a><a href="#faq">FAQ</a></nav>
+  <a class="btn" href="#join">Get work</a>
+</header>
+
+<section id="match" aria-label="How Grafter matches jobs to tradespeople">
+  <div class="stage">
+    <canvas id="goo" aria-label="Skills float as liquid blobs. When a job arrives, the blobs with the right skills flow towards it and merge into it."></canvas>
+    <div style="position:absolute;inset:0;overflow:hidden;z-index:4;pointer-events:none"><div id="lbls"></div>
+    <div class="job" id="job"><small id="jk">NEW JOB · 2 MIN AGO</small><h3 id="jt">Second-fix electrician</h3><div class="row" id="jr"></div><div class="m"><span id="jm">Finding grafters…</span><b id="jn">0</b></div></div></div>
+    <h1 class="any">Post a job. <b>Watch the trade find it.</b></h1>
+    <div class="steps mono" id="steps"><span class="on">01 · Leeds · electrician</span><span>02 · Harrogate · joiner</span><span>03 · York · plasterer</span></div>
+    <div class="sub"><a class="btn" href="#join">Find work near me</a><a class="btn dark" href="#firms" style="box-shadow:0 4px 0 #000,0 0 0 2px #e4e1da44 inset">Post a job</a><p>42,800 tradespeople across Yorkshire and the North. Free for trades, always.</p></div>
+  </div>
+</section>
+<div class="tape"></div>
+
+<section class="sec" id="board">
+  <span class="kick mono" data-r>Live board · Yorkshire · this morning</span>
+  <h2 class="h any" data-r>Fresh work, <b>every few minutes.</b></h2>
+  <p class="lede" data-r>Every job shows the day rate, the start date and how long it runs before you tap anything. No "competitive salary". No chasing for money.</p>
+  <div class="app" data-r>
+    <div class="bar"><img src="src/img/logo.svg" alt=""><b>Grafter</b><div class="srch">Search trade, skill or town…</div><span class="mono" style="color:#b3b6b9">Leeds · 15 miles</span><span class="me">DK</span></div>
+    <div class="body">
+      <div class="side">
+        <div><h6>Trade</h6><div class="chk"><i class="on"></i>Electrician</div><div class="chk"><i></i>Joiner</div><div class="chk"><i></i>Plasterer</div><div class="chk"><i></i>Plumber</div><div class="chk"><i></i>Bricklayer</div></div>
+        <div><h6>Within 15 miles</h6><div class="rng"><i></i><b></b></div></div>
+        <div><h6>Day rate</h6><div class="chk"><i class="on"></i>£200+</div><div class="chk"><i></i>£250+</div></div>
+        <div><h6>Tickets</h6><div class="chk"><i class="on"></i>18th Edition</div><div class="chk"><i class="on"></i>Site safety card</div><div class="chk"><i></i>IPAF</div></div>
+      </div>
+      <div class="list" id="jl"></div>
+      <div class="det" id="det">
+        <span class="mono" style="color:#6b6e72">LS7 · CHAPELTOWN · NEW BUILD</span>
+        <h3>Second-fix electrician</h3>
+        <div class="kv"><div><small>DAY RATE</small><b>£230</b></div><div><small>START</small><b>Mon 30 Nov</b></div><div><small>LENGTH</small><b>3 weeks</b></div><div><small>PAID</small><b>Weekly</b></div></div>
+        <p style="font-size:14px;color:#3c3f43">14 flats, first fix done. Accessories, consumer units, testing and certs. Parking on site, van access 7:30.</p>
+        <svg viewBox="0 0 320 150" id="mini"></svg>
+        <a class="btn" href="#join" style="justify-content:center">Apply with my profile</a>
+      </div>
+    </div>
+    <div class="toast" id="toast"><i></i><span id="tt">Shelley Builders viewed your profile</span></div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <span class="kick mono" data-r>Every trade</span>
+  <h2 class="h any" data-r>Who's <b>about today.</b></h2>
+  <div class="bento">
+    <div class="tr a" data-r><img src="media/board.jpg" alt="Hands wiring a consumer unit" loading="lazy"><div><h3>Electricians</h3><span data-n="1284">1,284 free</span></div></div>
+    <div class="tr b" data-r><img src="media/chisel.jpg" alt="Joiner marking timber at a bench" loading="lazy"><div><h3>Joiners</h3><span data-n="2031">2,031 free</span></div></div>
+    <div class="tr c" data-r><img src="media/wrenches.jpg" alt="Pipe wrenches on a copper pipe" loading="lazy"><div><h3>Plumbers</h3><span data-n="966">966 free</span></div></div>
+    <div class="tr d" data-r><img src="media/level.jpg" alt="A hand holding a spirit level on a floor" loading="lazy"><div><h3>Tilers</h3></div></div>
+    <div class="tr e" data-r><img src="media/bricks.jpg" alt="Hands laying red bricks" loading="lazy"><div><h3>Bricklayers</h3><span data-n="742">742 free</span></div></div>
+    <div class="tr f" data-r><img src="media/plasterers.jpg" alt="Two plasterers rendering a wall from a scaffold" loading="lazy"><div><h3>Plasterers</h3><span data-n="1108">1,108 free</span></div></div>
+    <div class="tr g" data-r><img src="media/roller.jpg" alt="A paint roller painting a wall dark blue" loading="lazy"><div><h3>Decorators</h3><span data-n="1530">1,530 free</span></div></div>
+  </div>
+</section>
+
+<div class="band"><video id="vSparks" src="media/sparks.mp4" poster="media/sparks.jpg" muted playsinline loop preload="auto"></video><p>Real work. <b>Real rates.</b> Paid on Friday.</p></div>
+
+<section class="sec" id="trades">
+  <span class="kick mono" data-r>For tradespeople · free</span>
+  <h2 class="h any" data-r>Your tickets, your diary, <b>your money.</b></h2>
+  <p class="lede" data-r style="color:#c9cbcd">Keep your cards and certificates in one place, mark the days you're free, and get paid weekly through the app. Firms see you're qualified before they ring.</p>
+  <div class="phones">
+    <div class="pf" data-r><div class="sc"><div class="sb"><span>7:02</span><span>●●● 5G</span></div><div class="hd"><span>DANNY KHAN · ELECTRICIAN</span><b>My tickets</b></div>
+      <div class="card" style="background:#3557e8"><b>18th Edition</b><small>BS 7671:2018+A2 · City & Guilds 2382</small><i>valid</i></div>
+      <div class="card" style="background:#17181a"><b>Site safety card</b><small>Gold · skilled worker · expires 03/2029</small><i>valid</i></div>
+      <div class="card" style="background:#5a5d61"><b>Inspection & testing</b><small>2391-52 · verified by Grafter</small><i>valid</i></div></div></div>
+    <div class="pf" data-r><div class="sc"><div class="sb"><span>7:02</span><span>●●● 5G</span></div><div class="hd"><span>DECEMBER · TAP TO MARK FREE</span><b>My diary</b></div>
+      <div class="cal" id="cal"></div><div class="pay" style="margin-top:4px"><div class="li" style="border:0"><span>Booked days</span><b>14</b></div><div class="li"><span>Free days</span><b id="fd">8</b></div><div class="li"><span>Offers waiting</span><b>3</b></div></div></div></div>
+    <div class="pf" data-r><div class="sc"><div class="sb"><span>7:02</span><span>●●● 5G</span></div><div class="hd"><span>WEEK 47 · PAID FRIDAY</span><b>Get paid</b></div>
+      <div class="pay"><small class="mono" style="color:#6b6e72">THIS WEEK</small><div class="big" id="pay">£1,150</div><small style="color:#6b6e72">5 days × £230 · Chapeltown</small>
+      <div class="li" style="margin-top:12px"><span>Mon–Fri hours</span><b>signed off</b></div><div class="li"><span>Invoice</span><b>sent for you</b></div><div class="li"><span>Lands in your bank</span><b>Fri 27 Nov</b></div><div class="li"><span>Year so far</span><b>£41,860</b></div></div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="rates">
+  <span class="kick mono" data-r>Day rates · Yorkshire · November 2026</span>
+  <h2 class="h any" data-r>What the trade <b>actually earns.</b></h2>
+  <p class="lede" data-r>From 31,400 jobs booked on Grafter in the last 90 days. The light bar is the lowest quarter, the dark bar the typical rate.</p>
+  <div class="rates" id="rr"></div>
+  <div class="rkey"><span><i style="background:var(--con2)"></i>Lowest 25%</span><span><i style="background:var(--g)"></i>Typical day rate</span></div>
+</section>
+
+<div class="band"><video id="vScaf" src="media/scaffold.mp4" poster="media/scaffold.jpg" muted playsinline loop preload="auto"></video><p>From a loft conversion <b>to a church spire.</b></p></div>
+
+<section class="sec" id="where">
+  <span class="kick mono" data-r>Where we work</span>
+  <h2 class="h any" data-r>Forty towns. <b>One list.</b></h2>
+  <p class="lede" data-r>Grafter started in Leeds in 2023. These are the places with the most jobs posted this month, and how quickly someone qualified replied.</p>
+  <div class="towns" id="towns"></div>
+</section>
+
+<section class="sec" id="firms">
+  <span class="kick mono" data-r>For firms</span>
+  <h2 class="h any" data-r>Need a sparky Monday? <b>Sorted by lunch.</b></h2>
+  <div class="flow">
+    <div data-r><b>01</b><h3>Post it</h3><p>Trade, postcode, day rate, start date, how long. Two minutes, no job spec essays.</p></div>
+    <div data-r><b>02</b><h3>Get matched</h3><p>Grafters with the right tickets and free days see it first. Most jobs get a reply in 14 minutes.</p></div>
+    <div data-r><b>03</b><h3>Book and pay</h3><p>Sign off the hours each Friday and we pay them. One invoice from us, VAT and all.</p></div>
+  </div>
+  <div class="price">
+    <div class="pc" data-r><h4>Trades</h4><div class="p">Free</div><ul><li>Unlimited jobs and offers</li><li>Ticket wallet and diary</li><li>Weekly pay</li></ul><a class="btn" href="#join">Join free</a></div>
+    <div class="pc hi" data-r><h4>Firms · pay as you go</h4><div class="p">£39 <small>per booking</small></div><ul><li>Post as many jobs as you like</li><li>Only pay when you book someone</li><li>Weekly pay handled for you</li></ul><a class="btn" href="#join">Post a job</a></div>
+    <div class="pc" data-r><h4>Firms · unlimited</h4><div class="p">£149 <small>a month</small></div><ul><li>Unlimited bookings</li><li>Saved crews and favourites</li><li>Account manager in Leeds</li></ul><a class="btn dark" href="#join">Talk to us</a></div>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick mono" data-r>From the van</span>
+  <h2 class="h any" data-r>Straight <b>from the grafters.</b></h2>
+  <div class="quotes">
+    <div class="q" data-r><p>"Booked three weeks of work from the van at 7 am. Paid every Friday, not 60 days later."</p><div class="who"><i>DK</i><small>Danny · electrician · Leeds<br>on Grafter since 2024</small></div></div>
+    <div class="q" data-r><p>"I used to ring round twelve lads to fill a job. Now I post it and somebody qualified has replied by the time I've had a brew."</p><div class="who"><i>SB</i><small>Shelley Builders · Wakefield<br>142 bookings</small></div></div>
+    <div class="q" data-r><p>"The day rates page told me I was charging £40 under. Put my rate up the same week."</p><div class="who"><i>AM</i><small>Aisha · plasterer · York<br>on Grafter since 2025</small></div></div>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--con2)">
+  <div class="appr">
+    <div>
+      <span class="kick mono" data-r>Apprentices</span>
+      <h2 class="h any" data-r>Learn on <b>a real site.</b></h2>
+      <p class="lede" data-r>Firms on Grafter take on apprentices through us. We match you with a firm near home, sort the college days, and you earn from week one.</p>
+      <ul><li data-r><span>Apprentices placed this year</span><b>318</b></li><li data-r><span>Finished and qualified</span><b>91%</b></li><li data-r><span>First-year pay from</span><b>£280 a week</b></li></ul>
+    </div>
+    <img src="media/sanding.jpg" alt="An apprentice sanding timber at a workshop bench" loading="lazy" data-r>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <span class="kick mono" data-r>Questions</span>
+  <h2 class="h any" data-r>Straight <b>answers.</b></h2>
+  <div style="max-width:960px">
+    <details data-r><summary>Is it really free for tradespeople?</summary><p>Yes. No fees, no cut of your day rate, no subscription. Firms pay us when they book someone.</p></details>
+    <details data-r><summary>How do you check tickets?</summary><p>We check every card and certificate with the scheme that issued it before it shows as verified, and again before it expires.</p></details>
+    <details data-r><summary>When do I get paid?</summary><p>The firm signs off your hours by Wednesday and the money lands in your bank on Friday. If they don't sign off, we chase them, not you.</p></details>
+    <details data-r><summary>Can I work as a sole trader or through my company?</summary><p>Either. Self-employed, limited company or CIS: tell us once and every invoice is set up properly.</p></details>
+    <details data-r><summary>Where do you cover?</summary><p>All of Yorkshire, the North East and the North West today, with the Midlands from spring 2027.</p></details>
+  </div>
+</section>
+
+<footer id="join">
+  <div class="tape"></div>
+  <div class="fin">
+    <h2 class="any">Get on <b>the list.</b></h2>
+    <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Check your phone for a text'">
+      <div class="seg"><span class="on">I'm a tradesperson</span><span>I'm hiring</span></div>
+      <input placeholder="Your trade" aria-label="Your trade"><input placeholder="Mobile number" aria-label="Mobile number" inputmode="tel">
+      <button class="btn" type="submit" style="justify-content:center">Send me a link</button>
+    </form>
+  </div>
+  <div class="giant">Graft<b>er</b></div>
+  <div class="fine"><span>Grafter Ltd, The Tannery, Leeds. Work for the trades.</span><span>Site by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,k)=>a+(b-a)*k,ss=(a,b,x)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,CAP=typeof window.__tick==='function';
+try{sessionStorage.setItem('grafter-seen','1')}catch(e){}
+let seed=5;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+/* ---------- liquid match: metaballs in WebGL ---------- */
+const SK=['2nd fix','18th Edition','Testing','Consumer units','EV chargers','Joinery','Kitchens','Staircases','Tiling','Plastering','Skimming','Rendering','Decorating','Plumbing','Bathrooms','Bricklaying','Roofing','1st fix'];
+const JOBS=[{t:'Second-fix electrician',k:'NEW JOB · LS7 LEEDS · 2 MIN AGO',r:['£230/day','3 weeks','Start Mon'],m:[0,1,2,3,4,17],n:9},
+ {t:'Kitchen fitter / joiner',k:'NEW JOB · HG1 HARROGATE · 6 MIN AGO',r:['£210/day','2 weeks','Start 7 Dec'],m:[5,6,7,8],n:14},
+ {t:'Plasterer',k:'NEW JOB · YO1 YORK · JUST NOW',r:['£190/day','4 days','Start Wed'],m:[9,10,11,12],n:6}];
+const balls=SK.map((s,i)=>{const a=i/SK.length*Math.PI*2+rnd()*.3,rr=.25+rnd()*.12;return{s,hx:.68+Math.cos(a)*rr*.95,hy:.55+Math.sin(a)*rr*1.25,x:0,y:0,vx:0,vy:0,r:.036+rnd()*.01,r0:0,ph:rnd()*9}});
+balls.forEach(b=>{b.x=b.hx;b.y=b.hy;b.r0=b.r});
+const job={x:1.3,y:.5,vx:0,vy:0,r:.07,active:-1};
+const LBL=$('#lbls');LBL.innerHTML=SK.map(s=>`<span class="lbl">${s}</span>`).join('');const lblEls=$$('.lbl');
+const cv=$('#goo'),gl=cv.getContext('webgl',{premultipliedAlpha:false,alpha:true,preserveDrawingBuffer:true});const NB=SK.length+1;let uB,uC,uA,prog;
+if(gl){const vs='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;v.y=1.-v.y;gl_Position=vec4(p,0,1);}';
+ const fs=`precision highp float;varying vec2 v;uniform vec4 B[${NB}];uniform vec3 C[${NB}];uniform float A;
+ void main(){vec2 p=vec2(v.x*A,v.y);float f=0.;vec3 col=vec3(0.);float wsum=0.;
+  for(int i=0;i<${NB};i++){vec2 d=p-vec2(B[i].x*A,B[i].y);float w=B[i].z*B[i].z/(dot(d,d)+1e-5);f+=w;col+=C[i]*w*w;wsum+=w*w;}
+  col/=max(wsum,1e-5);
+  float edge=smoothstep(.92,1.06,f);
+  // rim light on the liquid's edge and a soft inner glow, like a thick viscous fluid
+  float rim=smoothstep(1.,1.25,f)-smoothstep(1.25,2.6,f);
+  vec3 c=col*(.86+.14*clamp(f-1.,0.,1.))+rim*.18;
+  float sh=smoothstep(.55,.95,f)*(1.-edge)*.35;
+  gl_FragColor=vec4(mix(vec3(0.),c,edge),max(edge,sh*.6));}`;
+ const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(o));return o};
+ prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);gl.useProgram(prog);
+ const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const pl=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(pl);gl.vertexAttribPointer(pl,2,gl.FLOAT,false,0,0);
+ uB=gl.getUniformLocation(prog,'B');uC=gl.getUniformLocation(prog,'C');uA=gl.getUniformLocation(prog,'A');gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)}
+const BU=new Float32Array(NB*4),CU=new Float32Array(NB*3);
+const COL_SK=[.83,.81,.78],COL_M=[.93,.96,.26],COL_JOB=[.93,.96,.26];
+let curJob=-1,jobT0=0,matched=0,shown=0;
+
+/* ---------- live board ---------- */
+const JL=[['EL','Second-fix electrician','LS7 Chapeltown · new build flats','£230','3 wks'],['EL','EV charger installs','LS16 Adel · domestic, 6 houses','£250','2 wks'],['JN','Kitchen fitter','HG1 Harrogate · 3 kitchens','£210','2 wks'],['PL','Bathroom refit','WF1 Wakefield · plumbing + tiling','£220','8 days'],['EL','Testing & inspection','BD1 Bradford · EICRs, 40 flats','£240','1 wk'],['PS','Plasterer','YO1 York · skim + render','£190','4 days'],['BR','Bricklayers ×2','LS25 Garforth · extension','£200','3 wks'],['RF','Roofer','HX1 Halifax · slate re-roof','£215','2 wks'],['DC','Decorator','LS1 city centre · office fit-out','£180','10 days']];
+const jlEl=$('#jl');let jlShown=0,jlT=0;const TO=['Shelley Builders viewed your profile','New offer: EV charger installs, £250/day','Your hours were signed off: £1,150 on Friday'];
+function addJob(i,isNew){const j=JL[i%JL.length];const d=document.createElement('div');d.className='jr'+(isNew?' new':'')+(i===0?' sel':'');d.innerHTML=`<span class="ic">${j[0]}</span><div><h4>${j[1]}</h4><p>${j[2]}</p></div><div class="rt"><b>${j[3]}</b><small>/day · ${j[4]}</small></div>`;d._t=performance.now();jlEl.prepend(d);while(jlEl.children.length>8)jlEl.lastChild.remove();return d}
+for(let i=JL.length-1;i>=3;i--)addJob(i,false);
+// mini map in the detail panel
+(()=>{let s='<rect width="320" height="150" fill="#e4e1da"/>';seed=3;for(let i=0;i<14;i++){const x=rnd()*320,y=rnd()*150;s+=`<path d="M${x} ${y}q${40+rnd()*60} ${-20+rnd()*40} ${100+rnd()*80} ${-10+rnd()*20}" stroke="#fff" stroke-width="${3+rnd()*5}" fill="none"/>`}
+ s+='<path d="M0 110Q80 90 160 100T320 80" stroke="#c9c5bb" stroke-width="10" fill="none"/><circle cx="168" cy="72" r="34" fill="#3557e822" stroke="#3557e8" stroke-dasharray="4 4"/><circle cx="168" cy="72" r="9" fill="#17181a"/><circle cx="168" cy="72" r="4" fill="#ecf542"/><text x="182" y="60" font-family="JB" font-size="11" fill="#17181a">site</text><text x="12" y="140" font-family="JB" font-size="10" fill="#5a5d61">12 min from you</text>';$('#mini').innerHTML=s})();
+
+/* ---------- diary ---------- */
+const BOOK=[1,2,3,4,7,8,9,10,11,14,15,16,17,18],FREE=[21,22,23,28,29,30,31,24];$('#cal').innerHTML=['M','T','W','T','F','S','S'].map(d=>`<span style="background:none;font-size:10px;color:#6b6e72">${d}</span>`).join('')+Array.from({length:31},(_,i)=>`<span data-d="${i+1}" class="${BOOK.includes(i+1)?'b':''}">${i+1}</span>`).join('');
+const calF=FREE.map(d=>$(`#cal [data-d="${d}"]`));let calT=-1;
+
+/* ---------- day rates ---------- */
+const RATES=[['Electrician',180,232],['Plumber',175,225],['Joiner',165,210],['Plasterer',150,190],['Bricklayer',160,200],['Roofer',165,215],['Tiler',150,185],['Decorator',135,170]];
+$('#rr').innerHTML=RATES.map(r=>`<div class="rr" data-r><h4>${r[0]}</h4><div class="bars"><i class="lo" data-w="${r[1]/260}"></i><i data-w="${r[2]/260}"><em></em></i></div><b>£${r[2]}</b></div>`).join('');
+const rbars=$$('.rr .bars i').map(el=>({el,w:+el.dataset.w,x:0,v:0,on:false}));
+
+/* ---------- towns ---------- */
+const TOWNS=[['Leeds',1840,11],['Bradford',920,16],['Sheffield',1310,13],['York',610,14],['Wakefield',540,18],['Harrogate',390,12],['Hull',720,19],['Newcastle',1120,15],['Manchester',1650,12],['Huddersfield',480,17],['Halifax',350,21],['Durham',300,22]];
+$('#towns').innerHTML=TOWNS.map(t=>`<div class="town" data-r><h3>${t[0]}</h3><span class="n" data-c="${t[1]}">0</span><small>jobs this month · replies in ${t[2]} min</small><div class="bar"><i data-w="${(30-t[2])/22}"></i></div></div>`).join('');
+const tcount=$$('.town .n').map(el=>({el,c:+el.dataset.c,t0:-1})),tbar=$$('.town .bar i').map(el=>({el,w:+el.dataset.w,x:0,v:0,on:false}));
+/* ---------- reveals: blobs of content drip in (scale from a squashed drop, settle with surface tension) ---------- */
+const RS=$$('[data-r]').map(el=>({el,t0:-1}));
+const vS=$('#vSparks'),vF=$('#vScaf');
+
+/* ---------- loop ---------- */
+let t0=performance.now(),last=t0;
+function frame(ts){const dt=Math.min(.05,Math.max(0,(ts-last)/1000));last=ts;const t=(ts-t0)/1000,vh=innerHeight;
+ const mr=$('#match').getBoundingClientRect();
+ if(mr.bottom>0&&mr.top<vh&&gl){const span=$('#match').offsetHeight-vh,f=clamp(-mr.top/span);
+  const w=cv.clientWidth,h=cv.clientHeight,A=w/h,RS2=clamp(A/1.5,.5,1);
+  // which job is on stage
+  const ji=Math.min(2,Math.floor(f*3)),jf=f*3-ji;if(ji!==curJob){curJob=ji;jobT0=t;shown=0;$$('#steps span').forEach((s,i)=>s.classList.toggle('on',i===ji));
+   const J=JOBS[ji];$('#jt').textContent=J.t;$('#jk').textContent=J.k;$('#jr').innerHTML=J.r.map((x,i)=>`<span class="${i?'':'r'}">${x}</span>`).join('');job.x=1.25;job.r=.07}
+  const J=JOBS[curJob],lt=t-jobT0;
+  // job blob glides in on a heavy spring, sits right of centre; leaves left near the end of its scroll segment
+  const jtx=jf>.88?-.3:.68,jty=.52;const K=10,C=2*.9*Math.sqrt(K);job.vx+=(K*(jtx-job.x)-C*job.vx)*dt;job.vy+=(K*(jty-job.y)-C*job.vy)*dt;job.x+=job.vx*dt;job.y+=job.vy*dt;
+  const pull=ss(.12,.5,jf)*(jf>.88?0:1);// how hard matching skills are drawn in
+  let mergedR2=job.r*job.r;matched=0;
+  balls.forEach((b,i)=>{const isM=J.m.includes(i);
+   // Brownian drift + spring home + soft separation; matched skills are attracted into the job blob
+   b.vx+=((b.hx-b.x)*1.2+Math.sin(t*.7+b.ph)*.05)*dt;b.vy+=((b.hy-b.y)*1.2+Math.cos(t*.6+b.ph*1.3)*.05)*dt;
+   if(isM&&pull>0){const dx=job.x-b.x,dy=job.y-b.y,d=Math.hypot(dx*A,dy)+1e-4;const k=pull*7;b.vx+=dx/d*k*dt*Math.min(1,d*4);b.vy+=dy/d*k*dt*Math.min(1,d*4);if(d<.06){matched++;b.r=lerp(b.r,b.r0*.55,dt*3);mergedR2+=b.r0*b.r0*.35}}
+   else{b.r=lerp(b.r,b.r0,dt*2);const dx=b.x-job.x,dy=b.y-job.y,d=Math.hypot(dx*A,dy)+1e-4;if(d<.2){b.vx+=dx/d*(.2-d)*3*dt;b.vy+=dy/d*(.2-d)*3*dt}}
+   balls.forEach((o,j)=>{if(j<=i)return;const dx=o.x-b.x,dy=o.y-b.y,d=Math.hypot(dx*A,dy)+1e-4,mn=(b.r+o.r)*1.15;if(d<mn&&!(isM&&J.m.includes(j)&&pull>.5)){const p=(mn-d)*2.2*dt;b.vx-=dx/d*p;b.vy-=dy/d*p;o.vx+=dx/d*p;o.vy+=dy/d*p}});
+   const damp=Math.exp(-2.6*dt);b.vx*=damp;b.vy*=damp;b.x+=b.vx*dt;b.y+=b.vy*dt});
+  // volume is kept: the job blob swells as skills flow into it
+  job.r=lerp(job.r,Math.sqrt(mergedR2)*1.0,dt*3);
+  balls.forEach((b,i)=>{BU.set([b.x,b.y,b.r*RS2*(1+.04*Math.sin(t*2+b.ph)),0],i*4);const isM=J.m.includes(i);const c=isM?COL_M.map((v,k)=>lerp(COL_SK[k],v,pull)):COL_SK;CU.set(c,i*3);
+   const el=lblEls[i];el.style.left=(b.x*100).toFixed(2)+'%';el.style.top=(b.y*100).toFixed(2)+'%';const near=Math.hypot((job.x-b.x)*A,job.y-b.y);el.style.opacity=isM?clamp((near-.05)/.08).toFixed(2):1});
+  BU.set([job.x,job.y,job.r*RS2*(1+.03*Math.sin(t*3)),1],SK.length*4);CU.set(COL_JOB,SK.length*3);
+  const d=Math.min(1.5,devicePixelRatio||1),W=Math.round(w*d),H=Math.round(h*d);if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+  gl.viewport(0,0,W,H);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform4fv(uB,BU);gl.uniform3fv(uC,CU);gl.uniform1f(uA,A);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  // the job card rides on the blob; the count ticks up as skills arrive
+  const jc=$('#job');jc.style.left=(job.x*100)+'%';jc.style.top=(job.y*100+(h<700?18:16))+'%';jc.style.opacity=clamp(1.15-Math.abs(job.x-.68)*2.2).toFixed(2);
+  const target=matched>=J.m.length-1?J.n:Math.round(J.n*matched/J.m.length);shown=lerp(shown,target,dt*4);$('#jn').textContent=Math.round(shown);$('#jm').textContent=matched>=J.m.length-1?`grafters matched · avg reply 14 min`:'Finding grafters…'}
+ // live board: a new job slides in every ~2.4 s, toasts pop
+ const ar=$('.app').getBoundingClientRect();if(ar.bottom>0&&ar.top<vh){if(!jlT)jlT=t;if(t-jlT>2.4&&jlShown<3){jlT=t;jlShown++;addJob(3-jlShown,true)}
+  const now=performance.now();$$('#jl .jr').forEach(r=>{const lt=(now-r._t)/1000;if(lt<1.2){const e=Math.exp(-6*lt);r.style.transform=`translateY(${(-40*e*Math.cos(7*lt)).toFixed(1)}px)`;r.style.opacity=clamp(lt*4)}else{r.style.transform='';r.style.opacity=1}});
+  const tt=$('#toast');const tp=(t%5.5);const ti=Math.floor(t/5.5)%TO.length;$('#tt').textContent=TO[ti];const tk=tp<.5?tp/.5:tp>4.5?1-(tp-4.5)/.5:1;tt.style.opacity=clamp(tk).toFixed(2);tt.style.transform=`translateY(${((1-clamp(tk))*14).toFixed(1)}px)`}
+ // diary: free days get marked one by one
+ const cr=$('#cal').getBoundingClientRect();if(cr.top<vh*.85&&cr.bottom>0){if(calT<0)calT=t;calF.forEach((el,i)=>{const on=t-calT>.3+i*.22;el.classList.toggle('f',on)});$('#fd').textContent=calF.filter(e=>e.classList.contains('f')).length}
+ // rate bars on springs
+ rbars.forEach((b,i)=>{if(!b.on){const r=b.el.getBoundingClientRect();if(r.top<vh*.9){b.on=true;b.d=t+(i>>1)*.07}else return}if(t<b.d)return;const K=55,C=2*.62*Math.sqrt(K);b.v+=(K*(b.w-b.x)-C*b.v)*dt;b.x+=b.v*dt;b.el.style.width=(Math.max(0,b.x)*100).toFixed(2)+'%'});
+ tcount.forEach((c,i)=>{if(c.t0<0){const r=c.el.getBoundingClientRect();if(r.top<vh*.9)c.t0=t+i*.05;else return}const k=clamp((t-c.t0)/1.2);c.el.textContent=Math.round(c.c*(1-Math.pow(1-k,3))).toLocaleString('en-GB')});
+ tbar.forEach((b,i)=>{if(!b.on){const r=b.el.getBoundingClientRect();if(r.top<vh*.9){b.on=true;b.d=t+i*.05}else return}if(t<b.d)return;const K=50,C=2*.6*Math.sqrt(K);b.v+=(K*(b.w-b.x)-C*b.v)*dt;b.x+=b.v*dt;b.el.style.width=(Math.max(0,b.x)*100).toFixed(1)+'%'});
+ if(vF.duration){const r=vF.getBoundingClientRect();if(r.bottom>0&&r.top<vh){if(CAP||RM){if(!vF.paused)vF.pause();const tt=(t*.9)%(vF.duration-.1);if(Math.abs(vF.currentTime-tt)>.04)vF.currentTime=tt}else if(vF.paused){vF.loop=true;vF.play().catch(()=>{})}}}
+ // sparks video on the clock under capture
+ if(vS.duration){const r=vS.getBoundingClientRect();if(r.bottom>0&&r.top<vh){if(CAP||RM){if(!vS.paused)vS.pause();const tt=(t*.9)%(vS.duration-.1);if(Math.abs(vS.currentTime-tt)>.04)vS.currentTime=tt}else if(vS.paused){vS.loop=true;vS.play().catch(()=>{})}}}
+ // reveals: a drop lands: squashed wide and short, then springs to shape
+ RS.forEach(g=>{if(g.done)return;if(g.t0<0){const r=g.el.getBoundingClientRect();if(r.top<vh*.95&&r.bottom>0)g.t0=t;else return}const lt=t-g.t0;const e=Math.exp(-6*lt)*Math.cos(10*lt);
+  g.el.style.opacity=clamp(lt*4).toFixed(3);g.el.style.transform=`translateY(${(22*Math.exp(-6*lt)).toFixed(1)}px) scale(${(1+.05*e).toFixed(4)},${(1-.05*e).toFixed(4)})`;if(lt>1){g.el.style.transform='';g.el.style.opacity=1;g.done=true}});
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body></html>
