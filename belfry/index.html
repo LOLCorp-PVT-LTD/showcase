@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Weald & Downs Guild of Church Bell Ringers</title>
+<meta name="description" content="Learn to ring church bells in Sussex and Kent. Find a tower, come to a practice night, and join 1,100 ringers in the Weald & Downs Guild.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Cinzel;src:url(assets/fonts/cinzel-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Cinzel;src:url(assets/fonts/cinzel-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:LF;src:url(assets/fonts/libre-franklin-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:LF;src:url(assets/fonts/libre-franklin-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:CP;src:url(assets/fonts/courier-prime-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:CP;src:url(assets/fonts/courier-prime-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:swap}
+:root{--oak:#1c1511;--oak2:#2a201a;--oak3:#3a2c22;--lime:#efe9dd;--lime2:#e4dccb;--gold:#c9a24a;--red:#b02a37;--blue:#22386e;--mute:#7a6d60;--ink:#241c16;--pad:clamp(18px,4.5vw,72px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--oak)}
+body{font-family:LF,system-ui,sans-serif;font-size:19px;line-height:1.6;color:var(--ink);background:var(--lime);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+.cz{font-family:Cinzel,Georgia,serif;letter-spacing:.04em}
+.cp{font-family:CP,ui-monospace,monospace}
+.h{font:700 clamp(50px,6.2vw,98px)/1.02 Cinzel;letter-spacing:.01em;margin-bottom:24px}
+.h span{color:var(--red)}
+.lede{font-size:clamp(20px,1.6vw,23px);max-width:680px}
+/* sally motif: the striped woollen grip on a bell rope */
+.sally{display:inline-block;width:12px;height:56px;border-radius:6px;background:repeating-linear-gradient(var(--red) 0 8px,var(--lime) 8px 14px,var(--blue) 14px 22px,var(--lime) 22px 28px)}
+.btn{display:inline-flex;align-items:center;gap:12px;font:700 15px/1 Cinzel;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:17px 24px;background:var(--gold);color:var(--oak);border:0;cursor:pointer;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%)}
+.btn.ghost{background:var(--lime);color:var(--oak)}
+.btn:hover{filter:brightness(1.08)}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;height:66px;display:flex;align-items:center;gap:26px;padding:0 var(--pad);background:#1c1511ee;color:var(--lime);border-bottom:1px solid #c9a24a44}
+#top .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+#top .brand img{width:34px;height:34px}
+#top .brand b{font:700 17px/1.1 Cinzel;letter-spacing:.06em}
+#top nav{display:flex;gap:24px;margin-left:auto;font-size:15px}
+#top nav a{text-decoration:none;opacity:.8}
+#top .btn{padding:12px 18px;font-size:13px}
+@media(max-width:900px){#top nav{display:none}#top .btn{margin-left:auto}#top .brand b{font-size:13px}}
+/* hero: the ringing chamber */
+#ring{position:relative;height:640vh;background:var(--oak);color:var(--lime)}
+#ring .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(90% 70% at 30% 40%,#3a2c22,#1c1511 70%)}
+#bells{position:absolute;left:0;top:0;width:58%;height:100%}
+#sheet{position:absolute;right:0;top:0;width:42%;height:100%}
+#ring h1{position:absolute;left:var(--pad);top:92px;font:700 clamp(40px,4.4vw,72px)/1.02 Cinzel;max-width:9.5em;z-index:2;pointer-events:none}
+#ring h1 span{color:var(--gold)}
+.call{position:absolute;left:var(--pad);bottom:110px;z-index:3;font:400 clamp(26px,2.4vw,38px)/1.15 Cinzel;color:var(--gold);max-width:620px}
+.call small{display:block;font:400 14px/1.4 CP;color:#b9ab99;letter-spacing:.04em;margin-bottom:8px;text-transform:uppercase}
+#ring .cta{position:absolute;left:var(--pad);bottom:34px;z-index:3;display:flex;gap:14px;align-items:center}
+#ring .cta p{font-size:15px;color:#b9ab99;max-width:360px}
+@media(max-width:900px){#bells{width:100%;height:56%;top:auto;bottom:0}#sheet{display:none}#ring h1{font-size:32px;top:80px}.call{bottom:auto;top:200px;font-size:22px}#ring .cta p{display:none}}
+/* sections */
+.sec{padding:clamp(90px,10vw,150px) var(--pad);position:relative}
+.kick{display:flex;align-items:center;gap:14px;margin-bottom:20px;font:400 14px/1 CP;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.kick i{width:40px;height:1px;background:var(--mute)}
+/* story */
+.story{display:grid;grid-template-columns:5fr 6fr;gap:70px;align-items:center}
+.story .ph{position:relative;aspect-ratio:4/5;overflow:hidden;clip-path:polygon(0 12%,50% 0,100% 12%,100% 100%,0 100%)}
+.story .ph img{width:100%;height:115%;object-fit:cover}
+.story p+p{margin-top:16px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:40px;border-top:1px solid #241c1633}
+.facts div{padding:18px 10px 0 0}
+.facts b{font:700 46px/1 Cinzel;display:block}
+.facts span{font-size:15px;color:var(--mute)}
+@media(max-width:900px){.story{grid-template-columns:1fr}}
+/* towers */
+#towers{background:var(--lime2)}
+.days{display:flex;gap:8px;flex-wrap:wrap;margin:34px 0 26px}
+.days button{font:400 14px/1 CP;letter-spacing:.06em;text-transform:uppercase;padding:11px 15px;border:1px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink)}
+.days button.on{background:var(--ink);color:var(--lime)}
+.tw{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tower{background:var(--lime);display:grid;grid-template-columns:110px 1fr;gap:18px;padding:18px;border:1px solid #241c1626;transition:opacity .3s,transform .3s}
+.tower.off{opacity:.25;transform:scale(.98)}
+.tower img{width:110px;height:140px;object-fit:cover}
+.tower h3{font:700 22px/1.15 Cinzel}
+.tower .meta{font:400 14px/1.5 CP;color:var(--mute);margin-top:6px}
+.tower .meta b{color:var(--ink);font-weight:700}
+.tower .bells{display:flex;gap:3px;margin-top:10px;align-items:flex-end}
+.tower .bells i{background:var(--gold);border-radius:40% 40% 10% 10%/60% 60% 10% 10%}
+@media(max-width:1000px){.tw{grid-template-columns:1fr 1fr}}@media(max-width:640px){.tw{grid-template-columns:1fr}}
+/* learn: a rope path */
+#learn{background:var(--oak);color:var(--lime)}
+#learn .kick{color:#b9ab99}#learn .kick i{background:#b9ab99}
+#learn .h span{color:var(--gold)}
+.path{position:relative;margin-top:60px;display:grid;grid-template-columns:repeat(5,1fr);gap:24px}
+.path::before{content:"";position:absolute;left:0;right:0;top:27px;height:2px;background:repeating-linear-gradient(90deg,var(--gold) 0 10px,transparent 10px 16px)}
+.path div{position:relative;padding-top:74px}
+.path div i{position:absolute;left:0;top:0;width:56px;height:56px;border-radius:50%;background:var(--oak);border:2px solid var(--gold);display:grid;place-items:center;font:700 22px/1 Cinzel;font-style:normal;color:var(--gold)}
+.path h3{font:700 23px/1.2 Cinzel;margin-bottom:8px}
+.path p{font-size:16px;color:#cfc4b4}
+.path small{display:block;margin-top:10px;font:400 13px/1 CP;color:var(--gold);letter-spacing:.06em;text-transform:uppercase}
+@media(max-width:1000px){.path{grid-template-columns:1fr 1fr}.path::before{display:none}}
+/* anatomy */
+.anat{display:grid;grid-template-columns:6fr 5fr;gap:60px;align-items:center;margin-top:30px}
+.anat .pic{position:relative}
+.anat .pic img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.anat .pic svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.parts{display:flex;flex-direction:column}
+.parts button{all:unset;cursor:pointer;display:grid;grid-template-columns:34px 1fr;gap:16px;padding:14px 0;border-top:1px solid #241c1626}
+.parts button i{font:700 15px/34px Cinzel;font-style:normal;text-align:center;width:34px;height:34px;border:1px solid var(--ink);border-radius:50%}
+.parts button.on i{background:var(--red);border-color:var(--red);color:var(--lime)}
+.parts h3{font:700 20px/1.2 Cinzel}
+.parts p{font-size:16px;color:var(--mute)}
+@media(max-width:900px){.anat{grid-template-columns:1fr}}
+/* peal board */
+#peals{background:var(--lime2)}
+.boards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:50px}
+.board{background:#15100c;color:var(--gold);padding:30px 26px 26px;text-align:center;border:8px solid #3a2c22;outline:1px solid var(--gold);outline-offset:-16px;box-shadow:0 26px 50px #1c151155;position:relative}
+.board small{font:400 12px/1.5 Cinzel;letter-spacing:.14em;text-transform:uppercase;color:#e8d7a7}
+.board h3{font:700 26px/1.2 Cinzel;margin:10px 0}
+.board .m{font:400 15px/1.5 Cinzel;color:#e8d7a7}
+.board ol{list-style:none;margin:16px auto 10px;font:400 14px/1.75 Cinzel;color:#efe0b5;max-width:260px;text-align:left}
+.board ol li{display:flex;justify-content:space-between;border-bottom:1px dotted #c9a24a44}
+.board .c{font:400 12px/1.5 Cinzel;letter-spacing:.06em;color:#bfa76a}
+@media(max-width:1000px){.boards{grid-template-columns:1fr}}
+/* band */
+.band{position:relative;height:clamp(320px,46vw,600px);overflow:hidden;background:var(--oak)}
+.band img{width:100%;height:120%;object-fit:cover;will-change:transform}
+.band p{position:absolute;left:var(--pad);bottom:34px;font:700 clamp(36px,4.6vw,72px)/1.05 Cinzel;color:#fff;max-width:900px;text-shadow:0 2px 30px #000a}
+/* forum */
+.forum{margin-top:44px;border-top:2px solid var(--ink)}
+.thr{display:grid;grid-template-columns:48px 1fr 110px 110px;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid #241c1626}
+.thr .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:700 15px/1 Cinzel;color:var(--lime)}
+.thr h3{font-weight:600;font-size:19px;line-height:1.3}
+.thr p{font-size:14px;color:var(--mute)}
+.thr .n{font:700 26px/1 Cinzel;text-align:right}
+.thr .n small{display:block;font:400 11px/1.4 CP;color:var(--mute);letter-spacing:.04em;text-transform:uppercase}
+@media(max-width:800px){.thr{grid-template-columns:44px 1fr 70px}.thr>:nth-child(4){display:none}}
+/* events */
+#events{background:var(--oak);color:var(--lime)}
+#events .kick{color:#b9ab99}#events .kick i{background:#b9ab99}
+#events .h span{color:var(--gold)}
+.evs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:50px}
+.ev{border:1px solid #c9a24a55;padding:24px}
+.ev .d{font:700 44px/1 Cinzel;color:var(--gold)}
+.ev .d small{display:block;font:400 13px/1.5 CP;color:#b9ab99;text-transform:uppercase;letter-spacing:.06em}
+.ev h3{font:700 21px/1.25 Cinzel;margin:14px 0 8px}
+.ev p{font-size:15px;color:#cfc4b4}
+@media(max-width:1000px){.evs{grid-template-columns:repeat(2,minmax(0,1fr))}.ev .d{font-size:32px}}
+/* join */
+.join{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:30px}
+.tiers{display:grid;gap:16px}
+.tier{display:grid;grid-template-columns:1fr auto;gap:6px 20px;padding:22px 24px;border:1px solid var(--ink);background:#fff8}
+.tier h3{font:700 24px/1.2 Cinzel}
+.tier b{font:700 36px/1 Cinzel;grid-row:span 2;align-self:center}
+.tier p{font-size:16px;color:var(--mute)}
+form.j{display:grid;gap:14px}
+form.j label{display:flex;flex-direction:column;gap:7px;font:400 13px/1 CP;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+form.j input,form.j select{font:400 18px/1.3 LF;padding:14px 16px;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+@media(max-width:900px){.join{grid-template-columns:1fr}}
+details{border-top:1px solid var(--ink)}
+details:last-child{border-bottom:1px solid var(--ink)}
+summary{list-style:none;cursor:pointer;padding:22px 0;font:700 22px/1.3 Cinzel;display:flex;justify-content:space-between;gap:20px}
+summary::after{content:"+";color:var(--red)}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:22px;color:var(--mute);max-width:780px}
+footer{background:var(--oak);color:var(--lime);padding:100px var(--pad) 34px;overflow:hidden}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.ft h4{font:400 13px/1 CP;text-transform:uppercase;letter-spacing:.08em;color:#b9ab99;margin-bottom:14px}
+.ft a{display:block;text-decoration:none;padding:4px 0;color:#e4dccb}
+.ft p{color:#cfc4b4;font-size:16px;max-width:420px;margin-top:10px}
+.giant{font:700 clamp(50px,10.5vw,170px)/.9 Cinzel;margin-top:90px;white-space:nowrap;color:var(--gold);letter-spacing:.02em}
+.fine{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-top:30px;padding-top:20px;border-top:1px solid #c9a24a33;font-size:15px;color:#b9ab99}
+@media(max-width:900px){.ft{grid-template-columns:1fr 1fr}}
+[data-r]{opacity:0}
+@media(prefers-reduced-motion:reduce){[data-r]{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<header id="top">
+  <a class="brand" href="#ring"><img src="src/img/logo.svg" alt=""><b>The Weald & Downs Guild</b></a>
+  <nav><a href="#towers">Find a tower</a><a href="#learn">Learn to ring</a><a href="#peals">Peal board</a><a href="#forum">Belfry chat</a><a href="#events">Events</a></nav>
+  <a class="btn" href="#join">Come and ring</a>
+</header>
+
+<section id="ring" aria-label="Six bells rung by your scrolling">
+  <div class="stage">
+    <canvas id="bells" aria-label="Six church bells swinging full circle in their frame, each one striking in turn as you scroll"></canvas>
+    <canvas id="sheet" aria-label="The method sheet: rows of bell numbers, with the treble's path drawn in red"></canvas>
+    <h1>Scroll to pull the ropes. <span>Six bells will answer.</span></h1>
+    <div class="call" id="call"><small>The conductor</small><span id="callt">Look to! Treble's going… she's gone.</span></div>
+    <div class="cta"><a class="btn" href="#learn">Learn to ring</a><p>1,100 ringers, 212 towers, and a practice night near you every evening of the week.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="story">
+  <div class="story">
+    <div class="ph" data-r><img src="media/flint.jpg" alt="A small flint church with a square tower in a green churchyard" id="storyimg"></div>
+    <div>
+      <div class="kick" data-r><i></i>Since 1878</div>
+      <h2 class="h" data-r>Four hundred years of <span>Sunday mornings.</span></h2>
+      <p class="lede" data-r>English full-circle ringing began in the 1600s, and the Weald still has more rings of bells than almost anywhere. Our guild keeps them ringing: we teach new ringers, look after the bells, and ring for services, weddings and the odd coronation.</p>
+      <p data-r>Nobody plays a tune. Each ringer swings one bell all the way round, mouth up to mouth up, and the band changes the order the bells strike in, row by row, following a pattern called a method. It is part team sport, part maths, and very good for the arms.</p>
+      <div class="facts"><div data-r><b>212</b><span>towers with bells</span></div><div data-r><b>1,100</b><span>members ringing</span></div><div data-r><b>94</b><span>learners this year</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="towers">
+  <div class="kick" data-r><i></i>Find a tower</div>
+  <h2 class="h" data-r>There's a practice <span>every night.</span></h2>
+  <p class="lede" data-r>Pick a night. Every tower below welcomes learners and visitors; just turn up ten minutes early and say hello to the tower captain.</p>
+  <div class="days" id="days"><button class="on" data-d="all">Any night</button><button data-d="Mon">Mon</button><button data-d="Tue">Tue</button><button data-d="Wed">Wed</button><button data-d="Thu">Thu</button><button data-d="Fri">Fri</button></div>
+  <div class="tw" id="tw"></div>
+</section>
+
+<section class="sec" id="learn">
+  <div class="kick" data-r><i></i>Learn to ring</div>
+  <h2 class="h" data-r>From first pull <span>to first quarter.</span></h2>
+  <p class="lede" data-r style="color:#cfc4b4">Most people can ring rounds within a couple of months of weekly practice. Your first ten lessons are one to one, free, with a qualified teacher holding the rope with you.</p>
+  <div class="path">
+    <div data-r><i>1</i><h3>Handling</h3><p>Learn backstroke, then handstroke, then both, with a teacher on the rope.</p><small>weeks 1–6</small></div>
+    <div data-r><i>2</i><h3>Rounds</h3><p>Ring your bell in its place with the band, listening for your strike.</p><small>weeks 6–10</small></div>
+    <div data-r><i>3</i><h3>Call changes</h3><p>The conductor calls two bells to swap. You follow the bell in front.</p><small>months 3–4</small></div>
+    <div data-r><i>4</i><h3>Plain hunt</h3><p>Your bell moves one place each row, out to the back and home again.</p><small>months 4–8</small></div>
+    <div data-r><i>5</i><h3>First quarter peal</h3><p>1,260 changes, about 45 minutes, and your name on the board.</p><small>year one</small></div>
+  </div>
+</section>
+
+<section class="sec" id="anatomy">
+  <div class="kick" data-r><i></i>Know your bell</div>
+  <h2 class="h" data-r>Half a ton, <span>balanced on a stay.</span></h2>
+  <div class="anat">
+    <div class="pic" data-r><img src="media/bellsky.jpg" alt="A bronze church bell hanging against a blue sky"><svg id="anat" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice"></svg></div>
+    <div class="parts" id="parts"></div>
+  </div>
+</section>
+
+<div class="band"><img src="media/spire.jpg" alt="A village of stone houses gathered round a church spire" data-p><p>On a still evening, six bells carry four miles.</p></div>
+
+<section class="sec" id="peals">
+  <div class="kick" data-r><i></i>The peal board</div>
+  <h2 class="h" data-r>Rung this month, <span>written in gold.</span></h2>
+  <div class="boards">
+    <div class="board" data-r><small>Weald & Downs Guild · St Mary, Ashwell Cross</small><h3>1260 Plain Bob Minor</h3><div class="m">Saturday 14 November 2026 · 44 minutes</div><ol><li><span>1 Ruth Hartley</span><span>Treble</span></li><li><span>2 Sam Okoye</span></li><li><span>3 Elsie Doughty</span></li><li><span>4 Tom Pellow</span></li><li><span>5 Margaret Fenn</span></li><li><span>6 David Ashdown (C)</span></li></ol><div class="c">First quarter peal: Sam Okoye, aged 14</div></div>
+    <div class="board" data-r><small>Weald & Downs Guild · St Peter, Fernbridge</small><h3>5040 Grandsire Triples</h3><div class="m">Saturday 7 November 2026 · 2 hours 58 minutes</div><ol><li><span>1 Jo Wakeham</span></li><li><span>2 Peter Lund</span></li><li><span>3 Hannah Gage</span></li><li><span>4 Mike Turvey</span></li><li><span>5 Anne Colbran</span></li><li><span>6 Rob Ewell</span></li><li><span>7 Clare Hollis (C)</span></li><li><span>8 Geoff Lund</span><span>Tenor</span></li></ol><div class="c">Rung for the 150th anniversary of the bells' recasting</div></div>
+    <div class="board" data-r><small>Weald & Downs Guild · All Saints, Haddow</small><h3>1272 Cambridge Surprise Minor</h3><div class="m">Sunday 1 November 2026 · 46 minutes</div><ol><li><span>1 Priya Nair</span></li><li><span>2 Ben Coates</span></li><li><span>3 Lucy Ashdown</span></li><li><span>4 Ken Whitlock</span></li><li><span>5 Ruth Hartley</span></li><li><span>6 David Ashdown (C)</span></li></ol><div class="c">For All Saints' Day. First of Surprise: Priya Nair</div></div>
+  </div>
+</section>
+
+<section class="sec" id="forum">
+  <div class="kick" data-r><i></i>Belfry chat · members' forum</div>
+  <h2 class="h" data-r>Ask the <span>guild.</span></h2>
+  <p class="lede" data-r>Questions about ropes, methods, outings and bells that won't behave. 1,100 ringers, and someone has always rung it before.</p>
+  <div class="forum" id="threads"></div>
+</section>
+
+<section class="sec" id="events">
+  <div class="kick" data-r><i></i>Coming up</div>
+  <h2 class="h" data-r>Outings, striking <span>and mince pies.</span></h2>
+  <div class="evs">
+    <div class="ev" data-r><div class="d">5 Dec<small>Saturday · Ashwell Cross</small></div><h3>Learners' day</h3><p>Six towers, six teachers, and soup at lunchtime. Bring a friend who's curious.</p></div>
+    <div class="ev" data-r><div class="d">12 Dec<small>Saturday · Fernbridge</small></div><h3>Striking competition</h3><p>Eight bands, two judges in the vestry who can't see you, one trophy.</p></div>
+    <div class="ev" data-r><div class="d">24 Dec<small>Thursday · all towers</small></div><h3>Christmas Eve ringing</h3><p>Every tower in the guild rings for midnight services. We need extra hands.</p></div>
+    <div class="ev" data-r><div class="d">1 Jan<small>Friday · Haddow</small></div><h3>Ring in the New Year</h3><p>Half-muffled for the old year, open for the new, then the pub.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="join">
+  <div class="kick" data-r><i></i>Join the guild</div>
+  <h2 class="h" data-r>Come up <span>the tower.</span></h2>
+  <div class="join">
+    <div class="tiers">
+      <div class="tier" data-r><h3>Learner</h3><b>Free</b><p>Your first year, ten one-to-one lessons and a handbook.</p></div>
+      <div class="tier" data-r><h3>Member</h3><b>£12</b><p>A year. Insurance in the tower, the newsletter and a vote at the AGM.</p></div>
+      <div class="tier" data-r><h3>Under 18</h3><b>Free</b><p>Always. With the youth band, an outing every term.</p></div>
+    </div>
+    <form class="j" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you, a tower captain will be in touch'">
+      <label>Your name<input required autocomplete="name"></label>
+      <label>Email<input type="email" required autocomplete="email"></label>
+      <label>Nearest town<input></label>
+      <label>Best evening<select><option>Monday</option><option>Tuesday</option><option selected>Wednesday</option><option>Thursday</option><option>Friday</option></select></label>
+      <button class="btn" type="submit">Book my first lesson</button>
+    </form>
+  </div>
+</section>
+
+<section class="sec" id="faq" style="background:var(--lime2)">
+  <div class="kick" data-r><i></i>Questions</div>
+  <h2 class="h" data-r>Before you <span>climb.</span></h2>
+  <div style="max-width:960px">
+    <details data-r><summary>Do I need to be strong?</summary><p>No. A well-hung bell is balanced, so it's timing, not muscle. Our ringers are 11 to 89 years old.</p></details>
+    <details data-r><summary>Do I need to go to church?</summary><p>No. Many ringers do and many don't. We ring for services, so most practices end with a short ring on Sunday morning, but nobody will ask what you believe.</p></details>
+    <details data-r><summary>Is it loud?</summary><p>Less than you'd think: the bells are a floor above the ringing chamber. In a few towers we hand out ear defenders.</p></details>
+    <details data-r><summary>Is it safe?</summary><p>Yes, with teaching. A bell left up on its stay is heavy, so no one rings unsupervised until their teacher says so, and towers are locked between practices.</p></details>
+    <details data-r><summary>How long until I can ring a quarter peal?</summary><p>Usually about a year of weekly practice. Some do it sooner; nobody is in a hurry.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">
+    <div><span class="sally" style="height:40px"></span><p class="cz" style="font-size:22px;color:var(--gold);margin-top:12px">The Weald & Downs Guild of Church Bell Ringers</p><p>Teaching, ringing and looking after the bells of Sussex and Kent since 1878. A registered charity.</p></div>
+    <div><h4>Ring</h4><a href="#towers">Find a tower</a><a href="#learn">Learn to ring</a><a href="#events">Events</a></div>
+    <div><h4>Guild</h4><a href="#peals">Peal board</a><a href="#forum">Belfry chat</a><a href="#join">Join</a></div>
+    <div><h4>Help</h4><a href="#faq">Questions</a><a href="#join">Tower captains</a><a href="#join">Bell restoration fund</a></div>
+  </div>
+  <div class="giant">Rounds again</div>
+  <div class="fine"><span>The Weald & Downs Guild, The Ringing Room, Ashwell Cross, East Sussex</span><span>Site by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,k)=>a+(b-a)*k;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+try{sessionStorage.setItem('belfry-seen','1')}catch(e){}
+
+/* ---------- the method: rounds, plain hunt, Plain Bob Minor (place notation) ---------- */
+function apply(row,pn){const r=row.slice();if(pn==='x'){for(let i=0;i<6;i+=2)[r[i],r[i+1]]=[r[i+1],r[i]];return r}
+ const keep=pn.split('').map(c=>+c-1);let i=0;while(i<5){if(keep.includes(i)){i++;continue}[r[i],r[i+1]]=[r[i+1],r[i]];i+=2}return r}
+const ROWS=[],CALLS=[];let row=[1,2,3,4,5,6];
+for(let i=0;i<6;i++){ROWS.push(row.slice())}CALLS.push([0,'Look to! Treble\'s going… she\'s gone.']);
+CALLS.push([4,'Go plain hunt!']);for(let i=0;i<12;i++){row=apply(row,i%2?'16':'x');ROWS.push(row.slice())}
+CALLS.push([16,'Go Plain Bob Minor!']);const PB='x16x16x16x16x16x12'.match(/x|\d+/g);for(let l=0;l<2;l++)for(let i=0;i<PB.length;i++){row=apply(row,PB[i]);ROWS.push(row.slice())}
+CALLS.push([ROWS.length-3,'That\'s all… stand next!']);
+for(let i=0;i<4;i++)ROWS.push([1,2,3,4,5,6]);
+const NR=ROWS.length;
+/* strike timing: six blows per row, an open handstroke gap before every handstroke row */
+const S=.27;const rowStart=k=>k*6*S+Math.floor((k+1)/2)*S;const TOTAL=rowStart(NR)+1.2;
+const strikeT=(k,b)=>rowStart(k)+ROWS[k].indexOf(b)*S;
+/* a bell's stroke: leaves the balance, swings through the bottom, strikes as the clapper meets the far lip, reaches the other balance */
+const TS=1.2,FS=.74;
+function bellAngle(b,t){// angle from mouth-down (radians); +/- 175° at balance
+ if(t<strikeT(0,b)-FS*TS)return Math.PI*175/180;// up on the stay at handstroke side
+ let k=0;for(let i=0;i<NR;i++){if(strikeT(i,b)-FS*TS<=t)k=i;else break}
+ const st=strikeT(k,b)-FS*TS,u=clamp((t-st)/TS);const from=k%2===0?1:-1;// handstroke rows swing + to -, backstrokes back
+ // a swinging bell is slow near the balance and fastest at the bottom: theta = A cos(pi u)
+ return from*Math.PI*175/180*Math.cos(Math.PI*u)}
+function lastStrike(b,t){let best=-9,bk=-1;for(let i=0;i<NR;i++){const s=strikeT(i,b);if(s<=t){best=s;bk=i}else break}return[best,bk]}
+
+/* ---------- drawing ---------- */
+const BC=$('#bells'),SC=$('#sheet');
+function fit(cv){const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1),w=Math.round(r.width*d),h=Math.round(r.height*d);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}return[w,h,d,r]}
+const tenorW=[.62,.68,.74,.82,.9,1];// bells get bigger toward the tenor
+function bellPath(c,s){// English bell profile, mouth down, pivot at (0,0)
+ c.beginPath();c.moveTo(-.18*s,.12*s);c.bezierCurveTo(-.2*s,.02*s,.2*s,.02*s,.18*s,.12*s);
+ c.bezierCurveTo(.26*s,.2*s,.24*s,.42*s,.3*s,.6*s);c.bezierCurveTo(.34*s,.7*s,.44*s,.74*s,.46*s,.8*s);
+ c.lineTo(-.46*s,.8*s);c.bezierCurveTo(-.44*s,.74*s,-.34*s,.7*s,-.3*s,.6*s);c.bezierCurveTo(-.24*s,.42*s,-.26*s,.2*s,-.18*s,.12*s);c.closePath()}
+function drawBells(t,f){const[w,h,d,r]=fit(BC);const c=BC.getContext('2d');c.clearRect(0,0,w,h);const mob=r.width<700;
+ const n=6,span=w*(mob?.92:.8),x0=w*(mob?.04:.1),gy=h*(mob?.36:.6),unit=span/n*(mob?1:.92);
+ // oak frame and headstocks
+ c.fillStyle='#2a201a';c.fillRect(x0-unit*.2,gy-unit*.05,span+unit*.4,unit*.1);c.fillRect(x0-unit*.2,gy+unit*1.05,span+unit*.4,unit*.12);
+ for(let i=0;i<=n;i++){c.fillStyle='#3a2c22';c.fillRect(x0+i*unit-unit*.04,gy-unit*.05,unit*.08,unit*1.22)}
+ for(let i=0;i<n;i++){const b=i+1,cx=x0+(i+.5)*unit,s=unit*.95*tenorW[i],th=bellAngle(b,t);
+  // wheel: a spoked rim fixed to the headstock, turning with the bell
+  c.save();c.translate(cx,gy);c.rotate(th);c.strokeStyle='#5a4433';c.lineWidth=unit*.035;c.beginPath();c.arc(0,0,s*.5,0,7);c.stroke();
+  for(let k=0;k<6;k++){c.beginPath();c.moveTo(0,0);const a=k*Math.PI/3;c.lineTo(Math.cos(a)*s*.5,Math.sin(a)*s*.5);c.lineWidth=unit*.014;c.stroke()}
+  // stay (a wooden bar that rests on the slider at the balance)
+  c.fillStyle='#6b5240';c.fillRect(-unit*.015,-s*.55,unit*.03,s*.45);
+  // the bell, bronze, with light from above
+  const g=c.createLinearGradient(-s*.5,0,s*.5,0);g.addColorStop(0,'#5a3f1a');g.addColorStop(.35,'#c9a24a');g.addColorStop(.55,'#e6c77a');g.addColorStop(1,'#6b4a1e');
+  bellPath(c,s);c.fillStyle=g;c.fill();c.strokeStyle='#2a1c0e';c.lineWidth=1.2*d;c.stroke();
+  c.fillStyle='#3a2c22';c.fillRect(-s*.24,-s*.02,s*.48,s*.12);// headstock
+  // clapper: hangs from the crown, lags the bell, then flies to the lip
+  const[ls]=lastStrike(b,t),since=t-ls;const lag=Math.sin(th)*.32*(since<.15?1-since/.15:1);c.save();c.rotate(clamp(-lag,-.35,.35));c.strokeStyle='#2a1c0e';c.lineWidth=unit*.03;c.beginPath();c.moveTo(0,s*.14);c.lineTo(0,s*.68);c.stroke();c.fillStyle='#2a1c0e';c.beginPath();c.arc(0,s*.7,unit*.04,0,7);c.fill();c.restore();
+  c.restore();
+  // rope falls from the wheel to the ringing chamber; the sally rises at handstroke
+  const ropeX=cx+s*.62*Math.sign(Math.sin(th)||1)*.0+s*.62,ropeTop=gy+Math.sin(th)*0;const pull=(Math.cos(th)+1)/2;// 1 at bottom, 0 at balance
+  const sallyY=gy+unit*1.2+unit*(.25+.55*(bellAngle(b,t)>0?1-pull:pull*.4));
+  c.strokeStyle='#d8c9a8';c.lineWidth=unit*.018;c.beginPath();c.moveTo(cx+s*.5,gy);c.lineTo(cx+s*.5,sallyY+unit*.6);c.stroke();
+  const sg=c.createLinearGradient(0,sallyY,0,sallyY+unit*.5);['#b02a37','#efe9dd','#22386e','#efe9dd','#b02a37','#22386e'].forEach((col,k)=>{sg.addColorStop(k/6,col);sg.addColorStop((k+1)/6-.001,col)});
+  c.fillStyle=sg;c.beginPath();c.roundRect(cx+s*.5-unit*.04,sallyY,unit*.08,unit*.5,unit*.04);c.fill();
+  // strike: a ring of sound expands from the lip, and the bell number glows
+  if(since>=0&&since<.9){const k=since/.9;c.strokeStyle=`rgba(232,215,167,${(1-k)*.55})`;c.lineWidth=2*d;c.beginPath();c.arc(cx,gy+s*.6,s*.4+k*unit*.9,0,7);c.stroke()}
+  c.fillStyle=since>=0&&since<.35?'#e8d7a7':'#8f7f6a';c.font=`700 ${unit*.2}px Cinzel`;c.textAlign='center';c.fillText(b===1?'1':b===6?'6':String(b),cx,gy+unit*1.55)}}
+function drawSheet(t){const[w,h,d,r]=fit(SC);const c=SC.getContext('2d');c.clearRect(0,0,w,h);
+ const lh=Math.min(36*d,h/18),cw=Math.min(46*d,w/9),x0=w*.18,cy=h*.56;
+ // current row from ring time
+ let cur=0;for(let k=0;k<NR;k++)if(rowStart(k)<=t)cur=k;const frac=clamp((t-rowStart(cur))/(6*S+(cur%2?S:0)));const yoff=(cur+frac)*lh;
+ c.font=`400 ${lh*.62}px CP`;c.textAlign='center';c.textBaseline='middle';
+ for(let k=Math.max(0,cur-9);k<Math.min(NR,cur+7);k++){const y=cy+k*lh-yoff;const a=k<=cur?1:.28;
+  ROWS[k].forEach((b,p)=>{const x=x0+p*cw;const struck=k<cur||(k===cur&&strikeT(k,b)<=t);c.fillStyle=b===1?`rgba(176,42,55,${a})`:b===2?`rgba(92,122,190,${a})`:`rgba(239,233,221,${struck?a*.92:a*.35})`;
+   if(k===cur&&struck&&t-strikeT(k,b)<.3){c.fillStyle='#e8d7a7'}c.font=`${b<=2?700:400} ${lh*.62}px CP`;c.fillText(String(b),x,y)})}
+ // the blue lines: the path of the treble (red) and the 2 (blue) through the rows
+ [[1,'#b02a37'],[2,'#5c7abe']].forEach(([b,col])=>{c.strokeStyle=col;c.lineWidth=2.2*d;c.lineJoin='round';c.beginPath();let first=true;
+  for(let k=Math.max(0,cur-9);k<=cur;k++){const y=cy+k*lh-yoff,x=x0+ROWS[k].indexOf(b)*cw;if(first){c.moveTo(x,y);first=false}else c.lineTo(x,y)}c.stroke()});
+ // the current row marker
+ c.strokeStyle='#c9a24a88';c.lineWidth=1*d;c.beginPath();c.moveTo(x0-cw*.7,cy+lh*.5);c.lineTo(x0+5.7*cw,cy+lh*.5);c.stroke();
+ 
+ // fade top and bottom
+ c.fillStyle='#1c1511';c.fillRect(0,0,w,h*.17);const g1=c.createLinearGradient(0,h*.17,0,h*.3);g1.addColorStop(0,'#1c1511');g1.addColorStop(1,'#1c151100');c.fillStyle=g1;c.fillRect(0,h*.17,w,h*.13);
+ const g2=c.createLinearGradient(0,h*.78,0,h);g2.addColorStop(0,'#1c151100');g2.addColorStop(1,'#1c1511');c.fillStyle=g2;c.fillRect(0,h*.78,w,h*.22);c.fillStyle='#b9ab99';c.textAlign='left';c.font=`400 ${12*d}px CP`;const mname=cur<6?'ROUNDS':cur<18?'PLAIN HUNT MINOR':cur<NR-4?'PLAIN BOB MINOR':'ROUNDS';c.fillText(mname+'  ·  ROW '+(cur+1),x0-cw*.5,h*.2);}
+
+/* ---------- towers ---------- */
+const TW=[['St Mary, Ashwell Cross','Wed',6,'9–2–14','flint'],['All Saints, Haddow','Mon',6,'11–0–3','yard'],['St Peter, Fernbridge','Thu',8,'17–1–20','daffodils'],['St Nicholas, Pellbury','Tue',5,'7–3–2','cliff'],['St Andrew, Wye Ridge','Fri',8,'14–2–9','spire'],['Holy Trinity, Crowstone','Wed',10,'24–3–11','yard'],['St Michael, Lower Oak','Tue',6,'8–1–17','daffodils'],['St John, Saltmarsh','Mon',6,'10–0–4','cliff'],['St Leonard, Downley','Thu',4,'6–2–0','flint']];
+$('#tw').innerHTML=TW.map(t=>`<div class="tower" data-r data-day="${t[1]}"><img src="media/${t[4]}.jpg" alt="" loading="lazy"><div><h3>${t[0]}</h3><div class="meta">Practice <b>${t[1]} 7.30pm</b><br>${t[2]} bells · tenor ${t[3]} cwt</div><div class="bells">${Array.from({length:t[2]},(_,i)=>`<i style="width:${8+i*1.4}px;height:${10+i*1.8}px"></i>`).join('')}</div></div></div>`).join('');
+$$('#days button').forEach(b=>b.addEventListener('click',()=>{$$('#days button').forEach(x=>x.classList.toggle('on',x===b));$$('.tower').forEach(t=>t.classList.toggle('off',b.dataset.d!=='all'&&t.dataset.day!==b.dataset.d))}));
+
+/* ---------- anatomy hotspots ---------- */
+const PARTS=[[600,140,'Crown','The top of the bell, bolted to the headstock that turns it.'],[520,330,'Shoulder','Where the curve turns. The founder\'s inscription is cast here.'],[470,470,'Waist','The thinnest part of the bell. Its shape sets the tune.'],[430,600,'Sound bow','The thick ring the clapper hits. It is what you hear.'],[600,690,'Clapper','A wrought-iron flight that swings slower than the bell and meets it at the top.']];
+$('#parts').innerHTML=PARTS.map((p,i)=>`<button data-i="${i}" class="${i?'':'on'}"><i>${i+1}</i><div><h3>${p[2]}</h3><p>${p[3]}</p></div></button>`).join('');
+$('#anat').innerHTML=PARTS.map((p,i)=>`<g data-i="${i}" transform="translate(${p[0]} ${p[1]})"><circle r="30" fill="none" stroke="#efe9dd" stroke-width="3" class="halo" opacity="0"/><circle r="19" fill="#1c1511" stroke="#efe9dd" stroke-width="2"/><text y="7" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="20" fill="#efe9dd">${i+1}</text></g>`).join('');
+let part=0,partT=0,partUser=false;$$('#parts button').forEach(b=>b.addEventListener('click',()=>{part=+b.dataset.i;partUser=true;partT=0;$$('#parts button').forEach(x=>x.classList.toggle('on',x===b))}));
+
+/* ---------- forum ---------- */
+const TH=[['RH','#b02a37','Rope keeps catching on the 4 at Ashwell: rope guide or new sally?','Ruth Hartley · Ashwell Cross · 2 hours ago',14,'318'],['SO','#22386e','First quarter peal done! Thank you to everyone who stood behind me','Sam Okoye · Ashwell Cross · yesterday',41,'1.2k'],['PN','#5a4433','Cambridge place bells: how do you learn them? Mine fall apart at the 4ths','Priya Nair · Haddow · 2 days ago',27,'640'],['KW','#6b5240','Outing to the Romney Marsh churches, 23 Jan: who\'s in? Minibus has 14 seats','Ken Whitlock · Lower Oak · 3 days ago',19,'402'],['JW','#b02a37','Handling tip that finally worked for our learner: count "pull, catch, two, three"','Jo Wakeham · Fernbridge · last week',33,'887']];
+$('#threads').innerHTML=TH.map(t=>`<div class="thr" data-r><span class="av" style="background:${t[1]}">${t[0]}</span><div><h3>${t[2]}</h3><p>${t[3]}</p></div><span class="n">${t[4]}<small>replies</small></span><span class="n">${t[5]}<small>views</small></span></div>`).join('');
+
+/* ---------- reveals: things swing into place on a hinge, like a bell settling on its stay ---------- */
+const RS=$$('[data-r]').map(el=>({el,t0:-1}));const PAR=$$('[data-p]');
+
+/* ---------- loop ---------- */
+const ringer={t:0,v:0};let t0=performance.now(),last=t0;
+function frame(ts){const dt=Math.min(.05,Math.max(0,(ts-last)/1000));last=ts;const t=(ts-t0)/1000,vh=innerHeight;
+ const rr=$('#ring').getBoundingClientRect();
+ if(rr.bottom>0&&rr.top<vh){const span=$('#ring').offsetHeight-vh,f=clamp(-rr.top/span);
+  // ring time follows the scroll on a heavy spring: stop scrolling and the band stops, bells up on the stay
+  const tgt=f*TOTAL;if(RM){ringer.t=tgt}else{// the band rings at its own steady pace: scroll ahead and they catch up (up to 1.6x), stop and they stand at the end of the row
+   const want=clamp((tgt-ringer.t)*.9,-6,1.6);ringer.v+=(want-ringer.v)*(1-Math.exp(-dt*3));ringer.t=Math.max(0,ringer.t+ringer.v*dt)}
+  drawBells(ringer.t,f);drawSheet(ringer.t);
+  let k=0;for(let i=0;i<NR;i++)if(rowStart(i)<=ringer.t)k=i;let msg=CALLS[0][1];CALLS.forEach(cl=>{if(k>=cl[0])msg=cl[1]});if(k>=NR-2&&ringer.t>rowStart(NR-1)+1.4)msg='Stand! Thank you, everyone.';const ce=$('#callt');if(ce.textContent!==msg){ce.textContent=msg;ce.parentNode._t=t}
+  const lt=t-(ce.parentNode._t||0);ce.parentNode.style.opacity=clamp(lt*4);ce.parentNode.style.transform=`translateY(${(12*Math.exp(-6*lt)).toFixed(1)}px)`}
+ // anatomy auto-tour
+ const ar=$('#anat').getBoundingClientRect();if(ar.bottom>0&&ar.top<vh){partT+=dt;if(!partUser&&partT>2.3){partT=0;part=(part+1)%PARTS.length;$$('#parts button').forEach(x=>x.classList.toggle('on',+x.dataset.i===part))}
+  $$('#anat g').forEach((g,i)=>{const h=g.querySelector('.halo');if(i===part){const p=(partT%1.4)/1.4;h.setAttribute('r',(20+p*26).toFixed(1));h.setAttribute('opacity',(1-p).toFixed(2));g.children[1].setAttribute('fill','#b02a37')}else{h.setAttribute('opacity',0);g.children[1].setAttribute('fill','#1c1511')}})}
+ PAR.forEach(im=>{const r=im.parentNode.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;const k=(r.top+r.height/2-vh/2)/vh;im.style.transform=`translateY(${(-8-k*8).toFixed(2)}%)`});
+ const si=$('#storyimg'),sr=si.parentNode.getBoundingClientRect();if(sr.bottom>0&&sr.top<vh){const k=(sr.top+sr.height/2-vh/2)/vh;si.style.transform=`translateY(${(-6-k*6).toFixed(2)}%)`}
+ RS.forEach(g=>{if(g.done)return;if(g.t0<0){const r=g.el.getBoundingClientRect();if(r.top<vh*.95&&r.bottom>0)g.t0=t;else return}const lt=t-g.t0;
+  // swing down from a hinge at the top edge: an under-damped pendulum settling at rest
+  const a=-14*Math.exp(-4.5*lt)*Math.cos(7.5*lt);g.el.style.opacity=clamp(lt*3.5).toFixed(3);g.el.style.transformOrigin='50% 0';g.el.style.transform=`perspective(900px) rotateX(${a.toFixed(2)}deg)`;if(lt>1.3){g.el.style.transform='';g.el.style.opacity=1;g.done=true}});
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

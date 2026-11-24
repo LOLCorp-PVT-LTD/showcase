@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-22T10:25:14Z",
+ "updated": "2026-11-24T10:20:24Z",
  "items": [
+  {
+   "slug": "belfry",
+   "title": "The Weald &amp; Downs Guild",
+   "kind": "Bell ringers' guild · Website",
+   "blurb": "A community site for church bell ringers where scrolling pulls the ropes: six bells swing full circle and the method rings out row by row.",
+   "url": "https://showcase.lolcorp.co.uk/belfry/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/belfry.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/belfry.jpg"
+  },
   {
    "slug": "grafter",
    "title": "Grafter",
