@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lockhart & Key · escape rooms in Bristol</title>
+<meta name="description" content="Four hand-built escape rooms under the arches in Bristol. 60 minutes, 2–6 players, one way out. Book online.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Yes;src:url(assets/fonts/yeseva-one-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Mul;src:url(assets/fonts/mulish-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Mul;src:url(assets/fonts/mulish-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:OM;src:url(assets/fonts/overpass-mono-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:OM;src:url(assets/fonts/overpass-mono-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+:root{--ch:#161716;--ch2:#1f2120;--ch3:#2b2e2c;--paper:#ece4d2;--paper2:#e0d6bf;--brass:#b8893b;--brass2:#d9b36a;--verd:#4f8f80;--verd2:#7fb5a6;--ink:#1c1d1b;--mute:#76766c;--pad:clamp(18px,4.5vw,72px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--ch)}
+body{font-family:Mul,system-ui,sans-serif;font-size:19px;line-height:1.6;color:var(--ink);background:var(--paper);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+.yes{font-family:Yes,Georgia,serif;font-weight:400;letter-spacing:.005em}
+.om{font-family:OM,ui-monospace,monospace}
+.h{font:400 clamp(52px,6.6vw,104px)/1.0 Yes;margin-bottom:24px}
+.h span{color:var(--verd)}
+.lede{font-size:clamp(20px,1.6vw,23px);max-width:680px}
+/* buttons: stamped brass tags with a punched hole */
+.btn{display:inline-flex;align-items:center;gap:12px;font:600 14px/1 OM;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:16px 22px 16px 34px;background:var(--brass);color:var(--ch);border:0;cursor:pointer;border-radius:4px 14px 14px 4px;position:relative;box-shadow:inset 0 -3px 0 #8f6a2b}
+.btn::before{content:"";position:absolute;left:12px;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:var(--ch);box-shadow:inset 0 1px 2px #000}
+.btn.ghost{background:var(--paper);box-shadow:inset 0 -3px 0 #c8bc9f}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;height:64px;display:flex;align-items:center;gap:26px;padding:0 var(--pad);background:#161716ee;color:var(--paper);border-bottom:1px solid #b8893b33}
+#top .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+#top .brand img{width:34px;height:34px}
+#top .brand b{font:400 24px/1 Yes}
+#top nav{display:flex;gap:24px;margin-left:auto;font-size:15px}
+#top nav a{text-decoration:none;opacity:.8}
+#top .btn{padding:11px 16px 11px 30px;font-size:12px}
+@media(max-width:900px){#top nav{display:none}#top .btn{margin-left:auto}}
+/* hero: the lock */
+#lock{position:relative;height:600vh;background:var(--ch);color:var(--paper)}
+#lock .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(70% 70% at 62% 50%,#2b2e2c,#161716 70%)}
+#lk{position:absolute;inset:0;width:100%;height:100%}
+#lock .copy{position:absolute;left:var(--pad);top:110px;max-width:470px;z-index:2}
+#lock h1{font:400 clamp(44px,5vw,80px)/1 Yes}
+#lock h1 span{color:var(--brass2)}
+#lock .copy p{margin-top:18px;color:#c9c2b0;font-size:18px}
+.clues{position:absolute;left:var(--pad);bottom:40px;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:640px}
+.clue{border:1px solid #b8893b55;padding:12px 14px;min-height:96px;background:#161716aa}
+.clue small{font:400 11px/1 OM;letter-spacing:.08em;text-transform:uppercase;color:#a99f86}
+.clue p{font-size:14px;line-height:1.35;margin-top:6px;color:#d9d2c0}
+.clue b{float:right;font:400 26px/1 Yes;color:var(--brass2);opacity:0}
+.clue.on{border-color:var(--brass)}
+.clue.on b{opacity:1}
+#lock .in{position:absolute;right:var(--pad);bottom:46px;z-index:2;text-align:right;opacity:0}
+#lock .in b{display:block;font:400 clamp(40px,4.6vw,74px)/1 Yes;color:var(--brass2)}
+#lock .in span{font-size:18px;color:#c9c2b0}
+@media(max-width:900px){#lock .copy{top:84px;right:var(--pad)}#lock h1{font-size:36px}#lock .copy p{display:none}.clues{grid-template-columns:1fr 1fr;right:var(--pad);bottom:18px}.clue{min-height:0}.clue p{display:none}#lock .in{left:var(--pad);bottom:auto;top:200px;text-align:left}}
+/* sections */
+.sec{padding:clamp(90px,10vw,150px) var(--pad);position:relative}
+.kick{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 13px/1 OM;letter-spacing:.1em;text-transform:uppercase;color:var(--verd)}
+.kick::before{content:"";width:22px;height:2px;background:var(--verd)}
+/* rooms: case files */
+.rooms{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:50px}
+.file{background:#f6f0e2;position:relative;padding:0 0 26px;box-shadow:0 2px 0 #c8bc9f,0 30px 50px -30px #1c1d1b66}
+.file::before{content:"";position:absolute;left:28px;top:-22px;width:150px;height:24px;background:#f6f0e2;border-radius:8px 8px 0 0}
+.file .tabl{position:absolute;left:44px;top:-17px;font:600 12px/1 OM;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.file .ph{position:relative;aspect-ratio:16/9;overflow:hidden;margin:0 0 20px}
+.file .ph img{width:100%;height:100%;object-fit:cover;filter:sepia(.25) contrast(1.05)}
+.file .stamp{position:absolute;right:20px;top:20px;border:3px solid #a4372f;color:#a4372f;font:600 14px/1 OM;letter-spacing:.1em;padding:8px 10px;transform:rotate(-8deg);background:#f6f0e2cc;text-transform:uppercase}
+.file h3{font:400 38px/1.05 Yes;padding:0 26px}
+.file p{padding:8px 26px 0;color:#4a4a42;font-size:17px}
+.file .stats{display:grid;grid-template-columns:repeat(4,1fr);margin:18px 26px 0;border-top:1px dashed #1c1d1b44;padding-top:14px}
+.file .stats small{display:block;font:400 11px/1 OM;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.file .stats b{font:400 26px/1.2 Yes}
+.file .keys{display:inline-flex;gap:3px;vertical-align:middle}
+.file .keys i{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.file .keys i.on{background:var(--ink)}
+@media(max-width:900px){.rooms{grid-template-columns:1fr}}
+/* booking */
+#book{background:var(--ch);color:var(--paper)}
+#book .kick{color:var(--verd2)}#book .kick::before{background:var(--verd2)}
+#book .h span{color:var(--brass2)}
+.bk{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;margin-top:40px}
+.bk .panel{background:var(--ch2);border:1px solid #b8893b33;padding:26px}
+.bk h4{font:600 12px/1 OM;letter-spacing:.1em;text-transform:uppercase;color:#a99f86;margin:0 0 12px}
+.roomsel{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.roomsel button,.dates button,.slots button{font:600 14px/1 OM;padding:11px 14px;border:1px solid #ece4d244;background:transparent;color:var(--paper);cursor:pointer}
+.roomsel button.on,.dates button.on,.slots button.on{background:var(--brass);border-color:var(--brass);color:var(--ch)}
+.dates{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:22px}
+.dates button{padding:10px 0;display:flex;flex-direction:column;gap:4px;align-items:center}
+.dates button small{font-size:10px;opacity:.7}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.slots button.full{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+.players{display:flex;align-items:center;gap:16px;margin:8px 0 18px}
+.players button{width:44px;height:44px;border-radius:50%;border:1px solid var(--brass);background:transparent;color:var(--brass2);font:600 22px/1 OM;cursor:pointer}
+.players b{font:400 48px/1 Yes;min-width:40px;text-align:center}
+.sum .row{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid #ece4d21f;font-size:16px}
+.sum .tot{font:400 54px/1 Yes;color:var(--brass2);margin:16px 0 20px}
+@media(max-width:900px){.bk{grid-template-columns:1fr}.slots{grid-template-columns:repeat(2,1fr)}.dates{grid-template-columns:repeat(4,1fr)}}
+/* how it works */
+.how{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:50px;border-top:2px solid var(--ink)}
+.how div{padding:24px 24px 0 0}
+.how b{font:400 64px/1 Yes;color:var(--verd)}
+.how h3{font:700 20px/1.3 Mul;margin:8px 0 6px}
+.how p{font-size:16px;color:#4a4a42}
+@media(max-width:900px){.how{grid-template-columns:1fr 1fr}}
+/* cipher wheel */
+#cipher{background:var(--paper2)}
+.cw{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:30px}
+#wheel{width:100%;max-width:520px;aspect-ratio:1;margin:0 auto;cursor:grab;touch-action:none}
+.msg{font:600 clamp(22px,2.4vw,34px)/1.5 OM;letter-spacing:.12em}.msg .wd{display:inline-block;white-space:nowrap;margin-right:.7em}
+.msg span{display:inline-block;min-width:.8em;text-align:center}
+.msg .plain{color:var(--verd)}
+.hint{font-size:16px;color:var(--mute);margin-top:18px}
+@media(max-width:900px){.cw{grid-template-columns:1fr}}
+/* workshop */
+.shop{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;margin-top:50px}
+.shop figure{position:relative;overflow:hidden;background:#1c1d1b}
+.shop img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;filter:sepia(.2)}
+.shop figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(transparent,#161716e6);color:#d9d2c0;font-size:15px}
+.shop figcaption b{display:block;font:400 26px/1.1 Yes;color:var(--paper)}
+.shop .s1{grid-column:1/span 5}.shop .s2{grid-column:6/span 7;margin-top:70px}.shop .s3{grid-column:2/span 6}.shop .s4{grid-column:8/span 5;margin-top:-60px}
+@media(max-width:900px){.shop figure{grid-column:1/-1!important;margin:0!important}}
+/* leaderboard */
+.lb{margin-top:40px;border-top:2px solid var(--ink)}
+.lr{display:grid;grid-template-columns:60px 1.6fr 1.2fr 1fr 1fr;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #1c1d1b22;font-size:17px}
+.lr b{font:400 30px/1 Yes}
+.lr .t{font:600 24px/1 OM;text-align:right}
+.lr .bar{height:8px;background:#1c1d1b14;position:relative}
+.lr .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--verd);width:0}
+.lr.hd{font:600 12px/1 OM;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+@media(max-width:800px){.lr{grid-template-columns:40px 1.4fr 1fr}.lr>:nth-child(4),.lr>:nth-child(5){display:none}}
+/* band */
+.band{position:relative;height:clamp(300px,42vw,560px);overflow:hidden;background:#000}
+.band video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.band p{position:absolute;left:var(--pad);bottom:34px;font:400 clamp(38px,5vw,80px)/1.02 Yes;color:var(--paper);max-width:860px}
+.band p span{color:var(--brass2)}
+/* teams + vouchers */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.duo article{position:relative;min-height:440px;overflow:hidden;color:var(--paper);display:flex;flex-direction:column;justify-content:flex-end;padding:30px}
+.duo article img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.duo article::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,#161716e6)}
+.duo article *{position:relative;z-index:1}
+.duo h3{font:400 40px/1.05 Yes}
+.duo p{font-size:17px;color:#d9d2c0;margin:8px 0 18px;max-width:440px}
+@media(max-width:900px){.duo{grid-template-columns:1fr}}
+/* reviews: luggage tags */
+.tags{display:flex;gap:26px;margin-top:50px;flex-wrap:wrap;justify-content:center}
+.tag{width:330px;background:#f6f0e2;padding:26px 24px 22px 40px;position:relative;clip-path:polygon(22px 0,100% 0,100% 100%,22px 100%,0 50%);box-shadow:0 20px 40px -24px #0006}
+.tag::before{content:"";position:absolute;left:14px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--brass)}
+.tag p{font-size:18px;line-height:1.45}
+.tag small{display:block;margin-top:12px;font:600 12px/1.4 OM;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.tag .t{font:400 28px/1 Yes;color:var(--verd)}
+details{border-top:1px solid var(--ink)}
+details:last-child{border-bottom:1px solid var(--ink)}
+summary{list-style:none;cursor:pointer;padding:22px 0;font:400 26px/1.2 Yes;display:flex;justify-content:space-between;gap:20px}
+summary::after{content:"+";color:var(--verd);font-family:OM}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:22px;color:#4a4a42;max-width:780px}
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:40px;align-items:start}
+.visit svg{width:100%;height:auto;background:#f6f0e2}
+.visit .row{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-top:1px solid #1c1d1b22}
+.visit .row b{font-weight:700}
+@media(max-width:900px){.visit{grid-template-columns:1fr}}
+footer{background:var(--ch);color:var(--paper);padding:100px var(--pad) 34px;overflow:hidden}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+.ft h4{font:600 12px/1 OM;letter-spacing:.1em;text-transform:uppercase;color:#a99f86;margin-bottom:14px}
+.ft a{display:block;text-decoration:none;padding:4px 0;color:#d9d2c0}
+.giant{font:400 clamp(60px,12.5vw,210px)/.85 Yes;margin-top:90px;white-space:nowrap;color:var(--brass)}
+.giant span{color:var(--verd2)}
+.fine{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-top:30px;padding-top:20px;border-top:1px solid #b8893b33;font-size:15px;color:#a99f86}
+@media(max-width:900px){.ft{grid-template-columns:1fr 1fr}}
+[data-r]{opacity:0}
+@media(prefers-reduced-motion:reduce){[data-r]{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<header id="top">
+  <a class="brand" href="#lock"><img src="src/img/logo.svg" alt=""><b>Lockhart & Key</b></a>
+  <nav><a href="#rooms">The rooms</a><a href="#book">Book</a><a href="#cipher">Puzzle of the week</a><a href="#board">Leaderboard</a><a href="#visit">Find us</a></nav>
+  <a class="btn" href="#book">Book a room</a>
+</header>
+
+<section id="lock" aria-label="A combination padlock you open by scrolling">
+  <div class="stage">
+    <canvas id="lk" aria-label="A brass padlock with four number wheels. Scrolling turns the wheels to 1-8-3-7 and the shackle springs open."></canvas>
+    <div class="copy"><h1>This website is locked. <span>Scroll to crack it.</span></h1><p>Four hand-built escape rooms under the railway arches in Bristol. You have sixty minutes. The clues are below.</p></div>
+    <div class="clues" id="clues">
+      <div class="clue"><small>Wheel 1</small><b>1</b><p>Keepers left on the rock the winter the light failed.</p></div>
+      <div class="clue"><small>Wheel 2</small><b>8</b><p>Brass lamps around the lantern room.</p></div>
+      <div class="clue"><small>Wheel 3</small><b>3</b><p>Rings of the fog bell, every minute.</p></div>
+      <div class="clue"><small>Wheel 4</small><b>7</b><p>Days before the supply boat came.</p></div>
+    </div>
+    <div class="in" id="in"><b>You're in.</b><span>Now find the way out.</span></div>
+  </div>
+</section>
+
+<section class="sec" id="rooms">
+  <span class="kick" data-r>Four rooms</span>
+  <h2 class="h" data-r>Pick your <span>trouble.</span></h2>
+  <p class="lede" data-r>Every room is built by hand in our workshop, from real objects: a 1930s railway carriage, a keeper's logbook, a bank vault door we bought from a closing branch in Clifton.</p>
+  <div class="rooms">
+    <div class="file" data-r><span class="tabl">Case 01</span><div class="ph"><img src="media/lighthouse.jpg" alt="A lighthouse under a stormy night sky" loading="lazy"><span class="stamp">Most booked</span></div><h3>The Keeper's Last Night</h3><p>1837. The light went dark and the keeper vanished. Relight the lamp before the ship hits the rocks.</p><div class="stats"><div><small>Players</small><b>2–6</b></div><div><small>Difficulty</small><span class="keys"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></div><div><small>Escape rate</small><b>41%</b></div><div><small>Record</small><b>38:12</b></div></div></div>
+    <div class="file" data-r><span class="tabl">Case 02</span><div class="ph"><img src="media/carriage.jpg" alt="The inside of an old green railway carriage" loading="lazy"><span class="stamp">New</span></div><h3>The Last Train to Temple Meads</h3><p>A first-class carriage, a missing diamond and a stop in 60 minutes. Someone on board knows.</p><div class="stats"><div><small>Players</small><b>3–6</b></div><div><small>Difficulty</small><span class="keys"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div><div><small>Escape rate</small><b>28%</b></div><div><small>Record</small><b>44:50</b></div></div></div>
+    <div class="file" data-r><span class="tabl">Case 03</span><div class="ph"><img src="media/study.jpg" alt="An old study with a globe, books and candlesticks" loading="lazy"></div><h3>The Cartographer's Study</h3><p>Finish the map she never did. A good first room: generous clues, lots of locks, no jump scares.</p><div class="stats"><div><small>Players</small><b>2–5</b></div><div><small>Difficulty</small><span class="keys"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></div><div><small>Escape rate</small><b>68%</b></div><div><small>Record</small><b>31:07</b></div></div></div>
+    <div class="file" data-r><span class="tabl">Case 04</span><div class="ph"><img src="media/vault.jpg" alt="A heavy round bank vault door standing open" loading="lazy"><span class="stamp">Hardest</span></div><h3>The Vault</h3><p>Six minutes until the time lock seals the door for the weekend. Then another fifty-four to get out.</p><div class="stats"><div><small>Players</small><b>4–6</b></div><div><small>Difficulty</small><span class="keys"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div><div><small>Escape rate</small><b>17%</b></div><div><small>Record</small><b>49:33</b></div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="book">
+  <span class="kick" data-r>Book</span>
+  <h2 class="h" data-r>Choose a room, <span>a night, a team.</span></h2>
+  <div class="bk" data-r>
+    <div class="panel">
+      <h4>Room</h4><div class="roomsel" id="rsel"><button class="on">The Keeper's Last Night</button><button>The Last Train</button><button>Cartographer's Study</button><button>The Vault</button></div>
+      <h4>Date</h4><div class="dates" id="dates"></div>
+      <h4>Time</h4><div class="slots" id="slots"></div>
+    </div>
+    <div class="panel sum">
+      <h4>Players</h4><div class="players"><button id="pm" aria-label="Fewer players">−</button><b id="pn">4</b><button id="pp" aria-label="More players">+</button></div>
+      <div class="row"><span>Per player</span><b id="pper">£24</b></div><div class="row"><span>Game master and hints</span><b>Included</b></div><div class="row"><span>Free cancellation</span><b>Up to 48 hours</b></div>
+      <div class="tot" id="ptot">£96</div>
+      <a class="btn" href="#book">Hold this slot</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <span class="kick" data-r>How it works</span>
+  <h2 class="h" data-r>Sixty minutes, <span>one way out.</span></h2>
+  <div class="how">
+    <div data-r><b>1</b><h3>Arrive 15 minutes early</h3><p>Lockers for coats and phones, a pot of tea, and the briefing from your game master.</p></div>
+    <div data-r><b>2</b><h3>The door closes</h3><p>It isn't really locked: there's a release on the inside and a camera watching for trouble.</p></div>
+    <div data-r><b>3</b><h3>Ask for hints</h3><p>Three free hints, delivered by the lighthouse radio, the train guard or the vault telephone.</p></div>
+    <div data-r><b>4</b><h3>Get out (or don't)</h3><p>Photo at the door either way, and your time on the board if you make it.</p></div>
+  </div>
+</section>
+
+<div class="band"><video id="vC" src="media/candle.mp4" poster="media/candle.jpg" muted playsinline loop preload="auto"></video><p>The lights go down. <span>Your hour starts now.</span></p></div>
+
+<section class="sec" id="cipher">
+  <span class="kick" data-r>Puzzle of the week</span>
+  <h2 class="h" data-r>Turn the wheel. <span>Read the note.</span></h2>
+  <div class="cw">
+    <canvas id="wheel" aria-label="A brass Caesar cipher wheel. Drag the inner ring to change the shift."></canvas>
+    <div>
+      <p class="om" style="font-size:14px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase">Found in the keeper's logbook</p>
+      <div class="msg" id="msg"></div>
+      <p class="hint">Drag the inner ring. The right shift turns the note into English. Crack it and the code wins 10% off a booking this week.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="workshop">
+  <span class="kick" data-r>From the workshop</span>
+  <h2 class="h" data-r>Every lock, <span>made to be opened.</span></h2>
+  <p class="lede" data-r>We spend about four months building each room. Real clocks with gears that turn, maps hand-inked on old paper, a hundred-year-old ship's compass that only points north when you've solved the right puzzle.</p>
+  <div class="shop">
+    <figure data-r class="s1"><img src="media/clock.jpg" alt="An old alarm clock on a wooden table" loading="lazy"><figcaption><b>The stopped clock</b>Wired to a magnet behind the panel. Set it right and a drawer opens.</figcaption></figure>
+    <figure data-r class="s2"><img src="media/compass.jpg" alt="A brass compass and an old key on a map" loading="lazy"><figcaption><b>The keeper's compass</b>A 1912 ship's compass. The needle hides a reed switch.</figcaption></figure>
+    <figure data-r class="s3"><img src="media/books.jpg" alt="Shelves of old leather-bound books" loading="lazy"><figcaption><b>The library wall</b>Four hundred books. Three of them matter.</figcaption></figure>
+    <figure data-r class="s4"><img src="media/maps.jpg" alt="An antique map of the world with a compass" loading="lazy"><figcaption><b>The unfinished map</b>Hand-inked by our designer over six weeks.</figcaption></figure>
+  </div>
+</section>
+
+<section class="sec" id="board">
+  <span class="kick" data-r>Leaderboard · November</span>
+  <h2 class="h" data-r>The fastest <span>ways out.</span></h2>
+  <div class="lb" id="lb"></div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="duo">
+    <article data-r><img src="media/desk.jpg" alt="A detective's desk with a map, magnifying glass and old photographs" loading="lazy"><h3>Team days</h3><p>Split into two teams, race the same room side by side, then lunch in the arches. Up to 24 people.</p><a class="btn" href="#book">Plan a team day</a></article>
+    <article data-r><img src="media/quill.jpg" alt="A quill and an old letter by candlelight" loading="lazy"><h3>Gift a mystery</h3><p>A sealed envelope with a real wax seal and a riddle that reveals the room. From £60.</p><a class="btn ghost" href="#book">Buy a voucher</a></article>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--paper2)">
+  <span class="kick" data-r>From the logbook</span>
+  <h2 class="h" data-r>What the <span>escapees said.</span></h2>
+  <div class="tags">
+    <div class="tag" data-r><span class="t">39:48</span><p>"Best hour of our year. The lighthouse lamp moment got an actual cheer."</p><small>The Nolan family · Keeper's Last Night</small></div>
+    <div class="tag" data-r><span class="t">58:02</span><p>"Two minutes to spare and we only needed one of them. Never shouted so much."</p><small>Team Biscuit · The Vault</small></div>
+    <div class="tag" data-r><span class="t">did not escape</span><p>"Still thinking about the train. We're coming back for it in January."</p><small>Bristol Uni Chess Club · The Last Train</small></div>
+  </div>
+</section>
+
+<section class="sec" id="visit">
+  <span class="kick" data-r>Find us</span>
+  <h2 class="h" data-r>Arch 7, <span>under the railway.</span></h2>
+  <div class="visit">
+    <svg id="map" viewBox="0 0 640 420" data-r></svg>
+    <div>
+      <div class="row" data-r><span>Address</span><b>Arch 7, Cattle Market Road, Bristol</b></div>
+      <div class="row" data-r><span>From Temple Meads</span><b>6 minutes on foot</b></div>
+      <div class="row" data-r><span>Open</span><b>Wed–Sun, 10am–10pm</b></div>
+      <div class="row" data-r><span>Price</span><b>£22–£30 a player</b></div>
+      <div class="row" data-r><span>Accessibility</span><b>Step-free, three rooms</b></div>
+      <div style="margin-top:40px">
+        <details data-r><summary>How old do you have to be?</summary><p>Twelve and over, with an adult for under 16s. The Cartographer's Study works for 10 and up with a grown-up.</p></details>
+        <details data-r><summary>Is it scary?</summary><p>No jump scares in any room. The Keeper's Last Night is dark and stormy; the others are well lit.</p></details>
+        <details data-r><summary>What if we get stuck?</summary><p>Three free hints, and your game master will nudge you if you've been stuck too long. Nobody leaves without seeing the ending.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">
+    <div><b class="yes" style="font-size:34px;color:var(--brass2)">Lockhart & Key</b><p style="color:#c9c2b0;margin-top:10px;max-width:420px;font-size:16px">Escape rooms built by hand in Bristol since 2018. 61,000 people have tried. 38% got out.</p></div>
+    <div><h4>Play</h4><a href="#rooms">The rooms</a><a href="#book">Book</a><a href="#cipher">Puzzle of the week</a></div>
+    <div><h4>More</h4><a href="#book">Team days</a><a href="#book">Gift vouchers</a><a href="#visit">Find us</a></div>
+  </div>
+  <div class="giant">Lockhart <span>&</span> Key</div>
+  <div class="fine"><span>Arch 7, Cattle Market Road, Bristol</span><span>Site by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),lerp=(a,b,k)=>a+(b-a)*k;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,CAP=typeof window.__tick==='function';
+try{sessionStorage.setItem('lockhart-seen','1')}catch(e){}
+let seed=3;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+/* ---------- the padlock ---------- */
+const CODE=[1,8,3,7];
+// wheel angle in digit units; detents pull it onto whole digits, inertia carries it past
+const W=CODE.map((c,i)=>({a:rnd()*10,v:0,tgt:Math.floor(rnd()*10),next:0,set:false}));
+const lock={sh:0,shv:0,drop:0,dv:0,rot:0,rv:0,open:false};
+const cv=$('#lk');
+function rr(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function drawLock(t){const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1),w=Math.round(r.width*d),h=Math.round(r.height*d);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+ const c=cv.getContext('2d');c.clearRect(0,0,w,h);const mob=r.width<700;
+ const S=Math.min(w*(mob?.82:.42),h*.62)/420;const cx=w*(mob?.5:.66),cy=h*(mob?.58:.5)+lock.drop*d;
+ // candle light flickers from the left
+ const fl=.85+.08*Math.sin(t*7.3)+.05*Math.sin(t*13.1+1)+.03*Math.sin(t*23.7);
+ const glow=c.createRadialGradient(w*.25,h*.4,0,w*.25,h*.4,w*.7);glow.addColorStop(0,`rgba(217,179,106,${.10*fl})`);glow.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=glow;c.fillRect(0,0,w,h);
+ c.save();c.translate(cx,cy);c.rotate(lock.rot);c.scale(S,S);
+ // shadow
+ c.fillStyle='rgba(0,0,0,.45)';c.filter='blur(18px)';rr(c,-170,40,340,250,40);c.fill();c.filter='none';
+ // shackle: hardened steel U, rises when the code is right
+ const shy=-lock.sh*70;c.save();c.translate(0,shy);c.lineWidth=46;c.lineCap='butt';
+ const sg=c.createLinearGradient(-130,0,130,0);sg.addColorStop(0,'#5d625f');sg.addColorStop(.3,'#c9cdc9');sg.addColorStop(.5,'#8a908c');sg.addColorStop(.8,'#dfe3df');sg.addColorStop(1,'#5d625f');c.strokeStyle=sg;
+ c.beginPath();c.moveTo(-105,10);c.lineTo(-105,-110);c.arc(0,-110,105,Math.PI,0);c.lineTo(105,lock.sh>0?-10:10);c.stroke();c.restore();
+ // body: cast brass with verdigris creeping round the edges
+ const bg=c.createLinearGradient(-170,0,170,0);bg.addColorStop(0,'#6b4d1f');bg.addColorStop(.18,'#b8893b');bg.addColorStop(.42,'#e2bf78');bg.addColorStop(.6,'#c79a4a');bg.addColorStop(1,'#6b4d1f');
+ rr(c,-170,-20,340,300,44);c.fillStyle=bg;c.fill();
+ c.save();rr(c,-170,-20,340,300,44);c.clip();seed=11;for(let i=0;i<90;i++){const a=rnd()*Math.PI*2,rad=150+rnd()*60;const x=Math.cos(a)*rad*1.1,y=130+Math.sin(a)*rad*.95;c.fillStyle=`rgba(79,143,128,${.12+rnd()*.25})`;c.beginPath();c.arc(x,y,8+rnd()*26,0,7);c.fill()}
+ const sh=c.createLinearGradient(0,-20,0,280);sh.addColorStop(0,'rgba(255,240,200,.25)');sh.addColorStop(.15,'rgba(255,240,200,0)');sh.addColorStop(1,'rgba(0,0,0,.35)');c.fillStyle=sh;c.fillRect(-170,-20,340,300);c.restore();
+ c.strokeStyle='rgba(40,25,5,.6)';c.lineWidth=3;rr(c,-170,-20,340,300,44);c.stroke();
+ // maker's mark
+ c.fillStyle='rgba(60,38,10,.65)';c.font='400 22px Yes';c.textAlign='center';c.fillText('LOCKHART & KEY',0,30);c.font='600 13px OM';c.fillText('BRISTOL · No. 1837',0,52);
+ // four number wheels in a recessed window
+ c.fillStyle='#1b130a';rr(c,-140,80,280,130,14);c.fill();
+ for(let i=0;i<4;i++){const x=-105+i*70,wh=W[i];c.save();rr(c,x-28,88,56,114,8);c.clip();
+  const wg=c.createLinearGradient(0,88,0,202);wg.addColorStop(0,'#2a2418');wg.addColorStop(.5,'#cfc6b0');wg.addColorStop(1,'#2a2418');c.fillStyle=wg;c.fillRect(x-28,88,56,114);
+  // digits on a cylinder: y = R sin, foreshortened by cos, darker as they turn away
+  for(let k=0;k<10;k++){let da=k-wh.a;da=((da+5)%10+10)%10-5;const ang=da*Math.PI/5;if(Math.cos(ang)<=0)continue;const y=145+Math.sin(ang)*52;c.save();c.translate(x,y);c.scale(1,Math.cos(ang));c.fillStyle=`rgba(20,14,6,${.25+.75*Math.cos(ang)})`;c.font='400 46px Yes';c.textBaseline='middle';c.fillText(String(k),0,2);c.restore()}
+  // ridges on the wheel edge
+  c.strokeStyle='rgba(0,0,0,.25)';c.lineWidth=1.5;for(let k=0;k<20;k++){const ang=((k/2-wh.a)%10)*Math.PI/5;if(Math.cos(ang)<=0)continue;const y=145+Math.sin(ang)*52;c.beginPath();c.moveTo(x-28,y);c.lineTo(x-22,y);c.moveTo(x+22,y);c.lineTo(x+28,y);c.stroke()}
+  c.restore();if(wh.set){c.strokeStyle='#7fb5a6';c.lineWidth=3;rr(c,x-28,88,56,114,8);c.stroke()}}
+ // reading line
+ c.strokeStyle='rgba(217,179,106,.6)';c.lineWidth=2;c.beginPath();c.moveTo(-146,145);c.lineTo(-136,145);c.moveTo(136,145);c.lineTo(146,145);c.stroke();
+ // keyhole
+ c.fillStyle='#1b130a';c.beginPath();c.arc(0,238,14,0,7);c.fill();c.beginPath();c.moveTo(-7,244);c.lineTo(7,244);c.lineTo(10,268);c.lineTo(-10,268);c.fill();
+ c.restore()}
+function stepLock(t,dt,f){
+ const phase=clamp((f-.12)/.62);// wheels lock in one by one across the middle of the scroll
+ W.forEach((wh,i)=>{const lockAt=i/4+.12;const shouldSet=phase>lockAt;wh.set=shouldSet&&Math.abs(((wh.a-CODE[i])%10+15)%10-5)<.12;
+  if(shouldSet){wh.tgt=CODE[i]}else if(t>wh.next){wh.next=t+.7+rnd()*1.1;wh.tgt=Math.floor(rnd()*10)}// before then, someone fiddles with the wheels
+  let delta=((wh.tgt-wh.a)%10+15)%10-5;// shortest way round
+  const drive=shouldSet?18:9,detent=-6*Math.sin(2*Math.PI*wh.a)/(2*Math.PI)*10;
+  wh.v+=(drive*delta+detent-2*.5*Math.sqrt(drive)*wh.v)*dt;wh.a=(wh.a+wh.v*dt+10)%10});
+ const allSet=W.every(w=>w.set)&&f>.76;
+ // the shackle springs up past its stop and settles; the lock then drops away under gravity
+ const sht=allSet?1:0;const K=120,C=2*.35*Math.sqrt(K);lock.shv+=(K*(sht-lock.sh)-C*lock.shv)*dt;lock.sh+=lock.shv*dt;
+ if(f>.86){lock.dv+=2200*dt;lock.drop+=lock.dv*dt;lock.rv+=.9*dt;lock.rot+=lock.rv*dt}else{lock.dv=0;lock.drop=lerp(lock.drop,0,1-Math.exp(-dt*8));lock.rv=0;lock.rot=lerp(lock.rot,0,1-Math.exp(-dt*8))}
+ $$('.clue').forEach((el,i)=>el.classList.toggle('on',W[i].set));const ie=$('#in');const k=clamp((f-.84)/.06);ie.style.opacity=k;ie.style.transform=`translateY(${((1-k)*20).toFixed(1)}px)`}
+
+/* ---------- booking ---------- */
+const DAYS=['Wed','Thu','Fri','Sat','Sun','Wed','Thu'],DN=[25,26,27,28,29,2,3];
+$('#dates').innerHTML=DAYS.map((d,i)=>`<button class="${i===3?'on':''}"><small>${d}</small>${DN[i]}</button>`).join('');
+const TIMES=['10:00','11:30','13:00','14:30','16:00','17:30','19:00','20:30'],FULL=[1,3,6];
+$('#slots').innerHTML=TIMES.map((x,i)=>`<button class="${FULL.includes(i)?'full':i===4?'on':''}">${x}</button>`).join('');
+$$('.roomsel button,.dates button,.slots button').forEach(b=>b.addEventListener('click',()=>{if(b.classList.contains('full'))return;[...b.parentNode.children].forEach(x=>x.classList.toggle('on',x===b))}));
+let np=4;const price=n=>n<=2?30:n<=3?27:n<=4?24:22;
+function upd(){$('#pn').textContent=np;$('#pper').textContent='£'+price(np);$('#ptot').textContent='£'+price(np)*np}
+$('#pm').onclick=()=>{np=Math.max(2,np-1);upd()};$('#pp').onclick=()=>{np=Math.min(6,np+1);upd()};upd();
+
+/* ---------- cipher wheel: drag the inner ring; it coasts and clicks into letters ---------- */
+const PLAIN='THE KEY IS UNDER THE LAMP',SHIFT=7;const AL='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const enc=PLAIN.split('').map(ch=>AL.includes(ch)?AL[(AL.indexOf(ch)+SHIFT)%26]:ch).join('');
+const msgEl=$('#msg');let ci=0;msgEl.innerHTML=enc.split(' ').map(wd=>'<span class="wd">'+wd.split('').map(ch=>`<span data-i="${(ci++)}">${ch}</span>`).join('')+'</span>').join('');const encL=enc.replace(/ /g,'');const msgSp=[...msgEl.querySelectorAll('[data-i]')];
+const wheel={a:0,v:0,drag:false,last:0,user:false};const wc=$('#wheel');
+wc.addEventListener('pointerdown',e=>{wheel.drag=true;wheel.user=true;wc.setPointerCapture(e.pointerId);const r=wc.getBoundingClientRect();wheel.last=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)});
+wc.addEventListener('pointermove',e=>{if(!wheel.drag)return;const r=wc.getBoundingClientRect();const an=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);let da=an-wheel.last;if(da>Math.PI)da-=2*Math.PI;if(da<-Math.PI)da+=2*Math.PI;wheel.a+=da*26/(2*Math.PI);wheel.v=da*26/(2*Math.PI)*60;wheel.last=an});
+wc.addEventListener('pointerup',()=>{wheel.drag=false});
+function drawWheel(t,dt){const r=wc.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const d=Math.min(2,devicePixelRatio||1),w=Math.round(r.width*d);if(wc.width!==w){wc.width=w;wc.height=w}
+ if(!wheel.drag){if(!wheel.user){const tg=Math.min(SHIFT,(t%14)*1.1);wheel.v+=(30*(tg-wheel.a)-2*.6*Math.sqrt(30)*wheel.v)*dt}else{wheel.v*=Math.exp(-2.5*dt);wheel.v+=(-8*Math.sin(2*Math.PI*wheel.a)/(2*Math.PI))*dt*10}wheel.a+=wheel.v*dt}
+ const c=wc.getContext('2d');c.clearRect(0,0,w,w);const R=w/2;c.save();c.translate(R,R);
+ const og=c.createRadialGradient(0,0,R*.2,0,0,R);og.addColorStop(0,'#e2bf78');og.addColorStop(.85,'#b8893b');og.addColorStop(1,'#6b4d1f');c.fillStyle=og;c.beginPath();c.arc(0,0,R*.98,0,7);c.fill();
+ c.fillStyle='#1c1d1b';c.font=`400 ${R*.11}px Yes`;c.textAlign='center';c.textBaseline='middle';
+ for(let i=0;i<26;i++){const a=i/26*Math.PI*2-Math.PI/2;c.save();c.rotate(a+Math.PI/2);c.fillText(AL[i],0,-R*.84);c.restore()}
+ const ig=c.createRadialGradient(0,0,0,0,0,R*.7);ig.addColorStop(0,'#7fb5a6');ig.addColorStop(1,'#4f8f80');c.fillStyle=ig;c.beginPath();c.arc(0,0,R*.7,0,7);c.fill();c.strokeStyle='#2c4f46';c.lineWidth=2*d;c.stroke();
+ c.rotate(-wheel.a/26*Math.PI*2);c.fillStyle='#ece4d2';c.font=`600 ${R*.09}px OM`;
+ for(let i=0;i<26;i++){const a=i/26*Math.PI*2-Math.PI/2;c.save();c.rotate(a+Math.PI/2);c.fillText(AL[i],0,-R*.6);c.restore()}
+ c.restore();c.fillStyle='#161716';c.beginPath();c.arc(R,R,R*.12,0,7);c.fill();
+ // decode with the wheel's current shift
+ const s=((Math.round(wheel.a)%26)+26)%26;msgSp.forEach((sp,i)=>{const ch=encL[i];if(!AL.includes(ch))return;const p=AL[(AL.indexOf(ch)-s+26)%26];sp.textContent=p;sp.classList.toggle('plain',s===SHIFT)})}
+
+/* ---------- leaderboard ---------- */
+const LB=[['Team Biscuit','The Vault','49:33'],['The Nolans','Keeper\'s Last Night','38:12'],['Lantern Men','Cartographer\'s Study','31:07'],['Platform 4','The Last Train','44:50'],['Escape Goats','Keeper\'s Last Night','39:48'],['Bristol Uni Chess','Cartographer\'s Study','36:20']];
+$('#lb').innerHTML='<div class="lr hd"><span>#</span><span>Team</span><span>Room</span><span>Time left</span><span style="text-align:right">Time</span></div>'+LB.map((x,i)=>{const m=x[2].split(':'),s=(+m[0])*60+(+m[1]);return`<div class="lr" data-r><b>${i+1}</b><span>${x[0]}</span><span>${x[1]}</span><div class="bar"><i data-w="${(3600-s)/1800}"></i></div><span class="t">${x[2]}</span></div>`}).join('');
+const lbars=$$('#lb .bar i').map(el=>({el,w:+el.dataset.w,x:0,v:0,on:false}));
+
+/* ---------- map ---------- */
+(()=>{let s='<rect width="640" height="420" fill="#f6f0e2"/>';s+='<path d="M0 290Q160 250 320 300T640 270" fill="none" stroke="#9fc0c6" stroke-width="40"/><text x="40" y="330" font-family="OM" font-size="12" fill="#4f8f80" letter-spacing="3">FLOATING HARBOUR</text>';
+ for(let i=0;i<12;i++)s+=`<rect x="${120+i*36}" y="150" width="30" height="40" rx="15" fill="none" stroke="#1c1d1b" stroke-width="2"/>`;s+='<path d="M100 150H560" stroke="#1c1d1b" stroke-width="6"/><text x="110" y="135" font-family="OM" font-size="12" fill="#1c1d1b">RAILWAY ARCHES</text>';
+ s+='<g transform="translate(351 170)"><circle r="16" fill="#b8893b"/><circle r="26" fill="none" stroke="#b8893b" stroke-width="2" id="pulse"/><text x="24" y="-18" font-family="Yes" font-size="22" fill="#1c1d1b">Arch 7</text></g>';
+ s+='<rect x="470" y="40" width="140" height="56" fill="#1c1d1b"/><text x="540" y="74" text-anchor="middle" font-family="OM" font-size="13" fill="#ece4d2">TEMPLE MEADS</text><path d="M540 96Q520 130 380 165" fill="none" stroke="#4f8f80" stroke-width="3" stroke-dasharray="6 6"/><text x="440" y="120" font-family="OM" font-size="12" fill="#4f8f80">6 min walk</text>';
+ $('#map').innerHTML=s})();
+
+/* ---------- reveals: things drop into place like tumblers, with a small click ---------- */
+const RS=$$('[data-r]').map(el=>({el,t0:-1}));const vC=$('#vC');
+
+let t0=performance.now(),last=t0;
+function frame(ts){const dt=Math.min(.05,Math.max(0,(ts-last)/1000));last=ts;const t=(ts-t0)/1000,vh=innerHeight;
+ const lr=$('#lock').getBoundingClientRect();if(lr.bottom>0&&lr.top<vh){const span=$('#lock').offsetHeight-vh,f=clamp(-lr.top/span);stepLock(t,dt,RM?1:f);drawLock(t)}
+ drawWheel(t,dt);
+ lbars.forEach((b,i)=>{if(!b.on){const r=b.el.getBoundingClientRect();if(r.top<vh*.9){b.on=true;b.d=t+i*.08}else return}if(t<b.d)return;const K=50,C=2*.6*Math.sqrt(K);b.v+=(K*(b.w-b.x)-C*b.v)*dt;b.x+=b.v*dt;b.el.style.width=(Math.max(0,b.x)*100).toFixed(1)+'%'});
+ const pu=document.getElementById('pulse');if(pu){const p=(t%1.8)/1.8;pu.setAttribute('r',(16+p*26).toFixed(1));pu.setAttribute('opacity',(1-p).toFixed(2))}
+ if(vC.duration){const r=vC.getBoundingClientRect();if(r.bottom>0&&r.top<vh){if(CAP||RM){if(!vC.paused)vC.pause();const tt=(t*.9)%(vC.duration-.1);if(Math.abs(vC.currentTime-tt)>.04)vC.currentTime=tt}else if(vC.paused)vC.play().catch(()=>{})}}
+ RS.forEach(g=>{if(g.done)return;if(g.t0<0){const r=g.el.getBoundingClientRect();if(r.top<vh*.95&&r.bottom>0)g.t0=t;else return}const lt=t-g.t0;
+  // a tumbler drops: falls 28px, lands with a small rebound
+  const fall=lt<.22?-(1-Math.pow(lt/.22,2))*28:-Math.abs(Math.sin((lt-.22)*16))*Math.exp(-(lt-.22)*10)*6;g.el.style.opacity=clamp(lt*5).toFixed(3);g.el.style.transform=`translateY(${fall.toFixed(1)}px)`;if(lt>1){g.el.style.transform='';g.el.style.opacity=1;g.done=true}});
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+</script>
+</body></html>
