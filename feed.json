@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-25T10:18:49Z",
+ "updated": "2026-11-26T10:24:16Z",
  "items": [
+  {
+   "slug": "tripwire",
+   "title": "Tripwire",
+   "kind": "Fraud detection · Web app",
+   "blurb": "A fraud-detection web app whose homepage is a live payment network: scroll and a mule ring pulls together, flags red and freezes before the money leaves.",
+   "url": "https://showcase.lolcorp.co.uk/tripwire/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/tripwire.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/tripwire.jpg"
+  },
   {
    "slug": "lockhart",
    "title": "Lockhart &amp; Key",

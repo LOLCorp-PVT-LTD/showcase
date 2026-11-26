@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tripwire · mule-ring detection for UK credit unions and building societies</title>
+<meta name="description" content="Tripwire watches the payment network of your credit union or building society, spots mule rings as they form and freezes them before the money leaves.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Mic;src:url(assets/fonts/michroma-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Urb;src:url(assets/fonts/urbanist-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Urb;src:url(assets/fonts/urbanist-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Urb;src:url(assets/fonts/urbanist-latin-800-normal.woff2) format('woff2');font-weight:800;font-display:swap}
+@font-face{font-family:Az;src:url(assets/fonts/azeret-mono-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Az;src:url(assets/fonts/azeret-mono-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+:root{--bg:#0b1a1e;--bg2:#10252b;--bg3:#173238;--line:#6ef2a51f;--g:#6ef2a5;--g2:#3fbf7d;--co:#ff6b5b;--ice:#bfe6ff;--paper:#f2f4f1;--paper2:#e4e9e4;--ink:#0b1a1e;--mute:#7d9597;--pad:clamp(16px,4.5vw,72px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg)}
+body{font-family:Urb,system-ui,sans-serif;font-size:19px;line-height:1.6;color:var(--paper);background:var(--bg);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+.az{font-family:Az,ui-monospace,monospace}
+.h{font:400 clamp(36px,5.4vw,82px)/1.08 Mic,sans-serif;letter-spacing:-.02em;margin-bottom:28px}
+.h em{font-style:normal;color:var(--g)}
+.paper .h em{color:#0f8a57}
+.kick{display:inline-flex;align-items:center;gap:10px;font:500 13px/1 Az;letter-spacing:.14em;text-transform:uppercase;color:var(--g);margin-bottom:26px}
+.kick::before{content:"";width:34px;height:2px;background:currentColor}
+.paper .kick{color:#0f8a57}
+.lede{font-size:clamp(20px,1.65vw,24px);max-width:720px;color:#c9d6d4}
+.paper .lede{color:#33494c}
+.sec{padding:clamp(100px,13vw,190px) var(--pad);position:relative}
+.paper{background:var(--paper);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:12px;font:500 14px/1 Az;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:17px 24px;background:var(--g);color:var(--bg);border:0;border-radius:3px;cursor:pointer;position:relative}
+.btn::after{content:"";width:18px;height:2px;background:currentColor;transition:width .3s}
+.btn:hover::after{width:30px}
+.btn.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+/* reveal: a tripwire line sweeps across and leaves the element behind it */
+[data-r]{clip-path:inset(0 100% 0 0)}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;height:64px;display:flex;align-items:center;gap:28px;padding:0 var(--pad);background:#0b1a1ee6;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#top .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+#top .brand img{width:32px;height:32px}
+#top .brand b{font:400 19px/1 Mic;letter-spacing:.02em}
+#top nav{display:flex;gap:26px;margin-left:auto;font-size:15px;font-weight:600}
+#top nav a{text-decoration:none;opacity:.75}
+#top nav a:hover{opacity:1}
+#top .btn{padding:12px 16px;font-size:12px}
+@media(max-width:900px){#top nav{display:none}#top .btn{margin-left:auto}}
+
+/* HERO: the live network */
+#net{height:650vh;position:relative}
+#net .stage{position:sticky;top:0;height:100vh;overflow:hidden}
+.win{position:absolute;inset:80px 20px 20px 20px;border-radius:16px;background:var(--bg);border:1px solid #6ef2a52b;overflow:hidden;box-shadow:0 40px 80px #0006}
+.win .bar{position:absolute;left:0;right:0;top:0;height:46px;display:flex;align-items:center;gap:6px;padding:0 16px 0 72px;border-bottom:1px solid var(--line);font:500 12px/1 Az;letter-spacing:.06em;z-index:3;background:#0b1a1ecc}
+.win .bar span{padding:8px 12px;border-radius:4px;color:var(--mute)}
+.win .bar span.on{color:var(--paper);background:var(--bg3)}
+.win .bar span i{font-style:normal;color:var(--co);margin-left:6px}
+.win .bar .live{margin-left:auto;display:flex;align-items:center;gap:9px;color:var(--mute)}
+.win .bar .live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px #6ef2a522;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.rail{position:absolute;left:0;top:0;bottom:0;width:56px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:12px;z-index:4;background:var(--bg)}
+.rail img{width:30px;height:30px;margin-bottom:10px}
+.rail svg{width:22px;height:22px;stroke:var(--mute);fill:none;stroke-width:1.7}
+.rail svg.on{stroke:var(--g)}
+#graph{position:absolute;left:56px;top:46px;right:0;bottom:0;width:calc(100% - 56px);height:calc(100% - 46px);cursor:grab}
+#graph:active{cursor:grabbing}
+.hcopy{position:absolute;left:96px;bottom:44px;z-index:3;pointer-events:none;max-width:min(880px,70%)}
+.hcopy::before{content:"";position:absolute;inset:-120px -160px -60px -100px;background:radial-gradient(closest-side,#0b1a1ef2,#0b1a1e00);z-index:-1}
+.hcopy h1{font:400 clamp(34px,5.2vw,74px)/1.06 Mic;letter-spacing:-.025em}
+.hcopy h1 em{font-style:normal;color:var(--g)}
+.hcopy p{margin-top:22px;font-size:20px;color:#b9cbc8;max-width:520px}
+.chap{position:absolute;left:96px;top:74px;z-index:3;width:330px;font:400 13px/1.5 Az;color:var(--mute);pointer-events:none}
+.chap li{list-style:none;display:grid;grid-template-columns:28px 1fr;padding:10px 0;border-top:1px solid var(--line);transition:color .4s}
+.chap li b{font-weight:500}
+.chap li.on{color:var(--paper)}
+.chap li.on b{color:var(--g)}
+.chap li.on.red b{color:var(--co)}
+.chap li.on.ice b{color:var(--ice)}
+.alert{position:absolute;right:28px;top:74px;z-index:3;width:330px;background:#1a1416f2;border:1px solid #ff6b5b66;border-radius:10px;padding:18px 18px 16px;transform:translateX(380px)}
+.alert.show{transform:none}
+.alert small{display:flex;justify-content:space-between;font:500 11px/1 Az;letter-spacing:.12em;color:var(--co);margin-bottom:12px}
+.alert h3{font:800 22px/1.2 Urb;margin-bottom:6px}
+.alert p{font-size:15px;line-height:1.45;color:#d3c3c1;margin-bottom:14px}
+.alert .acts{display:flex;gap:8px}
+.alert .acts span{flex:1;text-align:center;font:500 11px/1 Az;letter-spacing:.06em;padding:11px 6px;border-radius:3px;box-shadow:inset 0 0 0 1px #ffffff33;color:#d3c3c1;transition:all .3s}
+.alert .acts span.fz{background:var(--co);color:#1a1416;box-shadow:none}
+.alert.frozen{border-color:#bfe6ff88;background:#101e26f2}
+.alert.frozen small{color:var(--ice)}
+.alert.frozen .acts span.fz{background:var(--ice);transform:scale(.96)}
+@media(max-width:900px){
+ .win{inset:70px 8px 8px 8px}.rail{display:none}#graph{left:0;width:100%}.win .bar{padding-left:12px}.win .bar span:nth-child(n+3){display:none}
+ .hcopy{left:18px;right:18px;bottom:150px;max-width:none}.hcopy p{font-size:16px}
+ .chap{left:16px;right:16px;width:auto;top:auto;bottom:14px}.chap li{display:none}.chap li.on{display:grid}
+ .alert{right:10px;left:10px;width:auto;top:56px;transform:translateY(-140%)}
+}
+
+/* QUEUE: the app */
+.app{margin-top:60px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 1px 0 #0001,0 30px 70px #0b1a1e22;border:1px solid #0b1a1e14;min-height:640px}
+.q{border-right:1px solid #0b1a1e14;background:#f8faf8}
+.q header{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid #0b1a1e14;font:500 12px/1 Az;letter-spacing:.1em;color:#5c7072}
+.q header b{color:var(--ink)}
+.row{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 22px;border-bottom:1px solid #0b1a1e0d;cursor:pointer;transition:background .2s;opacity:0}
+.row:hover{background:#eef3ef}
+.row.sel{background:#e3f6ea;box-shadow:inset 3px 0 0 #0f8a57}
+.sc{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:500 15px/1 Az;background:conic-gradient(var(--c) calc(var(--v)*1%),#0b1a1e12 0);position:relative}
+.sc::before{content:"";position:absolute;inset:5px;border-radius:50%;background:#f8faf8}
+.sc i{position:relative;font-style:normal}
+.row b{display:block;font-weight:800;font-size:17px;line-height:1.25}
+.row small{font:400 12px/1.4 Az;color:#5c7072}
+.row .amt{font:500 15px/1 Az;text-align:right}
+.case{padding:30px 34px;display:flex;flex-direction:column;gap:22px}
+.case .top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.case h3{font:800 30px/1.15 Urb}
+.case .tag{font:500 11px/1 Az;letter-spacing:.1em;padding:8px 10px;border-radius:3px;background:#ffe5e1;color:#b8342a;white-space:nowrap}
+.case .why{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.case .why div{background:#f2f6f3;border-radius:8px;padding:14px}
+.case .why small{display:block;font:400 11px/1.3 Az;color:#5c7072;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.case .why b{font:800 22px/1.1 Urb}
+.tl{list-style:none;border-left:2px solid #0b1a1e1a;margin-left:6px}
+.tl li{position:relative;padding:0 0 16px 22px;font-size:16px;line-height:1.45}
+.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 2px #0f8a57}
+.tl li.r::before{box-shadow:inset 0 0 0 2px #e0483a;background:#ffe5e1}
+.tl li time{display:block;font:400 12px/1.4 Az;color:#5c7072}
+.case .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.case .acts .btn{padding:14px 18px;font-size:12px}
+.case .acts .btn.ghost{color:var(--ink)}
+@media(max-width:900px){.app{grid-template-columns:minmax(0,1fr)}.q{border-right:0}.case{padding:22px}.case .why{grid-template-columns:minmax(0,1fr)}}
+
+/* SIGNALS */
+#signals .strip{height:340px;margin:0 calc(var(--pad)*-1) 90px;background:url(media/fibre.jpg) center/cover;position:relative}
+#signals .strip::after{content:"";position:absolute;inset:0;background:linear-gradient(var(--bg),#0b1a1e66 40%,var(--bg))}
+.sg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);margin-top:70px;border:1px solid var(--line)}
+.sg article{background:var(--bg);padding:34px 30px 38px;min-height:340px;transition:background .3s}
+.sg article:hover{background:var(--bg2)}
+.sg svg{width:100%;height:110px;margin-bottom:26px;overflow:visible}
+.sg h3{font:800 25px/1.2 Urb;margin-bottom:10px}
+.sg p{font-size:17px;color:#a9bebb}
+.sg .n{font:500 12px/1 Az;color:var(--g);letter-spacing:.12em;margin-bottom:16px;display:block}
+.sg svg .ln{stroke:var(--g);stroke-width:2;fill:none}
+.sg svg .fd{fill:var(--g)}
+.sg svg .co{stroke:var(--co);fill:none;stroke-width:2}
+.sg svg .cof{fill:var(--co)}
+.sg svg .dim{stroke:#6ef2a544;fill:none;stroke-width:1.5}
+.pulse{animation:pulse 2.4s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.dash{stroke-dasharray:6 8;animation:dash 1.6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-28}}
+.bob{animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@media(max-width:900px){.sg{grid-template-columns:minmax(0,1fr)}#signals .strip{height:200px}}
+
+/* RING EXPLAINER (scroll-scrubbed) */
+#anatomy{height:300vh;padding:0}
+#anatomy .pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px var(--pad) 40px;overflow:hidden}
+#anatomy .h{max-width:1000px}
+#anat{width:100%;height:auto;max-height:46vh;margin-top:20px}
+#anat text{font-family:Az;font-size:13px;fill:#33494c}
+#anat .lb{font-family:Urb;font-weight:800;font-size:17px;fill:var(--ink)}
+.anote{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:24px}
+.anote div{font-size:16px;color:#33494c;border-top:2px solid #0b1a1e22;padding-top:12px;transition:border-color .4s,color .4s}
+.anote div.on{border-color:#0f8a57;color:var(--ink)}
+.anote div.on.red{border-color:#e0483a}
+.anote b{display:block;font:500 12px/1.3 Az;letter-spacing:.1em;margin-bottom:6px}
+@media(max-width:900px){.anote{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.anote div{font-size:14px}}
+
+/* HOW */
+.steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;margin-top:110px}
+.steps .wire{position:absolute;left:0;right:0;top:22px;height:2px;background:#6ef2a522}
+.steps .wire i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--g)}
+.steps article{position:relative;padding-top:74px}
+.steps article::before{content:"";position:absolute;left:0;top:10px;width:26px;height:26px;border-radius:50%;background:var(--bg);box-shadow:inset 0 0 0 2px #6ef2a555}
+.steps article.lit::before{box-shadow:inset 0 0 0 2px var(--g),0 0 0 8px #6ef2a522;background:var(--g2)}
+.steps .wk{font:500 12px/1 Az;color:var(--g);letter-spacing:.12em;display:block;margin-bottom:14px}
+.steps h3{font:800 27px/1.2 Urb;margin-bottom:12px}
+.steps p{font-size:17px;color:#a9bebb}
+.howimg{margin-top:120px;height:520px;background:url(media/interchange.jpg) center 60%/cover;border-radius:6px;position:relative;overflow:hidden}
+.howimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0b1a1ef0,#0b1a1e33 60%)}
+.howimg blockquote{position:absolute;left:clamp(20px,5vw,70px);top:50%;transform:translateY(-50%);z-index:1;font:400 clamp(24px,2.6vw,38px)/1.35 Urb;max-width:620px}
+.howimg cite{display:block;margin-top:20px;font:400 13px/1.4 Az;font-style:normal;color:var(--g);letter-spacing:.08em}
+@media(max-width:900px){.steps{grid-template-columns:minmax(0,1fr)}.steps .wire{left:12px;right:auto;width:2px;top:0;bottom:0;height:auto}.steps .wire i{width:100%!important}.steps article{padding:0 0 0 52px}.steps article::before{top:0}.howimg{height:440px}}
+
+/* API */
+.api{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:70px;align-items:center}
+.code{background:#061013;border:1px solid var(--line);border-radius:12px;overflow:hidden;font:400 15px/1.75 Az}
+.code header{display:flex;gap:4px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px}
+.code header span{padding:6px 12px;border-radius:4px;color:var(--mute)}
+.code header span.on{background:var(--bg3);color:var(--paper)}
+.code pre{padding:24px 26px;overflow-x:auto;white-space:pre;color:#c6d6d3;min-height:440px}
+.code .k{color:#8ab4ff}.code .s{color:var(--g)}.code .n{color:#ffb86b}.code .c{color:#5f7a7c}.code .r{color:var(--co)}
+.code .ln{display:block;opacity:0}
+.api ul{list-style:none;margin-top:34px}
+.api li{display:grid;grid-template-columns:120px 1fr;padding:14px 0;border-top:1px solid var(--line);font-size:17px}
+.api li b{font:500 13px/1.8 Az;color:var(--g)}
+@media(max-width:900px){.api{grid-template-columns:minmax(0,1fr);gap:40px}.code{font-size:12px}}
+
+/* BAND */
+#band{height:120vh;position:relative;overflow:hidden;display:flex;align-items:center;padding:0 var(--pad)}
+#band video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.6) hue-rotate(-20deg) brightness(.6)}
+#band::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--bg),#0b1a1e00 30%,#0b1a1e00 70%,var(--bg))}
+#band p{position:relative;z-index:1;font:400 clamp(36px,6vw,96px)/1.08 Mic;letter-spacing:-.03em;max-width:1300px}
+#band p span{color:var(--g)}
+
+/* RESULTS */
+.res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:70px;margin-top:70px;align-items:start}
+.nums{display:grid;gap:0}
+.nums div{padding:28px 0;border-top:2px solid var(--ink)}
+.nums b{display:block;font:400 clamp(56px,7vw,110px)/1 Mic;letter-spacing:-.04em}
+.nums span{font-size:18px;color:#33494c}
+.res figure{position:relative}
+.res figure img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px}
+.res figcaption{margin-top:22px;font:400 23px/1.45 Urb}
+.res figcaption cite{display:block;margin-top:14px;font:400 13px/1.4 Az;font-style:normal;color:#0f8a57}
+@media(max-width:900px){.res{grid-template-columns:minmax(0,1fr)}}
+
+/* COMPLIANCE */
+.comp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:70px;margin-top:70px}
+.split{background:var(--bg2);border-radius:12px;padding:34px}
+.split h3{font:800 24px/1.25 Urb;margin-bottom:22px}
+.bar2{display:flex;height:64px;border-radius:6px;overflow:hidden;font:500 13px/1 Az}
+.bar2 div{display:flex;align-items:center;padding:0 16px;white-space:nowrap;overflow:hidden}
+.bar2 .a{background:#6ef2a533;flex:1}.bar2 .b{background:#ff6b5b44;flex:1}
+.split p{margin-top:18px;font-size:16px;color:#a9bebb}
+.chk{list-style:none;margin-top:34px}
+.chk li{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:14px 0;border-top:1px solid var(--line);font-size:17px}
+.chk li::before{content:"";width:18px;height:10px;border-left:2px solid var(--g);border-bottom:2px solid var(--g);transform:rotate(-45deg) translate(2px,4px)}
+.comp .ph{border-radius:6px;overflow:hidden;position:relative;min-height:600px}
+.comp .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.comp .ph span{position:absolute;left:18px;bottom:18px;font:500 12px/1.4 Az;background:#0b1a1ecc;padding:10px 12px;border-radius:4px;letter-spacing:.06em}
+@media(max-width:900px){.comp{grid-template-columns:minmax(0,1fr)}.comp .ph{min-height:380px}}
+
+/* PRICING */
+.tog{display:inline-flex;margin-top:20px;background:#0b1a1e0f;border-radius:30px;padding:4px;font:500 13px/1 Az}
+.tog button{border:0;background:none;padding:12px 18px;border-radius:24px;font:inherit;cursor:pointer;color:var(--ink)}
+.tog button.on{background:var(--ink);color:var(--paper)}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:60px}
+.tier{background:#fff;border:1px solid #0b1a1e14;border-radius:12px;padding:36px 32px;display:flex;flex-direction:column;gap:16px;min-height:560px}
+.tier.mid{background:var(--ink);color:var(--paper);transform:translateY(-20px)}
+.tier small{font:500 12px/1 Az;letter-spacing:.12em;text-transform:uppercase;color:#0f8a57}
+.tier.mid small{color:var(--g)}
+.tier h3{font:400 30px/1.15 Mic}
+.tier .p{font:800 54px/1 Urb}
+.tier .p span{font-size:17px;font-weight:400;opacity:.7}
+.tier ul{list-style:none;font-size:16px;flex:1}
+.tier li{padding:10px 0;border-top:1px solid #0b1a1e12}
+.tier.mid li{border-color:#ffffff1a}
+.tier .btn{justify-content:center}
+.tier:not(.mid) .btn{background:var(--ink);color:var(--paper)}
+@media(max-width:900px){.tiers{grid-template-columns:minmax(0,1fr)}.tier.mid{transform:none}.tier{min-height:0}}
+
+/* FAQ */
+.faq{margin-top:60px;max-width:1000px}
+.faq details{border-top:1px solid #6ef2a533;padding:26px 0}
+.faq details:last-child{border-bottom:1px solid #6ef2a533}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;font:800 24px/1.3 Urb}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";flex:none;width:18px;height:18px;margin-top:6px;background:linear-gradient(var(--g),var(--g)) center/100% 2px no-repeat,linear-gradient(var(--g),var(--g)) center/2px 100% no-repeat;transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin-top:16px;color:#a9bebb;max-width:820px}
+
+/* CTA */
+#demo{min-height:100vh;background:linear-gradient(90deg,#0b1a1ef5 0%,#0b1a1ed0 50%,#0b1a1e77),url(media/towers.jpg) center/cover;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:70px;align-items:center}
+form{background:#0b1a1ee6;border:1px solid #6ef2a533;border-radius:12px;padding:32px;display:grid;gap:16px}
+label{font:500 12px/1 Az;letter-spacing:.1em;color:var(--mute);display:grid;gap:8px;text-transform:uppercase}
+input,select{font:400 17px/1.3 Urb;color:var(--paper);background:var(--bg2);border:1px solid #6ef2a533;border-radius:4px;padding:14px;text-transform:none;letter-spacing:0}
+form .btn{justify-content:center;margin-top:8px}
+form .ok{font-size:15px;color:var(--g);display:none}
+@media(max-width:900px){#demo{grid-template-columns:minmax(0,1fr)}}
+footer{padding:80px var(--pad) 40px;border-top:1px solid var(--line)}
+footer{overflow:hidden}footer .big{font:400 clamp(34px,11vw,190px)/.9 Mic;letter-spacing:-.05em;color:var(--bg3)}
+footer .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;margin:60px 0;font-size:16px;color:#a9bebb}
+footer .cols b{display:block;color:var(--paper);margin-bottom:10px}
+footer .cols a{display:block;text-decoration:none;padding:3px 0}
+footer .fine{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font:400 12px/1.5 Az;color:var(--mute)}
+@media(max-width:900px){footer .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){[data-r]{clip-path:none!important;transition:none}}
+</style>
+</head><body>
+
+<header id="top">
+  <a class="brand" href="#"><img src="src/img/logo.svg" alt=""><b>TRIPWIRE</b></a>
+  <nav><a href="#queue">Product</a><a href="#signals">Signals</a><a href="#api">Developers</a><a href="#comply">Compliance</a><a href="#pricing">Pricing</a></nav>
+  <a class="btn" href="#demo">Book a demo</a>
+</header>
+
+<section id="net">
+  <div class="stage">
+    <div class="win">
+      <div class="rail"><img src="src/img/logo.svg" alt="">
+        <svg class="on" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="10" cy="18" r="2.5"/><path d="M8 7l7.6 .8M7 8l2 7.6M16.5 10l-5 6"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 15l3-4 3 2 3-5"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4"/><path d="M5 20c1-4 4-5 7-5s6 1 7 5"/></svg>
+      </div>
+      <div class="bar"><span class="on">Network</span><span>Queue<i>12</i></span><span>Cases</span><span>Reports</span><div class="live">Severn Vale CU · live</div></div>
+      <canvas id="graph" aria-label="A live network of member accounts and the payments between them"></canvas>
+      <div class="hcopy">
+        <h1>Catch the ring <em>before</em> the money leaves.</h1>
+        <p>Tripwire watches every payment your members make and spots mule rings while they are still forming.</p>
+      </div>
+      <aside class="alert" id="alert">
+        <small><span>ALERT · MULE RING</span><span>SCORE 97</span></small>
+        <h3>7 accounts, 1 victim, 11 minutes</h3>
+        <p>£48,200 came in from one member and split across seven accounts opened 3 to 19 days ago.</p>
+        <div class="acts"><span class="fz">FREEZE ALL</span><span>REVIEW</span></div>
+      </aside>
+      <ol class="chap" id="chap">
+        <li class="on"><b>01</b>Every payment is a line between two people.</li>
+        <li><b>02</b>A scam payment lands, then splits, fast.</li>
+        <li class="red"><b>03</b>Seven new accounts pull together. That is a ring.</li>
+        <li class="ice"><b>04</b>Frozen. £48,200 held before it left.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="sec paper" id="queue">
+  <span class="kick" data-r>The analyst view</span>
+  <h2 class="h" data-r>A queue your team <em>wants</em> to open.</h2>
+  <p class="lede" data-r>Every alert arrives with the reason attached: who paid whom, how fast, from which device, and which accounts look new. Your team reads one screen and makes one call.</p>
+  <div class="app" id="app">
+    <div class="q">
+      <header><b>OPEN ALERTS</b><span>SORTED BY SCORE</span></header>
+      <div id="rows"></div>
+    </div>
+    <div class="case" id="case"></div>
+  </div>
+</section>
+
+<section class="sec" id="signals">
+  <div class="strip"></div>
+  <span class="kick" data-r>What we look at</span>
+  <h2 class="h" data-r>Forty signals. <em>One</em> score.</h2>
+  <p class="lede" data-r>Rules catch the fraud you saw last year. Tripwire scores the shape of the money: how it moves between accounts, not just how big each payment is.</p>
+  <div class="sg">
+    <article data-r><svg viewBox="0 0 300 110"><path class="dim" d="M10 80 L80 40 L150 70 L220 30 L290 60"/><circle class="fd" cx="80" cy="40" r="6"/><circle class="fd" cx="150" cy="70" r="6"/><circle class="fd" cx="220" cy="30" r="6"/><path class="co dash" d="M80 40 L150 70 L220 30"/><circle class="cof" cx="10" cy="80" r="7"/><circle class="co pulse" cx="10" cy="80" r="7"/></svg><span class="n">01 · NETWORK</span><h3>Mule hops</h3><p>Money that lands and leaves within minutes, two or three accounts deep.</p></article>
+    <article data-r><svg viewBox="0 0 300 110"><rect class="ln" x="90" y="10" width="120" height="86" rx="8"/><path class="dim" d="M110 34h80M110 50h60M110 66h70"/><circle class="cof bob" cx="226" cy="18" r="10"/></svg><span class="n">02 · DEVICE</span><h3>New phone, old member</h3><p>A first-time device, a fresh SIM, or an app installed ten minutes before a big payment.</p></article>
+    <article data-r><svg viewBox="0 0 300 110"><path class="ln" d="M10 90 C60 90 80 86 110 80 S150 70 170 40 S210 8 290 6"/><path class="dim" d="M10 96h280"/><circle class="cof" cx="170" cy="40" r="6"/><circle class="co pulse" cx="170" cy="40" r="6"/></svg><span class="n">03 · VELOCITY</span><h3>Sudden speed</h3><p>A member who pays twice a month suddenly pays six new people in an hour.</p></article>
+    <article data-r><svg viewBox="0 0 300 110"><rect class="dim" x="20" y="30" width="110" height="50" rx="6"/><rect class="co" x="170" y="30" width="110" height="50" rx="6"/><path class="ln dash" d="M130 55h40"/><text x="40" y="60" fill="#6ef2a5" font-family="Az" font-size="13">J SMITH</text><text x="190" y="60" fill="#ff6b5b" font-family="Az" font-size="13">J SMYTHE</text></svg><span class="n">04 · PAYEE</span><h3>Name does not match</h3><p>Confirmation of Payee says close match or no match, and the member presses on anyway.</p></article>
+    <article data-r><svg viewBox="0 0 300 110"><path class="ln" d="M120 20c-10 0-16 10-16 20 0 30 26 56 56 56 10 0 20-6 20-16l-14-12-12 8c-10-4-18-12-22-22l8-12z"/><path class="co dash" d="M200 30c14 6 24 20 26 36M214 14c22 8 36 30 38 54"/></svg><span class="n">05 · BEHAVIOUR</span><h3>On a call while paying</h3><p>Long hesitation, copy-pasted account numbers and an active phone call: the classic scam script.</p></article>
+    <article data-r><svg viewBox="0 0 300 110"><circle class="dim" cx="150" cy="55" r="44"/><circle class="ln" cx="150" cy="55" r="28"/><circle class="cof" cx="150" cy="55" r="8"/><path class="dim" d="M150 0v20M150 90v20M95 55h20M185 55h20"/></svg><span class="n">06 · ACCOUNT AGE</span><h3>Opened last week</h3><p>New receiving accounts with no salary, no bills and a sudden lump sum are where mules live.</p></article>
+  </div>
+</section>
+
+<section class="paper" id="anatomy">
+  <div class="pin">
+    <span class="kick">Anatomy of a ring</span>
+    <h2 class="h">Eleven minutes, <em>four</em> hops.</h2>
+    <svg id="anat" viewBox="0 0 1200 330" preserveAspectRatio="xMidYMid meet">
+      <g id="anEdges" fill="none" stroke-width="2.5"></g>
+      <g id="anNodes"></g>
+      <line id="wire" x1="0" x2="1200" y1="0" y2="0" stroke="#0f8a57" stroke-width="3" stroke-dasharray="10 8"/>
+      <g id="anDots"></g>
+    </svg>
+    <div class="anote" id="anote">
+      <div><b>00:00 · THE CALL</b>A member is told their account is at risk and moves £48,200 to a "safe account".</div>
+      <div><b>00:02 · FIRST HOP</b>The safe account splits it in two within ninety seconds.</div>
+      <div class="red"><b>00:06 · THE SPREAD</b>Four more accounts take smaller amounts, each under a round number.</div>
+      <div><b>00:11 · THE WIRE</b>Tripwire scores the pattern at hop two and holds the money at hop four.</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how">
+  <span class="kick" data-r>Getting started</span>
+  <h2 class="h" data-r>Live in <em>six</em> weeks.</h2>
+  <p class="lede" data-r>No rip-and-replace. Tripwire sits beside your core banking system and your payments provider, and your team keeps the tools it already knows.</p>
+  <div class="steps" id="steps"><div class="wire"><i></i></div>
+    <article><span class="wk">WEEK 1</span><h3>Connect</h3><p>Read-only feeds from your core system and Faster Payments gateway. We support the platforms most UK mutuals run on.</p></article>
+    <article><span class="wk">WEEKS 2–3</span><h3>Learn your members</h3><p>Two years of history teaches the model what normal looks like for your society, not someone else's bank.</p></article>
+    <article><span class="wk">WEEKS 4–5</span><h3>Run in shadow</h3><p>Tripwire scores every payment silently. You see what it would have caught before it touches a member.</p></article>
+    <article><span class="wk">WEEK 6</span><h3>Switch it on</h3><p>Holds, step-up checks and freezes go live, with your thresholds and your wording.</p></article>
+  </div>
+  <div class="howimg" data-r><blockquote>"We were live before the Christmas rush. The first ring it caught was eight accounts deep."<cite>HEAD OF FINANCIAL CRIME · A WEST COUNTRY BUILDING SOCIETY</cite></blockquote></div>
+</section>
+
+<section class="sec" id="api">
+  <div class="api">
+    <div>
+      <span class="kick" data-r>For developers</span>
+      <h2 class="h" data-r>One call <em>before</em> every payment.</h2>
+      <p class="lede" data-r>Send the payment, get a score and a reason back in under 80 milliseconds. Hold, ask, or let it through: your rules decide.</p>
+      <ul data-r>
+        <li><b>p95 LATENCY</b>78 ms from London and Manchester</li>
+        <li><b>UPTIME</b>99.99% over the last 12 months</li>
+        <li><b>SDKs</b>Java, .NET, Python and Node</li>
+      </ul>
+    </div>
+    <div class="code" id="code">
+      <header><span class="on">score.sh</span><span>response.json</span></header>
+<pre id="pre"></pre>
+    </div>
+  </div>
+</section>
+
+<section id="band">
+  <video src="media/traffic.mp4" poster="media/traffic.jpg" muted loop playsinline autoplay></video>
+  <p data-r>Money moves in seconds now. <span>So should</span> the people protecting it.</p>
+</section>
+
+<section class="sec paper" id="results">
+  <span class="kick" data-r>Case study</span>
+  <h2 class="h" data-r>Severn Vale, <em>14 months</em> on.</h2>
+  <p class="lede" data-r>A credit union with 41,000 members across Gloucestershire and the Forest of Dean. Three people in financial crime. One very busy phone line.</p>
+  <div class="res">
+    <div class="nums" id="nums">
+      <div data-r><b data-n="71" data-s="%">0%</b><span>fewer mule accounts still open after 30 days</span></div>
+      <div data-r><b data-n="1.9" data-p="£" data-s="m">£0m</b><span>held before it left the credit union</span></div>
+      <div data-r><b data-n="4" data-s=" min">0 min</b><span>median time from alert to decision</span></div>
+      <div data-r><b data-n="0.3" data-s="%">0%</b><span>of good payments held for a check</span></div>
+    </div>
+    <figure data-r><img src="media/windows.jpg" alt="An office building at night with lit windows" loading="lazy"><figcaption>"Before Tripwire we found rings in the monthly report. Now we find them while the second payment is still pending."<cite>SAMIRA OKONJO · HEAD OF RISK, SEVERN VALE CU</cite></figcaption></figure>
+  </div>
+</section>
+
+<section class="sec" id="comply">
+  <span class="kick" data-r>Compliance</span>
+  <h2 class="h" data-r>Built for the <em>reimbursement</em> rules.</h2>
+  <p class="lede" data-r>Since October 2024, UK payment firms share the cost of authorised push payment scams 50:50 between the sending and receiving side. Catching mules on your side is now a line on the balance sheet.</p>
+  <div class="comp">
+    <div>
+      <div class="split" id="split" data-r>
+        <h3>Your share of a £48,200 scam that lands in a mule account at your society</h3>
+        <div class="bar2"><div class="a">SENDING FIRM</div><div class="b">YOU</div></div>
+        <p>Without detection you carry half. With the ring frozen before cash-out, the money goes back to the victim and your share shrinks to the part that already left.</p>
+      </div>
+      <ul class="chk" data-r>
+        <li>All data stays in UK data centres, in London and Manchester</li>
+        <li>Evidence packs for Consumer Duty and your board risk report</li>
+        <li>ISO 27001 and Cyber Essentials Plus</li>
+        <li>Every decision explained in plain English, for members and for auditors</li>
+        <li>Shared mule intelligence across member societies, opt-in</li>
+      </ul>
+    </div>
+    <div class="ph" data-r><img src="media/racks.jpg" alt="Rows of server racks in a data centre" loading="lazy"><span>UK-ONLY HOSTING · TWO SITES · ACTIVE-ACTIVE</span></div>
+  </div>
+</section>
+
+<section class="sec paper" id="pricing">
+  <span class="kick" data-r>Pricing</span>
+  <h2 class="h" data-r>Priced by <em>members</em>, not payments.</h2>
+  <p class="lede" data-r>A flat monthly fee based on your size. No per-transaction charges, so a busy December never costs you more.</p>
+  <div class="tog" id="tog"><button class="on" data-m="1">Monthly</button><button data-m=".85">Annual · save 15%</button></div>
+  <div class="tiers">
+    <div class="tier" data-r><small>Community</small><h3>Up to 25k members</h3><div class="p" data-v="1450">£1,450<span> / month</span></div><ul><li>Real-time scoring on Faster Payments</li><li>Analyst queue for 3 seats</li><li>Shared mule intelligence</li><li>Email and phone support</li></ul><a class="btn" href="#demo">Start a trial</a></div>
+    <div class="tier mid" data-r><small>Regional</small><h3>Up to 150k members</h3><div class="p" data-v="4900">£4,900<span> / month</span></div><ul><li>Everything in Community</li><li>Cards, BACS and CHAPS</li><li>Unlimited analyst seats</li><li>Network graph and ring freeze</li><li>Named success manager</li></ul><a class="btn" href="#demo">Book a demo</a></div>
+    <div class="tier" data-r><small>Society</small><h3>Over 150k members</h3><div class="p">Let's talk</div><ul><li>Everything in Regional</li><li>On-premise model option</li><li>Custom thresholds per branch</li><li>24/7 incident line</li></ul><a class="btn" href="#demo">Contact sales</a></div>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <span class="kick" data-r>Questions</span>
+  <h2 class="h" data-r>Things risk teams <em>ask</em> us.</h2>
+  <div class="faq">
+    <details open><summary>Will it hold up genuine payments?</summary><p>Rarely. At Severn Vale 0.3% of good payments got a check, and most of those were a single in-app question the member answered in seconds.</p></details>
+    <details><summary>Do we need a data science team?</summary><p>No. We train and monitor the model for you. Your team sets thresholds in plain language and sees every reason behind a score.</p></details>
+    <details><summary>Where is our members' data kept?</summary><p>Only in the UK, in two data centres we run in London and Manchester. Nothing is used to train models for other customers unless you opt in to shared mule intelligence.</p></details>
+    <details><summary>Can it freeze accounts on its own?</summary><p>Only if you let it. Most societies start with automatic holds on payments and human review for freezes, then automate the clearest cases.</p></details>
+    <details><summary>How long is the contract?</summary><p>Twelve months, with a free six-week shadow period first. If it doesn't catch anything you would have missed, you walk away.</p></details>
+  </div>
+</section>
+
+<section class="sec" id="demo">
+  <div>
+    <span class="kick" data-r>See it on your data</span>
+    <h2 class="h" data-r>Set the <em>wire</em>.</h2>
+    <p class="lede" data-r>Send us a month of anonymised payments and we'll show you the rings that went through it. It takes about a week and costs nothing.</p>
+  </div>
+  <form id="form" data-r onsubmit="event.preventDefault();this.querySelector('.ok').style.display='block'">
+    <label>Your name<input required placeholder="Alex Morgan"></label>
+    <label>Organisation<input required placeholder="Severn Vale Credit Union"></label>
+    <label>Members<select><option>Under 25,000</option><option>25,000 to 150,000</option><option>Over 150,000</option></select></label>
+    <button class="btn">Request a ring report</button>
+    <p class="ok">Thanks. We'll be in touch within one working day.</p>
+  </form>
+</section>
+
+<footer>
+  <div class="big">TRIPWIRE</div>
+  <div class="cols">
+    <div><b>Product</b><a href="#queue">Analyst queue</a><a href="#signals">Signals</a><a href="#anatomy">Ring detection</a><a href="#api">API</a></div>
+    <div><b>Company</b><a href="#">About</a><a href="#">Careers</a><a href="#">Press</a></div>
+    <div><b>Trust</b><a href="#comply">Compliance</a><a href="#">Security</a><a href="#">Status</a></div>
+    <div><b>Contact</b><a href="#demo">Book a demo</a><a href="#">Bristol · Manchester</a></div>
+  </div>
+  <div class="fine"><span>Tripwire Risk Ltd · a fictional company</span><span>Site by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const cl=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
+const sm=(a,b,v)=>{const t=cl((v-a)/(b-a));return t*t*(3-2*t)};
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* ---------- reveals ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target._t0=time;io.unobserve(e.target)}}),{threshold:.18});
+$$('[data-r],#app,#steps,#code,#split').forEach(el=>io.observe(el));
+
+/* ---------- HERO: force-directed payment network ---------- */
+const cv=$('#graph'),cx=cv.getContext('2d');let W=0,H=0,DPR=1;
+function size(){DPR=Math.min(devicePixelRatio||1,2);const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR}
+size();addEventListener('resize',size);
+const R=rng(2291),N=[],E=[];
+const comms=5,per=11;
+for(let c=0;c<comms;c++){const a=c/comms*Math.PI*2+.4,ccx=Math.cos(a)*250,ccy=Math.sin(a)*170;
+  for(let i=0;i<per;i++)N.push({x:ccx+(R()-.5)*120,y:ccy+(R()-.5)*120,vx:0,vy:0,c,r:R()<.15?7:3.5+R()*2.5,biz:R()<.15,kind:'n'})}
+for(let c=0;c<comms;c++){const b=c*per;for(let i=0;i<per;i++){for(let k=0;k<2;k++){const j=Math.floor(R()*per);if(j!==i)E.push({a:b+i,b:b+j,t:'n',u:R()})}}}
+for(let k=0;k<8;k++){const a=Math.floor(R()*N.length),b=Math.floor(R()*N.length);if(N[a].c!==N[b].c)E.push({a,b,t:'n',u:R()})}
+const victim=3;N[victim].kind='v';N[victim].r=7;
+const M=[];for(let i=0;i<7;i++){const c=(i+1)%comms,host=c*per+Math.floor(R()*per);const h=N[host];M.push(N.length);N.push({x:h.x+(R()-.5)*60,y:h.y+(R()-.5)*60,vx:0,vy:0,c,r:5,kind:'m',lab:['opened 3d','opened 6d','opened 4d','opened 19d','opened 9d','opened 12d','opened 5d'][i]});E.push({a:host,b:M[i],t:'cam',u:R()})}
+const ringE=[[victim,M[0],.18],[M[0],M[1],.23],[M[0],M[2],.25],[M[1],M[3],.29],[M[2],M[4],.31],[M[3],M[5],.35],[M[4],M[5],.37],[M[5],M[6],.41]];
+ringE.forEach(([a,b,t0],i)=>E.push({a,b,t:'r',t0,u:0,u2:.5,exit:i===ringE.length-1}));
+const ringSet=new Set(M);
+let p=0,tq=0,time=0;
+function target(){const r=$('#net').getBoundingClientRect();return cl(-r.top/(r.height-innerHeight))}
+function phys(dt){
+  const pull=sm(.36,.58,p),fz=sm(.72,.8,p);
+  const gx=W>900?150:40,gy=-30;
+  for(let i=0;i<N.length;i++){const n=N[i];let fx=0,fy=0;
+    for(let j=0;j<N.length;j++){if(i===j)continue;const m=N[j];let dx=n.x-m.x,dy=n.y-m.y,d2=dx*dx+dy*dy;if(d2>90000)continue;d2=Math.max(d2,60);const f=1500/d2/Math.sqrt(d2);fx+=dx*f;fy+=dy*f}
+    fx+=(gx-n.x)*.0035;fy+=(gy-n.y)*.0045;
+    fx+=Math.sin(time*.6+i*1.7)*.05;fy+=Math.cos(time*.5+i*2.3)*.05;
+    if(n.kind==='m'){fx+=(gx+130-n.x)*.012*pull;fy+=(gy+70-n.y)*.012*pull}
+    n.fx=fx;n.fy=fy}
+  for(const e of E){const a=N[e.a],b=N[e.b];let k=.02,L=70;
+    if(e.t==='cam'){k=.02*(1-pull)}
+    else if(e.t==='r'){const s=sm(e.t0,e.t0+.04,p);k=.03*s;L=lerp(150,44,pull);if(e.a===victim)k*=.25*(1-pull)+.02}
+    if(k<=0)continue;const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,f=k*(d-L)/d;
+    a.fx+=dx*f;a.fy+=dy*f;b.fx-=dx*f;b.fy-=dy*f}
+  for(const n of N){n.vx=(n.vx+n.fx)*.84;n.vy=(n.vy+n.fy)*.84;if(n.kind==='m'){n.vx*=1-fz*.97;n.vy*=1-fz*.97}
+    if(n===drag)continue;n.x+=n.vx;n.y+=n.vy}
+}
+let drag=null;
+function toWorld(ev){const r=cv.getBoundingClientRect(),s=scl();return{x:(ev.clientX-r.left-W/2)/s,y:(ev.clientY-r.top-H/2)/s}}
+cv.addEventListener('pointerdown',ev=>{const w=toWorld(ev);let best=null,bd=900;for(const n of N){const d=(n.x-w.x)**2+(n.y-w.y)**2;if(d<bd){bd=d;best=n}}drag=best;if(drag)cv.setPointerCapture(ev.pointerId)});
+cv.addEventListener('pointermove',ev=>{if(!drag)return;const w=toWorld(ev);drag.x=w.x;drag.y=w.y;drag.vx=drag.vy=0});
+addEventListener('pointerup',()=>drag=null);
+function scl(){return Math.min(W/1100,H/640)*(W>900?1:1.25)}
+function hull(pts){pts=pts.slice().sort((a,b)=>a.x-b.x||a.y-b.y);const cr=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);const lo=[],up=[];for(const q of pts){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q)}for(let i=pts.length-1;i>=0;i--){const q=pts[i];while(up.length>1&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q)}up.pop();lo.pop();return lo.concat(up)}
+function draw(dt){
+  const s=scl(),ox=W/2,oy=H/2,X=n=>ox+n.x*s,Y=n=>oy+n.y*s;
+  const pull=sm(.36,.58,p),flag=sm(.55,.63,p),fz=sm(.72,.8,p);
+  cx.setTransform(DPR,0,0,DPR,0,0);cx.clearRect(0,0,W,H);
+  // faint grid
+  cx.strokeStyle='#6ef2a50d';cx.lineWidth=1;cx.beginPath();for(let x=(ox%40);x<W;x+=40){cx.moveTo(x,0);cx.lineTo(x,H)}for(let y=(oy%40);y<H;y+=40){cx.moveTo(0,y);cx.lineTo(W,y)}cx.stroke();
+  // hull
+  if(flag>0){const pts=M.map(i=>({x:X(N[i]),y:Y(N[i])}));const c={x:0,y:0};pts.forEach(q=>{c.x+=q.x/pts.length;c.y+=q.y/pts.length});
+    const h=hull(pts).map(q=>{const dx=q.x-c.x,dy=q.y-c.y,d=Math.hypot(dx,dy)||1;return{x:q.x+dx/d*34*s+0,y:q.y+dy/d*34*s}});
+    cx.save();cx.beginPath();h.forEach((q,i)=>i?cx.lineTo(q.x,q.y):cx.moveTo(q.x,q.y));cx.closePath();
+    const col=fz>0?`rgba(${lerp(255,191,fz)|0},${lerp(107,230,fz)|0},${lerp(91,255,fz)|0},`:'rgba(255,107,91,';
+    cx.fillStyle=col+(.08*flag+.05*fz)+')';cx.fill();
+    if(fz>0){cx.clip();cx.strokeStyle='rgba(191,230,255,'+(.18*fz)+')';cx.lineWidth=1.2;cx.beginPath();for(let k=-H;k<W;k+=10){cx.moveTo(k,0);cx.lineTo(k+H,H)}cx.stroke()}
+    cx.restore();cx.save();cx.setLineDash([8,7]);cx.lineDashOffset=-time*30*(1-fz);cx.strokeStyle=col+flag+')';cx.lineWidth=2;cx.beginPath();h.forEach((q,i)=>i?cx.lineTo(q.x,q.y):cx.moveTo(q.x,q.y));cx.closePath();cx.stroke();cx.restore();
+    const top=h.reduce((a,b)=>b.y<a.y?b:a,h[0]);cx.font='500 12px Az';cx.fillStyle=col+flag+')';cx.fillText(fz>.5?'RING #2291 · FROZEN':'RING #2291 · 7 ACCOUNTS',top.x-70,top.y-14)}
+  // edges
+  for(const e of E){const a=N[e.a],b=N[e.b];let al=.16,w=1,col='110,242,165';
+    if(e.t==='cam')al=.16*(1-pull);
+    if(e.t==='r'){const st=sm(e.t0,e.t0+.04,p);if(st<=0)continue;al=.35+.5*st;w=1.2+1.6*flag;col=flag>0?`${lerp(110,255,flag)|0},${lerp(242,107,flag)|0},${lerp(165,91,flag)|0}`:col;if(fz>0)col=`${lerp(255,191,fz)|0},${lerp(107,230,fz)|0},${lerp(91,255,fz)|0}`;e.st=st}
+    if(al<.01)continue;cx.strokeStyle=`rgba(${col},${al})`;cx.lineWidth=w;
+    if(e.exit&&fz>0){const mx=(X(a)+X(b))/2,my=(Y(a)+Y(b))/2,gap=fz*14;const dx=X(b)-X(a),dy=Y(b)-Y(a),d=Math.hypot(dx,dy)||1,ux=dx/d,uy=dy/d;
+      cx.beginPath();cx.moveTo(X(a),Y(a));cx.lineTo(mx-ux*gap,my-uy*gap);cx.moveTo(mx+ux*gap,my+uy*gap);cx.lineTo(X(b),Y(b));cx.stroke();
+      cx.strokeStyle=`rgba(255,107,91,${fz})`;cx.lineWidth=2.5;const k=7;cx.beginPath();cx.moveTo(mx-k,my-k);cx.lineTo(mx+k,my+k);cx.moveTo(mx+k,my-k);cx.lineTo(mx-k,my+k);cx.stroke()}
+    else{cx.beginPath();cx.moveTo(X(a),Y(a));cx.lineTo(X(b),Y(b));cx.stroke()}
+    // money particles
+    const spd=e.t==='r'?.9*(1-fz):.22;e.u=(e.u+dt*spd)%1;
+    const pts=e.t==='r'?[e.u,(e.u+.5)%1]:[e.u];
+    for(const u of pts){if(e.exit&&fz>0&&u>.45)continue;const px=lerp(X(a),X(b),u),py=lerp(Y(a),Y(b),u);cx.fillStyle=`rgba(${col},${e.t==='r'?.95:.55*(e.t==='cam'?1-pull:1)})`;cx.beginPath();cx.arc(px,py,e.t==='r'?2.6:1.6,0,7);cx.fill()}}
+  // nodes
+  for(const n of N){const x=X(n),y=Y(n),r=n.r*Math.max(.8,s);
+    if(n.kind==='m'){const wake=sm(.17,.3,p);const fc=fz>0?`rgb(${lerp(255,191,fz)|0},${lerp(107,230,fz)|0},${lerp(91,255,fz)|0})`:flag>0?`rgb(${lerp(110,255,flag)|0},${lerp(242,107,flag)|0},${lerp(165,91,flag)|0})`:'#6ef2a5';
+      cx.fillStyle='#0b1a1e';cx.strokeStyle=fc;cx.lineWidth=2;cx.beginPath();cx.arc(x,y,r+wake*2,0,7);cx.fill();cx.stroke();
+      cx.fillStyle=fc;cx.beginPath();cx.arc(x,y,(r-1)*(.4+.6*wake),0,7);cx.fill();
+      if(flag>0){cx.globalAlpha=flag;const pr=(time*1.2+n.x*.01)%1;if(fz<.5){cx.strokeStyle=fc;cx.lineWidth=1.5;cx.globalAlpha=flag*(1-pr);cx.beginPath();cx.arc(x,y,r+4+pr*18,0,7);cx.stroke()}
+        cx.globalAlpha=flag;cx.font='400 11px Az';cx.fillStyle='#d8e4e2';cx.fillText(n.lab,x+r+7,y+4);cx.globalAlpha=1}
+      if(fz>0){cx.globalAlpha=fz;cx.strokeStyle='#bfe6ff';cx.lineWidth=1.6;const q=r+7,k=5;[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([sx,sy])=>{cx.beginPath();cx.moveTo(x+sx*q,y+sy*(q-k));cx.lineTo(x+sx*q,y+sy*q);cx.lineTo(x+sx*(q-k),y+sy*q);cx.stroke()});cx.globalAlpha=1}
+      continue}
+    if(n.kind==='v'){const on=sm(.15,.2,p);cx.fillStyle='#0b1a1e';cx.strokeStyle=on?'#ffc46b':'#6ef2a5';cx.lineWidth=2;cx.beginPath();cx.arc(x,y,r,0,7);cx.fill();cx.stroke();
+      if(on){cx.fillStyle='#ffc46b';cx.beginPath();cx.arc(x,y,r-3,0,7);cx.fill();cx.globalAlpha=on;cx.font='400 11px Az';cx.fillStyle='#ffc46b';cx.fillText('MEMBER · £48,200 OUT',x+r+8,y+4);cx.globalAlpha=1}continue}
+    cx.fillStyle=n.biz?'#173238':'#12333a';cx.strokeStyle='rgba(110,242,165,.55)';cx.lineWidth=1.2;
+    if(n.biz){cx.beginPath();cx.rect(x-r,y-r,r*2,r*2);cx.fill();cx.stroke()}else{cx.beginPath();cx.arc(x,y,r,0,7);cx.fill();cx.stroke()}}
+}
+for(let i=0;i<500;i++)phys(1/60);
+const chap=$$('#chap li'),alertEl=$('#alert');
+let last=performance.now();
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;time+=dt;
+  tq=target();p+=(tq-p)*Math.min(1,dt*4);
+  const r=cv.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){phys(dt);phys(dt);draw(dt)}
+  const ci=p<.17?0:p<.4?1:p<.71?2:3;chap.forEach((l,i)=>l.classList.toggle('on',i===ci));
+  {const k=sm(.57,.64,p);alertEl.style.transform=innerWidth>900?`translateX(${(1-k)*380}px)`:`translateY(${(k-1)*140}%)`}alertEl.classList.toggle('frozen',p>.76);
+  anat();reveal();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+
+/* ---------- clock-driven reveals ---------- */
+const eo=k=>1-Math.pow(1-cl(k),3);
+const watch=[...document.querySelectorAll('[data-r],#app,#steps,#code,#split,[data-n]')];
+function reveal(){
+  for(const el of watch){if(el._t0!=null)continue;const r=el.getBoundingClientRect();if(r.top<innerHeight*.85&&r.bottom>0)el._t0=time}
+  for(const el of $$('[data-r]')){if(el._t0==null||el._done)continue;const k=eo((time-el._t0)/1.0);el.style.clipPath=`inset(0 ${(1-k)*100}% 0 0)`;if(k>=1){el.style.clipPath='none';el._done=1}}
+  const app=$('#app');if(app._t0!=null)$$('.row').forEach((r,i)=>{const k=eo((time-app._t0-i*.08)/.5);r.style.opacity=k;r.style.transform=`translateX(${(1-k)*-30}px)`});
+  const cd=$('#code');if(cd._t0!=null)$$('#pre .ln').forEach((l,i)=>{const k=cl((time-cd._t0-i*.07)/.25);l.style.opacity=k});
+  const st=$('#steps');if(st._t0!=null){const k=cl((time-st._t0)/2.4);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const w=st.querySelector('.wire i');if(innerWidth>900)w.style.width=e*100+'%';else w.style.height=e*100+'%';$$('#steps article').forEach((a,i)=>a.classList.toggle('lit',e>i/4+.02))}
+  for(const b of $$('[data-n]')){if(b._t0==null||b._dn)continue;const n=+b.dataset.n,pre=b.dataset.p||'',suf=b.dataset.s||'',dec=String(n).includes('.')?1:0,k=cl((time-b._t0-.3)/1.4),v=n*(1-Math.pow(1-k,3));b.textContent=pre+v.toFixed(dec)+suf;if(k>=1)b._dn=1}
+  const sp=$('#split');if(sp._t0!=null){const k=eo((time-sp._t0-.4)/1.4);sp.querySelector('.b').style.flexGrow=1-.82*k}
+}
+/* ---------- ANATOMY: scroll-scrubbed ring ---------- */
+const AN=[{x:80,y:165,l:'Member',s:'£48,200'},{x:360,y:165,l:'Safe account',s:'opened 6d'},{x:640,y:80,l:'Mule A',s:'£24,000'},{x:640,y:250,l:'Mule B',s:'£24,200'},{x:920,y:40,l:'£9,900',s:'opened 3d'},{x:920,y:125,l:'£9,800',s:'opened 4d'},{x:920,y:210,l:'£9,950',s:'opened 9d'},{x:920,y:290,l:'£9,700',s:'opened 12d'},{x:1140,y:165,l:'Cash out',s:'crypto · ATM'}];
+const AE=[[0,1,0],[1,2,1],[1,3,1],[2,4,2],[2,5,2],[3,6,2],[3,7,2],[4,8,3],[5,8,3],[6,8,3],[7,8,3]];
+const svgNS='http://www.w3.org/2000/svg',mk=(t,a)=>{const e=document.createElementNS(svgNS,t);for(const k in a)e.setAttribute(k,a[k]);return e};
+const gE=$('#anEdges'),gN=$('#anNodes'),gD=$('#anDots'),wire=$('#wire');
+const aEl=AE.map(([a,b,st])=>{const A=AN[a],B=AN[b];const d=`M${A.x} ${A.y} C${(A.x+B.x)/2} ${A.y} ${(A.x+B.x)/2} ${B.y} ${B.x} ${B.y}`;const p=mk('path',{d,stroke:'#0b1a1e33'});gE.appendChild(p);const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;const dot=mk('circle',{r:5,fill:'#0f8a57'});gD.appendChild(dot);return{p,L,st,dot}});
+const nEl=AN.map((n,i)=>{const g=mk('g',{transform:`translate(${n.x} ${n.y})`});g.appendChild(mk('circle',{r:i===0||i===8?18:13,fill:'#fff',stroke:'#0b1a1e',"stroke-width":2}));const t=mk('text',{class:'lb',y:i===4?-22:i===7?40:i>3&&i<8?-22:-28,"text-anchor":'middle'});t.textContent=n.l;g.appendChild(t);const t2=mk('text',{y:i>3&&i<8&&i!==4?40:i===4?42:42,"text-anchor":'middle'});t2.textContent=n.s;if(i>3&&i<8){t.setAttribute('x',70);t.setAttribute('y',-2);t.setAttribute('text-anchor','start');t2.setAttribute('x',70);t2.setAttribute('y',16);t2.setAttribute('text-anchor','start')}g.appendChild(t2);gN.appendChild(g);return g});
+const notes=$$('#anote div');
+function anat(){const r=$('#anatomy').getBoundingClientRect();const q=cl(-r.top/(r.height-innerHeight));
+  const stage=q*4.4;aEl.forEach(e=>{const f=cl(stage-e.st);const hold=e.st===3&&q>.72;const ff=hold?Math.min(f,.42):f;e.p.style.strokeDashoffset=e.L*(1-ff);
+    const red=e.st>=2&&q>.45;e.p.setAttribute('stroke',hold?'#e0483a':red?'#e0483a99':'#0f8a57');
+    if(f>0&&f<1||hold){const pt=e.p.getPointAtLength(e.L*ff);e.dot.setAttribute('cx',pt.x);e.dot.setAttribute('cy',pt.y);e.dot.setAttribute('opacity',1);e.dot.setAttribute('fill',hold?'#e0483a':'#0f8a57')}else e.dot.setAttribute('opacity',0)});
+  nEl.forEach((g,i)=>{const c=g.firstChild;const lvl=i===0?0:i===1?1:i<4?2:i<8?3:4;const on=stage>lvl-.05;c.setAttribute('fill',i===8&&q>.72?'#f2f4f1':on?(lvl>=2&&lvl<4&&q>.45?'#ffe5e1':'#e3f6ea'):'#fff');c.setAttribute('stroke',on&&lvl>=2&&lvl<4&&q>.45?'#e0483a':'#0b1a1e')});
+  const wx=lerp(1040,1040,1),wv=sm(.68,.78,q);wire.setAttribute('x1',wx);wire.setAttribute('x2',wx);wire.setAttribute('y1',165-150*wv);wire.setAttribute('y2',165+150*wv);
+  const ni=q<.2?0:q<.42?1:q<.68?2:3;notes.forEach((n,i)=>n.classList.toggle('on',i<=ni))}
+
+/* ---------- QUEUE app ---------- */
+const AL=[
+ {s:97,c:'#e0483a',t:'Mule ring · 7 accounts',m:'Ring #2291 · 11 min',a:'£48,200',tag:'FREEZE ADVISED',why:[['Accounts','7'],['Median age','6 days'],['Hops','4']],tl:[['10:02','Member D. Price pays £48,200 to a new payee',1],['10:04','Payee splits into two accounts within 90 s',1],['10:08','Four more accounts receive £9,700–£9,950',1],['10:13','Tripwire holds all outgoing payments on the ring',0]]},
+ {s:91,c:'#e0483a',t:'Impersonation scam',m:'Member on a call while paying',a:'£6,500',tag:'HOLD PAYMENT',why:[['Payee','new'],['CoP','no match'],['Call','active']],tl:[['09:41','Member opens the app while on a 23-minute call',1],['09:43','Pastes a sort code and account number',1],['09:44','Confirmation of Payee: no match, member continues',1],['09:44','Payment held, member asked one question in the app',0]]},
+ {s:84,c:'#e0483a',t:'Account takeover',m:'New device, password reset',a:'£2,980',tag:'STEP-UP CHECK',why:[['Device','first seen'],['SIM','changed 2h'],['Payees','+3']],tl:[['08:12','Password reset from an unknown device',1],['08:20','Three payees added in four minutes',1],['08:21','Step-up check sent to the registered email',0]]},
+ {s:72,c:'#d08a1c',t:'Unusual velocity',m:'6 new payees in one hour',a:'£1,140',tag:'REVIEW',why:[['Normal','2 / month'],['Today','6 / hour'],['Total','£1,140']],tl:[['Yesterday','Member pays 6 new people in an hour',1],['Yesterday','Amounts all between £180 and £200',1],['Today','Queued for review',0]]},
+ {s:58,c:'#d08a1c',t:'Possible money mule',m:'Account opened 9 days ago',a:'£3,300',tag:'REVIEW',why:[['Age','9 days'],['Income','none'],['In / out','2 min']],tl:[['11:30','£3,300 arrives from an unknown sender',1],['11:32','£3,250 sent to a crypto exchange',1],['11:32','Queued for review',0]]},
+ {s:41,c:'#0f8a57',t:'Romance pattern',m:'Monthly payments, rising',a:'£800',tag:'WATCH',why:[['Months','5'],['Rise','+60%'],['Payee','overseas']],tl:[['May','First payment of £300',0],['Sep','Fifth payment of £800',1],['Today','Added to watch list',0]]},
+ {s:33,c:'#0f8a57',t:'Purchase scam',m:'Marketplace seller, new payee',a:'£420',tag:'WATCH',why:[['Payee','new'],['Ref','"car deposit"'],['Seller','flagged twice']],tl:[['14:02','Payment to a seller flagged by two other societies',1],['14:02','Member shown a warning and confirmed',0]]}];
+const rowsEl=$('#rows'),caseEl=$('#case');
+rowsEl.innerHTML=AL.map((a,i)=>`<div class="row${i?'':' sel'}" data-i="${i}"><div class="sc" style="--v:${a.s};--c:${a.c}"><i>${a.s}</i></div><div><b>${a.t}</b><small>${a.m}</small></div><div class="amt">${a.a}</div></div>`).join('');
+function showCase(i){const a=AL[i];caseEl.innerHTML=`<div class="top"><div><small class="az" style="font-size:12px;color:#5c7072;letter-spacing:.1em">CASE ${4410+i} · SCORE ${a.s}</small><h3>${a.t}</h3></div><span class="tag">${a.tag}</span></div><div class="why">${a.why.map(w=>`<div><small>${w[0]}</small><b>${w[1]}</b></div>`).join('')}</div><ul class="tl">${a.tl.map(t=>`<li class="${t[2]?'r':''}"><time>${t[0]}</time>${t[1]}</li>`).join('')}</ul><div class="acts"><a class="btn" href="#">${i?'Hold payment':'Freeze ring'}</a><a class="btn ghost" href="#">Call member</a><a class="btn ghost" href="#">Release</a></div>`}
+showCase(0);rowsEl.addEventListener('click',e=>{const r=e.target.closest('.row');if(!r)return;$$('.row').forEach(x=>x.classList.toggle('sel',x===r));showCase(+r.dataset.i)});
+
+/* ---------- API code ---------- */
+const code=[['c','# score a payment before it leaves'],['','<span class="k">curl</span> https://api.tripwire.example/v2/score \\'],['','  -H <span class="s">"Authorization: Bearer $TW_KEY"</span> \\'],['','  -d <span class="s">\'{"from":"acct_4471","to":"60-83-71 21845507",</span>'],['','<span class="s">       "amount":48200,"rail":"FPS"}\'</span>'],['',''],['c','# 61 ms later'],['','{'],['','  <span class="k">"score"</span>: <span class="r">97</span>,'],['','  <span class="k">"action"</span>: <span class="r">"hold"</span>,'],['','  <span class="k">"ring"</span>: <span class="s">"ring_2291"</span>,'],['','  <span class="k">"reasons"</span>: ['],['','    <span class="s">"payee opened 6 days ago"</span>,'],['','    <span class="s">"funds left payee within 90 s"</span>,'],['','    <span class="s">"7 linked accounts, median age 6 d"</span>'],['','  ],'],['','  <span class="k">"latency_ms"</span>: <span class="n">61</span>'],['','}']];
+$('#pre').innerHTML=code.map((l,i)=>`<span class="ln">${l[0]==='c'?`<span class="c">${l[1]}</span>`:l[1]||' '}</span>`).join('');
+
+/* ---------- counters ---------- */
+const nio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;nio.unobserve(e.target);const b=e.target,n=+b.dataset.n,pre=b.dataset.p||'',suf=b.dataset.s||'',dec=String(n).includes('.')?1:0;let t0=null;
+  const st=ts=>{t0??=ts;const k=cl((ts-t0)/1400),v=n*(1-Math.pow(1-k,3));b.textContent=pre+v.toFixed(dec)+suf;if(k<1)requestAnimationFrame(st)};requestAnimationFrame(st)}),{threshold:.5});
+
+
+/* ---------- pricing toggle ---------- */
+$('#tog').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('#tog button').forEach(x=>x.classList.toggle('on',x===b));const m=+b.dataset.m;$$('.tier .p[data-v]').forEach(p=>{p.firstChild.textContent='£'+Math.round(+p.dataset.v*m/10)*10+''.replace(/\B(?=(\d{3})+(?!\d))/g,',');p.firstChild.textContent=p.firstChild.textContent.replace(/\B(?=(\d{3})+(?!\d))/g,',')})});
+</script>
+</body></html>
