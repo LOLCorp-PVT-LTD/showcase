@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reeve & Calder · contract and employment solicitors for small businesses in Leeds</title>
+<meta name="description" content="Reeve & Calder reads your contracts before you sign them. Fixed-fee contract reviews in 48 hours, employment law and disputes for small businesses in Leeds and across Yorkshire.">
+<link rel="icon" href="src/img/logo.svg">
+<style>
+@font-face{font-family:Bry;src:url(assets/fonts/brygada-1918-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:Bry;src:url(assets/fonts/brygada-1918-latin-500-italic.woff2) format('woff2');font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:Bry;src:url(assets/fonts/brygada-1918-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:Geo;src:url(assets/fonts/geologica-latin-300-normal.woff2) format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:Geo;src:url(assets/fonts/geologica-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Geo;src:url(assets/fonts/geologica-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Kal;src:url(assets/fonts/kalam-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Kal;src:url(assets/fonts/kalam-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:SM;src:url(assets/fonts/sometype-mono-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:SM;src:url(assets/fonts/sometype-mono-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+:root{--paper:#f4efe4;--paper2:#ebe4d4;--sheet:#fbf8f1;--ink:#1d2a44;--ink2:#2c3c5e;--navy:#141b2b;--red:#c8322a;--hl:#f5d94a;--sage:#6f8a73;--mute:#6e7280;--pad:clamp(16px,4.5vw,72px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--navy)}
+body{font-family:Geo,system-ui,sans-serif;font-weight:300;font-size:19px;line-height:1.62;color:var(--ink);background:var(--paper);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+b,strong{font-weight:600}
+.h{font:500 clamp(40px,5.4vw,84px)/1.04 Bry,Georgia,serif;letter-spacing:-.015em;margin-bottom:26px}
+.h em{font-style:italic;color:var(--red)}
+.dark .h em{color:#ff7a6c}
+.kick{display:inline-block;font:500 13px/1 SM;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:24px}
+.kick::before{content:"§ "}
+.lede{font-size:clamp(20px,1.6vw,23px);max-width:700px;color:#3b4560}
+.dark .lede{color:#c6cbd6}
+.sec{padding:clamp(100px,13vw,190px) var(--pad);position:relative}
+.dark{background:var(--navy);color:var(--paper)}
+.hand{font-family:Kal,cursive;color:var(--red)}
+.btn{display:inline-flex;align-items:center;gap:12px;font:500 14px/1 SM;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:17px 24px;background:var(--ink);color:var(--paper);border:0;border-radius:2px;cursor:pointer;box-shadow:4px 4px 0 var(--red);transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--red)}
+.btn.light{background:var(--paper);color:var(--ink)}
+/* reveal: ink soaks in (driven by the page clock) */
+[data-r]{opacity:0}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;z-index:50;height:66px;display:flex;align-items:center;gap:28px;padding:0 var(--pad);background:#f4efe4ee;backdrop-filter:blur(6px);border-bottom:1px solid #1d2a4422}
+#top .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+#top .brand img{width:34px;height:34px}
+#top .brand b{font:700 23px/1 Bry}
+#top .brand b i{font-style:italic;font-weight:500;color:var(--red)}
+#top nav{display:flex;gap:26px;margin-left:auto;font-size:15px;font-weight:400}
+#top nav a{text-decoration:none}
+#top nav a:hover{text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:5px}
+#top .btn{padding:12px 16px;font-size:12px;box-shadow:3px 3px 0 var(--red)}
+@media(max-width:900px){#top nav{display:none}#top .btn{margin-left:auto}}
+
+/* HERO: the contract on the desk */
+#desk{height:600vh;position:relative;background:var(--navy)}
+#desk .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(60% 70% at 66% 55%,#25324e,#141b2b 75%)}
+#desk .stage::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#ffffff05 0 2px,transparent 2px 9px),repeating-linear-gradient(0deg,#00000014 0 1px,transparent 1px 5px);opacity:.6}
+.copy{position:absolute;left:var(--pad);top:110px;width:min(440px,34vw);color:var(--paper);z-index:3}
+.copy h1{font:500 clamp(40px,5.2vw,76px)/1.02 Bry;letter-spacing:-.02em}
+.copy h1 em{font-style:italic;color:#ff7a6c}
+.copy p{margin-top:22px;font-size:19px;color:#c6cbd6;max-width:430px}
+.issues{list-style:none;margin-top:36px;font:400 15px/1.4 SM;color:#8f97a8;border-top:1px solid #ffffff1f}
+.issues li{display:grid;grid-template-columns:34px 1fr auto;gap:8px;padding:12px 0;border-bottom:1px solid #ffffff1f;transition:color .3s}
+.issues li span{position:relative;justify-self:start}
+.issues li span::after{content:"";position:absolute;left:-2px;right:-2px;top:52%;height:2px;background:#ff7a6c;transform:scaleX(var(--k,0));transform-origin:0 50%}
+.issues li.on{color:var(--paper)}
+.issues li em{font-style:normal;font-family:Kal;color:#ff7a6c;font-size:16px;white-space:nowrap;opacity:var(--k,0)}
+.docwrap{position:absolute;left:63%;top:calc(50% + 30px);width:600px;height:820px;transform-origin:50% 50%;z-index:2}
+.doc{position:absolute;inset:0;background:var(--sheet);color:#22283a;padding:54px 160px 50px 56px;font:400 12.6px/1.62 Bry;box-shadow:0 1px 0 #fff inset,0 30px 60px #0008,0 4px 10px #0005;transform:rotate(-1.6deg)}
+.doc::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 30% 20%,#fff0,#d8ccb222)}
+.doc h2{font:700 14px/1.3 Bry;letter-spacing:.18em;text-align:center;margin:0 -104px 4px 0}
+.doc .sub{text-align:center;font:400 10px/1.4 SM;letter-spacing:.12em;color:#7a7568;margin:0 -104px 16px 0}
+.doc p{margin-bottom:7px;text-align:justify;hyphens:auto}
+.doc p b{font:500 10.5px/1 SM;margin-right:6px}
+.doc .cl{font-weight:500}
+.doc .sig{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:22px;font:400 10px/1.4 SM;color:#7a7568}
+.doc .sig div{border-top:1px solid #22283a66;padding-top:6px}
+.doc .pg{position:absolute;left:56px;right:56px;bottom:22px;display:flex;justify-content:space-between;font:400 9.5px/1 SM;color:#9c968a}
+#ink{position:absolute;left:0;top:0;width:600px;height:820px;pointer-events:none}
+#pen{position:absolute;left:0;top:0;width:300px;height:300px;margin:-300px 0 0 0;pointer-events:none;transform-origin:0 100%;filter:drop-shadow(var(--sx,8px) var(--sy,10px) 6px #0006)}
+.stamp{position:absolute;left:240px;top:600px;width:300px;padding:16px 10px;border:5px double var(--red);color:var(--red);font:700 34px/1.05 Bry;text-align:center;letter-spacing:.08em;opacity:0;transform-origin:50% 50%;mix-blend-mode:multiply;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.4 1.45'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.4 1.45'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.stamp small{display:block;font:500 12px/1.4 SM;letter-spacing:.16em;margin-top:6px}
+@media(max-width:900px){
+ .copy{top:84px;left:16px;right:16px;width:auto}.copy h1{font-size:36px}.copy p{display:none}
+ .issues{margin-top:14px;font-size:12px}.issues li{padding:6px 0;display:none}.issues li.on{display:grid}.issues li.on:has(+ li.on){display:none}#top .brand b{font-size:19px;white-space:nowrap}
+ .docwrap{left:50%;top:calc(50% + 120px)}
+}
+
+/* PRACTICE: index cards with tabs */
+.cards{margin-top:70px;position:relative}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;position:relative;z-index:2}
+.tabs button{font:500 13px/1 SM;letter-spacing:.06em;text-transform:uppercase;border:0;cursor:pointer;padding:16px 20px 14px;background:var(--paper2);color:var(--ink);border-radius:8px 8px 0 0;transition:background .2s,transform .2s;transform:translateY(4px)}
+.tabs button.on{background:var(--sheet);transform:none;box-shadow:0 -1px 0 #1d2a4415}
+.card{background:var(--sheet);padding:56px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;min-height:520px;box-shadow:0 30px 60px #1d2a441a;background-image:repeating-linear-gradient(transparent 0 35px,#9bb0d433 35px 36px);background-position:0 90px}
+.card h3{font:500 44px/1.1 Bry;margin-bottom:18px}
+.card ul{list-style:none;margin-top:24px}
+.card li{padding:9px 0 9px 26px;position:relative}
+.card li::before{content:"✓";position:absolute;left:0;color:var(--red);font-family:Kal;font-weight:700}
+.card .note{align-self:start;background:#fff6c9;padding:26px 24px;transform:rotate(1.5deg);box-shadow:0 12px 24px #1d2a4422;font:400 21px/1.45 Kal;color:var(--ink2)}
+.card .note b{display:block;font:500 12px/1 SM;letter-spacing:.12em;color:var(--red);margin-bottom:10px;font-weight:500}
+.card img{width:100%;height:220px;object-fit:cover;margin-top:22px;filter:sepia(.25)}
+@media(max-width:900px){.card{grid-template-columns:minmax(0,1fr);padding:28px;gap:30px}.card h3{font-size:32px}.tabs button{padding:12px 12px 10px;font-size:11px}}
+
+/* FEES: a ledger */
+.ledger{margin-top:60px;max-width:1100px;border-top:3px double var(--ink)}
+.ledger .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:baseline;padding:24px 0;border-bottom:1px solid #1d2a4422;position:relative}
+.ledger .row::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--red);transform:scaleX(0);transform-origin:0;transition:transform .5s}
+.ledger .row:hover::after{transform:scaleX(1)}
+.ledger h3{font:500 28px/1.2 Bry;display:flex;gap:14px;align-items:baseline}
+.ledger h3::after{content:"";flex:1;border-bottom:2px dotted #1d2a4455;transform:translateY(-6px)}
+.ledger p{font-size:16px;color:#4c5570;max-width:640px;margin-top:4px}
+.ledger .fee{font:500 40px/1 Bry;white-space:nowrap}
+.ledger .fee small{font:400 13px/1 SM;color:var(--mute);display:block;text-align:right;margin-top:6px}
+.ledger .total{display:flex;justify-content:space-between;padding-top:20px;font:400 22px/1.4 Kal;color:var(--red)}
+@media(max-width:900px){.ledger .row{grid-template-columns:minmax(0,1fr)}.ledger .fee{font-size:30px}.ledger .fee small{text-align:left}.ledger h3{font-size:22px}}
+
+/* TRY A CLAUSE */
+.tryw{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:60px;margin-top:60px;align-items:start}
+.picks{display:grid;gap:10px}
+.picks button{text-align:left;font:400 17px/1.35 Geo;padding:18px 20px;border:1px solid #ffffff2a;background:transparent;color:var(--paper);cursor:pointer;border-radius:3px;display:flex;justify-content:space-between;gap:14px;transition:background .2s,border-color .2s}
+.picks button small{font:400 12px/1.4 SM;color:#8f97a8;white-space:nowrap}
+.picks button.on{background:#ffffff10;border-color:#ff7a6c}
+.sheet{background:var(--sheet);color:#22283a;padding:44px 48px 48px;position:relative;min-height:440px;box-shadow:0 30px 60px #0008;transform:rotate(.8deg)}
+.sheet .ref{font:500 12px/1 SM;letter-spacing:.12em;color:#9c968a;margin-bottom:16px}
+.sheet .ct{font:400 22px/1.6 Bry;position:relative;display:inline}
+.sheet .ct .bad{background-image:linear-gradient(#f5d94a99,#f5d94a99);background-repeat:no-repeat;background-size:var(--hk,0%) 100%}
+.sheet .fix{margin-top:30px;font:400 25px/1.4 Kal;color:var(--red);min-height:110px}
+.sheet .fix span{opacity:0}
+.sheet .why{margin-top:22px;padding-top:18px;border-top:1px dashed #22283a44;font-size:16px;color:#4c5570}
+@media(max-width:900px){.tryw{grid-template-columns:minmax(0,1fr)}.sheet{padding:28px}.sheet .ct{font-size:18px}}
+
+/* PROCESS: 48 hours */
+.hours{position:relative;margin-top:90px;height:300px}
+.hours svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hrs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;margin-top:-40px;position:relative}
+.hrs article{padding-top:20px}
+.hrs time{font:500 13px/1 SM;letter-spacing:.12em;color:var(--red);display:block;margin-bottom:12px}
+.hrs h3{font:500 30px/1.15 Bry;margin-bottom:10px}
+.hrs p{font-size:17px;color:#4c5570}
+@media(max-width:900px){.hours{height:140px}.hrs{grid-template-columns:minmax(0,1fr);margin-top:20px}}
+
+/* BAND */
+#band{height:115vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 var(--pad) 14vh}
+#band video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:sepia(.35) brightness(.62)}
+#band::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#141b2bdd,#141b2b00 55%)}
+#band p{position:relative;z-index:1;color:var(--paper);font:500 clamp(42px,6.6vw,108px)/1.02 Bry;letter-spacing:-.02em;max-width:1200px}
+#band p em{color:#ff7a6c}
+
+/* LEEDS */
+.leeds{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;margin-top:60px}
+.leeds figure{position:relative;overflow:hidden}
+.leeds img{width:100%;height:100%;object-fit:cover}
+.leeds figcaption{position:absolute;left:14px;bottom:12px;font:400 12px/1.4 SM;letter-spacing:.08em;color:#fff;background:#141b2bbb;padding:6px 10px}
+.leeds .a{grid-column:1/span 7;height:520px}
+.leeds .b{grid-column:8/span 5;height:340px;margin-top:120px}
+.leeds .c{grid-column:2/span 5;height:360px}
+.leeds .addr{grid-column:8/span 5;align-self:center;font-size:18px}
+.leeds .addr b{display:block;font:500 34px/1.15 Bry;margin-bottom:12px}
+.leeds .addr .hand{font-size:22px;margin-top:16px;display:block}
+@media(max-width:900px){.leeds>*{grid-column:1/-1!important;margin:0!important;height:auto!important}.leeds figure{height:260px!important}}
+
+/* RESULTS */
+.nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:70px;border-top:1px solid #ffffff2a}
+.nums div{padding:34px 26px 30px 0;border-right:1px solid #ffffff2a}
+.nums div+div{padding-left:26px}
+.nums div:last-child{border-right:0}
+.nums b{display:block;font:500 clamp(48px,5.4vw,84px)/1 Bry;font-weight:500;color:var(--paper)}
+.nums span{font-size:16px;color:#aeb5c4}
+@media(max-width:900px){.nums{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.nums div{padding:24px 14px!important;border-right:0;border-bottom:1px solid #ffffff2a}}
+
+/* REVIEWS: paper slips */
+.slips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;margin-top:70px}
+.slip{background:var(--sheet);padding:42px 30px 30px;position:relative;box-shadow:0 14px 30px #1d2a4422;font:500 21px/1.45 Bry}
+.slip:nth-child(1){transform:rotate(-1.4deg)}.slip:nth-child(2){transform:rotate(1deg);margin-top:40px}.slip:nth-child(3){transform:rotate(-.6deg)}
+.slip:nth-child(4){transform:rotate(.8deg)}.slip:nth-child(5){transform:rotate(-1deg);margin-top:40px}.slip:nth-child(6){transform:rotate(1.3deg)}
+.slip::before{content:"";position:absolute;left:28px;top:-14px;width:16px;height:50px;border:3px solid #8f97a8;border-radius:10px;border-bottom-color:transparent}
+.slip cite{display:block;margin-top:18px;font:400 13px/1.4 SM;font-style:normal;color:var(--mute);letter-spacing:.04em}
+@media(max-width:900px){.slips{grid-template-columns:minmax(0,1fr)}.slip{margin-top:0!important}}
+
+/* TEAM: signature cards */
+.team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:70px}
+.person{background:#ffffff0c;border:1px solid #ffffff22;padding:30px 26px;min-height:330px;display:flex;flex-direction:column}
+.person .sg{font:700 40px/1 Kal;color:#ff7a6c;transform:rotate(-4deg);margin:10px 0 26px;white-space:nowrap}
+.person h3{font:500 24px/1.2 Bry}
+.person small{font:400 12px/1.5 SM;color:#8f97a8;letter-spacing:.06em;display:block;margin:6px 0 14px}
+.person p{font-size:16px;color:#c6cbd6;margin-top:auto}
+.teamph{margin-top:60px;height:360px;background:url(media/shelves.jpg) center/cover;position:relative}
+.teamph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#141b2b,#141b2b33 40%,#141b2b33 60%,#141b2b)}
+@media(max-width:900px){.team{grid-template-columns:minmax(0,1fr)}.person{min-height:0}.teamph{height:220px}}
+
+/* FAQ */
+.faq{margin-top:60px;max-width:1000px}
+.faq details{border-top:1px solid #1d2a4433;padding:24px 0}
+.faq details:last-child{border-bottom:1px solid #1d2a4433}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:60px 1fr 24px;gap:10px;font:500 26px/1.3 Bry}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{font:500 14px/2.4 SM;font-style:normal;color:var(--red)}
+.faq summary::after{content:"+";font:400 30px/1 Kal;color:var(--red);transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:12px 0 0 70px;color:#4c5570;max-width:780px}
+@media(max-width:900px){.faq summary{grid-template-columns:40px 1fr 20px;font-size:20px}.faq details p{margin-left:50px}}
+
+/* CONTACT */
+#send{background:linear-gradient(90deg,#141b2bf2,#141b2bcc 55%,#141b2b88),url(media/brick.jpg) center/cover;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:70px;align-items:center;min-height:100vh}
+form{background:var(--sheet);color:var(--ink);padding:34px;display:grid;gap:16px;box-shadow:0 30px 60px #0008;transform:rotate(-.6deg)}
+form h3{font:500 28px/1.2 Bry}
+label{font:500 12px/1 SM;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);display:grid;gap:8px}
+input,select{font:400 17px/1.3 Geo;color:var(--ink);background:transparent;border:0;border-bottom:1.5px solid #1d2a4455;padding:10px 2px;text-transform:none;letter-spacing:0}
+input[type=file]{font-size:14px}
+form .btn{justify-content:center;margin-top:10px}
+form .ok{display:none;font:400 21px/1.4 Kal;color:var(--red)}
+@media(max-width:900px){#send{grid-template-columns:minmax(0,1fr)}}
+footer{padding:80px var(--pad) 40px;background:var(--navy);color:#aeb5c4}
+footer .big{font:500 clamp(40px,10vw,170px)/.95 Bry;letter-spacing:-.03em;color:var(--paper)}
+footer .big em{color:#ff7a6c}
+footer .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;margin:60px 0;font-size:16px}
+footer .cols b{display:block;color:var(--paper);margin-bottom:10px}
+footer .cols a{display:block;text-decoration:none;padding:3px 0}
+footer .fine{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font:400 12px/1.5 SM;color:#6e7280}
+@media(max-width:900px){footer .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+</style>
+</head><body>
+
+<header id="top">
+  <a class="brand" href="#"><img src="src/img/logo.svg" alt=""><b>Reeve <i>&amp;</i> Calder</b></a>
+  <nav><a href="#practice">What we do</a><a href="#fees">Fixed fees</a><a href="#try">Try a clause</a><a href="#people">People</a><a href="#faq">FAQ</a></nav>
+  <a class="btn" href="#send">Send a contract</a>
+</header>
+
+<section id="desk">
+  <div class="stage">
+    <div class="copy">
+      <h1>We read the small print <em>before</em> you sign it.</h1>
+      <p>Contract and employment solicitors for small businesses in Leeds. Fixed-fee reviews back in 48 hours, in plain English.</p>
+      <ol class="issues" id="issues">
+        <li><b>4.2</b><span>Paid in 90 days</span><em>→ 30</em></li>
+        <li><b>7.1</b><span>Unlimited liability</span><em>→ capped</em></li>
+        <li><b>9.1</b><span>Signing away your IP</span><em>→ this job only</em></li>
+        <li><b>12.1</b><span>Locked in for 3 years</span><em>→ 12 months</em></li>
+      </ol>
+    </div>
+    <div class="docwrap" id="docwrap">
+      <div class="doc" id="doc">
+        <h2>SUPPLY OF SERVICES AGREEMENT</h2>
+        <div class="sub">DRAFT 3 · FOR SIGNATURE</div>
+        <p>This agreement is dated 14 November 2026 and is made between <span class="cl">Northgate Retail Group Ltd</span> ("the Client") and <span class="cl">Hollin Lane Studio Ltd</span> ("the Supplier").</p>
+        <p><b>1.1</b>The Supplier will provide the design services described in Schedule 1 with reasonable skill and care.</p>
+        <p><b>2.1</b>This agreement starts on the date above and continues until terminated in line with clause 12.</p>
+        <p><b>4.1</b>The Supplier will invoice the Client monthly in arrears for services delivered.</p>
+        <p><b>4.2</b><span id="k42">The Client will pay each valid invoice within <span id="k90">ninety (90) days</span> of receipt, without interest.</span></p>
+        <p><b>5.1</b>The Supplier will keep the Client's confidential information secret during and after this agreement.</p>
+        <p><b>7.1</b><span id="k71">The Supplier's total liability under or in connection with this agreement shall be unlimited.</span></p>
+        <p><b>7.2</b>Nothing in this agreement limits liability for death or personal injury caused by negligence, or for fraud.</p>
+        <p><b>9.1</b><span id="k9">All intellectual property owned, created or used by the Supplier at any time shall vest in the Client absolutely.</span></p>
+        <p><b>10.1</b>Each party will comply with data protection law, including the UK GDPR.</p>
+        <p><b>12.1</b><span id="k12">This agreement renews automatically for successive <span id="k3">three (3) year</span> terms</span> unless either party gives notice in writing.</p>
+        <p><b>14.1</b>This agreement is governed by the law of England and Wales.</p>
+        <div class="sig"><div>For the Client</div><div>For the Supplier</div></div>
+        <div class="pg"><span>NRG/SSA/2026/118</span><span>Page 1 of 9</span></div>
+        <canvas id="ink" width="600" height="820"></canvas>
+        <div class="stamp" id="stamp">REVIEWED<small>REEVE &amp; CALDER · 48 HRS</small></div>
+        <svg id="pen" viewBox="0 0 300 300"><g>
+          <path d="M0 300 L14 270 L26 282 Z" fill="#c9a24a"/><path d="M0 300 L20 276" stroke="#6b531f" stroke-width="1.2"/>
+          <path d="M12 266 L32 286 L60 258 L40 238 Z" fill="#1b1f2a"/>
+          <path d="M40 238 L60 258 L240 78 Q262 56 248 42 Q234 28 212 50 Z" fill="#1d2a44"/>
+          <path d="M44 242 L222 64" stroke="#ffffff33" stroke-width="3" stroke-linecap="round"/>
+          <path d="M120 158 L140 178" stroke="#c9a24a" stroke-width="5"/>
+          <path d="M196 70 L232 106" stroke="#c9a24a" stroke-width="3"/><path d="M206 60 L190 30" stroke="#c9a24a" stroke-width="4" stroke-linecap="round"/>
+        </g></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="practice">
+  <span class="kick" data-r>What we do</span>
+  <h2 class="h" data-r>Law for people who <em>run</em> things.</h2>
+  <p class="lede" data-r>We act for founders, studios, shops and trades with fewer than fifty staff. No one here bills by the six-minute unit, and no one will send you a letter you need a dictionary for.</p>
+  <div class="cards" data-r>
+    <div class="tabs" id="tabs"></div>
+    <div class="card" id="card"></div>
+  </div>
+</section>
+
+<section class="sec dark" id="try">
+  <span class="kick" data-r>Try a clause</span>
+  <h2 class="h" data-r>Four lines we cross out <em>every</em> week.</h2>
+  <p class="lede" data-r>Pick one. This is what our red pen does to it, and why.</p>
+  <div class="tryw">
+    <div class="picks" id="picks" data-r></div>
+    <div class="sheet" id="sheet" data-r><div class="ref" id="tref"></div><div class="ct" id="tct"></div><div class="fix" id="tfix"></div><div class="why" id="twhy"></div></div>
+  </div>
+</section>
+
+<section class="sec" id="fees">
+  <span class="kick" data-r>Fixed fees</span>
+  <h2 class="h" data-r>Prices, <em>written down</em>.</h2>
+  <p class="lede" data-r>Every fee below includes VAT, one call with the solicitor who did the work, and a marked-up copy you can send straight back.</p>
+  <div class="ledger" data-r>
+    <div class="row"><div><h3>Contract review</h3><p>Up to 20 pages. Redlined copy, a one-page summary of what matters and the changes to ask for.</p></div><div class="fee">£480<small>back in 48 hours</small></div></div>
+    <div class="row"><div><h3>Terms of business</h3><p>Your own terms and conditions, written for how you actually work, with a short version for your website.</p></div><div class="fee">£950<small>about a week</small></div></div>
+    <div class="row"><div><h3>Employment contract pack</h3><p>Contract, handbook basics and offer letter templates for your first hires.</p></div><div class="fee">£1,200<small>about two weeks</small></div></div>
+    <div class="row"><div><h3>Shareholders' agreement</h3><p>For two to five founders: vesting, leavers, deadlock and what happens if someone wants out.</p></div><div class="fee">£1,850<small>two to three weeks</small></div></div>
+    <div class="row"><div><h3>Unpaid invoice letter</h3><p>A letter before action on our letterhead, with statutory late-payment interest worked out for you.</p></div><div class="fee">£180<small>same day</small></div></div>
+    <div class="total"><span>No hourly surprises.</span><span>If it takes longer, that's on us.</span></div>
+  </div>
+</section>
+
+<section class="sec" id="hours" style="padding-top:0">
+  <span class="kick" data-r>How a review works</span>
+  <h2 class="h" data-r>Forty-eight hours, <em>start</em> to signed.</h2>
+  <div class="hours"><svg viewBox="0 0 1200 300" preserveAspectRatio="none"><path id="hpath" d="M0 220 C150 220 200 120 300 120 S450 220 600 200 S760 80 900 90 S1100 200 1200 150" fill="none" stroke="#1d2a4422" stroke-width="2"/><path id="hred" d="M0 220 C150 220 200 120 300 120 S450 220 600 200 S760 80 900 90 S1100 200 1200 150" fill="none" stroke="#c8322a" stroke-width="3" stroke-linecap="round"/></svg></div>
+  <div class="hrs">
+    <article data-r><time>HOUR 0</time><h3>Send it</h3><p>Upload the contract and tell us in two lines what the deal is and what worries you.</p></article>
+    <article data-r><time>HOUR 2</time><h3>We call</h3><p>A fifteen-minute call with the solicitor who will read it. You hear the fixed fee before we start.</p></article>
+    <article data-r><time>HOUR 24</time><h3>Red pen</h3><p>Every clause read. The ones that matter marked up, with the wording to ask for instead.</p></article>
+    <article data-r><time>HOUR 48</time><h3>Sign or push back</h3><p>A summary you can forward to the other side, and a second look if they come back with changes.</p></article>
+  </div>
+</section>
+
+<section id="band">
+  <video src="media/ink.mp4" poster="media/ink.jpg" muted loop playsinline autoplay></video>
+  <p data-r>Plain English. <em>Signed</em> in ink.</p>
+</section>
+
+<section class="sec dark" id="numbers">
+  <span class="kick" data-r>Last year</span>
+  <h2 class="h" data-r>What the red pen <em>saved</em>.</h2>
+  <div class="nums">
+    <div data-r><b data-n="1240">0</b><span>contracts reviewed for Yorkshire businesses</span></div>
+    <div data-r><b data-n="3.1" data-p="£" data-s="m">£0m</b><span>of unlimited liability capped before signing</span></div>
+    <div data-r><b data-n="46" data-s=" hrs">0 hrs</b><span>average turnaround on a contract review</span></div>
+    <div data-r><b data-n="38" data-s=" days">0 days</b><span>knocked off the average payment term we negotiated</span></div>
+  </div>
+</section>
+
+<section class="sec" id="leeds">
+  <span class="kick" data-r>Where we are</span>
+  <h2 class="h" data-r>In Leeds, <em>since</em> 2009.</h2>
+  <p class="lede" data-r>Two floors above a bakery on Call Lane, five minutes from the station. Come in, bring the contract, we'll put the kettle on.</p>
+  <div class="leeds">
+    <figure class="a" data-r><img src="media/cornex.jpg" alt="The domed interior of a Victorian corn exchange" loading="lazy"><figcaption>THE CORN EXCHANGE, TWO MINUTES AWAY</figcaption></figure>
+    <figure class="b" data-r><img src="media/river.jpg" alt="Old warehouses along a river in a northern city" loading="lazy"><figcaption>THE RIVER AIRE AT THE CALLS</figcaption></figure>
+    <figure class="c" data-r><img src="media/dock.jpg" alt="Red brick buildings by a dock" loading="lazy"><figcaption>WHERE HALF OUR CLIENTS WORK</figcaption></figure>
+    <div class="addr" data-r><b>Reeve &amp; Calder LLP</b>Second floor, 41 Call Lane<br>Leeds LS1 7BT<br>0113 496 0712<span class="hand">Ring the top bell. The bottom one is the bakery.</span></div>
+  </div>
+</section>
+
+<section class="sec" id="reviews" style="padding-top:0">
+  <span class="kick" data-r>Clients</span>
+  <h2 class="h" data-r>Notes from the <em>other</em> side of the desk.</h2>
+  <div class="slips">
+    <div class="slip" data-r>"They caught a clause that would have handed our client every font file we've ever made. Cost us £480. Saved the studio."<cite>DESIGN STUDIO OWNER · HOLBECK</cite></div>
+    <div class="slip" data-r>"I asked for 30-day payment terms because they told me I could. The client said yes. I didn't know you could just ask."<cite>JOINERY BUSINESS · ARMLEY</cite></div>
+    <div class="slip" data-r>"Plain English, a fixed price and a phone call with the person who actually read it. Rare."<cite>COFFEE ROASTER · KIRKSTALL</cite></div>
+    <div class="slip" data-r>"Our first three hires all have proper contracts now. Took a fortnight and one cup of tea."<cite>SOFTWARE START-UP · LEEDS DOCK</cite></div>
+    <div class="slip" data-r>"The letter before action got us paid in nine days after five months of excuses."<cite>EVENT CATERER · CHAPEL ALLERTON</cite></div>
+    <div class="slip" data-r>"They told us not to sue. It was the right call, and it was free advice."<cite>BRICKLAYING FIRM · MORLEY</cite></div>
+  </div>
+</section>
+
+<section class="sec dark" id="people">
+  <span class="kick" data-r>Who reads your contract</span>
+  <h2 class="h" data-r>Four solicitors, <em>four</em> signatures.</h2>
+  <p class="lede" data-r>No trainees reading your contract unsupervised, no handing you down the corridor. You get one name and one direct line.</p>
+  <div class="team">
+    <div class="person" data-r><div class="sg">H. Reeve</div><h3>Helen Reeve</h3><small>FOUNDING PARTNER · COMMERCIAL</small><p>Fifteen years in contracts. Will find the one sentence on page nine that matters.</p></div>
+    <div class="person" data-r><div class="sg">D. Calder</div><h3>Dev Calder</h3><small>PARTNER · EMPLOYMENT</small><p>Hiring, handbooks, and the difficult conversations you'd rather not have.</p></div>
+    <div class="person" data-r><div class="sg">A. Okafor</div><h3>Ade Okafor</h3><small>SOLICITOR · DISPUTES</small><p>Unpaid invoices, broken deals, and knowing when a dispute isn't worth it.</p></div>
+    <div class="person" data-r><div class="sg">M. Lund</div><h3>Maja Lund</h3><small>SOLICITOR · IP &amp; DATA</small><p>Who owns what you made, and what you're allowed to do with customer data.</p></div>
+  </div>
+  <div class="teamph" data-r></div>
+</section>
+
+<section class="sec" id="faq">
+  <span class="kick" data-r>Questions</span>
+  <h2 class="h" data-r>Before you <em>send</em> it.</h2>
+  <div class="faq">
+    <details open><summary><i>Q.1</i>Is 48 hours really 48 hours?<span></span></summary><p>Two working days from when we confirm the fee. If we miss it, the review is free. It has happened twice, and both times we said so.</p></details>
+    <details><summary><i>Q.2</i>What if the contract is longer than 20 pages?<span></span></summary><p>We'll quote a fixed fee on the first call. Most longer contracts are 20 pages that matter and 40 pages of schedules.</p></details>
+    <details><summary><i>Q.3</i>Will you talk to the other side for us?<span></span></summary><p>If you want us to. Most clients prefer to send our summary themselves; it keeps the relationship friendly and costs nothing extra.</p></details>
+    <details><summary><i>Q.4</i>Do you only work in Leeds?<span></span></summary><p>We're based in Leeds and work for businesses anywhere in England and Wales. About a third of our clients have never been to the office.</p></details>
+    <details><summary><i>Q.5</i>Are you regulated?<span></span></summary><p>Yes. We are a firm of solicitors regulated by the Solicitors Regulation Authority, with professional indemnity insurance for all the work we do.</p></details>
+  </div>
+</section>
+
+<section class="sec" id="send">
+  <div style="color:var(--paper)">
+    <span class="kick" data-r>Send us a contract</span>
+    <h2 class="h" data-r>Don't sign it <em>yet</em>.</h2>
+    <p class="lede" data-r style="color:#c6cbd6">Upload it here and we'll call you within two working hours with a fixed fee. If it doesn't need us, we'll tell you that too.</p>
+  </div>
+  <form data-r onsubmit="event.preventDefault();this.querySelector('.ok').style.display='block'">
+    <h3>Contract review · £480</h3>
+    <label>Your name<input required placeholder="Sam Hollin"></label>
+    <label>Business<input required placeholder="Hollin Lane Studio Ltd"></label>
+    <label>The contract<input type="file" accept=".pdf,.doc,.docx"></label>
+    <label>What kind of deal is it?<select><option>Supplying services</option><option>Buying from a supplier</option><option>Employment</option><option>Something else</option></select></label>
+    <button class="btn">Send for review</button>
+    <p class="ok">Got it. We'll ring you this afternoon.</p>
+  </form>
+</section>
+
+<footer>
+  <div class="big">Reeve <em>&amp;</em> Calder</div>
+  <div class="cols">
+    <div><b>Services</b><a href="#practice">Contracts</a><a href="#practice">Employment</a><a href="#practice">Disputes</a><a href="#fees">Fixed fees</a></div>
+    <div><b>Firm</b><a href="#people">People</a><a href="#leeds">Office</a><a href="#">Complaints</a></div>
+    <div><b>Small print</b><a href="#">Privacy</a><a href="#">Terms of business</a><a href="#">Regulatory information</a></div>
+    <div><b>Visit</b><a href="#leeds">41 Call Lane, Leeds</a><a href="#send">Send a contract</a></div>
+  </div>
+  <div class="fine"><span>Reeve &amp; Calder LLP is a fictional firm</span><span>Site by LOLCorp PVT LTD</span></div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const cl=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
+const sm=(a,b,v)=>{const t=cl((v-a)/(b-a));return t*t*(3-2*t)};
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+let time=0;
+
+/* ---------- HERO: red pen on the contract ---------- */
+const doc=$('#doc'),wrap=$('#docwrap'),cv=$('#ink'),cx=cv.getContext('2d'),pen=$('#pen'),stamp=$('#stamp');
+let DPR=Math.min(2,devicePixelRatio||1);cv.width=600*DPR;cv.height=820*DPR;
+function fit(){const s=Math.min((innerHeight-110)/820,innerWidth>900?(innerWidth*.42)/600:(innerWidth-24)/600);wrap.style.transform=`translate(-50%,-50%) scale(${s})`}
+fit();addEventListener('resize',()=>{fit();measure()});
+// line rects of a span, in doc-local px (measured with the sheet un-rotated)
+function lines(id){const el=document.getElementById(id),t=doc.style.transform;doc.style.transform='none';const wt=wrap.style.transform;wrap.style.transform='none';
+  const d=doc.getBoundingClientRect(),out=[...el.getClientRects()].filter(r=>r.width>2).map(r=>({x:r.left-d.left,y:r.top-d.top,w:r.width,h:r.height}));doc.style.transform=t;wrap.style.transform=wt;return out}
+const R=rng(41);
+let A=[];
+function wob(n,amp){const a=[];for(let i=0;i<n;i++)a.push((R()-.5)*amp);return a}
+function measure(){
+  const L42=lines('k42'),L90=lines('k90'),L71=lines('k71'),L9=lines('k9'),L12=lines('k12'),L3=lines('k3');
+  const mx=462;// right margin x
+  const hl=(L,p0,p1)=>({t:'hl',L,p0,p1,j:wob(40,1.6)});
+  const strike=(L,p0,p1)=>({t:'st',L,p0,p1,j:wob(40,1.4)});
+  const circ=(r,p0,p1)=>{const u=r[0];return{t:'ci',cx:u.x+u.w/2,cy:u.y+u.h/2,rx:u.w/2+9,ry:u.h/2+6,p0,p1}};
+  const under=(r,p0,p1)=>({t:'un',L:r,p0,p1,j:wob(40,1.2)});
+  const brk=(L,p0,p1)=>{const y0=L[0].y-2,y1=L[L.length-1].y+L[L.length-1].h+2;return{t:'br',x:44,y0,y1,p0,p1}};
+  const note=(x,y,txt,p0,p1)=>({t:'wr',x,y,txt:txt.split('|'),p0,p1});
+  const y42=L42[0].y,y71=L71[0].y,y9=L9[0].y,y12=L12[0].y;
+  A=[hl(L42,.07,.14),circ(L90,.14,.18),note(mx,y42+4,'30 days, not 90.|Late Payment Act.',.18,.27),
+     strike(L71,.31,.38),note(mx,y71+2,'Cap it at 12|months of fees.',.38,.47),
+     brk(L9,.51,.54),note(mx,y9+2,'Only work made|for this job!',.54,.63),
+     hl(L12,.67,.72),under(L3,.72,.75),note(mx,y12+2,'12 months,|60 days notice',.75,.83)];
+}
+// pen point along an action at progress k (doc coords)
+function along(a,k){
+  if(a.t==='hl'||a.t==='st'||a.t==='un'){const tot=a.L.reduce((s,r)=>s+r.w,0);let d=k*tot;for(const r of a.L){if(d<=r.w)return{x:r.x+d,y:r.y+r.h*(a.t==='un'?1:a.t==='st'?.55:.6)};d-=r.w}const r=a.L[a.L.length-1];return{x:r.x+r.w,y:r.y+r.h*.6}}
+  if(a.t==='ci'){const t=-Math.PI*.6+k*Math.PI*2.15;return{x:a.cx+Math.cos(t)*a.rx*(1+.04*k),y:a.cy+Math.sin(t)*a.ry}}
+  if(a.t==='br'){if(k<.15)return{x:a.x+8-k/.15*8,y:a.y0};if(k<.85)return{x:a.x,y:lerp(a.y0,a.y1,(k-.15)/.7)};return{x:a.x+(k-.85)/.15*8,y:a.y1}}
+  if(a.t==='wr'){const n=a.txt.length,li=Math.min(n-1,Math.floor(k*n)),lk=k*n-li;cx.font='400 17px Kal';const w=cx.measureText(a.txt[li]).width;return{x:a.x+w*lk,y:a.y+li*21+15+Math.sin(lk*w*.55)*4-3}}
+}
+function drawAction(a,k){if(k<=0)return;
+  cx.save();
+  if(a.t==='hl'){cx.globalCompositeOperation='multiply';cx.strokeStyle='rgba(245,217,74,.62)';cx.lineCap='butt';let rem=k*a.L.reduce((s,r)=>s+r.w,0);
+    a.L.forEach((r,i)=>{if(rem<=0)return;const w=Math.min(r.w,rem);rem-=w;cx.lineWidth=r.h*.82;cx.beginPath();const n=Math.max(2,Math.ceil(w/14));for(let s=0;s<=n;s++){const x=r.x-3+w*s/n+3*(s===n?1:0),y=r.y+r.h*.56+a.j[(s+i*7)%40];s?cx.lineTo(x,y):cx.moveTo(x,y)}cx.stroke()})}
+  else if(a.t==='st'||a.t==='un'){cx.strokeStyle='#c8322a';cx.lineCap='round';let rem=k*a.L.reduce((s,r)=>s+r.w,0);
+    a.L.forEach((r,i)=>{if(rem<=0)return;const w=Math.min(r.w,rem);rem-=w;const passes=a.t==='un'?2:1;for(let p=0;p<passes;p++){cx.beginPath();const n=Math.max(2,Math.ceil(w/10));for(let s=0;s<=n;s++){const x=r.x+w*s/n,y=r.y+r.h*(a.t==='un'?.98+p*.18:.55)+a.j[(s+i*5+p*11)%40];s?cx.lineTo(x,y):cx.moveTo(x,y)}cx.lineWidth=1.9-p*.4;cx.stroke()}})}
+  else if(a.t==='ci'){cx.strokeStyle='#c8322a';cx.lineWidth=1.8;cx.beginPath();const N=60;for(let s=0;s<=N*k;s++){const q=along(a,s/N);s?cx.lineTo(q.x,q.y):cx.moveTo(q.x,q.y)}cx.stroke()}
+  else if(a.t==='br'){cx.strokeStyle='#c8322a';cx.lineWidth=2.2;cx.lineCap='round';cx.beginPath();const N=40;for(let s=0;s<=N*k;s++){const q=along(a,s/N);s?cx.lineTo(q.x+Math.sin(s)*.4,q.y):cx.moveTo(q.x,q.y)}cx.stroke()}
+  else if(a.t==='wr'){cx.fillStyle='#c8322a';cx.font='400 17px Kal';const n=a.txt.length;a.txt.forEach((s,i)=>{const lk=cl(k*n-i);if(lk<=0)return;const w=cx.measureText(s).width;cx.save();cx.beginPath();cx.rect(a.x-4,a.y+i*21-4,w*lk+4,26);cx.clip();cx.fillText(s,a.x,a.y+i*21+15);cx.restore()})}
+  cx.restore()}
+// pen: a stiff spring chases the ink point; tilt follows velocity
+const P={x:520,y:760,vx:0,vy:0,ang:0,va:0,lift:1};
+let p=0,last=performance.now();
+function heroTarget(){const r=$('#desk').getBoundingClientRect();return cl(-r.top/(r.height-innerHeight))}
+function frame(dt){
+  cx.setTransform(DPR,0,0,DPR,0,0);cx.clearRect(0,0,600,820);
+  let tgt=null,writing=false;
+  for(let i=0;i<A.length;i++){const a=A[i],k=cl((p-a.p0)/(a.p1-a.p0));drawAction(a,k);if(k>0&&k<1){tgt=along(a,k);writing=true}}
+  if(!tgt){// travelling between marks, or resting
+    let prev=null,next=null;for(const a of A){if(a.p1<=p)prev=a;else if(!next&&a.p0>p)next=a}
+    const rest={x:560,y:780+Math.sin(time*1.3)*3};
+    const end=prev?along(prev,1):rest;
+    if(p>.86){const k=sm(.86,.95,p);tgt={x:lerp(end.x,600,k),y:lerp(end.y,800,k)}}
+    else if(next){const k=prev?sm(prev.p1,next.p0,p):sm(0,next.p0,p);const st=along(next,0);tgt={x:lerp(end.x,st.x,k),y:lerp(end.y,st.y,k)-Math.sin(k*Math.PI)*40}}
+    else tgt=end}
+  const K=620,C=2*Math.sqrt(K)*.62;const ax=K*(tgt.x-P.x)-C*P.vx,ay=K*(tgt.y-P.y)-C*P.vy;P.vx+=ax*dt;P.vy+=ay*dt;P.x+=P.vx*dt;P.y+=P.vy*dt;
+  const wantA=cl(P.vx*.012,-12,12)+(writing?0:-4);P.va+=(160*(wantA-P.ang)-2*Math.sqrt(160)*.5*P.va)*dt;P.ang+=P.va*dt;
+  P.lift+=((writing?0:1)-P.lift)*Math.min(1,dt*10);
+  const sc=1+P.lift*.05;pen.style.transform=`translate(${P.x.toFixed(1)}px,${P.y.toFixed(1)}px) rotate(${P.ang.toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+  pen.style.setProperty('--sx',(6+P.lift*16)+'px');pen.style.setProperty('--sy',(8+P.lift*20)+'px');
+  // stamp: drops, squashes on impact, settles
+  const u=(p-.88)/.03;if(u<0){stamp.style.opacity=0}else{const fall=cl(u),imp=Math.max(0,(p-.91)/.06);const sq=Math.exp(-imp*5)*Math.sin(imp*22)*.12*(imp>0);
+    stamp.style.opacity=fall<1?.2+.8*fall:1;stamp.style.transform=`rotate(-9deg) scale(${(lerp(2.2,1,fall*fall)*(1+sq)).toFixed(3)},${(lerp(2.2,1,fall*fall)*(1-sq)).toFixed(3)})`}
+  // issue list
+  const iss=$$('#issues li'),ends=[.27,.47,.63,.83],starts=[.07,.31,.51,.67];iss.forEach((li,i)=>{li.classList.toggle('on',p>=starts[i]-.03);li.style.setProperty('--k',sm(ends[i]-.04,ends[i],p).toFixed(3))})
+}
+document.fonts.ready.then(measure);measure();
+for(let i=0;i<60;i++)frame(1/60);
+
+/* ---------- PRACTICE tabs ---------- */
+const PR=[['Contracts','Contracts you can sign without guessing.','We review, draft and negotiate the agreements small businesses live on: supply, services, agency, distribution and NDAs.',['Fixed-fee review in 48 hours','Your own terms of business','Negotiation notes you can send on'],'Most contracts are fine. We tell you which three sentences aren\'t.','media/papers.jpg'],
+['Employment','Hiring, handbooks and hard conversations.','From your first employee to your fiftieth: contracts, policies, flexible working, grievances and, when it comes to it, exits done properly.',['Contract and offer-letter packs','Disciplinary and grievance support','Settlement agreements'],'Call before the meeting, not after it. It\'s usually cheaper.','media/notebook.jpg'],
+['Disputes','Getting paid, and knowing when to stop.','Unpaid invoices, broken deals and partners who fall out. We try letters and calls first, and court only when the sums make sense.',['Letters before action from £180','Late-payment interest worked out','Small claims and county court'],'Half our dispute work ends with one letter.','media/signing.jpg'],
+['Founders','The agreement you\'ll be glad you signed early.','Shareholders\' agreements, vesting, share options and investment terms for companies with two to five owners.',['Shareholders\' agreements','EMI option schemes','Investment term sheets'],'Write down what happens if someone leaves while you\'re all still friends.','media/pen.jpg'],
+['IP & data','Who owns what you made.','Assignments, licences, trade marks and UK GDPR for studios, makers and software companies.',['IP assignment and licences','Trade mark filing','Privacy notices and DPAs'],'If you made it before the job started, it should stay yours.','media/signature.jpg']];
+const tabs=$('#tabs'),card=$('#card');tabs.innerHTML=PR.map((t,i)=>`<button class="${i?'':'on'}" data-i="${i}">${t[0]}</button>`).join('');
+function showCard(i){const t=PR[i];card.innerHTML=`<div><h3>${t[1]}</h3><p>${t[2]}</p><ul>${t[3].map(x=>`<li>${x}</li>`).join('')}</ul></div><div><div class="note"><b>FROM HELEN'S DESK</b>${t[4]}</div><img src="${t[5]}" alt="" loading="lazy"></div>`}
+showCard(0);tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('#tabs button').forEach(x=>x.classList.toggle('on',x===b));showCard(+b.dataset.i)});
+
+/* ---------- TRY A CLAUSE ---------- */
+const TC=[['Payment terms','PAYMENT · CLAUSE 4.2','The Client will pay each valid invoice <span class="bad">within ninety (90) days of receipt, without interest</span>.','30 days, with interest under the Late Payment Act.','Big customers ask for 90 days because most suppliers never push back. Most will accept 30 when asked.'],
+['Liability','LIABILITY · CLAUSE 7.1','The Supplier\'s <span class="bad">total liability under or in connection with this agreement shall be unlimited</span>.','Cap it at the fees paid in the last 12 months.','Unlimited liability means one mistake could cost more than the business is worth. Your insurer may not cover it either.'],
+['Your IP','INTELLECTUAL PROPERTY · CLAUSE 9.1','<span class="bad">All intellectual property owned, created or used by the Supplier at any time</span> shall vest in the Client.','Only what you make for this project, once paid.','As written, this hands over your templates, code and past work. Assign the deliverables, license the rest.'],
+['Auto-renewal','TERM · CLAUSE 12.1','This agreement <span class="bad">renews automatically for successive three (3) year terms</span> unless either party gives notice.','12-month renewals, 60 days\' notice to leave.','Long silent renewals are how small firms end up stuck with a client, or a supplier, they outgrew years ago.']];
+const picks=$('#picks');picks.innerHTML=TC.map((t,i)=>`<button class="${i?'':'on'}" data-i="${i}">${t[0]}<small>${t[1].split(' · ')[1]}</small></button>`).join('');
+let tcT0=null;
+function showTC(i){const t=TC[i];$('#tref').textContent=t[1];$('#tct').innerHTML=t[2];$('#tfix').innerHTML=[...t[3]].map(c=>`<span>${c}</span>`).join('');$('#twhy').textContent=t[4];tcT0=time}
+showTC(0);picks.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('#picks button').forEach(x=>x.classList.toggle('on',x===b));showTC(+b.dataset.i)});
+function tcAnim(){const sh=$('#sheet');if(sh._t0==null)return;const t0=Math.max(sh._t0+.6,tcT0);const k=time-t0;const bad=$('#tct .bad');if(bad)bad.style.setProperty('--hk',(sm(0,.6,k)*100).toFixed(1)+'%');
+  $$('#tfix span').forEach((s,i)=>s.style.opacity=k>.7+i*.035?1:0)}
+
+/* ---------- 48 hours line ---------- */
+const hred=$('#hred'),HL=hred.getTotalLength();hred.style.strokeDasharray=HL;
+function hours(){const r=$('#hours').getBoundingClientRect();const q=cl((innerHeight*.8-r.top)/(r.height*.8));hred.style.strokeDashoffset=HL*(1-q)}
+
+/* ---------- clock-driven reveals and counters ---------- */
+const watch=[...document.querySelectorAll('[data-r],#sheet,[data-n]')];
+function reveal(){
+  for(const el of watch){if(el._t0!=null)continue;const r=el.getBoundingClientRect();if(r.top<innerHeight*.88&&r.bottom>0)el._t0=time}
+  for(const el of $$('[data-r]')){if(el._t0==null||el._done)continue;const k=cl((time-el._t0)/.9),e=1-Math.pow(1-k,3);el.style.opacity=e;el.style.filter=k<1?`blur(${((1-e)*7).toFixed(2)}px)`:'none';el.style.translate=`0 ${((1-e)*14).toFixed(1)}px`;if(k>=1){el._done=1;el.style.filter='none';el.style.translate='none'}}
+  for(const b of $$('[data-n]')){if(b._t0==null||b._dn)continue;const n=+b.dataset.n,pre=b.dataset.p||'',suf=b.dataset.s||'',dec=String(n).includes('.')?1:0,k=cl((time-b._t0-.3)/1.5),v=n*(1-Math.pow(1-k,3));b.textContent=pre+(dec?v.toFixed(1):Math.round(v).toLocaleString('en-GB'))+suf;if(k>=1)b._dn=1}
+}
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;time+=dt;
+  p+=(heroTarget()-p)*Math.min(1,dt*5);
+  const r=$('#desk').getBoundingClientRect();if(r.bottom>0)frame(dt);
+  reveal();tcAnim();hours();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script>
+</body></html>
