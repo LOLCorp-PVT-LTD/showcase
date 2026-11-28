@@ -1,6 +1,15 @@
 {
- "updated": "2026-11-27T10:31:40Z",
+ "updated": "2026-11-28T10:20:37Z",
  "items": [
+  {
+   "slug": "clackworks",
+   "title": "Clackworks",
+   "kind": "Keyboard maker · Website",
+   "blurb": "A keyboard maker's website where the hero keyboard types the headline as you scroll, then pulls a keycap off and explodes the switch.",
+   "url": "https://showcase.lolcorp.co.uk/clackworks/",
+   "reel": "https://showcase.lolcorp.co.uk/reels/light/clackworks.mp4",
+   "poster": "https://showcase.lolcorp.co.uk/img/clackworks.jpg"
+  },
   {
    "slug": "reeve",
    "title": "Reeve &amp; Calder",
